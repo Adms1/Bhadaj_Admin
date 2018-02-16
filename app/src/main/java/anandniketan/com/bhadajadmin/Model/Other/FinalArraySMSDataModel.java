@@ -3,6 +3,9 @@ package anandniketan.com.bhadajadmin.Model.Other;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by admsandroid on 12/21/2017.
  */
@@ -50,7 +53,84 @@ public class FinalArraySMSDataModel {
     @SerializedName("Login Details")
     @Expose
     private String loginDetails;
-
+    @SerializedName("StudentName")
+    @Expose
+    private String studentName;
+    @SerializedName("Standard")
+    @Expose
+    private String standard;
+    @SerializedName("FamilyName")
+    @Expose
+    private String familyName;
+    @SerializedName("Sms_No")
+    @Expose
+    private String smsNo;
+    @SerializedName("Fk_StudentID")
+    @Expose
+    private Integer fkStudentID;
+    @SerializedName("Fk_StandardID")
+    @Expose
+    private Integer fkStandardID;
+    @SerializedName("Fk_ClassID")
+    @Expose
+    private Integer fkClassID;
+    @SerializedName("MessageID")
+    @Expose
+    private String messageID;
+    @SerializedName("FromID")
+    @Expose
+    private String fromID;
+    @SerializedName("ToID")
+    @Expose
+    private String toID;
+    @SerializedName("MeetingDate")
+    @Expose
+    private String meetingDate;
+    @SerializedName("SubjectLine")
+    @Expose
+    private String subjectLine;
+    @SerializedName("Description")
+    @Expose
+    private String description;
+    @SerializedName("UserName")
+    @Expose
+    private String userName;
+    @SerializedName("ReadStatus")
+    @Expose
+    private String readStatus;
+    @SerializedName("StartDT")
+    @Expose
+    private String startDT;
+    @SerializedName("EndDT")
+    @Expose
+    private String endDT;
+    @SerializedName("Category")
+    @Expose
+    private String category;
+    @SerializedName("PK_HolidayID")
+    @Expose
+    private Integer pKHolidayID;
+    @SerializedName("PK_CategoryID")
+    @Expose
+    private Integer pKCategoryID;
+    @SerializedName("StandardID")
+    @Expose
+    private String standardID;
+    @SerializedName("classname")
+    @Expose
+    private String classname;
+    @SerializedName("ClassID")
+    @Expose
+    private Integer classID;
+    @SerializedName("Subject")
+    @Expose
+    private String subject;
+    @SerializedName("SubjectID")
+    @Expose
+    private Integer subjectID;
+    @SerializedName("StudentData")
+    @Expose
+    private List<StudentDatum> studentData = new ArrayList<StudentDatum>();
     public Integer getPKEmployeeID() {
         return pKEmployeeID;
     }
@@ -161,5 +241,221 @@ public class FinalArraySMSDataModel {
 
     public void setLoginDetails(String loginDetails) {
         this.loginDetails = loginDetails;
+    }
+
+    public Integer getpKEmployeeID() {
+        return pKEmployeeID;
+    }
+
+    public void setpKEmployeeID(Integer pKEmployeeID) {
+        this.pKEmployeeID = pKEmployeeID;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getStandard() {
+        return standard;
+    }
+
+    public void setStandard(String standard) {
+        this.standard = standard;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public String getSmsNo() {
+        return smsNo;
+    }
+
+    public void setSmsNo(String smsNo) {
+        this.smsNo = smsNo;
+    }
+
+    public Integer getFkStudentID() {
+        return fkStudentID;
+    }
+
+    public void setFkStudentID(Integer fkStudentID) {
+        this.fkStudentID = fkStudentID;
+    }
+
+    public Integer getFkStandardID() {
+        return fkStandardID;
+    }
+
+    public void setFkStandardID(Integer fkStandardID) {
+        this.fkStandardID = fkStandardID;
+    }
+
+    public Integer getFkClassID() {
+        return fkClassID;
+    }
+
+    public void setFkClassID(Integer fkClassID) {
+        this.fkClassID = fkClassID;
+    }
+
+    public String getMessageID() {
+        return messageID;
+    }
+
+    public void setMessageID(String messageID) {
+        this.messageID = messageID;
+    }
+
+    public String getFromID() {
+        return fromID;
+    }
+
+    public void setFromID(String fromID) {
+        this.fromID = fromID;
+    }
+
+    public String getToID() {
+        return toID;
+    }
+
+    public void setToID(String toID) {
+        this.toID = toID;
+    }
+
+    public String getMeetingDate() {
+        return meetingDate;
+    }
+
+    public void setMeetingDate(String meetingDate) {
+        this.meetingDate = meetingDate;
+    }
+
+    public String getSubjectLine() {
+        return subjectLine;
+    }
+
+    public void setSubjectLine(String subjectLine) {
+        this.subjectLine = subjectLine;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getReadStatus() {
+        return readStatus;
+    }
+
+    public void setReadStatus(String readStatus) {
+        this.readStatus = readStatus;
+    }
+
+    public String getStartDT() {
+        return startDT;
+    }
+
+    public void setStartDT(String startDT) {
+        this.startDT = startDT;
+    }
+
+    public String getEndDT() {
+        return endDT;
+    }
+
+    public void setEndDT(String endDT) {
+        this.endDT = endDT;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Integer getpKHolidayID() {
+        return pKHolidayID;
+    }
+
+    public void setpKHolidayID(Integer pKHolidayID) {
+        this.pKHolidayID = pKHolidayID;
+    }
+
+    public Integer getpKCategoryID() {
+        return pKCategoryID;
+    }
+
+    public void setpKCategoryID(Integer pKCategoryID) {
+        this.pKCategoryID = pKCategoryID;
+    }
+
+    public String getStandardID() {
+        return standardID;
+    }
+
+    public void setStandardID(String standardID) {
+        this.standardID = standardID;
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname;
+    }
+
+    public Integer getClassID() {
+        return classID;
+    }
+
+    public void setClassID(Integer classID) {
+        this.classID = classID;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public Integer getSubjectID() {
+        return subjectID;
+    }
+
+    public void setSubjectID(Integer subjectID) {
+        this.subjectID = subjectID;
+    }
+
+    public List<StudentDatum> getStudentData() {
+        return studentData;
+    }
+
+    public void setStudentData(List<StudentDatum> studentData) {
+        this.studentData = studentData;
     }
 }

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Interface.onInboxRead;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArrayBulkSMSModel;
+import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -27,20 +27,21 @@ public class ExpandableListAdapterInbox extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<FinalArrayBulkSMSModel>> listChildData;
+    private HashMap<String, List<FinalArraySMSDataModel>> listChildData;
     private ArrayList<String> staffattendaceModel = new ArrayList<>();
     String messageId, FromId, Toid, messageDate, messageSubject, messageMessageLine;
     private onInboxRead onInboxRead;
 
-    public ExpandableListAdapterInbox(Context context, List<String> listDataHeader, HashMap<String, List<FinalArrayBulkSMSModel>> listDataChild, onInboxRead onInboxRead) {
+    public ExpandableListAdapterInbox(Context context, List<String> listDataHeader, HashMap<String, List<FinalArraySMSDataModel>> listDataChild, onInboxRead onInboxRead) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
         this.onInboxRead = onInboxRead;
+
     }
 
     @Override
-    public List<FinalArrayBulkSMSModel> getChild(int groupPosition, int childPosititon) {
+    public List<FinalArraySMSDataModel> getChild(int groupPosition, int childPosititon) {
         return this.listChildData.get(this._listDataHeader.get(groupPosition));
     }
 
@@ -53,7 +54,7 @@ public class ExpandableListAdapterInbox extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        List<FinalArrayBulkSMSModel> childData = getChild(groupPosition, 0);
+        List<FinalArraySMSDataModel> childData = getChild(groupPosition, 0);
 
 
         if (convertView == null) {

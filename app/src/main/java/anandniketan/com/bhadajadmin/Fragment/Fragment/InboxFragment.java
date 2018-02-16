@@ -18,8 +18,8 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterInbox;
 import anandniketan.com.bhadajadmin.Interface.onInboxRead;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArrayBulkSMSModel;
-import anandniketan.com.bhadajadmin.Model.Other.GetBulkSMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
@@ -34,11 +34,11 @@ public class InboxFragment extends Fragment {
     private View rootView;
     private Context mContext;
 
-    List<FinalArrayBulkSMSModel> finalArrayBulkSMSModelList;
+    List<FinalArraySMSDataModel> finalArrayBulkSMSModelList;
     ExpandableListAdapterInbox expandableListAdapterInbox;
 
     List<String> listDataHeader = new ArrayList<>();
-    HashMap<String, List<FinalArrayBulkSMSModel>> listDataChild = new HashMap<>();
+    HashMap<String, List<FinalArraySMSDataModel>> listDataChild = new HashMap<>();
     String messageidstr, FromIdstr, ToIdstr, messageDatestr, messageSubjectstr, messageMessageLinestr;
 
     public InboxFragment() {
@@ -85,9 +85,9 @@ public class InboxFragment extends Fragment {
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getPTMTeacherStudentGetDetail(getInboxDataDetail(), new retrofit.Callback<GetBulkSMSDataModel>() {
+        ApiHandler.getApiService().getPTMTeacherStudentGetDetail(getInboxDataDetail(), new retrofit.Callback<GetStaffSMSDataModel>() {
             @Override
-            public void success(GetBulkSMSDataModel getBulkSMSDataModel, Response response) {
+            public void success(GetStaffSMSDataModel getBulkSMSDataModel, Response response) {
                 Utils.dismissDialog();
                 if (getBulkSMSDataModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -100,9 +100,9 @@ public class InboxFragment extends Fragment {
                 if (getBulkSMSDataModel.getSuccess().equalsIgnoreCase("False")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
                     Utils.dismissDialog();
-                        fragmentInboxBinding.txtNoRecordsinbox.setVisibility(View.VISIBLE);
-                        fragmentInboxBinding.lvExpinbox.setVisibility(View.GONE);
-                        fragmentInboxBinding.inboxHeader.setVisibility(View.GONE);
+                    fragmentInboxBinding.txtNoRecordsinbox.setVisibility(View.VISIBLE);
+                    fragmentInboxBinding.lvExpinbox.setVisibility(View.GONE);
+                    fragmentInboxBinding.inboxHeader.setVisibility(View.GONE);
                     return;
                 }
                 if (getBulkSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
@@ -165,7 +165,7 @@ public class InboxFragment extends Fragment {
     //Use for fill the Inbox Detail List
     public void fillDataList() {
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<FinalArrayBulkSMSModel>>();
+        listDataChild = new HashMap<String, List<FinalArraySMSDataModel>>();
 
         for (int j = 0; j < finalArrayBulkSMSModelList.size(); j++) {
             listDataHeader.add(finalArrayBulkSMSModelList.get(j).getUserName() + "|" +
@@ -173,7 +173,7 @@ public class InboxFragment extends Fragment {
                     finalArrayBulkSMSModelList.get(j).getSubjectLine() + "|" +
                     finalArrayBulkSMSModelList.get(j).getReadStatus());
 
-            ArrayList<FinalArrayBulkSMSModel> rows = new ArrayList<FinalArrayBulkSMSModel>();
+            ArrayList<FinalArraySMSDataModel> rows = new ArrayList<FinalArraySMSDataModel>();
             rows.add(finalArrayBulkSMSModelList.get(j));
             listDataChild.put(listDataHeader.get(j), rows);
         }

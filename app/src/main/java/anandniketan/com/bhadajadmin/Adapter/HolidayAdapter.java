@@ -11,8 +11,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import anandniketan.com.bhadajadmin.Interface.getEditpermission;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArrayHolidayDetial;
-import anandniketan.com.bhadajadmin.Model.Other.HolidayDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -22,11 +22,11 @@ import anandniketan.com.bhadajadmin.R;
 
 public class HolidayAdapter extends RecyclerView.Adapter<HolidayAdapter.MyViewHolder> {
     private Context context;
-    private HolidayDataModel holidayModel;
+    private GetStaffSMSDataModel holidayModel;
     private ArrayList<String> rowvalue = new ArrayList<String>();
     getEditpermission listner;
 
-    public HolidayAdapter(Context mContext, HolidayDataModel resultPermissionModel, getEditpermission listner) {
+    public HolidayAdapter(Context mContext, GetStaffSMSDataModel resultPermissionModel, getEditpermission listner) {
         this.context = mContext;
         this.holidayModel = resultPermissionModel;
         this.listner = listner;
@@ -42,16 +42,16 @@ public class HolidayAdapter extends RecyclerView.Adapter<HolidayAdapter.MyViewHo
     @Override
     public void onBindViewHolder(HolidayAdapter.MyViewHolder holder, int position) {
         String sr = String.valueOf(position + 1);
-        final FinalArrayHolidayDetial result = holidayModel.getFinalArray().get(position);
+        final FinalArraySMSDataModel result = holidayModel.getFinalArray().get(position);
         holder.index_txt.setText(sr);
-        holder.holiday_name.setText(result.getHolidayName());
+        holder.holiday_name.setText(result.getCategory());
         holder.start_date.setText(result.getStartDT());
         holder.end_date.setText(result.getEndDT());
 
         holder.edit_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rowvalue.add(result.getHolidayName() + "|" + result.getPKHolidayID() + "|" + result.getStartDT() + "|" + result.getEndDT() + "|" + result.getDescription() + "|" + result.getPKCategoryID());
+                rowvalue.add(result.getCategory() + "|" + result.getpKHolidayID() + "|" + result.getStartDT() + "|" + result.getEndDT() + "|" + result.getDescription() + "|" + result.getpKCategoryID());
                 listner.getEditpermission();
             }
         });

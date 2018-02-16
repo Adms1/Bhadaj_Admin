@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Interface.getEmployeeCheck;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArrayBulkSMSModel;
+import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -27,13 +27,13 @@ import anandniketan.com.bhadajadmin.R;
 
 public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetailListAdapter.MyViewHolder> {
     private Context context;
-    List<FinalArrayBulkSMSModel> finalArrayBulkSMSModelList;
+    List<FinalArraySMSDataModel> finalArrayBulkSMSModelList;
     String stduentIdStr, mobilenoStr, FinalValue;
     private ArrayList<String> dataCheck = new ArrayList<String>();
     getEmployeeCheck listner;
 
 
-    public BulkSMSDetailListAdapter(Context mContext, List<FinalArrayBulkSMSModel> finalArrayBulkSMSModelList, getEmployeeCheck listner) {
+    public BulkSMSDetailListAdapter(Context mContext, List<FinalArraySMSDataModel> finalArrayBulkSMSModelList, getEmployeeCheck listner) {
         this.context = mContext;
         this.finalArrayBulkSMSModelList = finalArrayBulkSMSModelList;
         this.listner = listner;
@@ -136,7 +136,7 @@ public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetail
         }
     }
 
-    public List<FinalArrayBulkSMSModel> getDatas() {
+    public List<FinalArraySMSDataModel> getDatas() {
         return finalArrayBulkSMSModelList;
     }
 

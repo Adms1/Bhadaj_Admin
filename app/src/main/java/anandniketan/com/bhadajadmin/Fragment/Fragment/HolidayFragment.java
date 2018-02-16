@@ -31,8 +31,8 @@ import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.HolidayAdapter;
 import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArrayHolidayDetial;
-import anandniketan.com.bhadajadmin.Model.Other.HolidayDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
@@ -56,9 +56,9 @@ public class HolidayFragment extends Fragment implements DatePickerDialog.OnDate
     private static boolean isFromDate = false;
     private DatePickerDialog datePickerDialog;
     HashMap<Integer, String> spinnerHolidayCategoryMap;
-    String FinalCategoryIdStr, FinalHolidayStr, startDateArray = "", endDateArray = "", discriptionArray = "", FinalholidayId = "", HolidayNameStr, categoryStr,categoryIdStr="";
+    String FinalCategoryIdStr, FinalHolidayStr, startDateArray = "", endDateArray = "", discriptionArray = "", FinalholidayId = "0", HolidayNameStr, categoryStr,categoryIdStr="";
     List<FinalArrayStudentModel> finalHolidaycategoryList;
-    List<FinalArrayHolidayDetial> finalArrayHolidayDetialsList;
+    List<FinalArraySMSDataModel> finalArrayHolidayDetialsList;
     HolidayAdapter holidayAdapter;
     String[] spinnerholidaycategoryIdArray;
 
@@ -217,9 +217,9 @@ public class HolidayFragment extends Fragment implements DatePickerDialog.OnDate
         }
 
 //        Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getHoliday(getHolidayDetail(), new retrofit.Callback<HolidayDataModel>() {
+        ApiHandler.getApiService().getHoliday(getHolidayDetail(), new retrofit.Callback<GetStaffSMSDataModel>() {
             @Override
-            public void success(HolidayDataModel holidaydataModel, Response response) {
+            public void success(GetStaffSMSDataModel holidaydataModel, Response response) {
                 if (holidaydataModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
@@ -324,9 +324,9 @@ public class HolidayFragment extends Fragment implements DatePickerDialog.OnDate
         map.put("StDt", fragmentHolidayBinding.startdateButton.getText().toString());
         map.put("EndDT", fragmentHolidayBinding.endDateButton.getText().toString());
         map.put("Description", fragmentHolidayBinding.descriptionEdt.getText().toString());
-        map.put("HolidayName", FinalHolidayStr);
+        map.put("Category", FinalHolidayStr);
         map.put("PK_HolidayID", FinalholidayId);
-        map.put("FK_CategoryId",FinalCategoryIdStr);
+        map.put("PK_CategoryId",FinalCategoryIdStr);
 
 
         return map;

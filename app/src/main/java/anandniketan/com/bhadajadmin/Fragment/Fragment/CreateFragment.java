@@ -38,8 +38,8 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Adapter.ListAdapterCreate;
 import anandniketan.com.bhadajadmin.Interface.onCheckBoxChnage;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Other.DisplayStudentModel;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArrayStudentForCreate;
+import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Other.StudentDatum;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
@@ -55,8 +55,8 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
     private FragmentCreateBinding fragmentCreateBinding;
     private View rootView;
     private Context mContext;
-    DisplayStudentModel responseArray;
-    List<FinalArrayStudentForCreate> finalArrayStudentNameModelsList;
+    GetStaffSMSDataModel responseArray;
+    List<FinalArraySMSDataModel> finalArrayStudentNameModelsList;
     ListAdapterCreate listAdapterCreate;
 
     String spinnerSelectedValue, value;
@@ -116,14 +116,14 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 spinnerSelectedValue = adapterView.getItemAtPosition(i).toString();
                 Log.d("spinner", spinnerSelectedValue);
-                String[] array = spinnerSelectedValue.split(textIcon);
-//                String value = array[2].replaceFirst(">", "");
+                String[] array = spinnerSelectedValue.split("\\-");//textIcon
+                String value = array[2].replaceFirst(">", "");
                 Log.d("Array", Arrays.toString(array));
 //                Log.d("Array1", value);
-                List<FinalArrayStudentForCreate> filterFinalArray = new ArrayList<FinalArrayStudentForCreate>();
-                for (FinalArrayStudentForCreate arrayObj : responseArray.getFinalArraycreate()) {
+                List<FinalArraySMSDataModel> filterFinalArray = new ArrayList<FinalArraySMSDataModel>();
+                for (FinalArraySMSDataModel arrayObj : responseArray.getFinalArray()) {
                     if (arrayObj.getStandard().equalsIgnoreCase(array[0].trim()) &&
-                            arrayObj.getClassname().equalsIgnoreCase(array[1].trim()) && arrayObj.getSubject().equalsIgnoreCase(array[2].trim())) {
+                            arrayObj.getClassname().equalsIgnoreCase(array[1].trim()) && arrayObj.getSubject().equalsIgnoreCase(value.trim())) {
                         filterFinalArray.add(arrayObj);
                     }
                 }
@@ -153,9 +153,9 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getTeacherGetClassSubjectWiseStudent(getInboxDataDetail(), new retrofit.Callback<DisplayStudentModel>() {
+        ApiHandler.getApiService().getTeacherGetClassSubjectWiseStudent(getInboxDataDetail(), new retrofit.Callback<GetStaffSMSDataModel>() {
             @Override
-            public void success(DisplayStudentModel displayStudentModel, Response response) {
+            public void success(GetStaffSMSDataModel displayStudentModel, Response response) {
                 Utils.dismissDialog();
                 if (displayStudentModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -173,7 +173,7 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
                 if (displayStudentModel.getSuccess().equalsIgnoreCase("True")) {
                     responseArray = displayStudentModel;
                     Log.d("responseArray", "" + responseArray);
-                    finalArrayStudentNameModelsList = displayStudentModel.getFinalArraycreate();
+                    finalArrayStudentNameModelsList = displayStudentModel.getFinalArray();
                     if (finalArrayStudentNameModelsList != null) {
                         fillspinner();
                         Utils.dismissDialog();
@@ -201,14 +201,11 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
 
     public void fillspinner() {
         ArrayList<String> row = new ArrayList<String>();
-//        int unicode = 0x2B05;
-
-//        textIcon = new String(Character.toChars(unicode));
         textIcon =getResources().getString(R.string.arrow);
         for (int z = 0; z < finalArrayStudentNameModelsList.size(); z++) {
             if (!finalArrayStudentNameModelsList.get(z).getSubject().equalsIgnoreCase("")) {
-                row.add(finalArrayStudentNameModelsList.get(z).getStandard() + textIcon +
-                        finalArrayStudentNameModelsList.get(z).getClassname() + textIcon +
+                row.add(finalArrayStudentNameModelsList.get(z).getStandard() + "-" +
+                        finalArrayStudentNameModelsList.get(z).getClassname() + "->" +
                         finalArrayStudentNameModelsList.get(z).getSubject());
             }
         }
@@ -234,7 +231,7 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
         fragmentCreateBinding.createClassSpinner.setAdapter(adapterYear);
     }
 
-    private void setExpandableListView(List<FinalArrayStudentForCreate> array) {
+    private void setExpandableListView(List<FinalArraySMSDataModel> array) {
         arrayList = new ArrayList<>();
         arrayList.clear();
 

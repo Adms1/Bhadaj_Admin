@@ -37,8 +37,8 @@ import anandniketan.com.bhadajadmin.Interface.getEmployeeCheck;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArrayBulkSMSModel;
-import anandniketan.com.bhadajadmin.Model.Other.GetBulkSMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
@@ -62,7 +62,7 @@ public class BullkSmsFragment extends Fragment {
     HashMap<Integer, String> spinnerStandardMap;
     HashMap<Integer, String> spinnerSectionMap;
     String FinalStandardIdStr, FinalClassIdStr, StandardName, FinalTermIdStr, FinalStandardStr, FinalSectionStr;
-    List<FinalArrayBulkSMSModel> finalArrayBulkSMSModelList;
+    List<FinalArraySMSDataModel> finalArrayBulkSMSModelList;
     private boolean temp = false;
     BulkSMSDetailListAdapter bulkSMSDetailListAdapter;
     String finalBulkIdArray, finalmessageMessageLine, finalDateStr;
@@ -304,9 +304,9 @@ public class BullkSmsFragment extends Fragment {
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getBulkSMSData(getGetBulkSMSDataDetail(), new retrofit.Callback<GetBulkSMSDataModel>() {
+        ApiHandler.getApiService().getBulkSMSData(getGetBulkSMSDataDetail(), new retrofit.Callback<GetStaffSMSDataModel>() {
             @Override
-            public void success(GetBulkSMSDataModel getBulkSMSDataModel, Response response) {
+            public void success(GetStaffSMSDataModel getBulkSMSDataModel, Response response) {
                 Utils.dismissDialog();
                 if (getBulkSMSDataModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -348,7 +348,6 @@ public class BullkSmsFragment extends Fragment {
         });
 
     }
-
     private Map<String, String> getGetBulkSMSDataDetail() {
         if (FinalStandardIdStr.equalsIgnoreCase("0")) {
             FinalStandardIdStr = "";
@@ -522,7 +521,7 @@ public class BullkSmsFragment extends Fragment {
         bulkSMSDetailListAdapter = new BulkSMSDetailListAdapter(mContext, finalArrayBulkSMSModelList, new getEmployeeCheck() {
             @Override
             public void getEmployeeSMSCheck() {
-                List<FinalArrayBulkSMSModel> updatedData = bulkSMSDetailListAdapter.getDatas();
+                List<FinalArraySMSDataModel> updatedData = bulkSMSDetailListAdapter.getDatas();
                 Boolean data = false;
                 int count = 0;
 
@@ -594,7 +593,7 @@ public class BullkSmsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ArrayList<String> id = new ArrayList<>();
-                List<FinalArrayBulkSMSModel> array = bulkSMSDetailListAdapter.getDatas();
+                List<FinalArraySMSDataModel> array = bulkSMSDetailListAdapter.getDatas();
                 int j;
                 for (j = 0; j < array.size(); j++) {
                     if (array.get(j).getCheck().equalsIgnoreCase("1")) {
