@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/dividercolor"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:id="@+id/tableRow_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/status_header_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_margin="0.2dp"
+                    android:background="@drawable/box_blue"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/status"
+                    android:textColor="@color/app_bg"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="normal" />
+                <TextView
+                    android:id="@+id/date_header_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_margin="0.2dp"
+                    android:background="@drawable/box_blue"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/date"
+                    android:textColor="@color/app_bg"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="normal" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</layout>

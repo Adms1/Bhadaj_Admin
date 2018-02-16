@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="light_blue">#1791d8</color>
+    <color name="white">#f2edea</color>
+    <color name="linear_color">#1B88C8</color>
+    <color name="app_bg">#ffffff</color>
+    <color name="gray">#ebebf1</color>
+    <color name="orange">#ff9623</color>
+    <color name="black">#000000</color>
+    <color name="present">#a4c639</color>
+    <color name="absent">#ff0000</color>
+    <color name="leave">#e1ca4a</color>
+    <color name="light_black">#0D000000</color>
+    <color name="scheduleheadertextcolor">#1791d8</color>
+    <color name="dividercolor">#801791d8</color>
+    <color name="lightgray">#AAAAAA</color>
+    <color name="darkblue">#3597D3</color>
+    <color name="green">#FF6BAE18</color>
+    <color name="yellow">#FFE6B12E</color>
+    <color name="lightblue">#FF48ADDE</color>
+    <color name="cgray">#FF607D8B</color>
+    <color name="body">#FFF0F0F4</color>
+</resources>

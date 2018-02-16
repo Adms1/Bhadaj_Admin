@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fatherfirst_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatherfirstname"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold"
+                android:paddingBottom="@dimen/_2sdp"/>
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fatherfirstname_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fatherlastname_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatherlastname"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fatherlastname_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fphone_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatherphoneno"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fphone_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fmobile_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fathermobileno"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fmobile_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/femail_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatheremailaddress"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/femail_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fqualification_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatherqualification"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fqualification_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/foccupation_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatheroccupation"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/foccupation_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/forganisation_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatheroragnization"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/forganisation_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fdesignation_txt_View"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/fatherdesignation"
+                android:textAlignment="textStart"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textAlignment="center"
+                android:textColor="@color/scheduleheadertextcolor"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/fdesignation_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/studenttag"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_9sdp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
