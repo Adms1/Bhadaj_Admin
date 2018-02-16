@@ -23,7 +23,12 @@ public class Datum {
     @SerializedName("ProxyStatus")
     @Expose
     private String proxyStatus;
-
+    @SerializedName("EmpName")
+    @Expose
+    private String empName;
+    @SerializedName("Days")
+    @Expose
+    private Integer days;
     public Integer getLecture() {
         return lecture;
     }
@@ -64,4 +69,19 @@ public class Datum {
         this.proxyStatus = proxyStatus;
     }
 
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
+    }
 }

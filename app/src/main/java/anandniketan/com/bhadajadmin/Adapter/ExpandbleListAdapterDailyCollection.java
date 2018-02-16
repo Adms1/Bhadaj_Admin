@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Account.FinalArrayDailyCollection;
+import anandniketan.com.bhadajadmin.Model.Account.FinalArrayAccountFeesModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.ListGroupStudentDiscountDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemDailyCollectionBinding;
@@ -26,11 +26,11 @@ public class ExpandbleListAdapterDailyCollection extends BaseExpandableListAdapt
 
     private Context _context;
     private List<String> _listDataHeader;
-    private HashMap<String, ArrayList<FinalArrayDailyCollection>> _listDataChild;
+    private HashMap<String, ArrayList<FinalArrayAccountFeesModel>> _listDataChild;
 
 
     public ExpandbleListAdapterDailyCollection(Context context, List<String> listDataHeader,
-                                       HashMap<String, ArrayList<FinalArrayDailyCollection>> listDataChild) {
+                                       HashMap<String, ArrayList<FinalArrayAccountFeesModel>> listDataChild) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
@@ -46,7 +46,7 @@ public class ExpandbleListAdapterDailyCollection extends BaseExpandableListAdapt
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
          ListItemDailyCollectionBinding itembinding;
-        ArrayList<FinalArrayDailyCollection> detail = getChild(groupPosition, 0);
+        ArrayList<FinalArrayAccountFeesModel> detail = getChild(groupPosition, 0);
         if (convertView == null) {
 
         }
@@ -72,7 +72,7 @@ public class ExpandbleListAdapterDailyCollection extends BaseExpandableListAdapt
     }
 
     @Override
-    public ArrayList<FinalArrayDailyCollection> getChild(int groupPosition, int childPosititon) {
+    public ArrayList<FinalArrayAccountFeesModel> getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition));
     }
 

@@ -50,14 +50,12 @@
                 android:id="@+id/pdf_img"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/pdf"
                 android:padding="@dimen/_3sdp"
                 android:layout_weight=".7"/>
             <ImageView
                 android:id="@+id/word_img"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/wordfile"
                 android:padding="@dimen/_3sdp"
                 android:layout_weight=".7"/>
             <TextView

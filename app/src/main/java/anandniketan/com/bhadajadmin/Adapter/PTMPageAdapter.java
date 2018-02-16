@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import anandniketan.com.bhadajadmin.Fragment.CreateFragment;
-import anandniketan.com.bhadajadmin.Fragment.InboxFragment;
-import anandniketan.com.bhadajadmin.Fragment.SentFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.CreateFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.InboxFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.SentFragment;
 
 
 /**

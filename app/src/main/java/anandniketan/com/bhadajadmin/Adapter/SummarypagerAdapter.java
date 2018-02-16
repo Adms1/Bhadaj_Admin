@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import anandniketan.com.bhadajadmin.Fragment.OtherAccountSummaryFragment;
-import anandniketan.com.bhadajadmin.Fragment.OtherAttendaceSummaryFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.OtherAccountSummaryFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.OtherAttendaceSummaryFragment;
 
 
 /**

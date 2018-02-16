@@ -20,6 +20,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
@@ -29,9 +30,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-
-import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayAssignSubjectModel;
+import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.ListGroupLessonPlanDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemLessonPlanBinding;
@@ -46,7 +47,7 @@ public class ExpandableListAdapterLessonPlan extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader;
-    private HashMap<String, ArrayList<FinalArrayAssignSubjectModel>> _listDataChild;
+    private HashMap<String, ArrayList<FinalArrayStaffModel>> _listDataChild;
     SpannableStringBuilder chapterSpanned, keypointSpanned, objectiveSpanned, assessmentSpanned;
     String chapterStr, keypointkStr, objectiveStr, assessmentStr;
     ListItemLessonPlanBinding itembinding;
@@ -54,7 +55,7 @@ public class ExpandableListAdapterLessonPlan extends BaseExpandableListAdapter {
     String file1;
     File filepdf;
 
-    public ExpandableListAdapterLessonPlan(Context context, List<String> listDataHeader, HashMap<String, ArrayList<FinalArrayAssignSubjectModel>> listDataChild) {
+    public ExpandableListAdapterLessonPlan(Context context, List<String> listDataHeader, HashMap<String, ArrayList<FinalArrayStaffModel>> listDataChild) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
@@ -71,7 +72,7 @@ public class ExpandableListAdapterLessonPlan extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        ArrayList<FinalArrayAssignSubjectModel> detail = getChild(groupPosition, 0);
+        ArrayList<FinalArrayStaffModel> detail = getChild(groupPosition, 0);
         if (convertView == null) {
 
         }
@@ -99,7 +100,7 @@ public class ExpandableListAdapterLessonPlan extends BaseExpandableListAdapter {
     }
 
     @Override
-    public ArrayList<FinalArrayAssignSubjectModel> getChild(int groupPosition, int childPosititon) {
+    public ArrayList<FinalArrayStaffModel> getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition));
     }
 
@@ -129,10 +130,20 @@ public class ExpandableListAdapterLessonPlan extends BaseExpandableListAdapter {
         String sr = String.valueOf(groupPosition + 1);
         groupbinding.indexTxt.setText(sr);
         groupbinding.chapterNoTxt.setText(spiltValue[0]);
-        groupbinding.chapterNameTxt.setText(spiltValue[1]);
+        chapterStr = spiltValue[1];
+        chapterSpanned = (SpannableStringBuilder) Html.fromHtml(chapterStr);
+        chapterSpanned = trimSpannable(chapterSpanned);
+        groupbinding.chapterNameTxt.setText(chapterSpanned, TextView.BufferType.SPANNABLE);
         Log.d("id", spiltValue[3]);
 
-
+        Glide.with(_context)
+                .load(AppConfiguration.BASEURL_ICONS + "pdf.png")
+                .fitCenter()
+                .into(groupbinding.pdfImg);
+        Glide.with(_context)
+                .load(AppConfiguration.BASEURL_ICONS + "Word.png")
+                .fitCenter()
+                .into(groupbinding.wordImg);
         groupbinding.pdfImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

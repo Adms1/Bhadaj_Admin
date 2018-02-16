@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayAssignSubjectModel;
+import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -19,10 +19,10 @@ import anandniketan.com.bhadajadmin.R;
 
 public class AssignSubjectDetailListAdapter extends RecyclerView.Adapter<AssignSubjectDetailListAdapter.MyViewHolder> {
     private Context context;
-    List<FinalArrayAssignSubjectModel> AssignSubjectModelList;
+    List<FinalArrayStaffModel> AssignSubjectModelList;
 
 
-    public AssignSubjectDetailListAdapter(Context mContext, List<FinalArrayAssignSubjectModel> AssignSubjectModelList) {
+    public AssignSubjectDetailListAdapter(Context mContext, List<FinalArrayStaffModel> AssignSubjectModelList) {
         this.context = mContext;
         this.AssignSubjectModelList = AssignSubjectModelList;
     }

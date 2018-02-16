@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayExamsModel;
+import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -19,9 +19,9 @@ import anandniketan.com.bhadajadmin.R;
 
 public class ExamListAdapter extends RecyclerView.Adapter<ExamListAdapter.ViewHolder> {
     private Context context;
-    private List<FinalArrayExamsModel> examsModelList;
+    private List<FinalArrayStaffModel> examsModelList;
 
-    public ExamListAdapter(Context mContext, List<FinalArrayExamsModel> examsModelList) {
+    public ExamListAdapter(Context mContext, List<FinalArrayStaffModel> examsModelList) {
         this.context = mContext;
         this.examsModelList = examsModelList;
     }

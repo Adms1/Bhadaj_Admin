@@ -18,9 +18,8 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceDetail;
-import anandniketan.com.bhadajadmin.Model.Student.StudentNameModel;
+import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,10 +29,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.MyViewHolder> {
     private Context context;
-    private StudentNameModel attendanceModel;
+    private StudentAttendanceModel attendanceModel;
     ImageLoader imageLoader;
 
-    public AttendanceAdapter(Context mContext, StudentNameModel attendanceModel) {
+    public AttendanceAdapter(Context mContext, StudentAttendanceModel attendanceModel) {
         this.context = mContext;
         this.attendanceModel = attendanceModel;
     }
@@ -49,7 +48,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
     public void onBindViewHolder(AttendanceAdapter.MyViewHolder holder, int position) {
         imageLoader = ImageLoader.getInstance();
 
-        final StudentAttendanceDetail detail = attendanceModel.getFinalArray().get(0).getStudentDetail().get(position);
+        final StandardWiseAttendanceModel detail = attendanceModel.getFinalArray().get(0).getStudentDetail().get(position);
         try {
             DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)

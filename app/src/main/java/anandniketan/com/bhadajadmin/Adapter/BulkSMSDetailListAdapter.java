@@ -2,6 +2,8 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,7 @@ public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetail
     public BulkSMSDetailListAdapter(Context mContext, List<FinalArrayBulkSMSModel> finalArrayBulkSMSModelList, getEmployeeCheck listner) {
         this.context = mContext;
         this.finalArrayBulkSMSModelList = finalArrayBulkSMSModelList;
-        this.listner=listner;
+        this.listner = listner;
     }
 
 
@@ -47,7 +49,7 @@ public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetail
 
     @Override
     public void onBindViewHolder(BulkSMSDetailListAdapter.MyViewHolder holder, final int position) {
-        String sr = String.valueOf(position + 1);
+        final String sr = String.valueOf(position + 1);
 
         holder.index_txt.setText(sr);
         holder.student_name_txt.setText(finalArrayBulkSMSModelList.get(position).getStudentName());
@@ -55,6 +57,24 @@ public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetail
         holder.grade_txt.setText(finalArrayBulkSMSModelList.get(position).getStandard());
         holder.mobileno_txt.setText(String.valueOf(finalArrayBulkSMSModelList.get(position).getSmsNo()));
 
+        holder.mobileno_txt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == 10) {
+                    finalArrayBulkSMSModelList.get(position).setSmsNo(editable.toString());
+                }
+            }
+        });
         holder.sms_chk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -101,7 +121,7 @@ public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetail
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView index_txt, student_name_txt,family_name_txt,grade_txt;
+        TextView index_txt, student_name_txt, family_name_txt, grade_txt;
         EditText mobileno_txt;
         CheckBox sms_chk;
 

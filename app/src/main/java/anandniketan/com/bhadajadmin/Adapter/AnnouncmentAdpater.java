@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentNameModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentNameModel;
+import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -20,11 +20,11 @@ import anandniketan.com.bhadajadmin.R;
 
 public class AnnouncmentAdpater extends RecyclerView.Adapter<AnnouncmentAdpater.MyViewHolder> {
     private Context context;
-    private StudentNameModel announcmentModel;
+    private StudentAttendanceModel announcmentModel;
     SpannableStringBuilder discriptionSpanned;
     String discriptionStr;
 
-    public AnnouncmentAdpater(Context mContext, StudentNameModel announcmentModel) {
+    public AnnouncmentAdpater(Context mContext, StudentAttendanceModel announcmentModel) {
         this.context = mContext;
         this.announcmentModel = announcmentModel;
     }
@@ -39,7 +39,7 @@ public class AnnouncmentAdpater extends RecyclerView.Adapter<AnnouncmentAdpater.
     @Override
     public void onBindViewHolder(AnnouncmentAdpater.MyViewHolder holder, int position) {
         String sr = String.valueOf(position + 1);
-        final FinalArrayStudentNameModel result = announcmentModel.getFinalArray().get(position);
+        final FinalArrayStudentModel result = announcmentModel.getFinalArray().get(position);
         holder.index_txt.setText(sr);
         holder.date_txt.setText(result.getCirDate());
         holder.subject_txt.setText(result.getCirSubject());

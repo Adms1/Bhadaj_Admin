@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentTransportModel;
+import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.ListGroupStudentRouteTransportDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemStudentRouteTransportDetailBinding;
@@ -28,12 +28,12 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
 
     private Context _context;
     private List<String> _listDataHeader;
-    private HashMap<String, ArrayList<FinalArrayStudentTransportModel>> _listDataChild;
+    private HashMap<String, ArrayList<FinalArrayStudentModel>> _listDataChild;
     ImageLoader imageLoader;
 
 
     public ExpandableListAdapterStudentTransportDetail(Context context, List<String> listDataHeader,
-                                                       HashMap<String, ArrayList<FinalArrayStudentTransportModel>> listDataChild) {
+                                                       HashMap<String, ArrayList<FinalArrayStudentModel>> listDataChild) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
@@ -49,7 +49,7 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         ListItemStudentRouteTransportDetailBinding routeTransportDetailBinding;
-        ArrayList<FinalArrayStudentTransportModel> detail = getChild(groupPosition, 0);
+        ArrayList<FinalArrayStudentModel> detail = getChild(groupPosition, 0);
         if (convertView == null) {
 
         }
@@ -58,7 +58,7 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
 
         routeTransportDetailBinding.routenameTxt.setText(detail.get(childPosition).getRouteName());
         routeTransportDetailBinding.pickupPointnameTxt.setText(detail.get(childPosition).getPickupPointName());
-        routeTransportDetailBinding.kmTxt.setText(detail.get(childPosition).getKM());
+        routeTransportDetailBinding.kmTxt.setText(detail.get(childPosition).getkM());
 
         return convertView;
     }
@@ -75,7 +75,7 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
     }
 
     @Override
-    public ArrayList<FinalArrayStudentTransportModel> getChild(int groupPosition, int childPosititon) {
+    public ArrayList<FinalArrayStudentModel> getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition));
     }
 

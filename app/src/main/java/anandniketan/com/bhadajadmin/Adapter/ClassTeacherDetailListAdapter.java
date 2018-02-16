@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayClassTeacherDetailModel;
+import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -19,9 +19,9 @@ import anandniketan.com.bhadajadmin.R;
 
 public class ClassTeacherDetailListAdapter extends RecyclerView.Adapter<ClassTeacherDetailListAdapter.MyViewHolder> {
     private Context context;
-    List<FinalArrayClassTeacherDetailModel> classTeacherDetail;
+    List<FinalArrayStaffModel> classTeacherDetail;
 
-    public ClassTeacherDetailListAdapter(Context mContext, List<FinalArrayClassTeacherDetailModel> classTeacherDetail) {
+    public ClassTeacherDetailListAdapter(Context mContext, List<FinalArrayStaffModel> classTeacherDetail) {
         this.context = mContext;
         this.classTeacherDetail = classTeacherDetail;
     }

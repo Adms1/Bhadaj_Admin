@@ -38,7 +38,6 @@ public class ExpandableListAdapterMenu extends BaseExpandableListAdapter {
         this.imagesId = imagesId;
     }
 
-
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
@@ -47,7 +46,6 @@ public class ExpandableListAdapterMenu extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-//        ListItemTimeTableBinding itembinding;
         if (convertView == null) {
 
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -57,8 +55,6 @@ public class ExpandableListAdapterMenu extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_menu, null);
             TextView txtLecture;
             txtLecture = (TextView) convertView.findViewById(R.id.txtLecture);
-
-
             txtLecture.setText(getChild(groupPosition, childPosition));
 
         }

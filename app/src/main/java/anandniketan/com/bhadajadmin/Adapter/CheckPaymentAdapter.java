@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Account.FinalArrayAllPaymentLedgerModel;
+import anandniketan.com.bhadajadmin.Model.Account.FinalArrayAccountFeesModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.ListGroupCheckPaymentBinding;
@@ -28,10 +28,10 @@ public class CheckPaymentAdapter  extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader;
-    private HashMap<String, ArrayList<FinalArrayAllPaymentLedgerModel>> _listDataChild;
+    private HashMap<String, ArrayList<FinalArrayAccountFeesModel>> _listDataChild;
 
     public CheckPaymentAdapter(Context _context, List<String> listDataHeader,
-                               HashMap<String, ArrayList<FinalArrayAllPaymentLedgerModel>> listDataChild) {
+                               HashMap<String, ArrayList<FinalArrayAccountFeesModel>> listDataChild) {
         this._context = _context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
@@ -47,7 +47,7 @@ public class CheckPaymentAdapter  extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         ListItemCheckPaymentBinding itembinding;
-        ArrayList<FinalArrayAllPaymentLedgerModel> detail = getChild(groupPosition, 0);
+        ArrayList<FinalArrayAccountFeesModel> detail = getChild(groupPosition, 0);
         if (convertView == null) {
 
         }
@@ -86,7 +86,7 @@ public class CheckPaymentAdapter  extends BaseExpandableListAdapter {
     }
 
     @Override
-    public ArrayList<FinalArrayAllPaymentLedgerModel> getChild(int groupPosition, int childPosititon) {
+    public ArrayList<FinalArrayAccountFeesModel> getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition));
     }
 

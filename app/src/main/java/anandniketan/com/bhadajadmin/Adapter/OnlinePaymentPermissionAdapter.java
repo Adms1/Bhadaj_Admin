@@ -11,8 +11,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import anandniketan.com.bhadajadmin.Interface.getEditpermission;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayResultPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Student.GetResultPermissionModel;
+import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -22,11 +22,11 @@ import anandniketan.com.bhadajadmin.R;
 
 public class OnlinePaymentPermissionAdapter extends RecyclerView.Adapter<OnlinePaymentPermissionAdapter.MyViewHolder> {
     private Context context;
-    private GetResultPermissionModel resultPermissionModel;
-    private ArrayList<String> rowvalue = new ArrayList<String>();
+    private StudentAttendanceModel resultPermissionModel;
+    private ArrayList<String> rowvalue;
     getEditpermission listner;
 
-    public OnlinePaymentPermissionAdapter(Context mContext, GetResultPermissionModel resultPermissionModel, getEditpermission listner) {
+    public OnlinePaymentPermissionAdapter(Context mContext, StudentAttendanceModel resultPermissionModel, getEditpermission listner) {
         this.context = mContext;
         this.resultPermissionModel = resultPermissionModel;
         this.listner = listner;
@@ -42,7 +42,7 @@ public class OnlinePaymentPermissionAdapter extends RecyclerView.Adapter<OnlineP
     @Override
     public void onBindViewHolder(OnlinePaymentPermissionAdapter.MyViewHolder holder, int position) {
         String sr = String.valueOf(position + 1);
-        final FinalArrayResultPermissionModel result = resultPermissionModel.getFinalArray().get(position);
+        final FinalArrayStudentModel result = resultPermissionModel.getFinalArray().get(position);
         holder.index_txt.setText(sr);
         holder.academicyear_txt.setText(resultPermissionModel.getYear());
         holder.grade_txt.setText(String.valueOf(result.getStandard()));
@@ -52,6 +52,7 @@ public class OnlinePaymentPermissionAdapter extends RecyclerView.Adapter<OnlineP
         holder.edit_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rowvalue = new ArrayList<String>();
                 rowvalue.add(resultPermissionModel.getYear() + "|" + result.getStandard() + "|" + result.getStatus()+"|"+resultPermissionModel.getTerm());
                 listner.getEditpermission();
             }

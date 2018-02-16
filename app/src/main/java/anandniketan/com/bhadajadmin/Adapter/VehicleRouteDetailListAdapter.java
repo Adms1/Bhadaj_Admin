@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayVehicleRouteModel;
+import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayTransportChargesModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -19,10 +19,10 @@ import anandniketan.com.bhadajadmin.R;
 
 public class VehicleRouteDetailListAdapter  extends RecyclerView.Adapter<VehicleRouteDetailListAdapter.MyViewHolder> {
     private Context context;
-    List<FinalArrayVehicleRouteModel> vehicleRouteModelList;
+    List<FinalArrayTransportChargesModel> vehicleRouteModelList;
 //    VehicleRouteDetailItemBinding binding;
 
-    public VehicleRouteDetailListAdapter(Context mContext, List<FinalArrayVehicleRouteModel> vehicleRouteModelList) {
+    public VehicleRouteDetailListAdapter(Context mContext, List<FinalArrayTransportChargesModel> vehicleRouteModelList) {
         this.context = mContext;
         this.vehicleRouteModelList = vehicleRouteModelList;
     }

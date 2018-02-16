@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import anandniketan.com.bhadajadmin.Model.Staff.ConsistenceAbsentStaffModel;
+import anandniketan.com.bhadajadmin.Model.Staff.Datum;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.R;
+
 
 /**
  * Created by admsandroid on 11/21/2017.
@@ -36,7 +37,7 @@ public class ConsistentAbsentTeacherAdapter extends RecyclerView.Adapter<Consist
 
     @Override
     public void onBindViewHolder(ConsistentAbsentTeacherAdapter.ViewHolder holder, int position) {
-        ConsistenceAbsentStaffModel details = staffAttendaceModel.getFinalArray().get(0).getConsistenceAbsent().get(position);
+        Datum details = staffAttendaceModel.getFinalArray().get(0).getConsistenceAbsent().get(position);
 
         holder.employee_txt.setText(String.valueOf(details.getEmpName().trim()));
         holder.days_txt.setText(String.valueOf(details.getDays()));

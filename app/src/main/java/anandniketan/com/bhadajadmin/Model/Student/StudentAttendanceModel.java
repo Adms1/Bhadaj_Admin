@@ -13,6 +13,15 @@ public class StudentAttendanceModel {
     @SerializedName("Success")
     @Expose
     private String success;
+    @SerializedName("Date")
+    @Expose
+    private String date;
+    @SerializedName("Year")
+    @Expose
+    private String year;
+    @SerializedName("Term")
+    @Expose
+    private String term;
     @SerializedName("FinalArray")
     @Expose
     private List<FinalArrayStudentModel> finalArray = null;
@@ -23,6 +32,30 @@ public class StudentAttendanceModel {
 
     public void setSuccess(String success) {
         this.success = success;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
     }
 
     public List<FinalArrayStudentModel> getFinalArray() {

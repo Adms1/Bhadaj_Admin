@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayVehicleDetail;
+import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayTransportChargesModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -19,10 +19,10 @@ import anandniketan.com.bhadajadmin.R;
 
 public class VehicleDetailListAdapter extends RecyclerView.Adapter<VehicleDetailListAdapter.MyViewHolder> {
     private Context context;
-    List<FinalArrayVehicleDetail> vehicleDetailList;
+    List<FinalArrayTransportChargesModel> vehicleDetailList;
 //    VehicleDetailListItemBinding binding;
 
-    public VehicleDetailListAdapter(Context mContext, List<FinalArrayVehicleDetail> vehicleDetailList) {
+    public VehicleDetailListAdapter(Context mContext, List<FinalArrayTransportChargesModel> vehicleDetailList) {
         this.context = mContext;
         this.vehicleDetailList = vehicleDetailList;
     }

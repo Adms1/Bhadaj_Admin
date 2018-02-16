@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentFullDetailModel;
+import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemCommunicationDetailBinding;
@@ -45,12 +45,12 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
 
     private Context _context;
     private List<String> _listDataHeader;
-    private HashMap<String, ArrayList<FinalArrayStudentFullDetailModel>> _listDataChild;
+    private HashMap<String, ArrayList<FinalArrayStudentModel>> _listDataChild;
     ImageLoader imageLoader;
 
 
     public ExpandableListAdapterStudentFullDetail(Context context, List<String> listDataHeader, HashMap<String,
-            ArrayList<FinalArrayStudentFullDetailModel>> listDataChild) {
+            ArrayList<FinalArrayStudentModel>> listDataChild) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
@@ -65,7 +65,7 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final ArrayList<FinalArrayStudentFullDetailModel> childData = getChild(groupPosition, 0);
+        final ArrayList<FinalArrayStudentModel> childData = getChild(groupPosition, 0);
         StudentListItemStudentFullDetailBinding binding;
         if (convertView == null) {
             Log.d("groupposition", "" + groupPosition);
@@ -113,7 +113,7 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
             binding.religionTxt.setText(childData.get(childPosition).getReligion());
             binding.usernameTxt.setText(childData.get(childPosition).getUserName());
             binding.passwordTxt.setText(childData.get(childPosition).getPassword());
-            binding.grnoTxt.setText(childData.get(childPosition).getGRNO());
+            binding.grnoTxt.setText(childData.get(childPosition).getgRNO());
 
 
             if(AppConfiguration.StudentStatus.equalsIgnoreCase("Current Student")){
@@ -133,6 +133,8 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                     String formatted = outFormat.format(date);
                     System.out.println(formatted);
                     binding.doaTxt.setText(formatted);
+
+                }else{
                     binding.doaTxt.setText("");
                 }
                 if(!childData.get(childPosition).getRegistrationDate().equalsIgnoreCase("")) {
@@ -197,7 +199,7 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
             communicationDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_communication_detail, parent, false);
             convertView = communicationDetailBinding.getRoot();
 
-            communicationDetailBinding.smsTxt.setText(childData.get(childPosition).getSMSCommunicationNo());
+            communicationDetailBinding.smsTxt.setText(childData.get(childPosition).getsMSCommunicationNo());
             communicationDetailBinding.cityTxt.setText(childData.get(childPosition).getCity());
             communicationDetailBinding.addressTxt.setText(childData.get(childPosition).getAddress());
             communicationDetailBinding.zipTxt.setText(childData.get(childPosition).getZipCode());
@@ -219,7 +221,7 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
     }
 
     @Override
-    public ArrayList<FinalArrayStudentFullDetailModel> getChild(int groupPosition, int childPosititon) {
+    public ArrayList<FinalArrayStudentModel> getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition));
     }
 
@@ -257,6 +259,28 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
         } else if (headerTitle.equalsIgnoreCase("Communication Details")) {
             linear_group.setBackgroundColor(Color.parseColor("#FF607D8B"));
         }
+
+
+//        ListGroupStudentFullDetailBinding groupbinding;
+//        if (convertView == null) {
+//            groupbinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.list_group_student_full_detail, parent, false);
+//            convertView = groupbinding.getRoot();
+//        }
+//        groupbinding.lblListHeader.setTypeface(null, Typeface.BOLD);
+//        groupbinding.lblListHeader.setText(headerTitle);
+//
+//        if (headerTitle.equalsIgnoreCase("Student Detail")) {
+//            groupbinding.linearGroup.setBackgroundColor(Color.parseColor("#3597D3"));
+//        } else if (headerTitle.equalsIgnoreCase("Transport Detail")) {
+//            groupbinding.linearGroup.setBackgroundColor(Color.parseColor("#FF6BAE18"));
+//        } else if (headerTitle.equalsIgnoreCase("Father Detail")) {
+//            groupbinding.linearGroup.setBackgroundColor(Color.parseColor("#FFE6B12E"));
+//        } else if (headerTitle.equalsIgnoreCase("Mother Detail")) {
+//            groupbinding.linearGroup.setBackgroundColor(Color.parseColor("#FF48ADDE"));
+//        } else if (headerTitle.equalsIgnoreCase("Communication Detail")) {
+//            groupbinding.linearGroup.setBackgroundColor(Color.parseColor("#FF607D8B"));
+//        }
+
         return convertView;
     }
 

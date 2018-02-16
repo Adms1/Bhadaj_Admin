@@ -13,6 +13,9 @@ public class StaffAttendaceModel {
     @SerializedName("Success")
     @Expose
     private String success;
+    @SerializedName("Year")
+    @Expose
+    private String year;
     @SerializedName("FinalArray")
     @Expose
     private List<FinalArrayStaffModel> finalArray = null;
@@ -23,6 +26,14 @@ public class StaffAttendaceModel {
 
     public void setSuccess(String success) {
         this.success = success;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public List<FinalArrayStaffModel> getFinalArray() {
