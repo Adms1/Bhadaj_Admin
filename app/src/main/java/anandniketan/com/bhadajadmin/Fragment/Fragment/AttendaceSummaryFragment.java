@@ -7,12 +7,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -21,9 +23,13 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ConsistentAbsentTeacherAdapter;
 import anandniketan.com.bhadajadmin.Adapter.StandardwiseStudentAttendaceAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentAttemndanceSummaryAdapter;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
+import anandniketan.com.bhadajadmin.Model.Student.ConsistentAbsentStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
@@ -35,21 +41,23 @@ import retrofit.client.Response;
 
 public class AttendaceSummaryFragment extends Fragment {
 
-    public AttendaceSummaryFragment() {
-    }
-
+    int Year, Month, Day;
+    Calendar calendar;
+    StudentAttemndanceSummaryAdapter studentAttemndanceSummaryAdapter;
+    List<StudentAttendanceFinalArray> studentAttendanceFinalArrayList;
+    List<StandardWiseAttendanceModel> standardWiseAttendanceModelList;
+    List<ConsistentAbsentStudentModel> consistentAbsentStudentModelList;
     private FragmentAttendaceSummaryBinding fragmentAttendaceSummaryBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    int Year, Month, Day;
-    Calendar calendar;
     private String Datestr;
-    private StandardwiseStudentAttendaceAdapter standardwiseStudentAttendaceAdapter;
-    private ConsistentAbsentTeacherAdapter consistentAbsentTeacherAdapter;
-
+    public AttendaceSummaryFragment() {
+    }
+    ArrayList<String> standardCount;
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -73,7 +81,7 @@ public class AttendaceSummaryFragment extends Fragment {
         Log.d("TodayDate", Datestr);
 
         callStudentApi();
-        callStaffApi();
+
     }
 
     public void setListner() {
@@ -93,74 +101,6 @@ public class AttendaceSummaryFragment extends Fragment {
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
-    }
-
-    // CALL Staff Attendace API HERE
-    private void callStaffApi() {
-
-        if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
-            return;
-        }
-
-//        Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getStaffAttendace(getStaffDetail(), new retrofit.Callback<StaffAttendaceModel>() {
-
-            @Override
-            public void success(StaffAttendaceModel staffUser, Response response) {
-//                Utils.dismissDialog();
-                if (staffUser == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (staffUser.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (staffUser.getSuccess().equalsIgnoreCase("False")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
-                    return;
-                }
-                if (staffUser.getSuccess().equalsIgnoreCase("True")) {
-                    List<FinalArrayStaffModel> staffArray = staffUser.getFinalArray();
-                    for (int i = 0; i < staffArray.size(); i++) {
-                        FinalArrayStaffModel studentObj = staffArray.get(i);
-                        if (studentObj != null) {
-                            fragmentAttendaceSummaryBinding.absentstaffCountTxt.setText(studentObj.getStaffAbsent());
-                            fragmentAttendaceSummaryBinding.leavestaffCountTxt.setText(studentObj.getStaffLeave());
-                            fragmentAttendaceSummaryBinding.presentstaffCountTxt.setText(studentObj.getStaffPresent());
-                            fragmentAttendaceSummaryBinding.totalstaffCountTxt.setText(studentObj.getTotalStaff());
-                        }
-                    }
-                    if (staffUser.getFinalArray().size() > 0) {
-                        fragmentAttendaceSummaryBinding.txtNoRecords.setVisibility(View.GONE);
-
-                        consistentAbsentTeacherAdapter = new ConsistentAbsentTeacherAdapter(mContext, staffUser);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        fragmentAttendaceSummaryBinding.consistentAbsentTeacherList.setLayoutManager(mLayoutManager);
-                        fragmentAttendaceSummaryBinding.consistentAbsentTeacherList.setItemAnimator(new DefaultItemAnimator());
-                        fragmentAttendaceSummaryBinding.consistentAbsentTeacherList.setAdapter(consistentAbsentTeacherAdapter);
-                    } else {
-                        fragmentAttendaceSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-//                Utils.dismissDialog();
-                error.printStackTrace();
-                error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
-            }
-        });
-
-    }
-
-    private Map<String, String> getStaffDetail() {
-        Map<String, String> map = new HashMap<>();
-        map.put("Date", Datestr);
-        return map;
     }
 
     // CALL Student Attendace API HERE
@@ -189,27 +129,22 @@ public class AttendaceSummaryFragment extends Fragment {
                     return;
                 }
                 if (studentUser.getSuccess().equalsIgnoreCase("True")) {
-
-                    List<FinalArrayStudentModel> studentArray = studentUser.getFinalArray();
-                    for (int i = 0; i < studentArray.size(); i++) {
-                        FinalArrayStudentModel studentObj = studentArray.get(i);
-                        if (studentObj != null) {
-                            fragmentAttendaceSummaryBinding.absentstudentCountTxt.setText(studentObj.getStudentAbsent());
-                            fragmentAttendaceSummaryBinding.leavestudentCountTxt.setText(studentObj.getStudentLeave());
-                            fragmentAttendaceSummaryBinding.presentstudentCountTxt.setText(studentObj.getStudentPresent());
-                            fragmentAttendaceSummaryBinding.totalstudentCountTxt.setText(studentObj.getTotalStudent());
-                        }
+                    if (studentUser.getFinalArray() != null) {
+                        studentAttendanceFinalArrayList = studentUser.getFinalArray();
                     }
-                    if (studentUser.getFinalArray().size() > 0) {
-                        fragmentAttendaceSummaryBinding.txtNoRecords.setVisibility(View.GONE);
-                        standardwiseStudentAttendaceAdapter = new StandardwiseStudentAttendaceAdapter(mContext, studentUser);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        fragmentAttendaceSummaryBinding.standardwiseStudentAttendacelist.setLayoutManager(mLayoutManager);
-                        fragmentAttendaceSummaryBinding.standardwiseStudentAttendacelist.setItemAnimator(new DefaultItemAnimator());
-                        fragmentAttendaceSummaryBinding.standardwiseStudentAttendacelist.setAdapter(standardwiseStudentAttendaceAdapter);
-                    } else {
-                        fragmentAttendaceSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                    if (studentUser.getStandardWiseAttendance() != null) {
+                        standardCount=new ArrayList<>();
+                        standardCount.add("1");
+                        standardWiseAttendanceModelList = studentUser.getStandardWiseAttendance();
                     }
+                    if (studentUser.getConsistentAbsent() != null) {
+                        consistentAbsentStudentModelList = studentUser.getConsistentAbsent();
+                    }
+                    studentAttemndanceSummaryAdapter = new StudentAttemndanceSummaryAdapter(mContext, studentAttendanceFinalArrayList,standardWiseAttendanceModelList,consistentAbsentStudentModelList);
+                    LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, OrientationHelper.VERTICAL, false);
+                    fragmentAttendaceSummaryBinding.studentAttendanceListRcv.setLayoutManager(mLayoutManager);
+                    fragmentAttendaceSummaryBinding.studentAttendanceListRcv.setItemAnimator(new DefaultItemAnimator());
+                    fragmentAttendaceSummaryBinding.studentAttendanceListRcv.setAdapter(studentAttemndanceSummaryAdapter);
                 }
             }
 

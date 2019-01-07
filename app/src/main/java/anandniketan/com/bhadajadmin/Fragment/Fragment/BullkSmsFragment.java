@@ -99,7 +99,7 @@ public class BullkSmsFragment extends Fragment {
         fragmentBullkSmsBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new OtherFragment();
+                fragment = new SMSFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)

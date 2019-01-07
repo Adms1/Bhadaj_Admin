@@ -121,8 +121,12 @@ public class GRRegisterFragment extends Fragment {
                 FinalStandardIdStr = getid.toString();
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
-                FinalStandardStr = name;
-                Log.d("StandardName", StandardName);
+                if (name.equalsIgnoreCase("All")){
+                    FinalStandardStr = "0";
+                }else{
+                    FinalStandardStr = name;
+                }
+                Log.d("StandardName", FinalStandardStr);
                 fillSection();
             }
 
@@ -140,8 +144,13 @@ public class GRRegisterFragment extends Fragment {
 
                 Log.d("value", selectedsectionstr + " " + getid);
                 FinalClassIdStr = getid.toString();
-                FinalSectionStr = selectedsectionstr;
-                Log.d("FinalClassIdStr", FinalClassIdStr);
+                if (selectedsectionstr.equalsIgnoreCase("All")){
+                    FinalSectionStr = "0";
+                }else{
+                    FinalSectionStr = selectedsectionstr;
+                }
+
+                Log.d("FinalClassIdStr", FinalSectionStr);
             }
 
             @Override
@@ -281,7 +290,7 @@ public class GRRegisterFragment extends Fragment {
             return;
         }
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getGRRegister(getGRRegisterDetail(), new retrofit.Callback<StudentAttendanceModel>() {
+        ApiHandler.getApiService().getNewRegister(getGRRegisterDetail(), new retrofit.Callback<StudentAttendanceModel>() {
             @Override
             public void success(StudentAttendanceModel studentFullDetailModel, Response response) {
 //                Utils.dismissDialog();
@@ -349,14 +358,14 @@ public class GRRegisterFragment extends Fragment {
         Map<String, String> map = new HashMap<>();
 
         AppConfiguration.FinalTermIdStr = FinalTermIdStr;
-        AppConfiguration.FinalStandardIdStr = FinalStandardIdStr;
-        AppConfiguration.FinalClassIdStr = FinalClassIdStr;
+        AppConfiguration.FinalStandardIdStr = FinalStandardStr;
+        AppConfiguration.FinalClassIdStr = FinalSectionStr;
         AppConfiguration.FinalStatusStr = FinalStatusStr;
 
         map.put("Year", FinalTermIdStr);
-        map.put("Grade", FinalStandardIdStr);
-        map.put("Section", FinalClassIdStr);
-        map.put("Status", FinalStatusStr);
+        map.put("Grade", FinalStandardStr);
+        map.put("Section", FinalSectionStr);
+
         return map;
     }
 
@@ -501,7 +510,7 @@ public class GRRegisterFragment extends Fragment {
         ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnersectionIdArray);
         fragmentGrregisterBinding.sectionSpinner.setAdapter(adapterstandard);
 
-        FinalClassIdStr = spinnerSectionMap.get(0);
+        FinalSectionStr = spinnerSectionMap.get(0);
         callGRRegisterApi();
     }
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +28,10 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
+import anandniketan.com.bhadajadmin.Adapter.DateWiseFeesCollectionAdapter;
 import anandniketan.com.bhadajadmin.Adapter.ExpandbleListAdapterDailyCollection;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesStatusModel;
+import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayAccountFeesModel;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
@@ -56,15 +59,19 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
     HashMap<Integer, String> spinnerTermDetailIdMap;
     HashMap<Integer,String> spinnerPaymentModeMap;
     String FinalTermIdStr, FinalstandardIdStr = "",FinalTermDetailIdStr="",FinalPaymentmodeStr="";
-    List<FinalArrayAccountFeesModel> dailyCollectionsList;
+    List<DateWiseFeesCollectionModel.FinalArray> dailyCollectionsList;
     List<String> listDataHeader;
-    HashMap<String, ArrayList<FinalArrayAccountFeesModel>> listDataChild;
+    HashMap<String, ArrayList<DateWiseFeesCollectionModel.FinalArray>> listDataChild;
     ExpandbleListAdapterDailyCollection expandbleListAdapterDailyCollection;
+    private DateWiseFeesCollectionAdapter dateWiseFeesCollectionAdapter;
     int Year, Month, Day;
     int mYear, mMonth, mDay;
     Calendar calendar;
     private static String dateFinal;
     private DatePickerDialog datePickerDialog;
+    private String fromDate = "",toDate = "";
+    private int whichClick  = 1;
+
     public DailyFeesCollectionFragment() {
     }
 
@@ -90,7 +97,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        fragmentDailyFeesCollectionBinding.dateButton.setText(Utils.getTodaysDate());
+       // fragmentDailyFeesCollectionBinding.dateButton.setText(Utils.getTodaysDate());
 
         fragmentDailyFeesCollectionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +105,38 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                 DashboardActivity.onLeft();
             }
         });
+        fragmentDailyFeesCollectionBinding.fromDateButton.setText(Utils.getTodaysDate());
+        fragmentDailyFeesCollectionBinding.todateButton.setText(Utils.getTodaysDate());
+
+        fragmentDailyFeesCollectionBinding.fromDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whichClick = 1;
+                datePickerDialog = DatePickerDialog.newInstance(DailyFeesCollectionFragment.this, Year, Month, Day);
+                datePickerDialog.setThemeDark(false);
+                datePickerDialog.setOkText("Done");
+                datePickerDialog.showYearPickerFirst(false);
+                datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
+                datePickerDialog.setTitle("Select Date From DatePickerDialog");
+                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+
+            }
+        });
+
+        fragmentDailyFeesCollectionBinding.todateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                whichClick = 2;
+                datePickerDialog = DatePickerDialog.newInstance(DailyFeesCollectionFragment.this,Year,Month,Day);
+                datePickerDialog.setThemeDark(false);
+                datePickerDialog.setOkText("Done");
+                datePickerDialog.showYearPickerFirst(false);
+                datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
+                datePickerDialog.setTitle("Select Date From DatePickerDialog");
+                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+            }
+        });
+
         fragmentDailyFeesCollectionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,19 +144,19 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                        .replace(R.id.frame_container,fragment).commit();
             }
         });
-        fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = groupPosition;
-            }
-        });
+//        fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+//            @Override
+//            public void onGroupExpand(int groupPosition) {
+//                if (lastExpandedPosition != -1
+//                        && groupPosition != lastExpandedPosition) {
+//                    fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.collapseGroup(lastExpandedPosition);
+//                }
+//                lastExpandedPosition = groupPosition;
+//            }
+//        });
         fragmentDailyFeesCollectionBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -186,18 +225,18 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                 callDailyCollectionApi();
             }
         });
-        fragmentDailyFeesCollectionBinding.dateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePickerDialog = DatePickerDialog.newInstance(DailyFeesCollectionFragment.this, Year, Month, Day);
-                datePickerDialog.setThemeDark(false);
-                datePickerDialog.setOkText("Done");
-                datePickerDialog.showYearPickerFirst(false);
-                datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
-                datePickerDialog.setTitle("Select Date From DatePickerDialog");
-                datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
-            }
-        });
+//        fragmentDailyFeesCollectionBinding.dateButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                datePickerDialog = DatePickerDialog.newInstance(DailyFeesCollectionFragment.this, Year, Month, Day);
+//                datePickerDialog.setThemeDark(false);
+//                datePickerDialog.setOkText("Done");
+//                datePickerDialog.showYearPickerFirst(false);
+//                datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
+//                datePickerDialog.setTitle("Select Date From DatePickerDialog");
+//                datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
+//            }
+//        });
     }
 
     // CALL Term API HERE
@@ -310,9 +349,9 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getDailyFeeColleCtionDetail(getFeesCollectionDetail(), new retrofit.Callback<AccountFeesStatusModel>() {
+        ApiHandler.getApiService().getDatewiseFeesCollection(getFeesCollectionDetail(),new retrofit.Callback<DateWiseFeesCollectionModel>() {
             @Override
-            public void success(AccountFeesStatusModel dailyFeeCollectionModel, Response response) {
+            public void success(DateWiseFeesCollectionModel dailyFeeCollectionModel, Response response) {
 //                Utils.dismissDialog();
                 if (dailyFeeCollectionModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -337,9 +376,10 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                         fragmentDailyFeesCollectionBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentDailyFeesCollectionBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setVisibility(View.VISIBLE);
-                        fillExpLV();
-                        expandbleListAdapterDailyCollection = new ExpandbleListAdapterDailyCollection(getActivity(), listDataHeader, listDataChild);
-                        fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setAdapter(expandbleListAdapterDailyCollection);
+                        //fillExpLV();
+                        fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        dateWiseFeesCollectionAdapter = new DateWiseFeesCollectionAdapter(getActivity(),dailyCollectionsList);
+                        fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setAdapter(dateWiseFeesCollectionAdapter);
                         Utils.dismissDialog();
                     } else {
                         fragmentDailyFeesCollectionBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -365,8 +405,9 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
         Map<String, String> map = new HashMap<>();
         map.put("TermID", FinalTermIdStr);
         map.put("TermDetailID",FinalTermDetailIdStr );
-        map.put("Standard", FinalstandardIdStr);
-        map.put("Mode", FinalPaymentmodeStr);
+        map.put("FromDate", fragmentDailyFeesCollectionBinding.fromDateButton.getText().toString());
+        map.put("ToDate", fragmentDailyFeesCollectionBinding.todateButton.getText().toString());
+        map.put("PaymentMode",FinalPaymentmodeStr);
 
         return map;
     }
@@ -486,15 +527,10 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
         paymentmodeId.add(1);
         paymentmodeId.add(2);
         paymentmodeId.add(3);
-        paymentmodeId.add(4);
-
-
         ArrayList<String> paymentmodedetail = new ArrayList<>();
-        paymentmodedetail.add("Offline Payment");
-        paymentmodedetail.add("Online Payment");
-        paymentmodedetail.add("BankSlip");
         paymentmodedetail.add("All");
-
+        paymentmodedetail.add("School");
+        paymentmodedetail.add("Online");
         String[] spinnerpaymentIdArray = new String[paymentmodeId.size()];
 
         spinnerPaymentModeMap = new HashMap<Integer, String>();
@@ -517,20 +553,20 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerpaymentIdArray);
         fragmentDailyFeesCollectionBinding.paymentModeSpinner.setAdapter(adapterTerm);
 
-        FinalPaymentmodeStr=spinnerPaymentModeMap.get(0);
+        FinalPaymentmodeStr = spinnerPaymentModeMap.get(0);
         callDailyCollectionApi();
     }
 
     //Use for fill the Term Spinner
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<FinalArrayAccountFeesModel>>();
+        listDataChild = new HashMap<String, ArrayList<DateWiseFeesCollectionModel.FinalArray>>();
 
         for (int i = 0; i < dailyCollectionsList.size(); i++) {
             listDataHeader.add(dailyCollectionsList.get(i).getName() + "|" +
-                    dailyCollectionsList.get(i).getgRNO() + "|" + dailyCollectionsList.get(i).getStandard());
+                    dailyCollectionsList.get(i).getGRNO() + "|" + dailyCollectionsList.get(i).getStandard()+"|" + dailyCollectionsList.get(i).getTotalAmt()+"|"+dailyCollectionsList.get(i).getStudentID());
             Log.d("header", "" + listDataHeader);
-            ArrayList<FinalArrayAccountFeesModel> row = new ArrayList<FinalArrayAccountFeesModel>();
+            ArrayList<DateWiseFeesCollectionModel.FinalArray> row = new ArrayList<DateWiseFeesCollectionModel.FinalArray>();
             row.add(dailyCollectionsList.get(i));
             Log.d("row", "" + row);
             listDataChild.put(listDataHeader.get(i), row);
@@ -561,7 +597,15 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
 
         dateFinal = d + "/" + m + "/" + y;
 
-            fragmentDailyFeesCollectionBinding.dateButton.setText(dateFinal);
+        if(whichClick == 1){
+            fragmentDailyFeesCollectionBinding.fromDateButton.setText(dateFinal);
+        }else{
+            if(whichClick == 2){
+                fragmentDailyFeesCollectionBinding.todateButton.setText(dateFinal);
+
+            }
+        }
+
 
     }
 }

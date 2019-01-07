@@ -185,7 +185,7 @@ public class HolidayFragment extends Fragment implements DatePickerDialog.OnDate
                 if (holidayModel.getSuccess().equalsIgnoreCase("True")) {
 
                     if (holidayModel.getFinalArray().size() > 0) {
-                        finalHolidaycategoryList = holidayModel.getFinalArray();
+//                        finalHolidaycategoryList = holidayModel.getFinalArray();
                         fillCatergorySpinner();
                         Utils.dismissDialog();
                     }

@@ -26,11 +26,9 @@ public class TransportSubMenuAdapter extends BaseAdapter {
             AppConfiguration.BASEURL_IMAGES + "Transport/" + "Transport%20Charges.png",
             AppConfiguration.BASEURL_IMAGES + "Transport/" + "Route%20Pick%20Up%20Point%20Detail.png",
             AppConfiguration.BASEURL_IMAGES + "Transport/" + "Vehicle%20Detail.png",
-            AppConfiguration.BASEURL_IMAGES + "Transport/" + "Vehicle%20Route's.png",
-    };
+            AppConfiguration.BASEURL_IMAGES + "Transport/" + "Vehicle%20Route's.png",};
 
-    public String[] mThumbNames = {"Transport Charges", "Route Pick Up Point Detail", "Vehicle Detail",
-            "Vehicle Route's"};
+    public String[] mThumbNames = {"Transport Charges", "Route Pick Up Point Detail","Vehicle Detail","Vehicle Route's"};
 
     // Constructor
     public TransportSubMenuAdapter(Context c) {

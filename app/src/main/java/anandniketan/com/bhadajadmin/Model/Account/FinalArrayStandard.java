@@ -23,7 +23,29 @@ public class FinalArrayStandard {
     @SerializedName("CheckedStatus")
     @Expose
     private String checkedStatus;
+    @SerializedName("StandardClass")
+    @Expose
+    private String standardClass;
 
+    @SerializedName("ClassID")
+    @Expose
+    private Integer classID;
+
+    public String getStandardClass() {
+        return standardClass;
+    }
+
+    public void setStandardClass(String standardClass) {
+        this.standardClass = standardClass;
+    }
+
+    public Integer getClassID() {
+        return classID;
+    }
+
+    public void setClassID(Integer classID) {
+        this.classID = classID;
+    }
 
     public String getStandard() {
         return standard;

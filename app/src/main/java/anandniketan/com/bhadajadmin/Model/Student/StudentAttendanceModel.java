@@ -13,9 +13,6 @@ public class StudentAttendanceModel {
     @SerializedName("Success")
     @Expose
     private String success;
-    @SerializedName("Date")
-    @Expose
-    private String date;
     @SerializedName("Year")
     @Expose
     private String year;
@@ -24,7 +21,13 @@ public class StudentAttendanceModel {
     private String term;
     @SerializedName("FinalArray")
     @Expose
-    private List<FinalArrayStudentModel> finalArray = null;
+    private List<StudentAttendanceFinalArray> finalArray = null;
+    @SerializedName("StandardWiseAttendance")
+    @Expose
+    private List<StandardWiseAttendanceModel> standardWiseAttendance = null;
+    @SerializedName("ConsistentAbsent")
+    @Expose
+    private List<ConsistentAbsentStudentModel> consistentAbsent = null;
 
     public String getSuccess() {
         return success;
@@ -34,12 +37,28 @@ public class StudentAttendanceModel {
         this.success = success;
     }
 
-    public String getDate() {
-        return date;
+    public List<StudentAttendanceFinalArray> getFinalArray() {
+        return finalArray;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setFinalArray(List<StudentAttendanceFinalArray> finalArray) {
+        this.finalArray = finalArray;
+    }
+
+    public List<StandardWiseAttendanceModel> getStandardWiseAttendance() {
+        return standardWiseAttendance;
+    }
+
+    public void setStandardWiseAttendance(List<StandardWiseAttendanceModel> standardWiseAttendance) {
+        this.standardWiseAttendance = standardWiseAttendance;
+    }
+
+    public List<ConsistentAbsentStudentModel> getConsistentAbsent() {
+        return consistentAbsent;
+    }
+
+    public void setConsistentAbsent(List<ConsistentAbsentStudentModel> consistentAbsent) {
+        this.consistentAbsent = consistentAbsent;
     }
 
     public String getYear() {
@@ -57,13 +76,40 @@ public class StudentAttendanceModel {
     public void setTerm(String term) {
         this.term = term;
     }
+    //=========== sms report=============
 
-    public List<FinalArrayStudentModel> getFinalArray() {
-        return finalArray;
+    @SerializedName("Total")
+    @Expose
+    private String total;
+    @SerializedName("Delivered")
+    @Expose
+    private String delivered;
+    @SerializedName("Other")
+    @Expose
+    private String other;
+
+    public String getTotal() {
+        return total;
     }
 
-    public void setFinalArray(List<FinalArrayStudentModel> finalArray) {
-        this.finalArray = finalArray;
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getDelivered() {
+        return delivered;
+    }
+
+    public void setDelivered(String delivered) {
+        this.delivered = delivered;
+    }
+
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
     }
 
 }

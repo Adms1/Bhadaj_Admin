@@ -45,7 +45,7 @@
                 android:layout_alignTop="@+id/header"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_38sdp"
-                android:text="@string/resultpermission"
+                android:text="@string/report_card"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="normal" />
@@ -124,7 +124,57 @@
 
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:weightSum="3">
 
+                        <TextView
+                            android:id="@+id/termdetail_txt_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="0.77"
+                            android:text="@string/termdetail"
+                            android:textColor="@color/scheduleheadertextcolor"
+                            android:textSize="@dimen/_11sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="0.14"
+                            android:text=":"
+                            android:textColor="@color/scheduleheadertextcolor"
+                            android:textSize="@dimen/_11sdp"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/term_detail_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/_3sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_weight="1.8"
+                            android:background="@drawable/dropdown_button"
+                            android:forceHasOverlappingRendering="false"
+                            android:overlapAnchor="false"
+                            android:gravity="center|center_vertical"
+                            android:paddingBottom="1dp"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

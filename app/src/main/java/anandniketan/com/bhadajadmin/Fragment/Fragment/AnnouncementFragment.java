@@ -1,80 +1,157 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
+
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.lang.reflect.Field;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AnnouncmentAdpater;
-import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
+import anandniketan.com.bhadajadmin.Adapter.StandardAdapter;
+import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
+import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
+import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PermissionUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
+
 import anandniketan.com.bhadajadmin.databinding.FragmentAnnouncementBinding;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit2.Call;
 
-;
+import static android.app.Activity.RESULT_OK;
 
 
-public class AnnouncementFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class AnnouncementFragment extends Fragment implements PermissionUtils.ReqPermissionCallback,DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
 
-    private FragmentAnnouncementBinding fragmentAnnouncementBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
 
-    int Year, Month, Day;
-    int mYear, mMonth, mDay;
-    Calendar calendar;
+    private int Year, Month, Day,hour,minute,second;
+    private int mYear, mMonth, mDay;
+    private Calendar calendar;
     private static String dateFinal;
     private DatePickerDialog datePickerDialog;
-    HashMap<Integer, String> spinnerOrderMap;
-    AnnouncmentAdpater announcmentAdpater;
+    private TimePickerDialog timePickerDialog;
 
-
-    String FinalDateStr, FinalSubjectStr, FinalDiscriptionStr, FinalOrderStr, FinalStatusStr = "1";
+    private HashMap<Integer, String> spinnerOrderMap;
+    private AnnouncmentAdpater announcmentAdpater;
+    private RadioGroup radioGroupUploadType,radioGroupStatus,radioGroupStandard;
+    private EditText etSubject,etAnnsText;
+    private GridView gridViewStandard;
+    private Button btnChooseFile;
+    private AppCompatButton btnAdd;
+    private List<FinalArrayStandard> finalArrayStandardsList;
+    private StandardAdapter standardAdapter;
+    private RadioButton rbStatusActive,rbStatusInactive,rbEnterAnnoucement,rbUploadPdf,rbAll,rbIndividual;
+    private String FinalDateStr,FinalSubjectStr,FinalDiscriptionStr, FinalOrderStr, FinalStatusStr = "1";
+    private Button btnBack;
+    private LinearLayout llPdfView,llAnnsView;
+    private static final int CHOOSE_PDF_REQ_CODE = 101;
+    private PermissionUtils.ReqPermissionCallback reqPermissionCallback;
+    private String pdfFilePath  = "";
+    private Button btnDate;
+    private AppCompatCheckBox cbScheduleDateTime;
+    private LinearLayout llDateTimeView;
+    private AppCompatCheckBox cbScheduledatetime;
+    private String fileName = "",Pk_AnnouncementID = "";
+    private FragmentAnnouncementBinding fragmentAnnouncementBinding;
+    private List<AnnouncementModel.FinalArray> bundleData;
+    private boolean isRecordInUpdate = false;
 
     public AnnouncementFragment() {
     }
 
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        reqPermissionCallback = (PermissionUtils.ReqPermissionCallback)this;
+       // onUpdateRecordRef = (OnUpdateRecord)this;
+
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentAnnouncementBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_announcement, container, false);
+        fragmentAnnouncementBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_announcement,container, false);
 
         rootView = fragmentAnnouncementBinding.getRoot();
         mContext = getActivity().getApplicationContext();
-
-        fillOrderSpinner();
+        radioGroupUploadType = (RadioGroup)rootView.findViewById(R.id.upload_type_group);
+        radioGroupStatus = (RadioGroup)rootView.findViewById(R.id.status_group);
+        radioGroupStandard = (RadioGroup)rootView.findViewById(R.id.standard_group);
+        etSubject = (EditText)rootView.findViewById(R.id.subject_edt);
+        etAnnsText = (EditText)rootView.findViewById(R.id.anns_edt);
+        gridViewStandard = (GridView)rootView.findViewById(R.id.standard_grid_view);
+        btnChooseFile  = (Button)rootView.findViewById(R.id.btn_uploadPDF);
+        btnAdd = (AppCompatButton)rootView.findViewById(R.id.upload_btn);
+        rbEnterAnnoucement = (RadioButton)rootView.findViewById(R.id.rb_enterAnns);
+        rbUploadPdf = (RadioButton)rootView.findViewById(R.id.rb_uploadPdf);
+        rbStatusActive =(RadioButton)rootView.findViewById(R.id.active_chk);
+        rbStatusInactive =(RadioButton)rootView.findViewById(R.id.inactive_chk);
+        rbAll = (RadioButton)rootView.findViewById(R.id.rb_all);
+        rbIndividual = (RadioButton)rootView.findViewById(R.id.rb_individual);
+        btnBack = (Button)rootView.findViewById(R.id.btnBack);
+        llAnnsView = (LinearLayout)rootView.findViewById(R.id.linear_announcment);
+        llPdfView = (LinearLayout)rootView.findViewById(R.id.linear_pdf);
+        btnDate = (Button)rootView.findViewById(R.id.date_btn);
+        cbScheduleDateTime = (AppCompatCheckBox)rootView.findViewById(R.id.cb_scheduledatetime);
+        llDateTimeView = (LinearLayout)rootView.findViewById(R.id.linear_date);
+        cbScheduledatetime = (AppCompatCheckBox)rootView.findViewById(R.id.cb_scheduledatetime);
+        llAnnsView.setVisibility(View.VISIBLE);
+        llPdfView.setVisibility(View.GONE);
         setListners();
-        callAnnouncementDataApi();
+        callStandardApi();
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 55;
+        //Set Thread Policy
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().build());
+
         return rootView;
     }
 
@@ -85,161 +162,243 @@ public class AnnouncementFragment extends Fragment implements DatePickerDialog.O
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        fragmentAnnouncementBinding.dateButton.setText(Utils.getTodaysDate());
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+        second = calendar.get(Calendar.SECOND);
 
-        fragmentAnnouncementBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnChooseFile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                DashboardActivity.onLeft();
+            public void onClick(View view) {
+
+                if(PermissionUtils.hasPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) && PermissionUtils.hasPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.setType("application/pdf");
+                    startActivityForResult(intent,CHOOSE_PDF_REQ_CODE);
+                }else{
+                    PermissionUtils.checkPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE,102,"Please allow extrnal storage permission to continue","You can't upload pdf without giving permission",reqPermissionCallback);
+                }
             }
         });
-        fragmentAnnouncementBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                fragment = new OtherFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(0, 0)
-                        .replace(R.id.frame_container, fragment).commit();
+            public void onClick(View view) {
+                if(validate()){
+                   callInsertUpdateAnnouncement();
+                }
             }
         });
-        fragmentAnnouncementBinding.orderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        rbEnterAnnoucement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String name = fragmentAnnouncementBinding.orderSpinner.getSelectedItem().toString();
-                String getid = spinnerOrderMap.get(fragmentAnnouncementBinding.orderSpinner.getSelectedItemPosition());
-
-                Log.d("value", name + " " + getid);
-                FinalOrderStr = name.toString();
-                Log.d("FinalOrderStr", FinalOrderStr);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    llAnnsView.setVisibility(View.VISIBLE);
+                    llPdfView.setVisibility(View.GONE);
+                }
             }
         });
-        fragmentAnnouncementBinding.statusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rbUploadPdf.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                RadioButton rb = (RadioButton) radioGroup.findViewById(checkedId);
-                if (null != rb && checkedId > -1) {
-                    // checkedId is the RadioButton selected
-                    switch (checkedId) {
-                        case R.id.done_chk:
-                            FinalStatusStr = fragmentAnnouncementBinding.doneChk.getTag().toString();
-                            break;
-                        case R.id.pendding_chk:
-                            FinalStatusStr = fragmentAnnouncementBinding.penddingChk.getTag().toString();
-                            break;
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    llAnnsView.setVisibility(View.GONE);
+                    llPdfView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        cbScheduleDateTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    fragmentAnnouncementBinding.linearDate.setVisibility(View.VISIBLE);
+                }else{
+                    try {
+                        String currentDateTime = Utils.getCurrentDateTime("dd/MM/yyyy-hh:mm");
+                        fragmentAnnouncementBinding.dateTimeBtn.setText(currentDateTime.replace("-"," "));
+                     }catch (Exception ex){
+                        ex.printStackTrace();
+                     }
+                    fragmentAnnouncementBinding.linearDate.setVisibility(View.GONE);
+                }
+            }
+        });
+        rbStatusInactive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    FinalStatusStr =  "0";
+                }
+            }
+        });
+
+        rbStatusActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    FinalStatusStr  = "1";
+                }
+            }
+        });
+        rbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    if(!isRecordInUpdate) {
+                        if (finalArrayStandardsList != null) {
+                            if (finalArrayStandardsList.size() > 0) {
+
+                                for (int listsize = 0; listsize < finalArrayStandardsList.size(); listsize++) {
+                                    finalArrayStandardsList.get(listsize).setCheckedStatus("1");
+                                }
+                                if (standardAdapter != null) {
+                                    standardAdapter.notifyDataSetChanged();
+                                    //standardAdapter.disableSelection();
+                                }
+                            }
+                        }
                     }
                 }
             }
         });
-        fragmentAnnouncementBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
+
+        try {
+            String currentDateTime = Utils.getCurrentDateTime("dd/MM/yyyy-hh:mm");
+            fragmentAnnouncementBinding.dateTimeBtn.setText(currentDateTime.replace("-"," "));
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+
+        fragmentAnnouncementBinding.dateTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                getFinalAllId();
-                if (!FinalSubjectStr.equalsIgnoreCase("") && !FinalDiscriptionStr.equalsIgnoreCase("") && !FinalOrderStr.equalsIgnoreCase("--Select--")) {
-                    callInsertAnnouncement();
-                } else {
-                    Utils.ping(mContext, "Blank Filed not Allowed");
-                }
-            }
-        });
-        fragmentAnnouncementBinding.dateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 datePickerDialog = DatePickerDialog.newInstance(AnnouncementFragment.this, Year, Month, Day);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.showYearPickerFirst(false);
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date From DatePickerDialog");
-                datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
+                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+            }
+        });
+
+        rbIndividual.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    if(!isRecordInUpdate) {
+                        if (finalArrayStandardsList != null) {
+                            if (finalArrayStandardsList.size() > 0) {
+
+                                for (int listsize = 0; listsize < finalArrayStandardsList.size(); listsize++) {
+                                    finalArrayStandardsList.get(listsize).setCheckedStatus("0");
+                                }
+                                if (standardAdapter != null) {
+                                    standardAdapter.notifyDataSetChanged();
+                                    //  standardAdapter.enableSelection();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppConfiguration.position = 11;
+                fragment = new AnnoucementListFragment();
+                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                AppConfiguration.firsttimeback = true;
+
             }
         });
     }
 
-    // CALL AnnouncementData API HERE
-    private void callAnnouncementDataApi() {
+
+
+
+    private void callStandardApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-        Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getAnnouncementData(getAnnouncementDataDetail(), new retrofit.Callback<StudentAttendanceModel>() {
+//        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getStandardDetail(getStandardDetail(), new retrofit.Callback<GetStandardModel>() {
             @Override
-            public void success(StudentAttendanceModel announcmentModel, Response response) {
-//                Utils.dismissDialog();
-                if (announcmentModel == null) {
+            public void success(GetStandardModel standardModel, Response response) {
+                Utils.dismissDialog();
+                if (standardModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
-                if (announcmentModel.getSuccess() == null) {
+                if (standardModel.getSuccess() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
-                if (announcmentModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.dismissDialog();
-//                    Utils.ping(mContext, getString(R.string.false_msg));
-                    fragmentAnnouncementBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    fragmentAnnouncementBinding.lvExpHeader.setVisibility(View.GONE);
-                    fragmentAnnouncementBinding.recyclerLinear.setVisibility(View.GONE);
+                if (standardModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
-                if (announcmentModel.getSuccess().equalsIgnoreCase("True")) {
-
-                    if (announcmentModel.getFinalArray().size() > 0) {
-
-                        fragmentAnnouncementBinding.txtNoRecords.setVisibility(View.GONE);
-                        fragmentAnnouncementBinding.lvExpHeader.setVisibility(View.VISIBLE);
-                        fragmentAnnouncementBinding.recyclerLinear.setVisibility(View.VISIBLE);
-
-                        announcmentAdpater = new AnnouncmentAdpater(mContext, announcmentModel);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        fragmentAnnouncementBinding.announcmentList.setLayoutManager(mLayoutManager);
-                        fragmentAnnouncementBinding.announcmentList.setItemAnimator(new DefaultItemAnimator());
-                        fragmentAnnouncementBinding.announcmentList.setAdapter(announcmentAdpater);
-                        Utils.dismissDialog();
-                    } else {
-                        fragmentAnnouncementBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                        fragmentAnnouncementBinding.lvExpHeader.setVisibility(View.GONE);
-                        fragmentAnnouncementBinding.recyclerLinear.setVisibility(View.GONE);
+                if (standardModel.getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayStandardsList = standardModel.getFinalArray();
+                    if (finalArrayStandardsList != null) {
+                        for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+                            finalArrayStandardsList.get(i).setCheckedStatus("1");
+                        }
+                        standardAdapter = new StandardAdapter(mContext,finalArrayStandardsList);
+                        gridViewStandard.setAdapter(standardAdapter);
                     }
-
+                    try {
+                        Bundle bundle = AnnouncementFragment.this.getArguments();
+                        if (bundle != null) {
+                            bundleData = new ArrayList<AnnouncementModel.FinalArray>();
+                            bundleData = bundle.getParcelableArrayList("data");
+                            if(bundleData != null){
+                                setData(bundleData);
+                            }
+                        }
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                    //onUpdateRecordRef.onUpdateRecord();
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-//                Utils.dismissDialog();
+                Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
+                Utils.ping(mContext,getString(R.string.something_wrong));
             }
         });
 
     }
 
-    private Map<String, String> getAnnouncementDataDetail() {
+    private Map<String, String> getStandardDetail() {
         Map<String, String> map = new HashMap<>();
         return map;
     }
 
+
+
     // CALL InsertAnnouncement
-    public void callInsertAnnouncement() {
+    public void callInsertUpdateAnnouncement() {
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().InsertAnnouncement(getInsertAnnouncement(), new retrofit.Callback<InsertMenuPermissionModel>() {
+        ApiHandler.getApiService().InsertAnnouncement(getInsertAnnouncement(),new retrofit.Callback<AnnouncementModel>() {
             @Override
-            public void success(InsertMenuPermissionModel permissionModel, Response response) {
+            public void success(AnnouncementModel permissionModel, Response response) {
                 Utils.dismissDialog();
                 if (permissionModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -254,8 +413,43 @@ public class AnnouncementFragment extends Fragment implements DatePickerDialog.O
                     return;
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
-//                    Utils.ping(mContext, getString(R.string.true_msg));
-                    callAnnouncementDataApi();
+                    if(rbUploadPdf.isChecked()){
+                        if(pdfFilePath != null){
+                            if(!TextUtils.isEmpty(pdfFilePath)){
+                                uploadPdf(pdfFilePath);
+                            }else{
+                                //record updated.
+                                if(!isRecordInUpdate){
+                                    Utils.ping(mContext, getString(R.string.anns_success_msg));
+                                }else{
+                                    Utils.ping(mContext,"Announcement updated successfully");
+                                }
+
+                                AppConfiguration.position = 11;
+                                fragment = new AnnoucementListFragment();
+                                fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                                AppConfiguration.firsttimeback = true;
+
+                            }
+                        }
+                    }else{
+                        if(!isRecordInUpdate){
+                            Utils.ping(mContext, getString(R.string.anns_success_msg));
+                        }else{
+                            Utils.ping(mContext,"Announcement updated successfully");
+
+                        }
+                        AppConfiguration.position = 11;
+                        fragment = new AnnoucementListFragment();
+                        fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                .replace(R.id.frame_container, fragment).commit();
+                        AppConfiguration.firsttimeback = true;
+
+
+                    }
                 }
             }
 
@@ -272,100 +466,451 @@ public class AnnouncementFragment extends Fragment implements DatePickerDialog.O
 
     private Map<String, String> getInsertAnnouncement() {
         Map<String, String> map = new HashMap<>();
-        map.put("Dt", FinalDateStr);
         map.put("Subject", FinalSubjectStr);
+        if(FinalDiscriptionStr == null){
+            FinalDiscriptionStr = "";
+        }
         map.put("Description", FinalDiscriptionStr);
-        map.put("order", FinalOrderStr);
         map.put("Status", FinalStatusStr);
-        map.put("Pk_CircularID", "0");
+        if(Pk_AnnouncementID != null){
+            if(TextUtils.isEmpty(Pk_AnnouncementID)){
+                map.put("PK_AnnouncmentID", "0");
+            }else{
+                map.put("PK_AnnouncmentID",Pk_AnnouncementID);
+            }
+        }
+
+        if(TextUtils.isEmpty(fileName)) {
+            Long tsLong = System.currentTimeMillis() / 1000;
+            fileName = "Pdf_" + String.valueOf(tsLong) + ".pdf";
+        }
+//        if(pdfFilePath != null && !TextUtils.isEmpty(pdfFilePath)) {
+//            fileName = pdfFilePath.substring(pdfFilePath.lastIndexOf("/") + 1);
+//        }
+
+
+        if(rbEnterAnnoucement.isChecked()){
+            map.put("FileName","");
+        }else{
+            if(rbUploadPdf.isChecked()){
+                map.put("FileName",fileName);
+            }
+        }
+        if(rbAll.isChecked()) {
+            map.put("GradeAll", "Y");
+        }else{
+            map.put("GradeAll", "N");
+        }
+
+        if(rbAll.isChecked()) {
+           // map.put("GradeID", "0");
+            if(standardAdapter != null){
+                String selectedGradeIds  = TextUtils.join(",", standardAdapter.getCheckedStandards());
+                map.put("GradeID",selectedGradeIds);
+            }
+
+        }else{
+            if(standardAdapter != null){
+              String selectedGradeIds  = TextUtils.join(",", standardAdapter.getCheckedStandards());
+              map.put("GradeID",selectedGradeIds);
+            }
+        }
+
+
+
+        try {
+            if(cbScheduleDateTime.isChecked()) {
+                if (fragmentAnnouncementBinding.dateTimeBtn.getText().toString().length() > 0) {
+                    String[] dateTime = fragmentAnnouncementBinding.dateTimeBtn.getText().toString().split(" ");
+                    String date = dateTime[0];
+                    String time = dateTime[1];
+                    map.put("ScheduleDate", date);
+                    map.put("ScheduleTime", time);
+                }
+            }else{
+                map.put("ScheduleDate","");
+                map.put("ScheduleTime","");
+            }
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+
         return map;
     }
 
-    //Use for DatePicker Dialog
+    private void uploadPdf(String filePath){
+        //upload file using retrofit 2
+        try {
+            File file = null;
+            try {
+                file = new File(filePath);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            String path = file.getAbsolutePath();
+
+            if (file != null) {
+                if (file.exists()) {
+
+                    Utils.showDialog(getActivity());
+
+                    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+
+                    MultipartBody.Part body = MultipartBody.Part.createFormData("Pdf",fileName,requestFile);
+
+                    Call<ResponseBody> responseBodyCall = ApiHandler.getApiServiceForFileUplod().uploadSingleFile(body);
+
+
+                    responseBodyCall.enqueue(new retrofit2.Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                            if(response.isSuccessful()){
+                                Utils.dismissDialog();
+                                if(!isRecordInUpdate){
+                                    Utils.ping(getActivity(),getString(R.string.anns_success_msg));
+                                }else{
+                                    Utils.ping(getActivity(),"Announcement updated successfully");
+                                }
+                                AppConfiguration.position = 11;
+                                fragment = new AnnoucementListFragment();
+                                fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                                AppConfiguration.firsttimeback = true;
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Utils.ping(getActivity(),t.getMessage());
+                            Utils.dismissDialog();
+                        }
+                    });
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        switch (requestCode) {
+            case CHOOSE_PDF_REQ_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    String uriString = uri.toString();
+
+
+                    String displayName = null;
+
+                    if (uriString.startsWith("content://")) {
+                        Cursor cursor = null;
+                        try {
+                            cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+                            if (cursor != null && cursor.moveToFirst()) {
+                                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                                //btnChooseFile.setText(displayName);
+
+                                String filePath = Utils.getFilePathFromUri(getActivity(),uri);
+                                File file = null;
+                                try {
+                                    file = new File(filePath);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                String path = file.getAbsolutePath();
+
+                                if (file != null) {
+                                    if (file.exists()) {
+                                        fileName = "";
+                                        pdfFilePath = file.getAbsolutePath();
+
+                                        btnChooseFile.setText("File Selected");
+                                        //upload file using retrofit 2
+//                                        Utils.showDialog(getActivity());
+//                                        //   Call<UploadObject> fileUpload = ApiHandler.getApiService().uploadSingleFile(fileToUpload, filename);
+//
+//                                        RequestBody mFile = RequestBody.create(MediaType.parse("application/pdf"), file);
+//                                        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("file", file.getName(), mFile);
+//
+//                                        ApiHandler.getApiServiceForFileUplod().uploadSingleFile(fileToUpload).enqueue(new retrofit2.Callback<String>() {
+//                                            @Override
+//                                            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+//                                                Utils.dismissDialog();
+//                                                //Toast.makeText(getActivity(), "Response " + response.body(),Toast.LENGTH_LONG).show();
+//
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailure(Call<String> call, Throwable t) {
+//                                                Utils.dismissDialog();
+//                                                Toast.makeText(getActivity(), t.getMessage(),Toast.LENGTH_LONG).show();
+//                                            }
+//                                        });
+                                    }
+                                }
+
+
+                            }
+                        } catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
+                        finally {
+                            cursor.close();
+                        }
+                    } else if (uriString.startsWith("file://")) {
+
+                        String filePath = Utils.getFilePathFromUri(getActivity(),uri);
+                        File file = null;
+                        try {
+                            file = new File(filePath);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        String path = file.getAbsolutePath();
+
+                        if (file != null) {
+                            if (file.exists()) {
+                                pdfFilePath = file.getAbsolutePath();
+                                btnChooseFile.setText("File Selected");
+                                fileName = "";
+                            }
+                        }
+                    }
+
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+
+    @Override
+    public void onResult(boolean success) {
+        if(success){
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("application/pdf");
+            startActivityForResult(intent,CHOOSE_PDF_REQ_CODE);
+        }
+    }
+
+    private boolean validate(){
+        try {
+            FinalSubjectStr = etSubject.getText().toString();
+
+            if(TextUtils.isEmpty(etSubject.getText().toString().trim())){
+                Utils.ping(getActivity(),"Please enter subject");
+                return false;
+            }
+             if(rbEnterAnnoucement.isChecked()){
+                FinalDiscriptionStr = etAnnsText.getText().toString();
+                if(TextUtils.isEmpty(etAnnsText.getText().toString().trim())){
+                    Utils.ping(getActivity(),"Please enter announcement text");
+                    return false;
+                }
+            }
+            if(rbUploadPdf.isChecked()){
+                if(!isRecordInUpdate) {
+                    if (TextUtils.isEmpty(pdfFilePath)) {
+                        Utils.ping(getActivity(), "Please attach pdf file");
+                        return false;
+                    }
+                }
+            }
+            if(rbIndividual.isChecked()){
+                if(standardAdapter != null){
+                    if(standardAdapter.getCheckedStandards() != null){
+                        if(standardAdapter.getCheckedStandards().size() <= 0){
+                            Utils.ping(getActivity(),"Please select standard");
+                            return false;
+                        }
+                    }
+                }
+            }
+            if(cbScheduleDateTime.isChecked()){
+                if(TextUtils.isEmpty(fragmentAnnouncementBinding.dateTimeBtn.getText().toString()) || fragmentAnnouncementBinding.dateTimeBtn.getText().length() <= 0){
+                    Utils.ping(getActivity(),"Please select schedule date time");
+                    return false;
+                }
+            }
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+         }
+        return true;
+
+    }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = "Selected Date : " + Day + "/" + Month + "/" + Year;
-        String datestr = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        populateSetDate(year, monthOfYear + 1, dayOfMonth);
+    }
 
-        mDay = dayOfMonth;
-        mMonth = monthOfYear + 1;
-        mYear = year;
+    public void populateSetDate(int year, int month, int day) {
         String d, m, y;
-        d = Integer.toString(mDay);
-        m = Integer.toString(mMonth);
-        y = Integer.toString(mYear);
-
-        if (mDay < 10) {
+        d = Integer.toString(day);
+        m = Integer.toString(month);
+        y = Integer.toString(year);
+        if (day < 10) {
             d = "0" + d;
         }
-        if (mMonth < 10) {
+        if (month < 10) {
             m = "0" + m;
         }
 
         dateFinal = d + "/" + m + "/" + y;
-        fragmentAnnouncementBinding.dateButton.setText(dateFinal);
+
+        fragmentAnnouncementBinding.dateTimeBtn.setText(dateFinal);
+
+        calendar = Calendar.getInstance();
+
+        timePickerDialog = TimePickerDialog.newInstance(AnnouncementFragment.this, hour, minute, second,true);
+        timePickerDialog.setThemeDark(false);
+        timePickerDialog.setOkText("Done");
+        timePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
+        timePickerDialog.setTitle("Select Time From TimePickerDialog");
+        timePickerDialog.show(getActivity().getFragmentManager(), "TimePickerDialog");
+
     }
 
-    //Use for Fill Order Spinner
-    public void fillOrderSpinner() {
-        ArrayList<Integer> orderIdArray = new ArrayList<Integer>();
-        orderIdArray.add(0);
-        orderIdArray.add(1);
-        orderIdArray.add(2);
-        orderIdArray.add(3);
-        orderIdArray.add(4);
-        orderIdArray.add(5);
-        orderIdArray.add(6);
-        orderIdArray.add(7);
-        orderIdArray.add(8);
-        orderIdArray.add(9);
-        orderIdArray.add(10);
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+        populateSetTime(hourOfDay,minute,second);
+    }
 
-
-        ArrayList<String> orderdetail = new ArrayList<>();
-        orderdetail.add("--Select--");
-        orderdetail.add("1");
-        orderdetail.add("2");
-        orderdetail.add("3");
-        orderdetail.add("4");
-        orderdetail.add("5");
-        orderdetail.add("6");
-        orderdetail.add("7");
-        orderdetail.add("8");
-        orderdetail.add("9");
-        orderdetail.add("10");
-
-
-        String[] spinnerorderIdArray = new String[orderIdArray.size()];
-
-        spinnerOrderMap = new HashMap<Integer, String>();
-        for (int i = 0; i < orderIdArray.size(); i++) {
-            spinnerOrderMap.put(i, String.valueOf(orderIdArray.get(i)));
-            spinnerorderIdArray[i] = orderdetail.get(i).trim();
+    public void populateSetTime(int hour, int min, int sec) {
+        String d, m, y;
+        d = String.valueOf(hour);
+        m = String.valueOf(min);
+        y = String.valueOf(sec);
+        if (hour < 10) {
+            d = "0" + d;
         }
+        if (min < 10) {
+            m = "0" + m;
+        }
+
+        dateFinal = fragmentAnnouncementBinding.dateTimeBtn.getText().toString()+" " +d + ":" + m;
+
+        fragmentAnnouncementBinding.dateTimeBtn.setText(dateFinal);
+
+    }
+
+
+    private void setData(List<AnnouncementModel.FinalArray> dataList) {
         try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
+            if (dataList != null) {
+                if (dataList.size() > 0) {
+                    for (int count = 0; count < dataList.size(); count++) {
 
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentAnnouncementBinding.orderSpinner);
+                        pdfFilePath = "";
+                        btnAdd.setText("Update");
+                        isRecordInUpdate = true;
+                        Pk_AnnouncementID = String.valueOf(dataList.get(count).getPKAnnouncmentID());
 
-            popupWindow.setHeight(spinnerorderIdArray.length > 4 ? 500 : spinnerorderIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
+                        if (!TextUtils.isEmpty(dataList.get(count).getAnnoucementPDF())) {
+                            rbUploadPdf.setChecked(true);
+                            fileName = dataList.get(count).getAnnoucementPDF().substring(dataList.get(count).getAnnoucementPDF().lastIndexOf("/") + 1);
+                            btnChooseFile.setText("File Selected");
+                            rbEnterAnnoucement.setChecked(false);
+                        } else {
+                            rbUploadPdf.setChecked(false);
+                            rbEnterAnnoucement.setChecked(true);
+                        }
+
+                        fragmentAnnouncementBinding.subjectEdt.setText(dataList.get(count).getSubjectName());
+                        FinalSubjectStr = fragmentAnnouncementBinding.subjectEdt.getText().toString();
+
+                        if (standardAdapter != null) {
+
+
+                            String[] standards = dataList.get(count).getStandard().split(",");
+
+                           // standardAdapter.setCheckedStandards(items);
+
+                            if(finalArrayStandardsList != null){
+                                if(finalArrayStandardsList.size() > 0){
+
+                                    for(int count2 = 0;count2 <finalArrayStandardsList.size();count2++){
+                                        finalArrayStandardsList.get(count2).setCheckedStatus("0");
+                                    }
+
+                                    for(int count3 = 0;count3 <finalArrayStandardsList.size();count3++){
+                                        for(int count1 = 0;count1<standards.length;count1++){
+                                            if(standards[count1].equalsIgnoreCase(finalArrayStandardsList.get(count3).getStandard())){
+                                                    finalArrayStandardsList.get(count3).setCheckedStatus("1");
+                                            }
+                                        }
+                                    }
+                                    standardAdapter.notifyDataSetChanged();
+
+                                }
+                            }
+                            //  standardAdapter.notifyDataSetChanged();
+
+                        }
+
+                        if (!TextUtils.isEmpty(dataList.get(count).getScheduleDate()) && !TextUtils.isEmpty(dataList.get(count).getScheduleTime())) {
+                            fragmentAnnouncementBinding.cbScheduledatetime.setChecked(true);
+                            fragmentAnnouncementBinding.dateTimeBtn.setText(dataList.get(count).getScheduleDate() + " " + dataList.get(count).getScheduleTime());
+                        }
+
+                        if (!TextUtils.isEmpty(dataList.get(count).getAnnDesc())) {
+                            fragmentAnnouncementBinding.annsEdt.setText(dataList.get(count).getAnnDesc());
+                            FinalDiscriptionStr = fragmentAnnouncementBinding.annsEdt.getText().toString();
+                        }
+
+                        if (!TextUtils.isEmpty(dataList.get(count).getAnnStatus())) {
+                            if (dataList.get(count).getAnnStatus().equalsIgnoreCase("Yes")) {
+                                rbStatusActive.setChecked(true);
+                                rbStatusInactive.setChecked(false);
+                                FinalStatusStr = "1";
+
+                            } else {
+                                rbStatusActive.setChecked(false);
+                                rbStatusInactive.setChecked(true);
+                                FinalStatusStr = "0";
+                            }
+                        }
+
+
+                        if (!TextUtils.isEmpty(dataList.get(count).getGradeStatus())) {
+                            if (dataList.get(count).getGradeStatus().equalsIgnoreCase("Individual")) {
+                                fragmentAnnouncementBinding.rbAll.setChecked(false);
+                                fragmentAnnouncementBinding.rbIndividual.setChecked(true);
+
+                            } else {
+                                if (dataList.get(count).getGradeStatus().equalsIgnoreCase("All")) {
+                                    fragmentAnnouncementBinding.rbAll.setChecked(true);
+                                    fragmentAnnouncementBinding.rbIndividual.setChecked(false);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
-
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerorderIdArray);
-        fragmentAnnouncementBinding.orderSpinner.setAdapter(adapterTerm);
-
-        FinalOrderStr = spinnerOrderMap.get(0);
     }
 
-    //Use for Get the Selected Value
-    public void getFinalAllId() {
-        FinalDateStr = fragmentAnnouncementBinding.dateButton.getText().toString();
-        FinalSubjectStr = fragmentAnnouncementBinding.subjectEdt.getText().toString();
-        FinalDiscriptionStr = fragmentAnnouncementBinding.discriptionEdt.getText().toString();
-    }
+
+
 }
 

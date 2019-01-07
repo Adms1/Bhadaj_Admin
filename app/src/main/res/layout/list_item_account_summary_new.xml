@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -118,7 +119,8 @@
                     android:paddingLeft="@dimen/_2sdp"
                     android:textColor="@color/scheduleheadertextcolor"
                     android:textSize="@dimen/_9sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="start" />
 
                 <TextView
                     android:layout_width="0dp"

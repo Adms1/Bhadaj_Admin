@@ -23,18 +23,14 @@ public class AccountSubMenuAdapter extends BaseAdapter {
     private Context mContext;
 
     public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Account%20Summary.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Collection.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Fees%20Structure.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Student%20Discount.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Daily%20Fees%20Collection.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Imprest.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Student%20Ledger.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Cheque%20Payment.png",
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Date%20Wise%20Fees%20Collection.png",
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Tally%20Transaction.png",
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Online%20Transaction.png",
+          //  AppConfiguration.BASEURL_IMAGES + "Account/" + "Head%20Wise%20Collection.png",
     };
 
-    public String[] mThumbNames = {"Account Summary", "Collection", "Fee Structure",
-            "Student Discount", "Daily Fees Collection", "Imprest","Student Ledger", "Cheque Payment"};
+    public String[] mThumbNames = {"Date Wise Fees Collection", "Tally Transaction","Online Transaction",/*"Head Wise Collection", "Fee Structure",
+            "Student Discount", "", "Imprest","Student Ledger", "Cheque Payment"*/};
 
     // Constructor
     public AccountSubMenuAdapter(Context c) {

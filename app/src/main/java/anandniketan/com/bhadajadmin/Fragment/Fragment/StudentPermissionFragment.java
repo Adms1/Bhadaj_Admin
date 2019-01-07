@@ -47,7 +47,8 @@ public class StudentPermissionFragment extends Fragment {
     }
 
     public void initViews() {
-
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 11;
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "permission_inside.png")
                 .fitCenter()
@@ -83,18 +84,32 @@ public class StudentPermissionFragment extends Fragment {
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 13;
                 } else if (position == 1) {
                     fragment = new OnlinePaymentFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 13;
                 } else if (position == 2) {
-                    fragment = new ProfilePermissionFragment();
+                    fragment = new MarkSyllabusPermission();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 13;
+                }else if (position == 3) {
+                    fragment = new SuggestionFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 13;
                 }
             }
         });

@@ -20,15 +20,14 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
  */
 
 public class StudentPermissionSubmenuAdapter extends BaseAdapter {
-    private Context mContext;
-
     public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Result.png",
+            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Report%20Card.png",
             AppConfiguration.BASEURL_IMAGES + "Permission/" + "Online%20Payment.png",
-            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Profile.png",
+            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Marks_Syllabus.png",
+            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Suggestion.png",
     };
-
-    public String[] mThumbNames = {"Result", "Online Payment", "Profile Permission"};
+    public String[] mThumbNames = {"ReportCard", "Online Payment", "Mark/Syllabus","Suggestion"};
+    private Context mContext;
 
     // Constructor
     public StudentPermissionSubmenuAdapter(Context c) {

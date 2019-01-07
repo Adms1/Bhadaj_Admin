@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.GrStudentListDetailBinding;
@@ -36,12 +37,12 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
 
     private Context _context;
     private List<String> _listDataHeader;
-    private HashMap<String, ArrayList<FinalArrayStudentModel>> _listDataChild;
+    private HashMap<String, ArrayList<StudentAttendanceFinalArray>> _listDataChild;
     ImageLoader imageLoader;
 
 
     public ExpandableListAdapterGRstudentdetail(Context context, List<String> listDataHeader, HashMap<String,
-            ArrayList<FinalArrayStudentModel>> listDataChild) {
+            ArrayList<StudentAttendanceFinalArray>> listDataChild) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
@@ -56,7 +57,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final ArrayList<FinalArrayStudentModel> childData = getChild(groupPosition, 0);
+        final ArrayList<StudentAttendanceFinalArray> childData = getChild(groupPosition, 0);
         GrStudentListDetailBinding binding;
         if (convertView == null) {
             Log.d("groupposition", "" + groupPosition);
@@ -76,11 +77,11 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             binding.genderTxt.setText(childData.get(childPosition).getGender());
             binding.studentTypeTxt.setText(AppConfiguration.TermName);
             binding.gradeTxt.setText(childData.get(childPosition).getStandard());
-            binding.sectionTxt.setText(childData.get(childPosition).getClasses());
+            binding.sectionTxt.setText(childData.get(childPosition).get_class());
             binding.lastschoolTxt.setText(childData.get(childPosition).getLastSchool());
             binding.bloodgroupTxt.setText(childData.get(childPosition).getBloodGroup());
             binding.religionTxt.setText(childData.get(childPosition).getReligion());
-            binding.grnoTxt.setText(childData.get(childPosition).getgRNO());
+            binding.grnoTxt.setText(childData.get(childPosition).getGRNO());
             binding.nationalityTxt.setText(childData.get(childPosition).getNationality());
             binding.admissionTakenTxt.setText(childData.get(childPosition).getAdmissionTaken());
 
@@ -98,7 +99,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             convertView = transportDetailBinding.getRoot();
 
             transportDetailBinding.linerKms.setVisibility(View.VISIBLE);
-            transportDetailBinding.kmsTxt.setText(childData.get(childPosition).getTransportKms());
+            transportDetailBinding.kmsTxt.setText(childData.get(childPosition).getTransportKMs());
             transportDetailBinding.pickupTxt.setText(childData.get(childPosition).getPickupBus());
             transportDetailBinding.pickuppointTxt.setText(childData.get(childPosition).getPickupPoint());
             transportDetailBinding.pickuptimeTxt.setText(childData.get(childPosition).getPickupPointTime());
@@ -110,14 +111,14 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             StudentListItemFatherDetailBinding fatherDetailBinding;
             fatherDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_father_detail, parent, false);
             convertView = fatherDetailBinding.getRoot();
-            fatherDetailBinding.fatherfirstnameTxt.setText(childData.get(childPosition).getFatherfirstName());
-            fatherDetailBinding.fatherlastnameTxt.setText(childData.get(childPosition).getFatherlastName());
+            fatherDetailBinding.fatherfirstnameTxt.setText(childData.get(childPosition).getFatherFirstName());
+            fatherDetailBinding.fatherlastnameTxt.setText(childData.get(childPosition).getFatherLastName());
             fatherDetailBinding.fphoneTxt.setText(childData.get(childPosition).getFatherPhoneNo());
             fatherDetailBinding.fmobileTxt.setText(childData.get(childPosition).getFatherMobileNo());
-            fatherDetailBinding.femailTxt.setText(childData.get(childPosition).getFatherEmailAddress());
-            fatherDetailBinding.fqualificationTxt.setText(childData.get(childPosition).getFatherQualification());
+            fatherDetailBinding.fEmailTxt.setText(childData.get(childPosition).getFatherEmailAddress());
+            fatherDetailBinding.fQualificationTxt.setText(childData.get(childPosition).getFatherQualification());
             fatherDetailBinding.foccupationTxt.setText(childData.get(childPosition).getFatherOccupation());
-            fatherDetailBinding.forganisationTxt.setText(childData.get(childPosition).getFatherOrganisation());
+            fatherDetailBinding.forganisationTxt.setText(childData.get(childPosition).getFatherOrganization());
             fatherDetailBinding.fdesignationTxt.setText(childData.get(childPosition).getFatherDesignation());
 
         } else if (headerTitle.equalsIgnoreCase("Mother Details")) {
@@ -125,14 +126,14 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             motherDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_mother_detail, parent, false);
             convertView = motherDetailBinding.getRoot();
 
-            motherDetailBinding.motherfirstnameTxt.setText(childData.get(childPosition).getMotherfirstName());
-            motherDetailBinding.motherlastnameTxt.setText(childData.get(childPosition).getMotherlastName());
+            motherDetailBinding.motherfirstnameTxt.setText(childData.get(childPosition).getMotherFirstName());
+            motherDetailBinding.motherlastnameTxt.setText(childData.get(childPosition).getMotherLastName());
             motherDetailBinding.mphoneTxt.setText(childData.get(childPosition).getMotherPhoneNo());
             motherDetailBinding.mmobileTxt.setText(childData.get(childPosition).getMotherMobileNo());
             motherDetailBinding.memailTxt.setText(childData.get(childPosition).getMotherEmailAddress());
             motherDetailBinding.mqualificationTxt.setText(childData.get(childPosition).getMotherQualification());
             motherDetailBinding.moccupationTxt.setText(childData.get(childPosition).getMotherOccupation());
-            motherDetailBinding.morganisationTxt.setText(childData.get(childPosition).getMotherOrganisation());
+            motherDetailBinding.morganisationTxt.setText(childData.get(childPosition).getMotherOrganization());
             motherDetailBinding.mdesignationTxt.setText(childData.get(childPosition).getMotherDesignation());
 
         } else if (headerTitle.equalsIgnoreCase("Communication Details")) {
@@ -140,7 +141,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             communicationDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_communication_detail, parent, false);
             convertView = communicationDetailBinding.getRoot();
 
-            communicationDetailBinding.smsTxt.setText(childData.get(childPosition).getsMSCommunicationNo());
+            communicationDetailBinding.smsTxt.setText(childData.get(childPosition).getSMSCommunicationNo());
             communicationDetailBinding.cityTxt.setText(childData.get(childPosition).getCity());
             communicationDetailBinding.addressTxt.setText(childData.get(childPosition).getAddress());
             communicationDetailBinding.zipTxt.setText(childData.get(childPosition).getZipCode());
@@ -162,7 +163,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
     }
 
     @Override
-    public ArrayList<FinalArrayStudentModel> getChild(int groupPosition, int childPosititon) {
+    public ArrayList<StudentAttendanceFinalArray> getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition));
     }
 

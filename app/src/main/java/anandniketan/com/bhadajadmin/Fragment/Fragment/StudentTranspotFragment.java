@@ -24,6 +24,7 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterStudentTransportDetail;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayTransportChargesModel;
@@ -53,9 +54,9 @@ public class StudentTranspotFragment extends Fragment {
     HashMap<Integer, String> spinnerRouteMap;
     HashMap<Integer, String> spinnerPickupMap;
     String FinalTermIdStr, FinalRouteIdStr = "", FinalPickupIdStr = "", FinalGrnoStr = "", RouteName;
-    List<FinalArrayStudentModel> finalArrayStudentTransportModelList;
+    List<StudentAttendanceFinalArray> finalArrayStudentTransportModelList;
     List<String> listDataHeader;
-    HashMap<String, ArrayList<FinalArrayStudentModel>> listDataChild;
+    HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild;
     ExpandableListAdapterStudentTransportDetail expandableListAdapterStudentTransportDetail;
 
     public StudentTranspotFragment() {
@@ -493,13 +494,13 @@ public class StudentTranspotFragment extends Fragment {
 
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<FinalArrayStudentModel>>();
+        listDataChild = new HashMap<String, ArrayList<StudentAttendanceFinalArray>>();
 
         for (int i = 0; i < finalArrayStudentTransportModelList.size(); i++) {
             listDataHeader.add(finalArrayStudentTransportModelList.get(i).getStudentName() + "|" +
-                    finalArrayStudentTransportModelList.get(i).getgRNO() + "|" + finalArrayStudentTransportModelList.get(i).getStandard());
+                    finalArrayStudentTransportModelList.get(i).getGRNO() + "|" + finalArrayStudentTransportModelList.get(i).getStandard());
             Log.d("header", "" + listDataHeader);
-            ArrayList<FinalArrayStudentModel> row = new ArrayList<FinalArrayStudentModel>();
+            ArrayList<StudentAttendanceFinalArray> row = new ArrayList<StudentAttendanceFinalArray>();
 //            for (int j = 0; j < finalArrayStudentTransportModelList.size(); j++) {
             row.add(finalArrayStudentTransportModelList.get(i));
 //            }

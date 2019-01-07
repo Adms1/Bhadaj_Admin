@@ -33,14 +33,14 @@ import retrofit.client.Response;
 
 public class StaffFragment extends Fragment {
 
+    int Year, Month, Day;
+    Calendar calendar;
     private FragmentStaffBinding fragmentStaffBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private String Datestr;
-    int Year, Month, Day;
-    Calendar calendar;
 
     public StaffFragment() {
     }
@@ -59,9 +59,11 @@ public class StaffFragment extends Fragment {
     }
 
     public void initViews() {
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 2;
         fragmentStaffBinding.staffSubmenuGridView.setAdapter(new StaffSubMenuAdapter(mContext));
         Glide.with(mContext)
-                .load( AppConfiguration.BASEURL_IMAGES + "Staff/" + "staff_inside.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Staff/" + "staff_inside.png")
                 .fitCenter()
                 .into(fragmentStaffBinding.circleImageView);
         calendar = Calendar.getInstance();
@@ -100,31 +102,57 @@ public class StaffFragment extends Fragment {
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 21;
                 } else if (position == 1) {
                     fragment = new AssignSubjectFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                }  else if (position == 2) {
-                    fragment = new ViewLessonPlanFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                }else if (position == 4) {
-                    fragment = new ExamsFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 5) {
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 21;
+                } else if (position == 2) {
                     fragment = new TimeTableFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                }
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 21;
+                } else if (position == 3) {
+                    fragment = new ExamsFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 21;
+                }/*else if (position == 4) {
+                    fragment = new HomeworkNotDoneFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                            AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 21;
+                }*/ else if (position == 5) {
+                    fragment = new MyLeaveFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 21;
+                } /*else if (position == 6) {
+                    fragment = new ViewMarksFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                            AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 21;L̥
+                }*/
             }
         });
     }

@@ -13,8 +13,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import anandniketan.com.bhadajadmin.Interface.onViewClick;
 import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.ListGroupStudentInquiryDataDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemHeaderBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemInquiryDataBinding;
@@ -27,22 +30,23 @@ import anandniketan.com.bhadajadmin.databinding.ListItemInquiryDataBinding;
 public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private List<StudentInquiryModel.FinalArray> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<StandardWiseAttendanceModel>> listChildData;
+    private HashMap<String, List<StudentInquiryModel.StausDetail>> listChildData;
     private HashMap<String, String> listfooterDate;
+    private onViewClick onViewClickRef;
 
 
-    public ExpandableListAdapterInquiryData(Context context, List<String> listDataHeader, HashMap<String, List<StandardWiseAttendanceModel>> listDataChild) {
+    public ExpandableListAdapterInquiryData(Context context, List<StudentInquiryModel.FinalArray> listDataHeader, HashMap<String,List<StudentInquiryModel.StausDetail>> listDataChild,onViewClick onViewClickRef ) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
+        this.onViewClickRef = onViewClickRef;
     }
 
     @Override
-    public StandardWiseAttendanceModel getChild(int groupPosition, int childPosititon) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+    public StudentInquiryModel.StausDetail getChild(int groupPosition, int childPosititon) {
+        return this.listChildData.get(String.valueOf(this._listDataHeader.get(groupPosition).getStudentID())).get(childPosititon);
     }
 
     @Override
@@ -51,37 +55,47 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         ListItemHeaderBinding headerBinding;
         ListItemInquiryDataBinding rowBinding;
 //        LayoutInflater infalInflater = (LayoutInflater) this._context
 //                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (childPosition > 0 && childPosition < getChildrenCount(groupPosition)) {
 
-            StandardWiseAttendanceModel currentchild = getChild(groupPosition, childPosition - 1);
-            rowBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                    R.layout.list_item_inquiry_data, parent, false);
+            final StudentInquiryModel.StausDetail currentchild = getChild(groupPosition, childPosition - 1);
+            rowBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.list_item_inquiry_data, parent, false);
             convertView = rowBinding.getRoot();
 
-//            TextView status_txt, date_txt;
-//            status_txt = (TextView) convertView.findViewById(R.id.status_txt);
-//            date_txt = (TextView) convertView.findViewById(R.id.date_txt);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             SimpleDateFormat output = new SimpleDateFormat("dd/MM/yyyy");
             Date d = null;
             try {
                 d = sdf.parse(currentchild.getDate());
+                String formatedate = output.format(d);
+                rowBinding.dateTxt.setText(formatedate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String formatedate = output.format(d);
-            rowBinding.statusTxt.setText(currentchild.getStatus());
-            rowBinding.dateTxt.setText(formatedate);
+            rowBinding.statusTxt.setText(currentchild.getStatus1());
+
+            if(childPosition == listChildData.get(String.valueOf(_listDataHeader.get(groupPosition).getStudentID())).size()){
+                rowBinding.profileTxt.setVisibility(View.VISIBLE);
+            }else{
+                rowBinding.profileTxt.setVisibility(View.GONE);
+            }
+
+            rowBinding.profileTxt.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                   AppConfiguration.StudentId = String.valueOf(currentchild.getStudentId());
+                    //AppConfiguration.StudentStatus = String.valueOf(currentchild. get);
+                    onViewClickRef.getViewClick();
+                }
+            });
 
         } else if (childPosition == 0) {
-            headerBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                    R.layout.list_item_header, parent, false);
+            headerBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.list_item_header,parent, false);
             convertView = headerBinding.getRoot();
         }
         return convertView;
@@ -89,11 +103,11 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size() + 1;
+        return this.listChildData.get(String.valueOf(this._listDataHeader.get(groupPosition).getStudentID())).size() + 1;
     }
 
     @Override
-    public Object getGroup(int groupPosition) {
+    public StudentInquiryModel.FinalArray getGroup(int groupPosition) {
         return this._listDataHeader.get(groupPosition);
     }
 
@@ -108,29 +122,32 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         ListGroupStudentInquiryDataDetailBinding groupBinding;
-        String[] headerTitle = getGroup(groupPosition).toString().split("\\|");
 
-        String headerTitle1 = headerTitle[0];
-        String headerTitle2 = headerTitle[1];
-        String headerTitle3 = headerTitle[2];
-        String headerTitle4 = headerTitle[3];
+
+        final StudentInquiryModel.FinalArray currentGroup = getGroup(groupPosition);
+
+//        String[] headerTitle = getGroup(groupPosition).toString().split("\\|");
+//
+//        String headerTitle1 = headerTitle[0];
+//        String headerTitle2 = headerTitle[1];
+//        String headerTitle3 = headerTitle[2];
+//        String headerTitle4 = headerTitle[3];
+        //String headertitle5 = headerTitle[4];
 
         if (convertView == null) {
 
         }
-        groupBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
-                R.layout.list_group_student_inquiry_data_detail, parent, false);
+        groupBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.list_group_student_inquiry_data_detail, parent, false);
         convertView = groupBinding.getRoot();
         String str = String.valueOf(groupPosition + 1);
 
         groupBinding.indexTxt.setText(str);
-        groupBinding.studentnameTxt.setText(headerTitle1);
-        groupBinding.StandardTxt.setText(headerTitle2);
-        groupBinding.genderTxt.setText(headerTitle3);
-        groupBinding.statusTxt.setText(headerTitle4);
+        groupBinding.studentnameTxt.setText(currentGroup.getName());
+        groupBinding.StandardTxt.setText(currentGroup.getGrade());
+        groupBinding.genderTxt.setText(currentGroup.getGender());
+        groupBinding.statusTxt.setText(currentGroup.getCurrentStatus());
 
         if (isExpanded) {
             groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.present));

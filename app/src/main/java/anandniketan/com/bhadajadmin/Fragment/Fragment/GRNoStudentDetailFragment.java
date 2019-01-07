@@ -20,6 +20,7 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterGRstudentdetail;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
@@ -37,10 +38,10 @@ public class GRNoStudentDetailFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    List<FinalArrayStudentModel> studentFullDetailArray;
+    List<StudentAttendanceFinalArray> studentFullDetailArray;
     List<String> listDataHeader;
     String flag;
-    HashMap<String, ArrayList<FinalArrayStudentModel>> listDataChild;
+    HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild;
 
     ExpandableListAdapterGRstudentdetail listAdapterGRstudentdetail;
 
@@ -94,10 +95,7 @@ public class GRNoStudentDetailFragment extends Fragment {
             }
         });
         fragmentGrnoStudentDetailBinding.lvExpStudentDetail.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-
             @Override
-
             public void onGroupExpand(int groupPosition) {
                 if (lastExpandedPosition != -1
                         && groupPosition != lastExpandedPosition) {
@@ -120,7 +118,7 @@ public class GRNoStudentDetailFragment extends Fragment {
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getGRRegister(getGRRegisterDetail(), new retrofit.Callback<StudentAttendanceModel>() {
+        ApiHandler.getApiService().getLeftDetainStudent(getGRRegisterDetail(), new retrofit.Callback<StudentAttendanceModel>() {
 
             @Override
             public void success(StudentAttendanceModel studentFullDetailModel, Response response) {
@@ -135,11 +133,11 @@ public class GRNoStudentDetailFragment extends Fragment {
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("False")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
-                    if (studentFullDetailModel.getFinalArray().size() == 0) {
+//                    if (studentFullDetailModel.getFinalArray().size() == 0) {
                         fragmentGrnoStudentDetailBinding.lvExpStudentDetail.setVisibility(View.GONE);
                         fragmentGrnoStudentDetailBinding.recyclerLinear.setVisibility(View.GONE);
                         fragmentGrnoStudentDetailBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    }
+//                    }
                     return;
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("True")) {
@@ -155,15 +153,15 @@ public class GRNoStudentDetailFragment extends Fragment {
                             Log.d("array", "" + arraystu);
 
                             listDataHeader = new ArrayList<>();
-                            listDataChild = new HashMap<String, ArrayList<FinalArrayStudentModel>>();
+                            listDataChild = new HashMap<String, ArrayList<StudentAttendanceFinalArray>>();
 
                             for (int i = 0; i < arraystu.size(); i++) {
                                 Log.d("arraystu", "" + arraystu);
                                 listDataHeader.add(arraystu.get(i));
                                 Log.d("header", "" + listDataHeader);
-                                ArrayList<FinalArrayStudentModel> row = new ArrayList<FinalArrayStudentModel>();
+                                ArrayList<StudentAttendanceFinalArray> row = new ArrayList<StudentAttendanceFinalArray>();
                                 for (int j = 0; j < studentFullDetailArray.size(); j++) {
-                                    if (studentFullDetailArray.get(j).getStudentId().equalsIgnoreCase(AppConfiguration.CheckStudentId)) {
+                                    if (String.valueOf(studentFullDetailArray.get(j).getStudent_ID()).equalsIgnoreCase(AppConfiguration.CheckStudentId)) {
                                         row.add(studentFullDetailArray.get(j));
                                     }
                                 }

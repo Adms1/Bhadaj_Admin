@@ -285,7 +285,7 @@ public class StudentViewMarksFragment extends Fragment {
                     return;
                 }
                 if (testNameModel.getSuccess().equalsIgnoreCase("True")) {
-                    finalArrayStudentNameModelList = testNameModel.getFinalArray();
+//                    finalArrayStudentNameModelList = testNameModel.getFinalArray();
                     if (finalArrayStudentNameModelList != null) {
                         for (int i = 0; i < finalArrayStudentNameModelList.size(); i++) {
                             finalArrayStudentNameModelList.get(i).setCheckedStatus("0");
@@ -338,20 +338,20 @@ public class StudentViewMarksFragment extends Fragment {
                 }
                 if (studentNameModel.getSuccess().equalsIgnoreCase("True")) {
 
-                    if (studentNameModel.getFinalArray().size() > 0) {
-                        fragment = new ShowMarksFragment();
-                        Bundle args = new Bundle();
-                        args.putString("Url", studentNameModel.getFinalArray().get(0).getuRL());
-                        fragment.setArguments(args);
-                        fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                                .replace(R.id.frame_container, fragment).commit();
-                        Utils.dismissDialog();
-                    } else {
-                        Utils.ping(mContext, getString(R.string.false_msg));
-                        Utils.dismissDialog();
-                    }
+//                    if (studentNameModel.getFinalArray().size() > 0) {
+//                        fragment = new ShowMarksFragment();
+//                        Bundle args = new Bundle();
+//                        args.putString("Url", studentNameModel.getFinalArray().get(0).getuRL());
+//                        fragment.setArguments(args);
+//                        fragmentManager = getFragmentManager();
+//                        fragmentManager.beginTransaction()
+//                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+//                                .replace(R.id.frame_container, fragment).commit();
+//                        Utils.dismissDialog();
+//                    } else {
+//                        Utils.ping(mContext, getString(R.string.false_msg));
+//                        Utils.dismissDialog();
+//                    }
                 }
             }
 

@@ -33,9 +33,11 @@ import anandniketan.com.bhadajadmin.Adapter.AttendanceAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStudentAttendaneBinding;
 import retrofit.RetrofitError;
@@ -52,7 +54,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     List<FinalArrayStandard> finalArrayStandardsList;
     HashMap<Integer, String> spinnerStandardMap;
     HashMap<Integer, String> spinnerSectionMap;
-    List<FinalArrayStudentModel> finalArrayStudentNameModelList;
+    List<StudentAttendanceFinalArray> finalArrayStudentNameModelList;
     String FinalStandardIdStr, FinalClassIdStr, StandardName, FinalStandardStr, FinalSectionStr, FinalDataStr;
     AttendanceAdapter attendanceAdapter;
 
@@ -61,6 +63,8 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     Calendar calendar;
     private static String dateFinal;
     private DatePickerDialog datePickerDialog;
+    private  PrefUtils prefUtils ;
+    private String Attendanceidstr = "",Attendacestatusstr = "",studentidstr = "";
 
     public StudentAttendaneFragment() {
     }
@@ -70,6 +74,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentStudentAttendaneBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_attendane, container, false);
 
+        prefUtils = PrefUtils.getInstance(getActivity());
         rootView = fragmentStudentAttendaneBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
@@ -104,6 +109,12 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
+        fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callInsertAttendanceApi();
+            }
+        });
         fragmentStudentAttendaneBinding.gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -132,7 +143,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                 String getid = spinnerSectionMap.get(fragmentStudentAttendaneBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 FinalSectionStr = selectedsectionstr;
                 Log.d("FinalClassIdStr", FinalClassIdStr);
             }
@@ -214,7 +225,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     // CALL Attendence_Admin API HERE
     private void callAttendence_AdminApi() {
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),getActivity());
             return;
         }
         Utils.showDialog(getActivity());
@@ -224,59 +235,79 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
 //                Utils.dismissDialog();
                 if (attendanceModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
+                    fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.GONE);
                     Utils.dismissDialog();
                     return;
                 }
                 if (attendanceModel.getSuccess() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
+                    fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.GONE);
                     Utils.dismissDialog();
                     return;
                 }
                 if (attendanceModel.getSuccess().equalsIgnoreCase("False")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
                     Utils.dismissDialog();
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.GONE);
                     if (attendanceModel.getFinalArray().size() == 0) {
                         fragmentStudentAttendaneBinding.recyclerLinear.setVisibility(View.GONE);
                         fragmentStudentAttendaneBinding.listHeader.setVisibility(View.GONE);
                         fragmentStudentAttendaneBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     }
+                    //Utils.dismissDialog();
                     return;
                 }
                 if (attendanceModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    Utils.dismissDialog();
+
                     if (attendanceModel.getFinalArray().size() > 0) {
+                        fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.VISIBLE);
+
+                        finalArrayStudentNameModelList = new ArrayList<StudentAttendanceFinalArray>();
+
                         finalArrayStudentNameModelList = attendanceModel.getFinalArray();
                         fragmentStudentAttendaneBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentStudentAttendaneBinding.recyclerLinear.setVisibility(View.VISIBLE);
                         fragmentStudentAttendaneBinding.listHeader.setVisibility(View.VISIBLE);
-                        fragmentStudentAttendaneBinding.totalTxt.setText(Html.fromHtml("Total Student : " + "<font color='#1B88C8'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotal() + "</b>"));
-                        fragmentStudentAttendaneBinding.presentTxt.setText(Html.fromHtml("Present : " + "<font color='#a4c639'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalPresent() + "</b>"));
-                        fragmentStudentAttendaneBinding.absentTxt.setText(Html.fromHtml("Absent : " + "<font color='#ff0000'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalAbsent() + "</b>"));
-                        fragmentStudentAttendaneBinding.leaveTxt.setText(Html.fromHtml("Leave : " + "<font color='#ff9623'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalLeave() + "</b>"));
-                        fragmentStudentAttendaneBinding.ondutyTxt.setText(Html.fromHtml("OnDuty : " + "<font color='#d8b834'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalOnDuty() + "</b>"));
+                        fragmentStudentAttendaneBinding.totalTxt.setText(Html.fromHtml("Total Students : " + "<font color='#1B88C8'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotal() + "</b>"));
+                        fragmentStudentAttendaneBinding.presentTxt.setText(Html.fromHtml("" + "<font color='#a4c639'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalPresent() + "</b>"));
+                        fragmentStudentAttendaneBinding.absentTxt.setText(Html.fromHtml("" + "<font color='#ff0000'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalAbsent() + "</b>"));
+                        fragmentStudentAttendaneBinding.leaveTxt.setText(Html.fromHtml("" + "<font color='#ff9623'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalLeave() + "</b>"));
+                        //fragmentStudentAttendaneBinding.ondutyTxt.setText(Html.fromHtml("OnDuty : " + "<font color='#d8b834'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalOnDuty() + "</b>"));
+
+                        if (!attendanceModel.getFinalArray().get(0).getStudentDetail().get(0).getAttendenceStatus().equalsIgnoreCase("-2")) {
+                            fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setImageResource(R.drawable.update_1);
+                        } else {
+                            fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setImageResource(R.drawable.submit);
+                        }
+
                         SetData();
                         attendanceAdapter = new AttendanceAdapter(mContext, attendanceModel);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentStudentAttendaneBinding.studentAttendanceList.setLayoutManager(mLayoutManager);
                         fragmentStudentAttendaneBinding.studentAttendanceList.setItemAnimator(new DefaultItemAnimator());
                         fragmentStudentAttendaneBinding.studentAttendanceList.setAdapter(attendanceAdapter);
-                        Utils.dismissDialog();
+                        //Utils.dismissDialog();
                     } else {
                         fragmentStudentAttendaneBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                        fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.GONE);
+
                     }
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-//                Utils.dismissDialog();
+                Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
+                fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.GONE);
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
     }
-
     private Map<String, String> getAttendence_AdminDetail() {
         Map<String, String> map = new HashMap<>();
         FinalDataStr = fragmentStudentAttendaneBinding.dateButton.getText().toString();
@@ -286,6 +317,8 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
 
         return map;
     }
+
+
 
     public void fillGradeSpinner() {
 //        ArrayList<String> firstValue = new ArrayList<>();
@@ -398,9 +431,9 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
 
         for (int j = 0; j < finalArrayStudentNameModelList.size(); j++) {
             for (int k = 0; k < finalArrayStudentNameModelList.get(j).getStudentDetail().size(); k++) {
-                if (finalArrayStudentNameModelList.get(j).getStudentDetail().get(k).getAttendenceStatus().equalsIgnoreCase("-2")) {
-                    finalArrayStudentNameModelList.get(j).getStudentDetail().get(j).setAttendenceStatus("1");
-                }
+//                if (finalArrayStudentNameModelList.get(j).getStudentDetail().get(k).getAttendenceStatus().equalsIgnoreCase("-2")) {
+//                    finalArrayStudentNameModelList.get(j).getStudentDetail().get(j).setAttendenceStatus("1");
+//                }
             }
         }
     }
@@ -429,6 +462,121 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
 
 
     }
+
+    private void callInsertAttendanceApi() {
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().insertAttendance(getAttanceParams(), new retrofit.Callback<StudentAttendanceModel>() {
+            @Override
+            public void success(StudentAttendanceModel attendanceModel, Response response) {
+//                Utils.dismissDialog();
+                if (attendanceModel == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.dismissDialog();
+                    return;
+                }
+                if (attendanceModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.dismissDialog();
+                    return;
+                }
+                if (attendanceModel.getSuccess().equalsIgnoreCase("False")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    Utils.dismissDialog();
+                    return;
+                }
+                if (attendanceModel.getSuccess().equalsIgnoreCase("True")) {
+                    Utils.dismissDialog();
+                    Utils.ping(getActivity(),"Attendance updated successfully");
+                    callAttendence_AdminApi();
+                    return;
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+
+    }
+
+    private Map<String, String> getAttanceParams() {
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            if (finalArrayStudentNameModelList != null) {
+                if (finalArrayStudentNameModelList.size() > 0) {
+                    final ArrayList<String> Attendanceid = new ArrayList<>();
+                    final ArrayList<String> Attendacestatus = new ArrayList<>();
+                    final ArrayList<String> studid = new ArrayList<>();
+
+                    for (int j = 0; j < finalArrayStudentNameModelList.get(0).getStudentDetail().size(); j++) {
+                            Attendanceid.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getAttendanceID()));
+                            Attendacestatus.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getAttendenceStatus()));
+                            studid.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getStudentID()));
+                        }
+
+                    Log.d("Attendanceid", "" + Attendanceid);
+                    Log.d("Attendacestatus", "" + Attendacestatus);
+                    Log.d("studid", "" + studid);
+
+                    Attendanceidstr = "";
+                    for (String s : Attendanceid) {
+                        Attendanceidstr = Attendanceidstr + "," + s;
+                    }
+                    Log.d("Attendanceidstr", Attendanceidstr);
+                    Attendanceidstr = Attendanceidstr.substring(1, Attendanceidstr.length());
+                    Log.d("finalstatusStr", Attendanceidstr);
+
+                    Attendacestatusstr = "";
+                    for (String s : Attendacestatus) {
+                        Attendacestatusstr = Attendacestatusstr + "," + s;
+
+                    }
+                    Log.d("Attendacestatusstr", Attendacestatusstr);
+
+                    Attendacestatusstr = Attendacestatusstr.substring(1,Attendacestatusstr.length());
+                    Attendacestatusstr = Attendacestatusstr.replace("-2","1");
+                    Log.d("Attendacestatusstr", Attendacestatusstr);
+
+                    studentidstr = "";
+                    for (String s : studid) {
+                        studentidstr = studentidstr + "," + s;
+                    }
+                    Log.d("studentidstr", studentidstr);
+                    studentidstr = studentidstr.substring(1, studentidstr.length());
+                    Log.d("studentidstr", studentidstr);
+
+
+                    FinalDataStr = fragmentStudentAttendaneBinding.dateButton.getText().toString();
+                    map.put("StaffID", prefUtils.getStringValue("StaffID", ""));
+                    map.put("StandardID", FinalStandardIdStr);
+                    map.put("ClassID", FinalClassIdStr);
+                    map.put("Date", FinalDataStr);
+                    map.put("Comment", "");
+                    map.put("AttendacneStatus", Attendacestatusstr);
+                    map.put("CurrantDate", Utils.getTodaysDate());
+                    map.put("StudentID", studentidstr);
+                    map.put("AttendanceID", Attendanceidstr);
+                }
+
+            }
+            return map;
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return map;
+
+    }
+
 
 }
 

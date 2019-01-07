@@ -407,7 +407,7 @@ public class StudentLedgerFragment extends Fragment {
                     return;
                 }
                 if (studentNameModel.getSuccess().equalsIgnoreCase("True")) {
-                    finalArrayStudentNameModelList = studentNameModel.getFinalArray();
+//                    finalArrayStudentNameModelList = studentNameModel.getFinalArray();
                     fillStudentName();
                 }
             }

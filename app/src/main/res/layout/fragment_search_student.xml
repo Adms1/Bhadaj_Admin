@@ -78,18 +78,18 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
-                            android:id="@+id/search_type_txt_view"
+                            android:id="@+id/term_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|center"
                             android:layout_marginLeft="@dimen/_5sdp"
                             android:layout_weight="0.77"
-                            android:text="Student Type"
+                            android:text="@string/term"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
@@ -106,7 +106,7 @@
                             android:textStyle="bold" />
 
                         <Spinner
-                            android:id="@+id/search_type_spinner"
+                            android:id="@+id/term_spinner"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_gravity="center_vertical"
@@ -117,7 +117,7 @@
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
                             android:overlapAnchor="false"
-                            android:gravity="left|center_vertical"
+                            android:gravity="center|center_vertical"
                             android:paddingBottom="1dp"
                             android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
@@ -125,7 +125,56 @@
 
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
 
+                        <TextView
+                            android:id="@+id/grade_txt_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="0.77"
+                            android:text="@string/grade"
+                            android:textColor="@color/scheduleheadertextcolor"
+                            android:textSize="@dimen/_11sdp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|center"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_weight="0.14"
+                            android:text=":"
+                            android:textColor="@color/scheduleheadertextcolor"
+                            android:textSize="@dimen/_11sdp"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/grade_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/_3sdp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_weight="1.8"
+                            android:background="@drawable/dropdown_button"
+                            android:forceHasOverlappingRendering="false"
+                            android:gravity="center|center_vertical"
+                            android:overlapAnchor="false"
+                            android:paddingBottom="1dp"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -315,7 +364,8 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <include layout="@layout/search_student_header" />
                 </LinearLayout>
@@ -327,7 +377,8 @@
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:background="@drawable/linear_border"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/student_search_list"

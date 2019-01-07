@@ -33,6 +33,7 @@ import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
@@ -61,7 +62,7 @@ public class OnlinePaymentFragment extends Fragment {
     StandardAdapter standardAdapter;
 
     //Use for fill List
-    List<FinalArrayStudentModel> finalArrayResultPermissionList;
+    List<StudentAttendanceFinalArray> finalArrayResultPermissionList;
     OnlinePaymentPermissionAdapter onlinePaymentPermissionAdapter;
 
     String FinalTermIdStr, FinalGradeIsStr = "", FinalTermDetailIdStr = "",  FinalStatusStr = "1";

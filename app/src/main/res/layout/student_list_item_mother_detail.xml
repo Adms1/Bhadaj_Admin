@@ -3,19 +3,32 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/box_shadow"
+        android:elevation="@dimen/_2sdp"
         android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_7sdp"
+            android:visibility="gone"
+            android:src="@drawable/person_placeholder" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/motherfirst_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/motherfirstname"
                 android:textAlignment="textStart"
@@ -36,7 +49,6 @@
                 android:id="@+id/motherfirstname_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -48,11 +60,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/motherlastname_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/motherlastname"
                 android:textAlignment="textStart"
@@ -73,7 +86,6 @@
                 android:id="@+id/motherlastname_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -85,11 +97,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/mphone_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/motherphoneno"
                 android:textAlignment="textStart"
@@ -110,7 +124,6 @@
                 android:id="@+id/mphone_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -122,11 +135,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/mmobile_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/mothermobileno"
                 android:textAlignment="textStart"
@@ -147,7 +162,6 @@
                 android:id="@+id/mmobile_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -159,11 +173,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/memail_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/motheremailaddress"
                 android:textAlignment="textStart"
@@ -184,7 +200,6 @@
                 android:id="@+id/memail_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -196,11 +211,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/mqualification_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/motherqualification"
                 android:textAlignment="textStart"
@@ -221,7 +238,6 @@
                 android:id="@+id/mqualification_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -233,10 +249,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/moccupation_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/motheroccupation"
                 android:textAlignment="textStart"
@@ -257,7 +275,6 @@
                 android:id="@+id/moccupation_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -269,11 +286,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/morganisation_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/motheroragnization"
                 android:textAlignment="textStart"
@@ -294,7 +312,6 @@
                 android:id="@+id/morganisation_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -306,11 +323,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/mdesignation_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/motherdesignation"
                 android:textAlignment="textStart"
@@ -331,7 +350,6 @@
                 android:id="@+id/mdesignation_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"

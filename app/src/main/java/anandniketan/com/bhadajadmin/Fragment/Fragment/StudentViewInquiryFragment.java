@@ -1,12 +1,15 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,13 +32,17 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterInquiryData;
+import anandniketan.com.bhadajadmin.Interface.onViewClick;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStudentViewInquiryBinding;
 import retrofit.RetrofitError;
@@ -50,22 +57,33 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
 
-    int Year, Month, Day;
-    Calendar calendar;
+    private int Year, Month, Day;
+    private Calendar calendar;
     private static String dateFinal;
     private static boolean isFromDate = false;
     private DatePickerDialog datePickerDialog;
-    HashMap<Integer, String> spinnerOrderMap;
-    List<FinalArrayGetTermModel> finalArrayGetTermModels;
-    HashMap<Integer, String> spinnerTermMap;
-    List<FinalArrayStudentModel> finalArrayinquiryCountList;
+    private HashMap<Integer, String> spinnerOrderMap;
+    private List<FinalArrayGetTermModel> finalArrayGetTermModels;
+    private HashMap<Integer, String> spinnerTermMap;
+    private List<StudentAttendanceFinalArray> finalArrayinquiryCountList;
+    private List<StudentInquiryModel.FinalArray> finalArrayinquiryCountList1;
+    private List<StudentInquiryModel.StausDetail> finalStatusArrayinquiryCountList;
     private int lastExpandedPosition = -1;
-    String FinalStartDateStr, FinalEndDateStr, FinalStatusStr, FinalStatusIdStr, FinalTermIdStr, FinalTermStr, FinalOnlineStatusStr = "All";
-    ExpandableListAdapterInquiryData expandableListAdapterInquiryData;
-    List<String> listDataHeader;
-    HashMap<String,List<StandardWiseAttendanceModel>> listDataChild;
+    private String FinalStartDateStr, FinalEndDateStr, FinalStatusStr, FinalStatusIdStr, FinalTermIdStr, FinalTermStr, FinalOnlineStatusStr = "All";
+    private ExpandableListAdapterInquiryData expandableListAdapterInquiryData;
+    private List<StudentInquiryModel.FinalArray> listDataHeader;
+    private HashMap<String,List<StudentInquiryModel.StausDetail>> listDataChild;
+
 
     public StudentViewInquiryFragment() {
+    }
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstance){
+        super.onCreate(savedInstance);
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -75,6 +93,9 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
 
         rootView = fragmentStudentViewInquiryBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 11;
 
         setListners();
         callTermApi();
@@ -88,8 +109,13 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        fragmentStudentViewInquiryBinding.startdateButton.setText(Utils.getTodaysDate());
-        fragmentStudentViewInquiryBinding.enddateButton.setText(Utils.getTodaysDate());
+        if(TextUtils.isEmpty(AppConfiguration.fromDate) && TextUtils.isEmpty(AppConfiguration.toDate)) {
+            AppConfiguration.fromDate = Utils.getTodaysDate();
+            AppConfiguration.toDate = Utils.getTodaysDate();
+        }
+        fragmentStudentViewInquiryBinding.startdateButton.setText(AppConfiguration.fromDate);
+        fragmentStudentViewInquiryBinding.enddateButton.setText(AppConfiguration.toDate);
+
 
         fragmentStudentViewInquiryBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,27 +126,36 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         fragmentStudentViewInquiryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                getActivity().getSupportFragmentManager().popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container,fragment).commit();
             }
         });
         fragmentStudentViewInquiryBinding.lvExpviewinquiry.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-
             @Override
-
             public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
+                if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
                     fragmentStudentViewInquiryBinding.lvExpviewinquiry.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = groupPosition;
             }
 
         });
+
+
+        fragmentStudentViewInquiryBinding.fabAddInquiry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 58;
+                fragment = new FragmentAddUpdateInquiry();
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+            }
+        });
+
         fragmentStudentViewInquiryBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -131,6 +166,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                 FinalTermIdStr = getid.toString();
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callInquiryCountApi();
+                callInquiryDataApi();
             }
 
             @Override
@@ -153,7 +189,9 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
 
             }
         });
+
         fragmentStudentViewInquiryBinding.statusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 RadioButton rb = (RadioButton) radioGroup.findViewById(checkedId);
@@ -211,7 +249,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private void callTermApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),getActivity());
             return;
         }
 
@@ -271,15 +309,15 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             public void success(StudentAttendanceModel inquiryCountModel, Response response) {
                 Utils.dismissDialog();
                 if (inquiryCountModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mContext,getString(R.string.something_wrong));
                     return;
                 }
                 if (inquiryCountModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mContext,getString(R.string.something_wrong));
                     return;
                 }
                 if (inquiryCountModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+                    Utils.ping(mContext,getString(R.string.false_msg));
                     Utils.dismissDialog();
                     return;
                 }
@@ -287,7 +325,6 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                     finalArrayinquiryCountList = inquiryCountModel.getFinalArray();
                     if (finalArrayinquiryCountList != null) {
                         fillInquiryCount();
-
                     }
                 }
             }
@@ -297,7 +334,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
+                Utils.ping(mContext,getString(R.string.something_wrong));
             }
         });
 
@@ -310,18 +347,25 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     }
 
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 11;
+    }
+
     // CALL InquiryData API HERE
     private void callInquiryDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getInquiryData(getInquiryDetail(), new retrofit.Callback<StudentAttendanceModel>() {
+        ApiHandler.getApiService().getInquiryData(getInquiryDetail(), new retrofit.Callback<StudentInquiryModel>() {
             @Override
-            public void success(StudentAttendanceModel inquiryDataModel, Response response) {
+            public void success(StudentInquiryModel inquiryDataModel, Response response) {
                 if (inquiryDataModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
@@ -339,13 +383,24 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                     return;
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("True")) {
-                    finalArrayinquiryCountList = inquiryDataModel.getFinalArray();
+                    finalArrayinquiryCountList1 = inquiryDataModel.getFinalArray();
+
                     if (finalArrayinquiryCountList != null) {
                         fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         fragmentStudentViewInquiryBinding.listHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        expandableListAdapterInquiryData = new ExpandableListAdapterInquiryData(getActivity(), listDataHeader, listDataChild);
+                        expandableListAdapterInquiryData = new ExpandableListAdapterInquiryData(getActivity(), listDataHeader, listDataChild, new onViewClick() {
+                            @Override
+                            public void getViewClick() {
+                                AppConfiguration.firsttimeback = true;
+                                AppConfiguration.position = 58;
+                                fragment = new StudentInquiryProfileFragment();
+                                fragmentManager = getFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                            }
+                        });
                         fragmentStudentViewInquiryBinding.lvExpviewinquiry.setAdapter(expandableListAdapterInquiryData);
                         Utils.dismissDialog();
                     }else{
@@ -372,9 +427,9 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         Map<String, String> map = new HashMap<>();
         map.put("stdt", FinalStartDateStr);
         map.put("enddt", FinalEndDateStr);
-        map.put("onlineStatus", FinalOnlineStatusStr);
+       // map.put("onlineStatus",FinalOnlineStatusStr);
         map.put("status", FinalStatusIdStr);
-
+        map.put("TermID", FinalTermIdStr);
         return map;
     }
 
@@ -397,8 +452,12 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
 
         dateFinal = d + "/" + m + "/" + y;
         if (isFromDate) {
+            AppConfiguration.fromDate = dateFinal;
             fragmentStudentViewInquiryBinding.startdateButton.setText(dateFinal);
+
         } else {
+
+            AppConfiguration.toDate = dateFinal;
             fragmentStudentViewInquiryBinding.enddateButton.setText(dateFinal);
         }
     }
@@ -436,6 +495,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         fragmentStudentViewInquiryBinding.termSpinner.setAdapter(adapterTerm);
 
         FinalTermIdStr = spinnerTermMap.get(0);
+
         callInquiryCountApi();
     }
 
@@ -445,20 +505,20 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         statusIdArray.add("Generated");
         statusIdArray.add("Admission Form Issued");
         statusIdArray.add("Interaction Call");
-        statusIdArray.add("Interaction Call");
+      //  statusIdArray.add("Interaction Call");
         statusIdArray.add("Interview Done");
-        statusIdArray.add("Generate Circular");
+       // statusIdArray.add("Generate Circular");
         statusIdArray.add("Fees Paid");
 
 
         ArrayList<String> statusdetail = new ArrayList<>();
         statusdetail.add("All");
-        statusdetail.add("Inquiry Generated");
+        statusdetail.add("Enquiry Generated");
         statusdetail.add("Generated Admission Form");
-        statusdetail.add("Received Admission Form");
-        statusdetail.add("Interaction Call");
+        statusdetail.add("Received Admission Form/Interaction Call");
+       // statusdetail.add("Interaction Call");
         statusdetail.add("Come for Interview");
-        statusdetail.add("Generate Circular");
+       // statusdetail.add("Generate Circular");
         statusdetail.add("Fees Paid");
 
 
@@ -485,7 +545,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         fragmentStudentViewInquiryBinding.statusSpinner.setAdapter(adapterTerm);
 
         FinalStatusIdStr = spinnerOrderMap.get(0);
-        callInquiryDataApi();
+
     }
 
     public void fillInquiryCount() {
@@ -499,31 +559,29 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     }
 
     public void getFinalAllId() {
-        FinalStartDateStr = fragmentStudentViewInquiryBinding.startdateButton.getText().toString();
-        FinalEndDateStr = fragmentStudentViewInquiryBinding.enddateButton.getText().toString();
+        FinalStartDateStr = AppConfiguration.fromDate;
+        FinalEndDateStr = AppConfiguration.toDate;
     }
 
     public void fillExpLV() {
-        listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, List<StandardWiseAttendanceModel>>();
+        listDataHeader = new ArrayList<StudentInquiryModel.FinalArray>();
+        listDataChild = new HashMap<String, List<StudentInquiryModel.StausDetail>>();
 
-        for (int i = 0; i < finalArrayinquiryCountList.size(); i++) {
-            listDataHeader.add(finalArrayinquiryCountList.get(i).getName() + "|" +
-                    finalArrayinquiryCountList.get(i).getGrade() + "|" +
-                    finalArrayinquiryCountList.get(i).getGender() + "|" +
-                    finalArrayinquiryCountList.get(i).getCurrentStatus());
+        for (int i = 0; i < finalArrayinquiryCountList1.size(); i++) {
+            listDataHeader.add(finalArrayinquiryCountList1.get(i));
             Log.d("header", "" + listDataHeader);
-            ArrayList<StandardWiseAttendanceModel> row = new ArrayList<StandardWiseAttendanceModel>();
+            List<StudentInquiryModel.StausDetail> row = new ArrayList<StudentInquiryModel.StausDetail>();
 
-            for (int j = 0; j < finalArrayinquiryCountList.get(i).getStausDetail().size(); j++) {
-                row.add(finalArrayinquiryCountList.get(i).getStausDetail().get(j));
-                Log.d("row", "" + row);
+            String studentId  = String.valueOf(listDataHeader.get(i).getStudentID());
 
+            for(int innerCount = 0;innerCount <finalArrayinquiryCountList1.get(i).getStausDetail().size();innerCount++){
+                finalArrayinquiryCountList1.get(i).getStausDetail().get(innerCount).setStudentId(studentId);
             }
-            listDataChild.put(listDataHeader.get(i), row);
+
+            Log.d("row", "" + row);
+            listDataChild.put(String.valueOf(listDataHeader.get(i).getStudentID()),finalArrayinquiryCountList1.get(i).getStausDetail());
             Log.d("child", "" + listDataChild);
         }
-
     }
 
 }

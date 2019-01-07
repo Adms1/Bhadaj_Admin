@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import anandniketan.com.bhadajadmin.Interface.onViewClick;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -38,16 +39,17 @@ public class StudentFilteredDataAdapter extends RecyclerView.Adapter<StudentFilt
 
     @Override
     public void onBindViewHolder(StudentFilteredDataAdapter.MyViewHolder holder, int position) {
-        final FinalArrayStudentModel filter = filteredDataModel.getFinalArray().get(position);
+        final StudentAttendanceFinalArray filter = filteredDataModel.getFinalArray().get(position);
         holder.parentsname_txt.setText(filter.getFatherName());
         holder.studentname_txt.setText(filter.getStudentName());
-        holder.grnno_txt.setText(String.valueOf(filter.getgRNO()));
+        holder.grnno_txt.setText(String.valueOf(filter.getGRNO()));
         holder.grade_txt.setText(filter.getGradeSection());
 
         holder.view_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppConfiguration.StudentId = filter.getStudentID().toString();
+                AppConfiguration.StudentStatus  = filter.getCurrentStatus();
                 onViewClick.getViewClick();
             }
         });

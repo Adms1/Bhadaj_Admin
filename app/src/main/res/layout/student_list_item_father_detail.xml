@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/box_shadow"
+        android:elevation="@dimen/_2sdp"
         android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_margin="@dimen/_7sdp"
+            android:src="@drawable/person_placeholder" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/fatherfirst_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/fatherfirstname"
                 android:textAlignment="textStart"
@@ -37,23 +56,27 @@
                 android:id="@+id/fatherfirstname_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
+
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/fatherlastname_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/fatherlastname"
                 android:textAlignment="textStart"
@@ -74,23 +97,26 @@
                 android:id="@+id/fatherlastname_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="visible"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/fphone_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/fatherphoneno"
                 android:textAlignment="textStart"
@@ -111,7 +137,6 @@
                 android:id="@+id/fphone_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -123,11 +148,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/fmobile_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
+
                 android:layout_height="wrap_content"
                 android:text="@string/fathermobileno"
                 android:textAlignment="textStart"
@@ -148,7 +175,6 @@
                 android:id="@+id/fmobile_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -160,13 +186,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/femail_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:id="@+id/f_email_txt_View"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
-                android:text="@string/fatheremailaddress"
+                android:text="@string/email"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
                 android:textSize="@dimen/_9sdp"
@@ -182,29 +209,29 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/femail_txt"
+                android:id="@+id/f_email_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="normal" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/fqualification_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:id="@+id/f_qualification_txt_View"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
-                android:text="@string/fatherqualification"
+                android:text="@string/qualification"
                 android:textAlignment="textStart"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:textColor="@color/scheduleheadertextcolor"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="bold" />
@@ -219,27 +246,27 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/fqualification_txt"
+                android:id="@+id/f_qualification_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="normal" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/foccupation_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
-                android:text="@string/fatheroccupation"
+                android:text="@string/occupation"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
                 android:textSize="@dimen/_9sdp"
@@ -258,7 +285,6 @@
                 android:id="@+id/foccupation_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -270,11 +296,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="visible"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/forganisation_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/fatheroragnization"
                 android:textAlignment="textStart"
@@ -295,7 +323,6 @@
                 android:id="@+id/forganisation_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
@@ -307,11 +334,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:visibility="visible"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/fdesignation_txt_View"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/fatherdesignation"
                 android:textAlignment="textStart"
@@ -332,11 +362,11 @@
                 android:id="@+id/fdesignation_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_9sdp"
                 android:textStyle="normal" />
         </LinearLayout>
     </LinearLayout>
+    </ScrollView>
 </layout>

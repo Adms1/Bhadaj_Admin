@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import anandniketan.com.bhadajadmin.Interface.onViewClick;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -24,9 +25,9 @@ public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.My
     private StudentAttendanceModel filteredDataModel;
     private onViewClick onViewClick;
 
-    public GRRegisterAdapter(Context mContext, StudentAttendanceModel studentFullDetailModel, onViewClick flag) {
+    public GRRegisterAdapter(Context mContext, StudentAttendanceModel studentFullDetailModel, onViewClick onViewClick) {
         this.context = mContext;
-        this.filteredDataModel = filteredDataModel;
+        this.filteredDataModel = studentFullDetailModel;
         this.onViewClick = onViewClick;
     }
 
@@ -39,18 +40,18 @@ public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.My
 
     @Override
     public void onBindViewHolder(GRRegisterAdapter.MyViewHolder holder, int position) {
-        final FinalArrayStudentModel filter = filteredDataModel.getFinalArray().get(position);
+        final StudentAttendanceFinalArray filter = filteredDataModel.getFinalArray().get(position);
         String sr = String.valueOf(position + 1);
         holder.index_txt.setText(sr);
-        holder.firstname_txt.setText(filter.getFirstName());
-        holder.lastname_txt.setText(filter.getLastName());
-        holder.grnno_txt.setText(String.valueOf(filter.getgRNO()));
+        holder.firstname_txt.setText(filter.getFirstName()+" "+filter.getLastName());
+//        holder.lastname_txt.setText(filter.getLastName());
+        holder.grnno_txt.setText(String.valueOf(filter.getGRNO()));
         holder.grade_txt.setText(filter.getStandard());
 
         holder.view_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppConfiguration.CheckStudentId = filter.getStudentId().toString();
+                AppConfiguration.CheckStudentId = String.valueOf(filter.getStudent_ID().toString());
                 Log.d("CheckStudentId",AppConfiguration.CheckStudentId);
                 onViewClick.getViewClick();
             }

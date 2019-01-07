@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Adapter;
 import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -50,22 +52,29 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
 
         final StandardWiseAttendanceModel detail = attendanceModel.getFinalArray().get(0).getStudentDetail().get(position);
         try {
-            DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                    .cacheInMemory(true)
-                    .cacheOnDisk(true)
-                    .imageScaleType(ImageScaleType.EXACTLY)
-                    .displayer(new FadeInBitmapDisplayer(300))
-                    .build();
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                    context)
-                    .threadPriority(Thread.MAX_PRIORITY)
-                    .defaultDisplayImageOptions(defaultOptions)
-                    .memoryCache(new WeakMemoryCache())
-                    .denyCacheImageMultipleSizesInMemory()
-                    .tasksProcessingOrder(QueueProcessingType.LIFO)// .enableLogging()
-                    .build();
-            imageLoader.init(config.createDefault(context));
-            imageLoader.displayImage(detail.getStudentImage(), holder.profile_image);
+//            DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+//                    .cacheInMemory(true)
+//                    .cacheOnDisk(true)
+//                    .imageScaleType(ImageScaleType.EXACTLY)
+//                    .displayer(new FadeInBitmapDisplayer(300))
+//                    .build();
+//            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//                    context)
+//                    .threadPriority(Thread.MAX_PRIORITY)
+//                    .defaultDisplayImageOptions(defaultOptions)
+//                    .memoryCache(new WeakMemoryCache())
+//                    .denyCacheImageMultipleSizesInMemory()
+//                    .tasksProcessingOrder(QueueProcessingType.LIFO)// .enableLogging()
+//                    .build();
+//            imageLoader.init(config.createDefault(context));
+//            imageLoader.displayImage(detail.getStudentImage(), holder.profile_image);
+
+            if(!TextUtils.isEmpty(detail.getStudentImage())){
+                Glide.with(context).load(detail.getStudentImage()).asBitmap().placeholder(R.drawable.person_placeholder).into(holder.profile_image);
+            }else{
+                Glide.with(context).load(R.drawable.person_placeholder).into(holder.profile_image);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,8 +99,8 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
                             detail.setAttendenceStatus("-1");
                             break;
 
-                        case R.id.onduty_chk:
-                            detail.setAttendenceStatus("3");
+//                        case R.id.onduty_chk:
+//                            detail.setAttendenceStatus("3");
                     }
 
                 }
@@ -110,10 +119,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
             case -2:
                 holder.present_chk.setChecked(true);
                 break;
-            case 3:
-                holder.onduty_chk.setChecked(true);
-                holder.onduty_chk.setClickable(false);
-                break;
+//            case 3:
+//                holder.onduty_chk.setChecked(true);
+//                holder.onduty_chk.setClickable(false);
+//                break;
             default:
         }
     }
@@ -137,7 +146,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
             present_chk = (RadioButton) itemView.findViewById(R.id.present_chk);
             absent_chk = (RadioButton) itemView.findViewById(R.id.absent_chk);
             leave_chk = (RadioButton) itemView.findViewById(R.id.leave_chk);
-            onduty_chk = (RadioButton) itemView.findViewById(R.id.onduty_chk);
+            //onduty_chk = (RadioButton) itemView.findViewById(R.id.onduty_chk);
 
         }
     }

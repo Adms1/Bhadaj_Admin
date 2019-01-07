@@ -74,68 +74,38 @@ public class OtherFragment extends Fragment {
         fragmentOtherBinding.otherSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    fragment = new StudentAbsentFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 1) {
-                    fragment = new BullkSmsFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 2) {
-                    fragment = new SingleSmsFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 3) {
-                    fragment = new EmployeeSmsFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                }else if(position==4){
+               if(position==0){
                     fragment = new SummaryFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                } else if(position==5){
+                } else if(position==1){
                     fragment = new HolidayFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                }else if(position==6){
+                }else if(position==2){
                     fragment = new PTMMainFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                } else if(position==7){
+                } else if(position==3){
                     fragment = new ActivityLoggingFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                }else if (position == 8) {
+                }else if (position == 4) {
                     fragment = new AnnouncementFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                 }
-//                else if(position==9){
-//                    fragment = new MenuPermissionFragment();
-//                    fragmentManager = getFragmentManager();
-//                    fragmentManager.beginTransaction()
-//                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-//                            .replace(R.id.frame_container, fragment).commit();
-//                }
+
             }
         });
 

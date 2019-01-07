@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
@@ -20,11 +21,11 @@ import anandniketan.com.bhadajadmin.R;
 
 public class AnnouncmentAdpater extends RecyclerView.Adapter<AnnouncmentAdpater.MyViewHolder> {
     private Context context;
-    private StudentAttendanceModel announcmentModel;
+    private AnnouncementModel announcmentModel;
     SpannableStringBuilder discriptionSpanned;
     String discriptionStr;
 
-    public AnnouncmentAdpater(Context mContext, StudentAttendanceModel announcmentModel) {
+    public AnnouncmentAdpater(Context mContext, AnnouncementModel announcmentModel) {
         this.context = mContext;
         this.announcmentModel = announcmentModel;
     }
@@ -39,16 +40,16 @@ public class AnnouncmentAdpater extends RecyclerView.Adapter<AnnouncmentAdpater.
     @Override
     public void onBindViewHolder(AnnouncmentAdpater.MyViewHolder holder, int position) {
         String sr = String.valueOf(position + 1);
-        final FinalArrayStudentModel result = announcmentModel.getFinalArray().get(position);
-        holder.index_txt.setText(sr);
-        holder.date_txt.setText(result.getCirDate());
-        holder.subject_txt.setText(result.getCirSubject());
-        holder.order_txt.setText(String.valueOf(result.getCirOrder()));
-        holder.status_txt.setText(result.getCirStatus());
-        discriptionStr = result.getCirDescription();
-        discriptionSpanned = (SpannableStringBuilder) Html.fromHtml(discriptionStr);
-        discriptionSpanned = trimSpannable(discriptionSpanned);
-        holder.discription_txt.setText(discriptionSpanned, TextView.BufferType.SPANNABLE);
+//        final FinalArrayStudentModel result = announcmentModel.getFinalArray().get(position);
+//        holder.index_txt.setText(sr);
+//        holder.date_txt.setText(result.getCirDate());
+//        holder.subject_txt.setText(result.getCirSubject());
+//        holder.order_txt.setText(String.valueOf(result.getCirOrder()));
+//        holder.status_txt.setText(result.getCirStatus());
+//        discriptionStr = result.getCirDescription();
+//        discriptionSpanned = (SpannableStringBuilder) Html.fromHtml(discriptionStr);
+//        discriptionSpanned = trimSpannable(discriptionSpanned);
+//        holder.discription_txt.setText(discriptionSpanned, TextView.BufferType.SPANNABLE);
     }
 
     @Override

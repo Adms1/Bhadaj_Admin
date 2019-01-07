@@ -45,6 +45,8 @@ public class HRFragment extends Fragment {
     }
 
     public void initViews() {
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 5;
         Glide.with(mContext)
                 .load( AppConfiguration.BASEURL_IMAGES + "HR/" + "hr_inside.png")
                 .fitCenter()
@@ -74,11 +76,45 @@ public class HRFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
+                    fragment = new SearchStaffFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                             AppConfiguration.firsttimeback = true;
+                 AppConfiguration.position = 51;
+                }else if (position == 1) {
+                    fragment = new StaffLeaveFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 51;
+                }else if (position == 2) {
                     fragment = new MenuPermissionFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 51;
+                }else if (position == 3) {
+                    fragment = new AttendenceReportFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 51;
+                }else if (position == 4) {
+                    fragment = new DailyReportFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 51;
                 }
             }
         });

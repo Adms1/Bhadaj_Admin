@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 
@@ -42,7 +43,7 @@ public class ResultPermissionAdapter extends RecyclerView.Adapter<ResultPermissi
     @Override
     public void onBindViewHolder(ResultPermissionAdapter.MyViewHolder holder, int position) {
         String sr = String.valueOf(position + 1);
-        final FinalArrayStudentModel result = resultPermissionModel.getFinalArray().get(position);
+        final StudentAttendanceFinalArray result = resultPermissionModel.getFinalArray().get(position);
         holder.index_txt.setText(sr);
         holder.academicyear_txt.setText(resultPermissionModel.getYear());
         holder.grade_txt.setText(String.valueOf(result.getStandard()));

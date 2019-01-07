@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 
 
-/**
- * Created by admsandroid on 1/25/2018.
- */
+
 
 public class ProfilePermissionAdapter extends RecyclerView.Adapter<ProfilePermissionAdapter.MyViewHolder> {
     private Context context;
@@ -36,10 +35,10 @@ public class ProfilePermissionAdapter extends RecyclerView.Adapter<ProfilePermis
     @Override
     public void onBindViewHolder(ProfilePermissionAdapter.MyViewHolder holder, int position) {
         String sr = String.valueOf(position + 1);
-        final FinalArrayStudentModel result = profilePermissionModel.getFinalArray().get(position);
+        final StudentAttendanceFinalArray result = profilePermissionModel.getFinalArray().get(position);
 
         holder.standard_txt.setText(result.getStandard());
-        holder.class_txt.setText(String.valueOf(result.getClasses()));
+        holder.class_txt.setText(String.valueOf(result.get_class()));
         holder.status_txt.setText(result.getStatus());
 
 

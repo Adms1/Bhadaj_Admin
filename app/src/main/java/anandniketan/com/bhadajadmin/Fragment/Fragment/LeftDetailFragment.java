@@ -53,7 +53,7 @@ public class LeftDetailFragment extends Fragment {
     HashMap<Integer, String> spinnerStandardMap;
     HashMap<Integer, String> spinnerSectionMap;
     HashMap<Integer, String> spinnerStatusMap;
-    String FinalStandardIdStr, FinalClassIdStr, StandardName, FinalTermIdStr, FinalStandardStr, FinalSectionStr, FinalStatusStr, FinalStatusIdStr;
+    String FinalStandardIdStr, FinalClassIdStr,StandardName,FinalTermIdStr,FinalStandardStr,FinalSectionStr,FinalStatusStr,FinalStatusIdStr;
     GRRegisterAdapter grRegisterAdapter;
 
     public LeftDetailFragment() {
@@ -121,8 +121,12 @@ public class LeftDetailFragment extends Fragment {
                 FinalStandardIdStr = getid.toString();
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
-                FinalStandardStr = name;
-                Log.d("StandardName", StandardName);
+                if (name.equalsIgnoreCase("All")){
+                    FinalStandardStr = "0";
+                }else{
+                    FinalStandardStr = name;
+                }
+                Log.d("StandardName", FinalStandardStr);
                 fillSection();
             }
 
@@ -140,8 +144,13 @@ public class LeftDetailFragment extends Fragment {
 
                 Log.d("value", selectedsectionstr + " " + getid);
                 FinalClassIdStr = getid.toString();
-                FinalSectionStr = selectedsectionstr;
-                Log.d("FinalClassIdStr", FinalClassIdStr);
+                if (selectedsectionstr.equalsIgnoreCase("All")){
+                    FinalSectionStr = "0";
+                }else{
+                    FinalSectionStr = selectedsectionstr;
+                }
+
+                Log.d("FinalClassIdStr", FinalSectionStr);
             }
 
             @Override
@@ -347,13 +356,13 @@ public class LeftDetailFragment extends Fragment {
         Map<String, String> map = new HashMap<>();
 
         AppConfiguration.FinalTermIdStr = FinalTermIdStr;
-        AppConfiguration.FinalStandardIdStr = FinalStandardIdStr;
-        AppConfiguration.FinalClassIdStr = FinalClassIdStr;
+        AppConfiguration.FinalStandardIdStr = FinalStandardStr;
+        AppConfiguration.FinalClassIdStr = FinalSectionStr;
         AppConfiguration.FinalStatusStr = FinalStatusStr;
 
         map.put("Year", FinalTermIdStr);
-        map.put("Grade", FinalStandardIdStr);
-        map.put("Section", FinalClassIdStr);
+        map.put("Grade", FinalStandardStr);
+        map.put("Section", FinalSectionStr);
         map.put("Status", FinalStatusStr);
         return map;
     }
@@ -495,7 +504,7 @@ public class LeftDetailFragment extends Fragment {
         ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnersectionIdArray);
         fragmentLeftDetailBinding.sectionSpinner.setAdapter(adapterstandard);
 
-        FinalClassIdStr = spinnerSectionMap.get(0);
+        FinalSectionStr = spinnerSectionMap.get(0);
         callLeftDetailApi();
     }
 
@@ -505,14 +514,14 @@ public class LeftDetailFragment extends Fragment {
 //        statusdetailId.add(0);
         statusdetailId.add(1);
         statusdetailId.add(2);
-        statusdetailId.add(3);
+//        statusdetailId.add(3);
 
 
         ArrayList<String> statusdetail = new ArrayList<>();
 //        statusdetail.add("--Select--");
         statusdetail.add("Left School");
-        statusdetail.add("Detain");
-        statusdetail.add("Pass Out");
+        statusdetail.add("Active");
+//        statusdetail.add("Pass Out");
 
 
         String[] spinnerstatusdetailIdArray = new String[statusdetailId.size()];

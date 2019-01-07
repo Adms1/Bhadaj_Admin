@@ -26,7 +26,7 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AccountSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesCollectionModel;
-import anandniketan.com.bhadajadmin.Model.Account.AccountFeesStatusModel;
+import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -44,6 +44,8 @@ public class AccountFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     //Use for Store Resopnse
     List<AccountFeesCollectionModel> collectionModelList;
+    AccountFeesModel feesModelList;
+
     String FinalTermtermdetailId = "1";
 
     public AccountFragment() {
@@ -65,6 +67,8 @@ public class AccountFragment extends Fragment {
     }
 
     public void initViews() {
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 4;
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Account/" + "account_inside.png")
                 .fitCenter()
@@ -91,52 +95,45 @@ public class AccountFragment extends Fragment {
                 DashboardActivity.onLeft();
             }
         });
+
         fragmentAccountBinding.accountSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    fragment = new AccountSummaryFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 2) {
-                    fragment = new FeeStructureFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 3) {
-                    fragment = new StudentDiscountFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 4) {
+               if (position == 0) {
                     fragment = new DailyFeesCollectionFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 5) {
-                    fragment = new ImprestFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 6) {
-                    fragment = new StudentLedgerFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                }else if (position == 7) {
-                    fragment = new CheckPaymentFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                }
+                   AppConfiguration.firsttimeback = true;
+                   AppConfiguration.position = 41;
+                }  else if (position == 1) {
+                   fragment = new TallyTranscationFragment();
+                   fragmentManager = getFragmentManager();
+                   fragmentManager.beginTransaction()
+                           .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                           .replace(R.id.frame_container, fragment).commit();
+                   AppConfiguration.firsttimeback = true;
+                   AppConfiguration.position = 41;
+               }
+               else if (position == 2) {
+                   fragment = new OnlineTransactionFragment();
+                   fragmentManager = getFragmentManager();
+                   fragmentManager.beginTransaction()
+                           .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                           .replace(R.id.frame_container, fragment).commit();
+                   AppConfiguration.firsttimeback = true;
+                   AppConfiguration.position = 41;
+               }
+//                }else if (position == 7) {
+//                    fragment = new CheckPaymentFragment();
+//                    fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+//                            .replace(R.id.frame_container, fragment).commit();
+//                            AppConfiguration.firsttimeback = true;
+//                   AppConfiguration.position = 41;
+//                }*/
             }
         });
         fragmentAccountBinding.termRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -149,10 +146,13 @@ public class AccountFragment extends Fragment {
                             case R.id.term1_radio_button:
                                 FinalTermtermdetailId = fragmentAccountBinding.term1RadioButton.getTag().toString();
                                 AppConfiguration.TermDetailName = fragmentAccountBinding.term1RadioButton.getText().toString();
+                                fillData2();
+
                                 break;
                             case R.id.term2_radio_button:
                                 FinalTermtermdetailId = fragmentAccountBinding.term2RadioButton.getTag().toString();
                                 AppConfiguration.TermDetailName = fragmentAccountBinding.term2RadioButton.getText().toString();
+                                fillData2();
                                 break;
                         }
                     }
@@ -166,35 +166,41 @@ public class AccountFragment extends Fragment {
     // CALL AccountFeesStatus API HERE
     private void callAccountFeesStatusApi() {
 
+
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-//        Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getAccountFeesStatusDetail(getAccountDetail(), new retrofit.Callback<AccountFeesStatusModel>() {
+       Utils.showDialog(getActivity());
+        ApiHandler.getApiService().totalFeesCollectionByTerm(getAccountDetail(),new retrofit.Callback<AccountFeesModel>() {
 
             @Override
-            public void success(AccountFeesStatusModel accountFeesStatusModel, Response response) {
+            public void success(AccountFeesModel accountFeesStatusModel, Response response) {
                 Utils.dismissDialog();
                 if (accountFeesStatusModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.dismissDialog();
                     return;
                 }
                 if (accountFeesStatusModel.getSuccess() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.dismissDialog();
                     return;
                 }
                 if (accountFeesStatusModel.getSuccess().equalsIgnoreCase("False")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
+                    Utils.dismissDialog();
                     return;
                 }
                 if (accountFeesStatusModel.getSuccess().equalsIgnoreCase("True")) {
-                    for (int i = 0; i < accountFeesStatusModel.getFinalArray().size(); i++) {
-                        collectionModelList = accountFeesStatusModel.getFinalArray().get(i).getCollection();
-                    }
-                    if (collectionModelList != null) {
-                        fillData();
+                    Utils.dismissDialog();
+//                    for (int i = 0; i < accountFeesStatusModel.getFinalArray().size(); i++) {
+//                        collectionModelList = accountFeesStatusModel.getFinalArray().get(i).getCollection();
+//                    }
+                    feesModelList = accountFeesStatusModel;
+                    if (feesModelList != null) {
+                        fillData2();
                     }
                 }
             }
@@ -212,9 +218,56 @@ public class AccountFragment extends Fragment {
 
     private Map<String, String> getAccountDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("Term_ID", "");
-        map.put("TermDetailID", FinalTermtermdetailId);
+        map.put("TermID","3");
+       // map.put("TermDetailID", FinalTermtermdetailId);
         return map;
+    }
+
+    public void fillData2() {
+        String amount1 = "", amount2 = "", amount3 = "";
+        Double longval1 = null, longval2 = null, longval3 = null;
+        Format formatter = new DecimalFormat("##,##,###");
+        String formattedString1, formattedString2, formattedString3;
+
+        if(fragmentAccountBinding.term1RadioButton.isChecked()){
+            AppConfiguration.TermId = "1";
+            amount1 = String.valueOf(feesModelList.getTerm1().get(0).getTotalAmount());
+            amount2 = String.valueOf(feesModelList.getTerm1().get(0).getRecievedAmount());
+            amount3 = String.valueOf(feesModelList.getTerm1().get(0).getDueAmount());
+
+//            longval1 = Double.parseDouble(amount1);
+//            longval2 = Double.parseDouble(amount2);
+//            longval3 = Double.parseDouble(amount3);
+//            formattedString1 = formatter.format(longval1);
+//            formattedString2 = formatter.format(longval2);
+//            formattedString3 = formatter.format(longval3);
+            fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(amount1));
+            fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(amount2));
+            fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(amount3));
+
+        }
+
+        if(fragmentAccountBinding.term2RadioButton.isChecked()){
+            AppConfiguration.TermId = "2";
+            amount1 = String.valueOf(feesModelList.getTerm2().get(0).getTotalAmount());
+            amount2 = String.valueOf(feesModelList.getTerm2().get(0).getRecievedAmount());
+            amount3 = String.valueOf(feesModelList.getTerm2().get(0).getDueAmount());
+
+//            longval1 = Double.parseDouble(amount1);
+//            longval2 = Double.parseDouble(amount2);
+//            longval3 = Double.parseDouble(amount3);
+//            formattedString1 = formatter.format(longval1);
+//            formattedString2 = formatter.format(longval2);
+//            formattedString3 = formatter.format(longval3);
+            fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(amount1));
+            fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(amount2));
+            fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(amount3));
+
+        }
+
+
+        Log.d("termid", AppConfiguration.TermId);
+        AppConfiguration.TermDetailId = FinalTermtermdetailId;
     }
 
     // Use for fill data account data

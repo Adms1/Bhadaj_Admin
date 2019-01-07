@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
+import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -24,6 +25,7 @@ public class StandardAdapter extends BaseAdapter {
     private Context mContext;
     private List<FinalArrayStandard> standardModel;
     private ArrayList<FinalArrayStandard> arrayList = new ArrayList<>();
+    private ArrayList<String> checkedItemsIds;
 
     // Constructor
     public StandardAdapter(Context c, List<FinalArrayStandard> standardModel) {
@@ -91,6 +93,47 @@ public class StandardAdapter extends BaseAdapter {
 
     public List<FinalArrayStandard> getDatas() {
         return standardModel;
+    }
+    public ArrayList<String> getCheckedStandards(){
+        checkedItemsIds = new ArrayList<String>();
+        if(standardModel != null){
+            if(standardModel.size() > 0){
+                for(int count = 0;count <standardModel.size();count++){
+                    if(standardModel.get(count).getCheckedStatus().equalsIgnoreCase("1")){
+                        checkedItemsIds.add(String.valueOf(standardModel.get(count).getStandardID()));
+                    }
+                }
+
+            }
+        }
+        return checkedItemsIds;
+    }
+
+
+
+
+
+    public void disableSelection(){
+        try {
+            ViewHolder viewHolder = new ViewHolder();
+
+            if (viewHolder != null) {
+                viewHolder.check_standard.setEnabled(false);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+    public void enableSelection(){
+        try {
+            ViewHolder viewHolder = new ViewHolder();
+
+            if (viewHolder != null) {
+                viewHolder.check_standard.setEnabled(true);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
 }

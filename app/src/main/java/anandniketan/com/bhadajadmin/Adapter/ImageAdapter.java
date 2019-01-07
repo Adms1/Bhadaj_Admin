@@ -25,13 +25,17 @@ public class ImageAdapter extends BaseAdapter {
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "Main/" + "Student.png",
             AppConfiguration.BASEURL_IMAGES + "Main/" + "Staff.png",
-            AppConfiguration.BASEURL_IMAGES + "Main/" + "Account.png",
-            AppConfiguration.BASEURL_IMAGES + "Main/" + "Transport.png",
             AppConfiguration.BASEURL_IMAGES + "Main/" + "HR.png",
-            AppConfiguration.BASEURL_IMAGES + "Main/" + "Other.png",
+            AppConfiguration.BASEURL_IMAGES + "Main/" + "Account.png",
+            AppConfiguration.BASEURL_IMAGES + "Main/" + "SMS.png",
+            AppConfiguration.BASEURL_IMAGES + "Main/" + "Account.png",
+
+
+           /* AppConfiguration.BASEURL_IMAGES + "Main/" + "Transport.png",
+            AppConfiguration.BASEURL_IMAGES + "Main/" + "other.png",*/
     };
 
-    public String[] mThumbNames = {"Student", "Staff", "Account", "Transport", "HR", "Other"};
+    public String[] mThumbNames = {"Student","Staff","HR","Account","SMS","MIS"/*"Transport", "Other"*/};
 
     // Constructor
     public ImageAdapter(Context c) {

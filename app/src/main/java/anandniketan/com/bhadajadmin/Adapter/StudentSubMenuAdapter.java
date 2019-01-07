@@ -27,14 +27,17 @@ public class StudentSubMenuAdapter extends BaseAdapter {
             AppConfiguration.BASEURL_IMAGES + "Student/" + "View%20Inquiry.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Student%20Transport.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Permission.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Attendence.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Left_Detail.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "GR%20Register.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Student%20Marks.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Attendance.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Left_Active.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "New%20Register.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Announcement.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Circular.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Planner.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Gallery.png",
     };
 
-    public String[] mThumbNames = {"Search Student", "View Inquiry", "Student Transport",
-            "Permission", "Attendance", "Left/Detail", "GR Register", "Student Marks"};
+    public String[] mThumbNames = {"Search Student", "View Enquiry", "Student Transport",
+            "Permission", "Attendance", "Left/Active", "New Register","Announcement","Circular","Planner","Gallery"};
 
     // Constructor
     public StudentSubMenuAdapter(Context c) {
@@ -43,12 +46,12 @@ public class StudentSubMenuAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return mThumbNames.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds[position];
+        return mThumbNames[position];
     }
 
     @Override

@@ -119,17 +119,17 @@ public class OtherAttendaceSummaryFragment extends Fragment {
                             fragmentOtherAttendaceSummaryBinding.totalstaffCountTxt.setText(studentObj.getTotalStaff());
                         }
                     }
-                    if (staffUser.getFinalArray().size() > 0) {
-                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.GONE);
-
-                        consistentAbsentTeacherAdapter = new ConsistentAbsentTeacherAdapter(mContext, staffUser);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        fragmentOtherAttendaceSummaryBinding.consistentAbsentTeacherList.setLayoutManager(mLayoutManager);
-                        fragmentOtherAttendaceSummaryBinding.consistentAbsentTeacherList.setItemAnimator(new DefaultItemAnimator());
-                        fragmentOtherAttendaceSummaryBinding.consistentAbsentTeacherList.setAdapter(consistentAbsentTeacherAdapter);
-                    } else {
-                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    }
+//                    if (staffUser.getFinalArray().size() > 0) {
+//                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.GONE);
+//
+//                        consistentAbsentTeacherAdapter = new ConsistentAbsentTeacherAdapter(mContext, staffUser);
+//                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+//                        fragmentOtherAttendaceSummaryBinding.consistentAbsentTeacherList.setLayoutManager(mLayoutManager);
+//                        fragmentOtherAttendaceSummaryBinding.consistentAbsentTeacherList.setItemAnimator(new DefaultItemAnimator());
+//                        fragmentOtherAttendaceSummaryBinding.consistentAbsentTeacherList.setAdapter(consistentAbsentTeacherAdapter);
+//                    } else {
+//                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    }
                 }
             }
 
@@ -177,26 +177,26 @@ public class OtherAttendaceSummaryFragment extends Fragment {
                 }
                 if (studentUser.getSuccess().equalsIgnoreCase("True")) {
 
-                    List<FinalArrayStudentModel> studentArray = studentUser.getFinalArray();
-                    for (int i = 0; i < studentArray.size(); i++) {
-                        FinalArrayStudentModel studentObj = studentArray.get(i);
-                        if (studentObj != null) {
-                            fragmentOtherAttendaceSummaryBinding.absentstudentCountTxt.setText(studentObj.getStudentAbsent());
-                            fragmentOtherAttendaceSummaryBinding.leavestudentCountTxt.setText(studentObj.getStudentLeave());
-                            fragmentOtherAttendaceSummaryBinding.presentstudentCountTxt.setText(studentObj.getStudentPresent());
-                            fragmentOtherAttendaceSummaryBinding.totalstudentCountTxt.setText(studentObj.getTotalStudent());
-                        }
-                    }
-                    if (studentUser.getFinalArray().size() > 0) {
-                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.GONE);
-                        standardwiseStudentAttendaceAdapter = new StandardwiseStudentAttendaceAdapter(mContext, studentUser);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-                        fragmentOtherAttendaceSummaryBinding.standardwiseStudentAttendacelist.setLayoutManager(mLayoutManager);
-                        fragmentOtherAttendaceSummaryBinding.standardwiseStudentAttendacelist.setItemAnimator(new DefaultItemAnimator());
-                        fragmentOtherAttendaceSummaryBinding.standardwiseStudentAttendacelist.setAdapter(standardwiseStudentAttendaceAdapter);
-                    } else {
-                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    }
+//                    List<FinalArrayStudentModel> studentArray = studentUser.getFinalArray();
+//                    for (int i = 0; i < studentArray.size(); i++) {
+//                        FinalArrayStudentModel studentObj = studentArray.get(i);
+//                        if (studentObj != null) {
+//                            fragmentOtherAttendaceSummaryBinding.absentstudentCountTxt.setText(studentObj.getStudentAbsent());
+//                            fragmentOtherAttendaceSummaryBinding.leavestudentCountTxt.setText(studentObj.getStudentLeave());
+//                            fragmentOtherAttendaceSummaryBinding.presentstudentCountTxt.setText(studentObj.getStudentPresent());
+//                            fragmentOtherAttendaceSummaryBinding.totalstudentCountTxt.setText(studentObj.getTotalStudent());
+//                        }
+//                    }
+//                    if (studentUser.getFinalArray().size() > 0) {
+//                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.GONE);
+//                        standardwiseStudentAttendaceAdapter = new StandardwiseStudentAttendaceAdapter(mContext, studentUser);
+//                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+//                        fragmentOtherAttendaceSummaryBinding.standardwiseStudentAttendacelist.setLayoutManager(mLayoutManager);
+//                        fragmentOtherAttendaceSummaryBinding.standardwiseStudentAttendacelist.setItemAnimator(new DefaultItemAnimator());
+//                        fragmentOtherAttendaceSummaryBinding.standardwiseStudentAttendacelist.setAdapter(standardwiseStudentAttendaceAdapter);
+//                    } else {
+//                        fragmentOtherAttendaceSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    }
                 }
             }
 

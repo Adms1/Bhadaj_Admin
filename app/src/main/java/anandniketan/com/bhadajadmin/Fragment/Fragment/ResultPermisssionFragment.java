@@ -33,6 +33,7 @@ import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
 import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
@@ -54,14 +55,15 @@ public class ResultPermisssionFragment extends Fragment {
     //Use for fill TermSpinner
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
     HashMap<Integer, String> spinnerTermMap;
+    HashMap<Integer, String> spinnerTermDetailIdMap;
     //Use for fill List
-    List<FinalArrayStudentModel> finalArrayResultPermissionList;
+    List<StudentAttendanceFinalArray> finalArrayResultPermissionList;
     ResultPermissionAdapter resultPermissionAdapter;
 
     //Use for fill section
     List<FinalArrayStandard> finalArrayStandardsList;
     StandardAdapter standardAdapter;
-    String FinalTermIdStr, FinalGradeIsStr, FinalStatusStr = "1";
+    String FinalTermIdStr, FinalGradeIsStr, FinalStatusStr = "1",FinalTermDetailIdStr;
     public ResultPermisssionFragment() {
     }
 
@@ -142,6 +144,23 @@ public class ResultPermisssionFragment extends Fragment {
                 }
             }
         });
+        fragmentResultPermisssionBinding.termDetailSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = fragmentResultPermisssionBinding.termDetailSpinner.getSelectedItem().toString();
+                String getid = spinnerTermDetailIdMap.get(fragmentResultPermisssionBinding.termDetailSpinner.getSelectedItemPosition());
+
+                Log.d("value", name + " " + getid);
+                FinalTermDetailIdStr = getid.toString();
+                Log.d("FinalTermDetailIdStr", FinalTermDetailIdStr);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     // CALL Term API HERE
@@ -173,6 +192,7 @@ public class ResultPermisssionFragment extends Fragment {
                     finalArrayGetTermModels = termModel.getFinalArray();
                     if (finalArrayGetTermModels != null) {
                         fillTermSpinner();
+                        fillTermDetailSpinner();
                     }
                 }
             }
@@ -226,6 +246,41 @@ public class ResultPermisssionFragment extends Fragment {
         fragmentResultPermisssionBinding.termSpinner.setAdapter(adapterTerm);
     }
 
+    public void fillTermDetailSpinner() {
+        ArrayList<Integer> termdetailId = new ArrayList<>();
+        termdetailId.add(1);
+        termdetailId.add(2);
+
+
+        ArrayList<String> termdetail = new ArrayList<>();
+        termdetail.add("Term 1");
+        termdetail.add("Term 2");
+
+
+        String[] spinnertermdetailIdArray = new String[termdetailId.size()];
+
+        spinnerTermDetailIdMap = new HashMap<Integer, String>();
+        for (int i = 0; i < termdetailId.size(); i++) {
+            spinnerTermDetailIdMap.put(i, String.valueOf(termdetailId.get(i)));
+            spinnertermdetailIdArray[i] = termdetail.get(i).trim();
+        }
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentResultPermisssionBinding.termDetailSpinner);
+
+            popupWindow.setHeight(spinnertermdetailIdArray.length > 4 ? 500 : spinnertermdetailIdArray.length * 100);
+        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+            // silently fail...
+        }
+
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermdetailIdArray);
+        fragmentResultPermisssionBinding.termDetailSpinner.setAdapter(adapterTerm);
+
+        FinalTermDetailIdStr = spinnerTermDetailIdMap.get(0);
+    }
     // CALL ResultPermission API HERE
     private void callResultPermission() {
 
@@ -390,6 +445,7 @@ public class ResultPermisssionFragment extends Fragment {
         map.put("TermID", FinalTermIdStr);
         map.put("GradeID", FinalGradeIsStr);
         map.put("Status", FinalStatusStr);
+        map.put("TermDetailsID",FinalTermDetailIdStr);
         return map;
     }
 

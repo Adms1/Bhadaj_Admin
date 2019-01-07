@@ -20,13 +20,15 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
  */
 
 public class HrSubMenuAdapter extends BaseAdapter {
-    private Context mContext;
-
     public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Search%20Staff.png",
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Staff%20Leave.png",
             AppConfiguration.BASEURL_IMAGES + "HR/" + "Menu%20Permission.png",
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Attendance%20Report.png",
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Daily%20Report.png",
     };
-
-    public String[] mThumbNames = {"Menu Permission"};
+    public String[] mThumbNames = {"Search Staff", "Staff Leave", "Menu Permission", "Attendence Report", "Daily Report"};
+    private Context mContext;
 
     // Constructor
     public HrSubMenuAdapter(Context c) {

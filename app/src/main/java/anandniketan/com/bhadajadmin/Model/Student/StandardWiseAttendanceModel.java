@@ -3,6 +3,8 @@ package anandniketan.com.bhadajadmin.Model.Student;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by admsandroid on 11/17/2017.
  */
@@ -11,13 +13,96 @@ public class StandardWiseAttendanceModel {
     @SerializedName("Standard")
     @Expose
     private String standard;
+    @SerializedName("Class")
+    @Expose
+    private String _class;
+    @SerializedName("TotalStudent")
+    @Expose
+    private String totalStudent;
+    @SerializedName("Present")
+    @Expose
+    private String present;
+    @SerializedName("Absent")
+    @Expose
+    private String absent;
+    @SerializedName("Leave")
+    @Expose
+    private String leave;
+
+    public String getStandard() {
+        return standard;
+    }
+
+    public void setStandard(String standard) {
+        this.standard = standard;
+    }
+
+    public String getClass_() {
+        return _class;
+    }
+
+    public void setClass_(String _class) {
+        this._class = _class;
+    }
+
+    public String getTotalStudent() {
+        return totalStudent;
+    }
+
+    public void setTotalStudent(String totalStudent) {
+        this.totalStudent = totalStudent;
+    }
+
+    public String getPresent() {
+        return present;
+    }
+
+    public void setPresent(String present) {
+        this.present = present;
+    }
+
+    public String getAbsent() {
+        return absent;
+    }
+
+    public void setAbsent(String absent) {
+        this.absent = absent;
+    }
+
+    public String getLeave() {
+        return leave;
+    }
+
+    public void setLeave(String leave) {
+        this.leave = leave;
+    }
+
+
+    //=======status detail ========
     @SerializedName("Status")
     @Expose
-    private String status;
-
+    private Object status;
     @SerializedName("Date")
     @Expose
     private String date;
+
+    public Object getStatus() {
+        return status;
+    }
+
+    public void setStatus(Object status) {
+        this.status = status;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    //======Attendance student detail============
     @SerializedName("StudentID")
     @Expose
     private Integer studentID;
@@ -36,35 +121,6 @@ public class StandardWiseAttendanceModel {
     @SerializedName("Comment")
     @Expose
     private String comment;
-    @SerializedName("GRNO")
-    @Expose
-    private String gRNO;
-    @SerializedName("CheckboxStatus")
-    @Expose
-    private String check;
-    public String getStandard() {
-        return standard;
-    }
-
-    public void setStandard(String standard) {
-        this.standard = standard;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public Integer getStudentID() {
         return studentID;
@@ -114,19 +170,5 @@ public class StandardWiseAttendanceModel {
         this.comment = comment;
     }
 
-    public String getgRNO() {
-        return gRNO;
-    }
 
-    public void setgRNO(String gRNO) {
-        this.gRNO = gRNO;
-    }
-
-    public String getCheck() {
-        return check;
-    }
-
-    public void setCheck(String check) {
-        this.check = check;
-    }
 }

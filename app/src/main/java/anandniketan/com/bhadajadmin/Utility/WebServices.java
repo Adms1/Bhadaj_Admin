@@ -1,26 +1,86 @@
 package anandniketan.com.bhadajadmin.Utility;
 
+import com.squareup.okhttp.ResponseBody;
+
 import java.util.Map;
 
+import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesStatusModel;
+import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
+import anandniketan.com.bhadajadmin.Model.Account.TallyTranscationModel;
+import anandniketan.com.bhadajadmin.Model.HR.DailyAccountModel;
+import anandniketan.com.bhadajadmin.Model.HR.DailyHrAdminModel;
+import anandniketan.com.bhadajadmin.Model.HR.DailyInfoTechnology;
+import anandniketan.com.bhadajadmin.Model.HR.DailyTransportationModel;
+import anandniketan.com.bhadajadmin.Model.HR.DepartmentModel;
+import anandniketan.com.bhadajadmin.Model.HR.DesignationModel;
+import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutDetailsModel;
+import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutSummaryModel;
+import anandniketan.com.bhadajadmin.Model.HR.EmployeePresentDetailsModel;
 import anandniketan.com.bhadajadmin.Model.HR.GetPageListModel;
+import anandniketan.com.bhadajadmin.Model.HR.HrHeadModel;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
+import anandniketan.com.bhadajadmin.Model.HR.LeaveDayModel;
+import anandniketan.com.bhadajadmin.Model.HR.LeaveRequestModel;
+import anandniketan.com.bhadajadmin.Model.HR.LeaveStatusModel;
+import anandniketan.com.bhadajadmin.Model.HR.SearchStaffModel;
+import anandniketan.com.bhadajadmin.Model.LeaveModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISAccountModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISClassWiseResultModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISFinanaceModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISNewAdmissionModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISSchoolResultModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISStaffModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISStaffNewDetailModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISStaffNewModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISStudentModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportDetailModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
+import anandniketan.com.bhadajadmin.Model.MISModel;
 import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
+import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
+import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
+import anandniketan.com.bhadajadmin.Model.Student.MarkSyllabusModel;
+import anandniketan.com.bhadajadmin.Model.Student.PlannerModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
+import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryProfileModel;
+import anandniketan.com.bhadajadmin.Model.Student.TestModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TransportChargesModel;
+import anandniketan.com.bhadajadmin.Model.UploadObject;
+import anandniketan.com.bhadajadmin.Model.login.LogInModel;
+import okhttp3.MultipartBody;
 import retrofit.Callback;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Multipart;
+import retrofit2.http.Part;
 
 /**
  * Created by admsandroid on 11/20/2017.
  */
 
 public interface WebServices {
+
+    @FormUrlEncoded
+    @POST("/StaffLogin")
+    public void login(@FieldMap Map<String, String> map, Callback<LogInModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetTerm")
+    public void getTerm(@FieldMap Map<String, String> map, Callback<TermModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetPermissionData")
+    public void getPermissionData(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
     @FormUrlEncoded
     @POST("/Admin_StudentAttendence")
     public void getStudentAttendace(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
@@ -39,31 +99,47 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/Admin_StudentShowFilteredData")
-    public void getStudentFilterData(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+    public void getAdmin_StudentFilterData(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/Admin_SearchStudent")
+    public void getAdmin_SearchStudent(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/GetStaffFullDetail")
+    public void getAdmin_SearchStaff(@FieldMap Map<String, String> map,Callback<SearchStaffModel> callback);
 
     @FormUrlEncoded
     @POST("/Admin_StudentFullDetail")
     public void getStudentFullDetail(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
-    @FormUrlEncoded
-    @POST("/GetTerm")
-    public void getTerm(@FieldMap Map<String, String> map, Callback<TermModel> callback);
-
-    @FormUrlEncoded
-    @POST("/GetRoutePickUpPointDetail")
-    public void getRouteDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
 
     @FormUrlEncoded
     @POST("/StudentTransportDetail")
     public void getStudentTransportDetail(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
     @FormUrlEncoded
-    @POST("/GetTrasportCharges")
-    public void getTransportChargesDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+    @POST("/SendSMS")
+    public void sendSMS(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
 
     @FormUrlEncoded
-    @POST("/GetVehicleDetail")
-    public void getVehicleDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+    @POST("/GetResultPermissionAdmin")
+    public void getResultPermission(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertResultPermission")
+    public void InsertResultPermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetOnlinePaymentPermission")
+    public void getOnlinePaymentPermission(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/GetRoutePickUpPointDetail")
+    public void getRouteDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+
 
     @FormUrlEncoded
     @POST("/GetVehicleToRouteDetail")
@@ -77,9 +153,18 @@ public interface WebServices {
     @POST("/Admin_AccountFeesStructure")
     public void getAccountFeesStructureDetail(@FieldMap Map<String, String> map, Callback<AccountFeesStatusModel> callback);
 
+
+    @FormUrlEncoded
+    @POST("/DatewiseCollection")
+    public void getDatewiseFeesCollection(@FieldMap Map<String, String> map, Callback<DateWiseFeesCollectionModel> callback);
+
     @FormUrlEncoded
     @POST("/GetStandardSection")
     public void getStandardDetail(@FieldMap Map<String, String> map, Callback<GetStandardModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetStandardSectionCombine")
+    public void getStandardSectionCombine(@FieldMap Map<String, String> map, Callback<GetStandardModel> callback);
 
     @FormUrlEncoded
     @POST("/GetDiscountDetail")
@@ -134,8 +219,9 @@ public interface WebServices {
     public void InsertClassTeachers(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 
     @FormUrlEncoded
-    @POST("/GetPageList")
-    public void getPageList(@FieldMap Map<String, String> map, Callback<GetPageListModel> callback);
+    @POST("/DeleteClassTeacher")
+    public void DeleteClassTeacher(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
 
     @FormUrlEncoded
     @POST("/InsertMenuPermission")
@@ -162,20 +248,17 @@ public interface WebServices {
     public void InsertBulkSMSData(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
 
     @FormUrlEncoded
-    @POST("/GetAbsentToday")
-    public void getAbsentToday(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
+    @POST("/GetAppSMSData")
+    public void getAppSMSData(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
+
+    @FormUrlEncoded
+    @POST("/SendAppSMS")
+    public void SendAppSMS(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
+
 
     @FormUrlEncoded
     @POST("/InsertAbsentTodaySMS")
     public void InsertAbsentTodaySMS(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
-
-    @FormUrlEncoded
-    @POST("/GetResultPermission")
-    public void getResultPermission(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
-
-    @FormUrlEncoded
-    @POST("/InsertResultPermission")
-    public void InsertResultPermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
 
     @FormUrlEncoded
     @POST("/GetStudentProfilePermission")
@@ -185,17 +268,46 @@ public interface WebServices {
     @POST("/InsertProfilePermission")
     public void InsertProfilePermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
 
-    @FormUrlEncoded
-    @POST("/GetOnlinePaymentPermission")
-    public void getOnlinePaymentPermission(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
     @FormUrlEncoded
     @POST("/InsertOnlinePaymentPermission")
     public void InsertOnlinePaymentPermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
 
     @FormUrlEncoded
+    @POST("/GetEmployeeForSuggestionPermission")
+    public void getEmployeeForSuggestionPermission(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetSuggestionPermission")
+    public void getSuggestionPermission(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertSuggestionPermission")
+    public void InsertSuggestionPermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DeleteSuggestionPermission")
+    public void deleteSuggestionPermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetTestNameForMarksSyllabusPermission")
+    public void getTestNameForMarksSyllabusPermission(@FieldMap Map<String, String> map, Callback<TestModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMarksSyllabusPermission")
+    public void getMarksSyllabusPermission(@FieldMap Map<String, String> map, Callback<MarkSyllabusModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertMarksSyllabusPermission")
+    public void insertMarksSyllabusPermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
+
+    @FormUrlEncoded
     @POST("/GetGRRegister")
-    public void getGRRegister(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+    public void getGRRegister(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetNewRegister")
+    public void getNewRegister(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
     @FormUrlEncoded
     @POST("/GetLeftDetainStudent")
@@ -210,12 +322,32 @@ public interface WebServices {
     public void getStudentMarks(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
     @FormUrlEncoded
+    @POST("/ViewMarks")
+    public void getStudentViewMarks(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetPlanner")
+    public void getPlanner(@FieldMap Map<String, String> map, Callback<PlannerModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertPlanner")
+    public void insertPlanner(@FieldMap Map<String, String> map, Callback<PlannerModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DeletePlanner")
+    public void deletePlanner(@FieldMap Map<String, String> map, Callback<PlannerModel> callback);
+
+    @FormUrlEncoded
     @POST("/GetAnnouncementData")
-    public void getAnnouncementData(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+    public void getAnnouncementData(@FieldMap Map<String, String> map, Callback<AnnouncementModel> callback);
 
     @FormUrlEncoded
     @POST("/InsertAnnouncement")
-    public void InsertAnnouncement(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
+    public void InsertAnnouncement(@FieldMap Map<String, String> map, Callback<AnnouncementModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DeleteAnnouncement")
+    public void deleteAnnouncement(@FieldMap Map<String, String> map, Callback<AnnouncementModel> callback);
 
     @FormUrlEncoded
     @POST("/GetInquiryCount")
@@ -223,11 +355,31 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/GetInquiryData")
-    public void getInquiryData(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+    public void getInquiryData(@FieldMap Map<String, String> map, Callback<StudentInquiryModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertInquiry")
+    public void insertInquiryData(@FieldMap Map<String, String> map, Callback<StudentInquiryModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetInduiryDataByID")
+    public void getInquiryDataByID(@FieldMap Map<String, String> map, Callback<StudentInquiryProfileModel> callback);
+
+    @FormUrlEncoded
+    @POST("/RejectInquiry")
+    public void rejectInquiry(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetAllSMSDetail")
+    public void getAllSMSDetail(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
     @FormUrlEncoded
     @POST("/GetAttendence_Admin")
     public void getAttendence_Admin(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertAttendance")
+    public void insertAttendance(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
     @FormUrlEncoded
     @POST("/GetReceiptDetails")
@@ -283,4 +435,481 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("/GetLessonPlan")
     public void getLessonPlan(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetGalleryData")
+    public void getGalleryData(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertGallery")
+    public void insertGalleryData(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DeleteGallery")
+    public void deleteGalleryData(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetCircularDataAdmin")
+    public void getCircularDataAdmin(@FieldMap Map<String, String> map, Callback<CircularModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertCircular")
+    public void insertCircular(@FieldMap Map<String, String> map, Callback<CircularModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DeleteCircular")
+    public void deleteCircular(@FieldMap Map<String, String> map, Callback<CircularModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetStandardSection")
+    public void getStandardSection(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetTimetableByClass")
+    public void getTimetableByClass(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/AdminInsertTimetable")
+    public void adminInsertTimetable(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DeleteTimetable")
+    public void deleteTimetable(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetTeacherBySubject")
+    public void getTeacherBySubjecte(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetHead")
+    public void getHead(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/InsertStaffLeaveRequest")
+    public void insertStaffLeaveRequest(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetStaffLeaveRequest")
+    public void getStaffLeaveRequest(@FieldMap Map<String, String> map, Callback<LeaveRequestModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetLeaveDays")
+    public void getleaveDays(@FieldMap Map<String, String> map, Callback<LeaveDayModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetAllStaffLeaveRequest")
+    public void getAllStaffLeaveRequest(@FieldMap Map<String, String> map, Callback<LeaveRequestModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DeleteStaffLeave")
+    public void deleteStaffLeave(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetTeacherlist")
+    public void getTeacherlist(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetStandardTeacher")
+    public void getStandardTeacher(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetSubjectByTeacher")
+    public void getSubjectByTeacher(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/TeacherStudentHomeworkStatus")
+    public void teacherStudentHomeworkStatus(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/TeacherStudentHomeworkStatusInsertUpdate")
+    public void teacherStudentHomeworkStatusInsertUpdate(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
+    @POST("/TallyTransactionList")
+    public void getTallyTransactionList(@FieldMap Map<String, String> map, Callback<TallyTranscationModel> callback);
+
+    @FormUrlEncoded
+    @POST("/OnlineTransactionList")
+    public void getOnlineTransactionList(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+
+
+    @FormUrlEncoded
+    @POST("/GetTrasportCharges")
+    public void getTransportChargesDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetVehicleDetail")
+    public void getVehicleDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/GetLeaveStatus")
+    public void getLeaveStatus(@FieldMap Map<String, String> map, Callback<LeaveStatusModel> callback);
+
+    @FormUrlEncoded
+    @POST("/UpdateLeaveStatus")
+    public void updateLeaveStatus(@FieldMap Map<String, String> map, Callback<LeaveRequestModel> callback);
+
+    @FormUrlEncoded
+    @POST("/LeaveBalance")
+    public void leaveBalance(@FieldMap Map<String, String> map, Callback<LeaveModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetPageList")
+    public void getPageList(@FieldMap Map<String, String> map, Callback<GetPageListModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DailyTransportation")
+    public void getDailyTransportation(@FieldMap Map<String, String> map, Callback<DailyTransportationModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DailyAccount")
+    public void getDailyAccount(@FieldMap Map<String, String> map, Callback<DailyAccountModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DailyInformationTechnology")
+    public void getDailyInformationTechnology(@FieldMap Map<String, String> map, Callback<DailyInfoTechnology> callback);
+
+    @FormUrlEncoded
+    @POST("/DailyHRHead")
+    public void getDailyHRHead(@FieldMap Map<String, String> map, Callback<HrHeadModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DailyAdmin")
+    public void getDailyAdmin(@FieldMap Map<String, String> map, Callback<DailyHrAdminModel> callback);
+
+    @FormUrlEncoded
+    @POST("/DailyHousekeeping")
+    public void getDailyHousekeeping(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+
+    @FormUrlEncoded
+    @POST("/EmployeeInOutSummary")
+    public void getEmployeeInOutSummary(@FieldMap Map<String, String> map, Callback<EmployeeInOutSummaryModel> callback);
+
+    @FormUrlEncoded
+    @POST("/EmployeePresentDetails")
+    public void getEmployeePresentDetails(@FieldMap Map<String, String> map, Callback<EmployeePresentDetailsModel> callback);
+
+    @FormUrlEncoded
+    @POST("/EmployeeInOutDetails")
+    public void getEmployeeInOutDetails(@FieldMap Map<String, String> map, Callback<EmployeeInOutDetailsModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetDepartment")
+    public void getDepartment(@FieldMap Map<String, String> map, Callback<DepartmentModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetDesignation")
+    public void getDesignation(@FieldMap Map<String, String> map, Callback<DesignationModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/GetStaffFullDetail")
+    public void getStaffFullDetail(@FieldMap Map<String, String> map, Callback<SearchStaffModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetAbsentToday")
+    public void getAbsentToday(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetTestForMarks")
+    public void getTestForMarks(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/GetMarks")
+    public void getMarks(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+
+    @FormUrlEncoded
+    @POST("/SendStudentMarksSMS")
+    public void sendStudentMarksSMS(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+
+    @Multipart
+    @POST("uploadpdf.aspx")
+    Call<ResponseBody> uploadPDF(@Part MultipartBody.Part file);
+
+    @Multipart
+    @POST("uploadpdf.aspx")
+    Call<UploadObject> uploadMultiFile(@Part MultipartBody.Part file1,@Part MultipartBody.Part file2,@Part MultipartBody.Part file3);
+
+
+    @Multipart
+    @retrofit2.http.POST("uploadpdf.aspx")
+    Call<okhttp3.ResponseBody> uploadSingleFile(@Part MultipartBody.Part file);
+
+
+    @FormUrlEncoded
+    @POST("/TotalFeesCollectionByTerm")
+    public void totalFeesCollectionByTerm(@FieldMap Map<String, String> map,Callback<AccountFeesModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISData")
+    public void getMISdata(@FieldMap Map<String, String> map,Callback<MISModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISStudent")
+    public void getMISStudentdata(@FieldMap Map<String, String> map,Callback<MISStudentModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISStaff")
+    public void getMISStaffdata(@FieldMap Map<String, String> map,Callback<MISStaffModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISAccountByType")
+    public void getMISAccountByType(@FieldMap Map<String, String> map,Callback<MISAccountModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/GetMISAccountByStandard")
+    public void getMISAccountByStandard(@FieldMap Map<String, String> map,Callback<MISAccountModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISAccountByStudent")
+    public void getMISAccountByStudent(@FieldMap Map<String, String> map,Callback<MISAccountModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISNewAddmission")
+    public void getMISNewAddmission(@FieldMap Map<String, String> map,Callback<MISNewAdmissionModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISStaffAttendance")
+    public void getMISStaffAttendance(@FieldMap Map<String, String> map,Callback<MISStaffNewModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISStaffAttendanceDetail")
+    public void getMISStaffAttendanceDetail(@FieldMap Map<String, String> map,Callback<MISStaffNewDetailModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISTask")
+    public void getMISTask(@FieldMap Map<String, String> map,Callback<MISTaskReportModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetMISTaskData")
+    public void getMISTaskData(@FieldMap Map<String, String> map,Callback<MISTaskReportDetailModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/GetTopperList")
+    public void getTopperList(@FieldMap Map<String, String> map,Callback<MISSchoolResultModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetResultClassWise")
+    public void getResultClassWise(@FieldMap Map<String, String> map,Callback<MISClassWiseResultModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetResultStudentWise")
+    public void getResultStudentWise(@FieldMap Map<String, String> map,Callback<MIStudentWiseResultModel> callback);
+
+    @FormUrlEncoded
+    @POST("/GetResultData")
+    public void getResultData(@FieldMap Map<String, String> map,Callback<MISStudentResultDataModel> callback);
+
+    @FormUrlEncoded
+    @POST("/HeadWiseFeesCollection")
+    public void getHeadWiseFeesCollection(@FieldMap Map<String, String> map,Callback<MISFinanaceModel> callback);
+
+
+    @FormUrlEncoded
+    @POST("/AddDeviceDetailAdmin")
+    public void addDeviceDetailAdmin(@FieldMap Map<String, String> map,Callback<MISModel> callback);
+
+
+//    static let baseUrl:String            = "http://192.168.1.11:8086/MobileApp_Service.asmx/"
+//
+//    static let loginApi:String                          = "\(baseUrl)InsertProfilePermission"
+//    static let getTermApi:String                        = "\(baseUrl)GetTerm"
+//    static let getPermissionDataApi:String              = "\(baseUrl)GetPermissionData"
+//
+//    // MARK: Student
+//
+//    static let admin_StudentAttendenceApi:String        = "\(baseUrl)Admin_StudentAttendence"
+//    static let admin_StaffAttendenceApi:String          = "\(baseUrl)Admin_StaffAttendence"
+//    static let totalFeesCollectionByTermApi:String      = "\(baseUrl)TotalFeesCollectionByTerm"
+//
+//    static let admin_StudentSearchByParentName:String   = "\(baseUrl)Admin_StudentSearchByParentName"
+//    static let admin_StudentSearchByStuName:String      = "\(baseUrl)Admin_StudentSearchByStuName"
+//    static let admin_StudentShowFilteredData:String     = "\(baseUrl)Admin_StudentShowFilteredData"
+//    static let admin_SearchStudent:String               = "\(baseUrl)Admin_SearchStudent"
+//    static let admin_StudentFullDetailApi:String        = "\(baseUrl)Admin_StudentFullDetail"
+//
+//    static let studentTransportDetailApi:String         = "\(baseUrl)StudentTransportDetail"
+//    static let sendSMSApi:String                        = "\(baseUrl)SendSMS"
+//
+//    static let getResultPermissionAdminApi:String       = "\(baseUrl)GetResultPermissionAdmin"
+//    static let insertResultPermissionApi:String         = "\(baseUrl)InsertResultPermission"
+//
+//    static let getOnlinePaymentPermissionApi:String     = "\(baseUrl)GetOnlinePaymentPermission"
+//    static let insertOnlinePaymentPermissionApi:String  = "\(baseUrl)InsertOnlinePaymentPermission"
+//
+//    static let getStudentProfilePermissionApi:String    = "\(baseUrl)GetStudentProfilePermission"
+//    static let insertProfilePermissionApi:String        = "\(baseUrl)InsertProfilePermission"
+//
+//    static let getGetEmployeeForSuggestionPermissionApi:String     = "\(baseUrl)GetEmployeeForSuggestionPermission"
+//    static let getGetSuggestionPermissionApi:String     = "\(baseUrl)GetSuggestionPermission"
+//    static let insertSuggestionPermissionApi:String     = "\(baseUrl)InsertSuggestionPermission"
+//    static let deleteSuggestionPermissionApi:String     = "\(baseUrl)DeleteSuggestionPermission"
+//
+//    static let getGRRegisterApi:String                  = "\(baseUrl)GetGRRegister"
+//    static let getNewRegisterApi:String                  = "\(baseUrl)GetNewRegister"
+//    static let getLeftDetainStudentApi:String           = "\(baseUrl)GetLeftDetainStudent"
+//
+//    static let getEnquiryCountApi:String                = "\(baseUrl)GetInquiryCount"
+//    static let getEnquiryDataApi:String                 = "\(baseUrl)GetInquiryData"
+//    static let getEnduiryDataByIDApi:String             = "\(baseUrl)GetInduiryDataByID"
+//    static let rejectEnquiryApi:String                  = "\(baseUrl)RejectInquiry"
+//
+//    static let getAttendenceAdminApi:String             = "\(baseUrl)GetAttendence_Admin"
+//
+//    static let getTestNameApi:String                    = "\(baseUrl)GetTestName"
+//    //    static let getStudentMarksApi:String                = "\(baseUrl)GetStudentMarks"
+//    static let viewMarksApi:String                      = "\(baseUrl)ViewMarks"
+//
+//    static let getPlannerApi:String                     = "\(baseUrl)GetPlanner"
+//    static let insertPlannerApi:String                  = "\(baseUrl)InsertPlanner"
+//    static let deletePlannerApi:String                  = "\(baseUrl)DeletePlanner"
+//
+//    static let getTestNameForMarksSyllabusPermissionApi:String = "\(baseUrl)GetTestNameForMarksSyllabusPermission"
+//    static let getMarksSyllabusPermissionApi:String     = "\(baseUrl)GetMarksSyllabusPermission"
+//    static let insertMarksSyllabusPermissionApi:String  = "\(baseUrl)InsertMarksSyllabusPermission"
+//
+//    static let getGalleryDataApi:String                 = "\(baseUrl)GetGalleryData"
+//    static let insertGalleryApi:String                  = "\(baseUrl)InsertGallery"
+//    static let deleteGalleryApi:String                  = "\(baseUrl)DeleteGallery"
+//
+//    static let getAnnouncementDataApi:String            = "\(baseUrl)GetAnnouncementData"
+//    static let insertAnnouncementApi:String             = "\(baseUrl)InsertAnnouncement"
+//    static let deleteAnnouncementApi:String             = "\(baseUrl)DeleteAnnouncement"
+//
+//    static let getCircularDataApi:String                = "\(baseUrl)GetCircularDataAdmin"
+//    static let insertCircularApi:String                 = "\(baseUrl)InsertCircular"
+//    static let deleteCircularApi:String                 = "\(baseUrl)DeleteAnnouncement"
+//
+//    // MARK: Staff
+//
+//    static let getTeachersApi:String                    = "\(baseUrl)GetTeachers"
+//    static let getStandardSectionApi:String             = "\(baseUrl)GetStandardSection"
+//    static let insertClassTeachersApi:String            = "\(baseUrl)InsertClassTeachers"
+//    static let deleteClassTeacherApi:String             = "\(baseUrl)DeleteClassTeacher"
+//    static let getClassTeacherDetailApi:String          = "\(baseUrl)GetClassTeacherDetail"
+//
+//    static let getSubjectApi:String                     = "\(baseUrl)GetSubject"
+//    static let getSubjectAssginApi:String               = "\(baseUrl)GetSubjectAssgin"
+//    static let insertAssignSubjectApi:String            = "\(baseUrl)InsertAssignSubject"
+//
+//    static let getLessonPlanSubjectApi:String           = "\(baseUrl)GetLessonPlanSubject"
+//    static let getEmployeeBySubjectApi:String           = "\(baseUrl)GetEmployeeBySubject"
+//    static let getLessonPlanApi:String                  = "\(baseUrl)GetLessonPlan"
+//    static let wordApi:String                           = "\(downloadUrl)LessonPlanWord_Mobile.aspx?ID="
+//
+//    static let getExamsApi:String                       = "\(baseUrl)GetExams"
+//
+//    static let getTimetableByClassApi:String            = "\(baseUrl)GetTimetableByClass"
+//    static let adminInsertTimetableApi:String           = "\(baseUrl)AdminInsertTimetable"
+//    static let deleteTimetableApi:String                = "\(baseUrl)DeleteTimetable"
+//    static let getTeacherBySubjectApi:String            = "\(baseUrl)GetTeacherBySubject"
+//
+//    static let getHeadApi:String                        = "\(baseUrl)GetHead"
+//    static let insertStaffLeaveRequestApi:String        = "\(baseUrl)InsertStaffLeaveRequest"
+//    static let getStaffLeaveRequestApi:String           = "\(baseUrl)GetStaffLeaveRequest"
+//    static let deleteStaffLeaveApi:String               = "\(baseUrl)DeleteStaffLeave"
+//
+//    static let getTeacherlistApi:String                 = "\(baseUrl)GetTeacherlist"
+//    static let getStandardTeacherApi:String             = "\(baseUrl)GetStandardTeacher"
+//    static let getSubjectByTeacherApi:String            = "\(baseUrl)GetSubjectByTeacher"
+//    static let teacherStudentHomeworkStatusApi:String   = "\(baseUrl)TeacherStudentHomeworkStatus"
+//    static let teacherStudentHomeworkStatusInsertUpdateApi:String  = "\(baseUrl)TeacherStudentHomeworkStatusInsertUpdate"
+//
+//
+//    // MARK: Account
+//
+//    static let admin_AccountFeesStructureApi:String     = "\(baseUrl)Admin_AccountFeesStructure"
+//    static let dailyFeeCollectionApi:String             = "\(baseUrl)DatewiseCollection"
+//    static let getImprestDetailApi:String               = "\(baseUrl)GetImprestDetail"
+//    static let getDiscountDetailApi:String              = "\(baseUrl)GetDiscountDetail"
+//
+//    static let getPaymentLedger:String                  = "\(baseUrl)GetPaymentLedger"
+//    static let getAllPaymentLedger:String               = "\(baseUrl)GetAllPaymentLedger"
+//
+//    static let getReceiptDetailsApi:String              = "\(baseUrl)GetReceiptDetails"
+//
+//    static let tallyTransactionListApi:String           = "\(baseUrl)TallyTransactionList"
+//    static let getOnlineTransactionIDApi:String         = "\(baseUrl)GetOnlineTransactionID"
+//    static let onlineTransactionListApi:String          = "\(baseUrl)OnlineTransactionList"
+//
+//    // MARK: Transport
+//
+//    static let getTrasportChargesApi:String             = "\(baseUrl)GetTrasportCharges"
+//    static let getRoutePickUpPointDetail:String         = "\(baseUrl)GetRoutePickUpPointDetail"
+//    static let getVehicleDetail:String                  = "\(baseUrl)GetVehicleDetail"
+//    static let getVehicleToRouteDetail:String           = "\(baseUrl)GetVehicleToRouteDetail"
+//
+//    // MARK: HR
+//
+//    static let getLeaveStatusApi:String                 = "\(baseUrl)GetLeaveStatus"
+//    static let getAllStaffLeaveRequestApi:String        = "\(baseUrl)GetAllStaffLeaveRequest"
+//    static let updateLeaveStatusApi:String              = "\(baseUrl)UpdateLeaveStatus"
+//
+//    static let leaveBalanceApi:String                   = "\(baseUrl)LeaveBalance"
+//
+//    static let getPageListApi:String                    = "\(baseUrl)GetPageList"
+//    static let insertMenuPermissionApi:String           = "\(baseUrl)InsertMenuPermission"
+//
+//    static let dailyTransportationApi:String            = "\(baseUrl)DailyTransportation"
+//    static let dailyAccountApi:String                   = "\(baseUrl)DailyAccount"
+//    static let dailyITApi:String                        = "\(baseUrl)DailyInformationTechnology"
+//    static let dailyHRHeadApi:String                    = "\(baseUrl)DailyHRHead"
+//    static let dailyAdminApi:String                     = "\(baseUrl)DailyAdmin"
+//    static let dailyHousekeepingApi:String              = "\(baseUrl)DailyHousekeeping"
+//
+//    static let employeeInOutSummaryApi:String           = "\(baseUrl)EmployeeInOutSummary"
+//    static let employeePresentDetailsApi:String         = "\(baseUrl)EmployeePresentDetails"
+//    static let employeeInOutDetailsApi:String           = "\(baseUrl)EmployeeInOutDetails"
+//
+//    static let getDepartmentApi:String                  = "\(baseUrl)GetDepartment"
+//    static let getDesignationApi:String                 = "\(baseUrl)GetDesignation"
+//    static let getStaffFullDetailApi:String             = "\(baseUrl)GetStaffFullDetail"
+//
+//    // MARK: SMS
+//
+//    static let getAbsentTodayApi:String                 = "\(baseUrl)GetAbsentToday"
+//    static let insertAbsentTodaySMSApi:String           = "\(baseUrl)InsertAbsentTodaySMS"
+//
+//    static let getBulkSMSDataApi:String                 = "\(baseUrl)GetBulkSMSData"
+//    static let insertBulkSMSDataApi:String              = "\(baseUrl)InsertBulkSMSData"
+//
+//    static let getStaffSMSDataApi:String                = "\(baseUrl)GetStaffSMSData"
+//    static let insertStaffSMSDataApi:String             = "\(baseUrl)InsertStaffSMSData"
+//
+//    static let insertSingleSMSDataApi:String            = "\(baseUrl)InsertSingleSMSData"
+//
+//    static let getAllSMSDetailApi:String                = "\(baseUrl)GetAllSMSDetail"
+//    static let getAppSMSDataApi:String                  = "\(baseUrl)GetAppSMSData"
+//    static let sendAppSMSApi:String                     = "\(baseUrl)SendAppSMS"
+//
+//    static let getStandardSectionCombineApi:String      = "\(baseUrl)GetStandardSectionCombine"
+//    static let getTestForMarksApi:String                = "\(baseUrl)GetTestForMarks"
+//    static let getMarksApi:String                       = "\(baseUrl)GetMarks"
+//    static let sendStudentMarksSMSApi:String            = "\(baseUrl)SendStudentMarksSMS"
+//
+//    //    static let getAnnouncementDataApi:String            = "\(baseUrl)GetAnnouncementData"
+//    //static let insertAnnouncementApi:String             = "\(baseUrl)InsertAnnouncement"
+//
+//    static let teacherGetClassSubjectWiseStudentApi:String         = "\(baseUrl)TeacherGetClassSubjectWiseStudent"
+//    static let ptmTeacherStudentGetDetailApi:String                = "\(baseUrl)PTMTeacherStudentGetDetail"
+//    static let ptmTeacherStudentInsertDetailApi:String             = "\(baseUrl)PTMTeacherStudentInsertDetail"
+//    static let ptmDeleteMeeting:String                             = "\(baseUrl)PTMDeleteMeeting"
+//
+//    static let getMonthlyCountApi:String                           = "\(baseUrl)GetMonthlyCount"
+//    static let getDateCountPerMonthApi:String                      = "\(baseUrl)GetDateCountPerMonth"
+//    static let getLoginDetailsDatewiseApi:String                   = "\(baseUrl)GetLoginDetailsDatewise"
+//
+//    static let getHolidayApi:String                                = "\(baseUrl)GetHoliday"
+//    static let getHolidayCategoryApi:String                        = "\(baseUrl)GetHolidayCategory"
+//    static let insertHolidayApi:String                             = "\(baseUrl)InsertHoliday"
+
+
+
+
+
 }

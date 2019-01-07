@@ -128,6 +128,16 @@ public class FinalArraySMSDataModel {
     @SerializedName("SubjectID")
     @Expose
     private Integer subjectID;
+    @SerializedName("GR")
+    @Expose
+    private String gR;
+
+    @SerializedName("ClassName")
+    @Expose
+    private String className;
+    @SerializedName("AppStatus")
+    @Expose
+    private String appStatus;
     @SerializedName("StudentData")
     @Expose
     private List<StudentDatum> studentData = new ArrayList<StudentDatum>();
@@ -458,4 +468,34 @@ public class FinalArraySMSDataModel {
     public void setStudentData(List<StudentDatum> studentData) {
         this.studentData = studentData;
     }
+
+
+
+
+    public String getGR() {
+        return gR;
+    }
+
+    public void setGR(String gR) {
+        this.gR = gR;
+    }
+
+
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getAppStatus() {
+        return appStatus;
+    }
+
+    public void setAppStatus(String appStatus) {
+        this.appStatus = appStatus;
+    }
+
 }

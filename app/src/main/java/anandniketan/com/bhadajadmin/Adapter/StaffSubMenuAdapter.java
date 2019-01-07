@@ -25,14 +25,15 @@ public class StaffSubMenuAdapter extends BaseAdapter {
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "Staff/" + "Class%20Teacher.png",
             AppConfiguration.BASEURL_IMAGES + "Staff/" + "Assign%20Subject.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "View%20Lesson%20Plan.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "View%20Lesson%20Plan%20Schedule.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Exam.png",
             AppConfiguration.BASEURL_IMAGES + "Staff/" + "Time%20Table.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Add%20Exam_Syllabus.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Home%20Work%20Not%20Done.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "My%20Leave.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "View%20Marks.png",
     };
 
-    public String[] mThumbNames = {"Class Teacher", "Assign Subject", "View Lesson Plan",
-            "View Lesson Plan Schedule", "Exam", "Time Table"};
+    public String[] mThumbNames = {"Class Teacher", "Assign Subject","Time Table",
+            "Exam","Home Work Not Done","My Leave","View Marks" };
 
     // Constructor
     public StaffSubMenuAdapter(Context c) {

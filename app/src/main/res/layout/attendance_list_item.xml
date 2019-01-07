@@ -20,7 +20,7 @@
 
         <TextView
             android:id="@+id/student_name_txt"
-            android:layout_width="@dimen/_100sdp"
+            android:layout_width="@dimen/_135sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|center_horizontal"
             android:layout_marginLeft="@dimen/_1sdp"
@@ -77,18 +77,18 @@
                 android:tag="-1"
                 android:textSize="@dimen/_9sdp"
                 android:textAlignment="center" />
-            <RadioButton
-                android:id="@+id/onduty_chk"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_gravity="center|center_horizontal"
-                android:layout_marginLeft="@dimen/_1sdp"
-                android:layout_marginTop="@dimen/_1sdp"
-                android:button="@drawable/onduty_custome_checkbox"
-                android:padding="@dimen/_5sdp"
-                android:tag="-1"
-                android:textSize="@dimen/_9sdp"
-                android:textAlignment="center" />
+            <!--<RadioButton-->
+                <!--android:id="@+id/onduty_chk"-->
+                <!--android:layout_width="@dimen/_35sdp"-->
+                <!--android:layout_height="@dimen/_30sdp"-->
+                <!--android:layout_gravity="center|center_horizontal"-->
+                <!--android:layout_marginLeft="@dimen/_1sdp"-->
+                <!--android:layout_marginTop="@dimen/_1sdp"-->
+                <!--android:button="@drawable/onduty_custome_checkbox"-->
+                <!--android:padding="@dimen/_5sdp"-->
+                <!--android:tag="-1"-->
+                <!--android:textSize="@dimen/_9sdp"-->
+                <!--android:textAlignment="center" />-->
         </RadioGroup>
     </LinearLayout>
 </LinearLayout>

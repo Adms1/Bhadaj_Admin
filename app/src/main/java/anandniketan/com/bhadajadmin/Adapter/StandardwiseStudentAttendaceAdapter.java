@@ -1,15 +1,19 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.databinding.StandardwiseAbsentListBinding;
 
 
 /**
@@ -17,35 +21,38 @@ import anandniketan.com.bhadajadmin.R;
  */
 
 public class StandardwiseStudentAttendaceAdapter extends RecyclerView.Adapter<StandardwiseStudentAttendaceAdapter.ViewHolder> {
+    StandardwiseAbsentListBinding standardwiseAbsentListBinding;
     private Context context;
-    private StudentAttendanceModel studentAttendanceModel;
+    private List<StandardWiseAttendanceModel> studentAttendanceModel;
 
-    public StandardwiseStudentAttendaceAdapter(Context mContext, StudentAttendanceModel studentAttendanceModel) {
-        this.context = mContext;
-        this.studentAttendanceModel = studentAttendanceModel;
+    public StandardwiseStudentAttendaceAdapter(Context context, List<StandardWiseAttendanceModel> standardWiseAttendanceModelList) {
+        this.context = context;
+        this.studentAttendanceModel = standardWiseAttendanceModelList;
     }
-
-
 
 
     @Override
     public StandardwiseStudentAttendaceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.standardwise_attendace_list, parent, false);
-        return new ViewHolder(itemView);
+        View view = null;
+        standardwiseAbsentListBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.standardwise_absent_list, parent, false);
+        view = standardwiseAbsentListBinding.getRoot();
+        return new StandardwiseStudentAttendaceAdapter.ViewHolder(view);
 
     }
 
     @Override
     public void onBindViewHolder(StandardwiseStudentAttendaceAdapter.ViewHolder holder, int position) {
-        StandardWiseAttendanceModel detail = studentAttendanceModel.getFinalArray().get(0).getStandardWiseAttendance().get(position);
-        holder.standard_txt.setText(detail.getStandard());
-        holder.status_txt.setText(detail.getStatus());
+        standardwiseAbsentListBinding.standardTxt.setText(studentAttendanceModel.get(position).getStandard() +
+                " - " + studentAttendanceModel.get(position).getClass_() + " ( " + studentAttendanceModel.get(position).getTotalStudent() + " ) ");
+
+        standardwiseAbsentListBinding.presentTxt.setText(studentAttendanceModel.get(position).getPresent());
+        standardwiseAbsentListBinding.absentTxt.setText(studentAttendanceModel.get(position).getAbsent());
+        standardwiseAbsentListBinding.leaveTxt.setText(studentAttendanceModel.get(position).getLeave());
     }
 
     @Override
     public int getItemCount() {
-        return studentAttendanceModel.getFinalArray().get(0).getStandardWiseAttendance().size();
+        return studentAttendanceModel.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,8 +60,6 @@ public class StandardwiseStudentAttendaceAdapter extends RecyclerView.Adapter<St
 
         public ViewHolder(View itemView) {
             super(itemView);
-            standard_txt = (TextView) itemView.findViewById(R.id.standard_txt);
-            status_txt = (TextView) itemView.findViewById(R.id.status_txt);
         }
     }
 

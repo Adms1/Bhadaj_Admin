@@ -19,6 +19,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.koushikdutta.ion.builder.Builders;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +29,14 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ClassTeacherDetailListAdapter;
+import anandniketan.com.bhadajadmin.Interface.getEditpermission;
+import anandniketan.com.bhadajadmin.Interface.onDeleteButton;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
+import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
+import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
@@ -41,6 +47,17 @@ import retrofit.client.Response;
 
 public class ClassTeacherFragment extends Fragment {
 
+    List<FinalArrayStandard> finalArrayStandardsList;
+    HashMap<Integer, String> spinnerStandardMap;
+    List<FinalArrayStaffModel> finalArrayTeachersModelList;
+    HashMap<Integer, String> spinnerTeacherMap;
+    HashMap<Integer, String> spinnerTermMap;
+    List<FinalArrayStaffModel> finalArrayClassTeacherDetailModelList;
+    List<FinalArrayStaffModel> finalArrayInsertClassTeachersModelList;
+    List<FinalArrayGetTermModel> finalArrayGetTermModels;
+    String finalStandardIdStr, finalTeacherIdStr, finalClassIdStr, standardName, finalTermIdStr, finalClassTeacherIdStr, editClassteacherStr="", editGradeStr="", editSectionStr="";
+    ClassTeacherDetailListAdapter classTeacherDetailListAdapter;
+    ArrayList<String> getEditValuearray;
     private FragmentClassTeacherBinding fragmentClassTeacherBinding;
     private View rootView;
     private Context mContext;
@@ -48,15 +65,21 @@ public class ClassTeacherFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private RadioGroup radioGroup;
     private int selectedPosition = -1;
-    List<FinalArrayStandard> finalArrayStandardsList;
-    HashMap<Integer, String> spinnerStandardMap;
-    List<FinalArrayStaffModel> finalArrayTeachersModelList;
-    HashMap<Integer, String> spinnerTeacherMap;
-    List<FinalArrayStaffModel> finalArrayClassTeacherDetailModelList;
-    List<FinalArrayStaffModel> finalArrayInsertClassTeachersModelList;
-    String FinalStandardIdStr, FinalTeacherIdStr, FinalClassIdStr, StandardName;
 
-    ClassTeacherDetailListAdapter classTeacherDetailListAdapter;
+    String[] spinnerteacherIdArray;
+    String[] spinnerstandardIdArray;
+    //Use for get the Final selected ClassID
+    private RadioGroup.OnCheckedChangeListener mCheckedListner = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+            if (group.findViewById(checkedId) != null) {
+                RadioButton btn = (RadioButton) getActivity().findViewById(checkedId);
+                finalClassIdStr = btn.getTag().toString();
+                Log.d("Your selected ", finalClassIdStr);
+            }
+        }
+    };
 
     public ClassTeacherFragment() {
     }
@@ -68,15 +91,13 @@ public class ClassTeacherFragment extends Fragment {
 
         rootView = fragmentClassTeacherBinding.getRoot();
         mContext = getActivity().getApplicationContext();
-
+        callTermApi();
         setListners();
-        callStandardApi();
         callTeacherApi();
-        callClassTeacherApi();
+
 
         return rootView;
     }
-
 
     public void setListners() {
         fragmentClassTeacherBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +116,24 @@ public class ClassTeacherFragment extends Fragment {
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
+        fragmentClassTeacherBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = fragmentClassTeacherBinding.termSpinner.getSelectedItem().toString();
+                String getid = spinnerTermMap.get(fragmentClassTeacherBinding.termSpinner.getSelectedItemPosition());
 
+                Log.d("value", name + " " + getid);
+                finalTermIdStr = getid.toString();
+                Log.d("FinalTermIdStr", finalTermIdStr);
+
+                callClassTeacherApi();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         fragmentClassTeacherBinding.gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -103,10 +141,10 @@ public class ClassTeacherFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentClassTeacherBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
-                Log.d("FinalStandardIdStr", FinalStandardIdStr);
-                StandardName = name;
-                Log.d("StandardName", StandardName);
+                finalStandardIdStr = getid.toString();
+                Log.d("FinalStandardIdStr", finalStandardIdStr);
+                standardName = name;
+                Log.d("StandardName", standardName);
                 fillSection();
             }
 
@@ -122,8 +160,8 @@ public class ClassTeacherFragment extends Fragment {
                 String getid = spinnerTeacherMap.get(fragmentClassTeacherBinding.teacherSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTeacherIdStr = getid.toString();
-                Log.d("FinalTeacherIdStr", FinalTeacherIdStr);
+                finalTeacherIdStr = getid.toString();
+                Log.d("FinalTeacherIdStr", finalTeacherIdStr);
             }
 
             @Override
@@ -138,6 +176,56 @@ public class ClassTeacherFragment extends Fragment {
                 callInsertClassTeacherApi();
             }
         });
+    }
+
+    // CALL Term API HERE
+    private void callTermApi() {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getTerm(getTermDetail(), new retrofit.Callback<TermModel>() {
+            @Override
+            public void success(TermModel termModel, Response response) {
+                Utils.dismissDialog();
+                if (termModel == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (termModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (termModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    return;
+                }
+                if (termModel.getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayGetTermModels = termModel.getFinalArray();
+                    if (finalArrayGetTermModels != null) {
+                        fillTermSpinner();
+                        callStandardApi();
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+
+    }
+
+    private Map<String, String> getTermDetail() {
+        Map<String, String> map = new HashMap<>();
+        return map;
     }
 
     // CALL Standard API HERE
@@ -293,6 +381,7 @@ public class ClassTeacherFragment extends Fragment {
 
     private Map<String, String> getClassTeacherDetail() {
         Map<String, String> map = new HashMap<>();
+        map.put("TermID", finalTermIdStr);
         return map;
     }
 
@@ -323,7 +412,7 @@ public class ClassTeacherFragment extends Fragment {
                     return;
                 }
                 if (insertClassTeachersModel.getSuccess().equalsIgnoreCase("True")) {
-                    Utils.ping(mContext,"Record Inserted Successfully...!!");
+                    Utils.ping(mContext, "Record Inserted Successfully...!!");
                     finalArrayInsertClassTeachersModelList = insertClassTeachersModel.getFinalArray();
                     if (finalArrayInsertClassTeachersModelList != null) {
                         callClassTeacherApi();
@@ -346,9 +435,11 @@ public class ClassTeacherFragment extends Fragment {
 
     private Map<String, String> getInsertClassTeacherDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("StandardID", FinalStandardIdStr);
-        map.put("ClassId", FinalClassIdStr);
-        map.put("Pk_EmployeID", FinalTeacherIdStr);
+        map.put("StandardID", finalStandardIdStr);
+        map.put("ClassId", finalClassIdStr);
+        map.put("Pk_EmployeID", finalTeacherIdStr);
+        map.put("TermID", finalTermIdStr);
+        map.put("Pk_ClsTeacherID", finalClassTeacherIdStr);
         return map;
     }
 
@@ -359,7 +450,28 @@ public class ClassTeacherFragment extends Fragment {
         fragmentClassTeacherBinding.recyclerLinear.setVisibility(View.VISIBLE);
         fragmentClassTeacherBinding.listHeader.setVisibility(View.VISIBLE);
 
-        classTeacherDetailListAdapter = new ClassTeacherDetailListAdapter(mContext, finalArrayClassTeacherDetailModelList);
+        classTeacherDetailListAdapter = new ClassTeacherDetailListAdapter(mContext, finalArrayClassTeacherDetailModelList, new onDeleteButton() {
+            @Override
+            public void deleteSentMessage() {
+                finalClassTeacherIdStr = String.valueOf(classTeacherDetailListAdapter.getId());
+                finalClassTeacherIdStr = finalClassTeacherIdStr.substring(1, finalClassTeacherIdStr.length() - 1);
+
+                if (!finalClassTeacherIdStr.equalsIgnoreCase("")) {
+                    callDeleteClassTeacherApi();
+                }
+
+            }
+        }, new getEditpermission() {
+            @Override
+            public void getEditpermission() {
+                getEditValuearray = new ArrayList<>();
+                getEditValuearray = classTeacherDetailListAdapter.getEditId();
+                updateTeacher();
+
+
+
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         fragmentClassTeacherBinding.classTeacherDetailList.setLayoutManager(mLayoutManager);
         fragmentClassTeacherBinding.classTeacherDetailList.setItemAnimator(new DefaultItemAnimator());
@@ -368,16 +480,27 @@ public class ClassTeacherFragment extends Fragment {
 
     //Use for fill the Standard Spinner
     public void fillGradeSpinner() {
+        ArrayList<Integer> firstValueId = new ArrayList<>();
+        firstValueId.add(0);
         ArrayList<Integer> StandardId = new ArrayList<Integer>();
-        for (int i = 0; i < finalArrayStandardsList.size(); i++) {
-            StandardId.add(finalArrayStandardsList.get(i).getStandardID());
+        for (int m = 0; m < firstValueId.size(); m++) {
+            StandardId.add(firstValueId.get(m));
+            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+                StandardId.add(finalArrayStandardsList.get(i).getStandardID());
+            }
         }
+        ArrayList<String> firstValue = new ArrayList<>();
+        firstValue.add("--Select--");
         ArrayList<String> Standard = new ArrayList<String>();
-        for (int j = 0; j < finalArrayStandardsList.size(); j++) {
-            Standard.add(finalArrayStandardsList.get(j).getStandard());
+        for (int z = 0; z < firstValue.size(); z++) {
+            Standard.add(firstValue.get(z));
+
+            for (int j = 0; j < finalArrayStandardsList.size(); j++) {
+                Standard.add(finalArrayStandardsList.get(j).getStandard());
+            }
         }
 
-        String[] spinnerstandardIdArray = new String[StandardId.size()];
+        spinnerstandardIdArray = new String[StandardId.size()];
 
         spinnerStandardMap = new HashMap<Integer, String>();
         for (int i = 0; i < StandardId.size(); i++) {
@@ -398,20 +521,32 @@ public class ClassTeacherFragment extends Fragment {
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
         fragmentClassTeacherBinding.gradeSpinner.setAdapter(adapterTerm);
+
     }
 
     //Use for fill the TeacherName Spinner
     public void fillTeacherSpinner() {
+        ArrayList<Integer> firstValueId = new ArrayList<>();
+        firstValueId.add(0);
         ArrayList<Integer> TeacherId = new ArrayList<Integer>();
-        for (int i = 0; i < finalArrayTeachersModelList.size(); i++) {
-            TeacherId.add(finalArrayTeachersModelList.get(i).getPkEmployeeID());
-        }
-        ArrayList<String> Teacher = new ArrayList<String>();
-        for (int j = 0; j < finalArrayTeachersModelList.size(); j++) {
-            Teacher.add(finalArrayTeachersModelList.get(j).getTeacher());
+        for (int m = 0; m < firstValueId.size(); m++) {
+            TeacherId.add(firstValueId.get(m));
+            for (int i = 0; i < finalArrayTeachersModelList.size(); i++) {
+                TeacherId.add(finalArrayTeachersModelList.get(i).getPkEmployeeID());
+            }
         }
 
-        String[] spinnerteacherIdArray = new String[TeacherId.size()];
+        ArrayList<String> firstValue = new ArrayList<>();
+        firstValue.add("--Select--");
+
+        ArrayList<String> Teacher = new ArrayList<String>();
+        for (int z = 0; z < firstValue.size(); z++) {
+            Teacher.add(firstValue.get(z));
+            for (int j = 0; j < finalArrayTeachersModelList.size(); j++) {
+                Teacher.add(finalArrayTeachersModelList.get(j).getTeacher());
+            }
+        }
+        spinnerteacherIdArray = new String[TeacherId.size()];
 
         spinnerTeacherMap = new HashMap<Integer, String>();
         for (int i = 0; i < TeacherId.size(); i++) {
@@ -433,6 +568,7 @@ public class ClassTeacherFragment extends Fragment {
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerteacherIdArray);
         fragmentClassTeacherBinding.teacherSpinner.setAdapter(adapterTerm);
 
+
     }
 
     //Use for fill the Class Spinner
@@ -440,11 +576,12 @@ public class ClassTeacherFragment extends Fragment {
         ArrayList<String> classname = new ArrayList<>();
         ArrayList<String> classId = new ArrayList<>();
 
-        if (!StandardName.equalsIgnoreCase("")) {
+
+        if (!standardName.equalsIgnoreCase("--Select--")) {
             for (int i = 0; i < finalArrayStandardsList.size(); i++) {
-                if (StandardName.equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard())) {
+                if (standardName.equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard())) {
                     for (int j = 0; j < finalArrayStandardsList.get(i).getSectionDetail().size(); j++) {
-                        classname.add(finalArrayStandardsList.get(i).getSectionDetail().get(j).getSection()+ "|"
+                        classname.add(finalArrayStandardsList.get(i).getSectionDetail().get(j).getSection() + "|"
                                 + String.valueOf(finalArrayStandardsList.get(i).getSectionDetail().get(j).getSectionID()));
                     }
                 }
@@ -462,16 +599,20 @@ public class ClassTeacherFragment extends Fragment {
                 for (int k = 0; k < classname.size(); k++) {
                     RadioButton radioButton = new RadioButton(mContext);
                     radioButton.setButtonDrawable(R.drawable.check_uncheck);
-                    radioButton.setPadding(10,10,10,10);
+                    radioButton.setPadding(10, 10, 10, 10);
                     radioButton.setTextColor(getResources().getColor(R.color.black));
 
-                    String []splitValue=classname.get(k).split("\\|");
+                    String[] splitValue = classname.get(k).split("\\|");
                     radioButton.setText(splitValue[0]);
                     radioButton.setTag(splitValue[1]);
-
+                    if (editSectionStr.equalsIgnoreCase(radioButton.getText().toString())) {
+                        radioButton.setChecked(true);
+                    }
                     radioGroup.addView(radioButton);
                 }
                 radioGroup.setOnCheckedChangeListener(mCheckedListner);
+
+
                 fragmentClassTeacherBinding.sectionLinear.addView(convertView);
             }
         } catch (Exception e) {
@@ -479,18 +620,124 @@ public class ClassTeacherFragment extends Fragment {
         }
     }
 
-    //Use for get the Final selected ClassID
-    private RadioGroup.OnCheckedChangeListener mCheckedListner = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
+    //Use for fill the Term Spinner
+    public void fillTermSpinner() {
+        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
+            TermId.add(finalArrayGetTermModels.get(i).getTermId());
+        }
+        ArrayList<String> Term = new ArrayList<String>();
+        for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
+            Term.add(finalArrayGetTermModels.get(j).getTerm());
+        }
 
-            if (group.findViewById(checkedId) != null) {
-                RadioButton btn = (RadioButton) getActivity().findViewById(checkedId);
-                FinalClassIdStr = btn.getTag().toString();
-                Log.d("Your selected ", FinalClassIdStr);
+        String[] spinnertermIdArray = new String[TermId.size()];
+
+        spinnerTermMap = new HashMap<Integer, String>();
+        for (int i = 0; i < TermId.size(); i++) {
+            spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
+            spinnertermIdArray[i] = Term.get(i).trim();
+        }
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentClassTeacherBinding.termSpinner);
+
+            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+            // silently fail...
+        }
+
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        fragmentClassTeacherBinding.termSpinner.setAdapter(adapterTerm);
+        finalTermIdStr = spinnerTermMap.get(0);
+    }
+
+
+    // CALL DeleteClassTeacher API HERE
+    private void callDeleteClassTeacherApi() {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().DeleteClassTeacher(getDeleteClassTeacherDetail(), new retrofit.Callback<StaffAttendaceModel>() {
+            @Override
+            public void success(StaffAttendaceModel insertClassTeachersModel, Response response) {
+                Utils.dismissDialog();
+                if (insertClassTeachersModel == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (insertClassTeachersModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (insertClassTeachersModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+
+                    return;
+                }
+                if (insertClassTeachersModel.getSuccess().equalsIgnoreCase("True")) {
+                    Utils.ping(mContext, "Record Deleted Successfully...!!");
+                    finalArrayInsertClassTeachersModelList = insertClassTeachersModel.getFinalArray();
+                    if (finalArrayInsertClassTeachersModelList != null) {
+                        callClassTeacherApi();
+                        Utils.dismissDialog();
+                    } else {
+                        fragmentClassTeacherBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+    }
+
+    private Map<String, String> getDeleteClassTeacherDetail() {
+        Map<String, String> map = new HashMap<>();
+        map.put("Pk_ClsTeacherID", finalClassTeacherIdStr);
+        return map;
+    }
+
+
+    public void updateTeacher(){
+
+        for (int i = 0; i < getEditValuearray.size(); i++) {
+            String[] spiltValue = getEditValuearray.get(i).split("\\|");
+            finalClassTeacherIdStr = spiltValue[0];
+            editClassteacherStr = spiltValue[1];
+            editGradeStr = spiltValue[2];
+            editSectionStr = spiltValue[3];
+        }
+
+        if (!editClassteacherStr.equalsIgnoreCase("")){
+                for (int i = 0; i < spinnerteacherIdArray.length; i++) {
+                    if (spinnerteacherIdArray[i].trim().equalsIgnoreCase(editClassteacherStr.trim())) {
+                        fragmentClassTeacherBinding.teacherSpinner.setSelection(i);
+                    }
+                }
+        }
+        if (!editGradeStr.equalsIgnoreCase("")){
+            for (int i = 0; i < spinnerstandardIdArray.length; i++) {
+                if (spinnerstandardIdArray[i].trim().equalsIgnoreCase(editGradeStr.trim())) {
+                    fragmentClassTeacherBinding.gradeSpinner.setSelection(i);
+                }
             }
         }
-    };
-
+        if (!editSectionStr.equalsIgnoreCase("")){
+            fillSection();
+        }
+    }
 }
 

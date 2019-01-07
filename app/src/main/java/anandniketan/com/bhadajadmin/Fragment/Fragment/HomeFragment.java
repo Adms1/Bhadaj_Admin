@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ImageAdapter;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.FragmentHomeBinding;
 
 
@@ -46,7 +47,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void setListners() {
-
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 0;
         fragmentHomeBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,37 +64,58 @@ public class HomeFragment extends Fragment {
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                             .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 1;
                 } else if (position == 1) {
                     fragment = new StaffFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                             .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 2;
                 } else if (position == 2) {
+                    fragment = new HRFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 5;
+
+                }else if (position == 3) {
                     fragment = new AccountFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                             .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 3) {
-                    fragment = new TransportFragment();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 4;
+                }  else if (position == 4) {
+                    fragment = new SMSFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                             .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 4) {
-                    fragment = new HRFragment();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 3;
+                }else if (position == 5) {
+                    fragment = new MISFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                             .replace(R.id.frame_container, fragment).commit();
-                } else if (position == 5) {
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 6;
+                }/* else if (position == 6) {
                     fragment = new OtherFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                             .replace(R.id.frame_container, fragment).commit();
-                }
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 7;
+                }*/
             }
         });
     }

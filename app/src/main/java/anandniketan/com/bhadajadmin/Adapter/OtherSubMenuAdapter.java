@@ -23,10 +23,6 @@ public class OtherSubMenuAdapter extends BaseAdapter {
     private Context mContext;
 
     public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Other/" + "Student%20Absent.png",
-            AppConfiguration.BASEURL_IMAGES + "Other/" + "Bulk%20SMS.png",
-            AppConfiguration.BASEURL_IMAGES + "Other/" + "Single%20SMS.png",
-            AppConfiguration.BASEURL_IMAGES + "Other/" + "Employee%20SMS.png",
             AppConfiguration.BASEURL_IMAGES + "Other/" + "Summary.png",
             AppConfiguration.BASEURL_IMAGES + "Other/" + "Holiday.png",
             AppConfiguration.BASEURL_IMAGES + "Other/" + "PTM.png",
@@ -35,7 +31,7 @@ public class OtherSubMenuAdapter extends BaseAdapter {
             AppConfiguration.BASEURL_IMAGES + "Other/" + "Quick%20Email.png",
     };
 
-    public String[] mThumbNames = {"Student Absent", "Bulk SMS", "Single SMS", "Employee SMS", "Summary", "Holiday",
+    public String[] mThumbNames = {"Summary", "Holiday",
             "PTM", "Activity Logging", "Announcement", "Quick Email",};
 
     // Constructor
