@@ -45,7 +45,6 @@ public class MISStudentModel {
         @Expose
         private List<ANT> aNT = null;
 
-
         @SerializedName("c")
         @Expose
         private Integer c;
@@ -151,6 +150,7 @@ public class MISStudentModel {
         public void setStandardData(List<StandardDatum> standardData) {
             this.standardData = standardData;
         }
+
 
         public List<StudentDatum> getStudentData() {
             return studentData;

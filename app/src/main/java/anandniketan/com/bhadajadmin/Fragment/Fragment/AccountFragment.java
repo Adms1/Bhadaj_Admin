@@ -37,16 +37,15 @@ import retrofit.client.Response;
 
 public class AccountFragment extends Fragment {
 
+    //Use for Store Resopnse
+    List<AccountFeesCollectionModel> collectionModelList;
+    AccountFeesModel feesModelList;
+    String FinalTermtermdetailId = "1";
     private FragmentAccountBinding fragmentAccountBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    //Use for Store Resopnse
-    List<AccountFeesCollectionModel> collectionModelList;
-    AccountFeesModel feesModelList;
-
-    String FinalTermtermdetailId = "1";
 
     public AccountFragment() {
     }
@@ -99,32 +98,31 @@ public class AccountFragment extends Fragment {
         fragmentAccountBinding.accountSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               if (position == 0) {
+                if (position == 0) {
                     fragment = new DailyFeesCollectionFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                   AppConfiguration.firsttimeback = true;
-                   AppConfiguration.position = 41;
-                }  else if (position == 1) {
-                   fragment = new TallyTranscationFragment();
-                   fragmentManager = getFragmentManager();
-                   fragmentManager.beginTransaction()
-                           .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                           .replace(R.id.frame_container, fragment).commit();
-                   AppConfiguration.firsttimeback = true;
-                   AppConfiguration.position = 41;
-               }
-               else if (position == 2) {
-                   fragment = new OnlineTransactionFragment();
-                   fragmentManager = getFragmentManager();
-                   fragmentManager.beginTransaction()
-                           .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                           .replace(R.id.frame_container, fragment).commit();
-                   AppConfiguration.firsttimeback = true;
-                   AppConfiguration.position = 41;
-               }
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 41;
+                } else if (position == 1) {
+                    fragment = new TallyTranscationFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 41;
+                } else if (position == 2) {
+                    fragment = new OnlineTransactionFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 41;
+                }
 //                }else if (position == 7) {
 //                    fragment = new CheckPaymentFragment();
 //                    fragmentManager = getFragmentManager();
@@ -139,7 +137,7 @@ public class AccountFragment extends Fragment {
         fragmentAccountBinding.termRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                RadioButton rb = group.findViewById(checkedId);
                 {
                     if (null != rb && checkedId > -1) {
                         switch (checkedId) {
@@ -172,8 +170,8 @@ public class AccountFragment extends Fragment {
             return;
         }
 
-       Utils.showDialog(getActivity());
-        ApiHandler.getApiService().totalFeesCollectionByTerm(getAccountDetail(),new retrofit.Callback<AccountFeesModel>() {
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().totalFeesCollectionByTerm(getAccountDetail(), new retrofit.Callback<AccountFeesModel>() {
 
             @Override
             public void success(AccountFeesModel accountFeesStatusModel, Response response) {
@@ -218,8 +216,8 @@ public class AccountFragment extends Fragment {
 
     private Map<String, String> getAccountDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("TermID","3");
-       // map.put("TermDetailID", FinalTermtermdetailId);
+        map.put("TermID", "3");
+        // map.put("TermDetailID", FinalTermtermdetailId);
         return map;
     }
 
@@ -229,7 +227,7 @@ public class AccountFragment extends Fragment {
         Format formatter = new DecimalFormat("##,##,###");
         String formattedString1, formattedString2, formattedString3;
 
-        if(fragmentAccountBinding.term1RadioButton.isChecked()){
+        if (fragmentAccountBinding.term1RadioButton.isChecked()) {
             AppConfiguration.TermId = "1";
             amount1 = String.valueOf(feesModelList.getTerm1().get(0).getTotalAmount());
             amount2 = String.valueOf(feesModelList.getTerm1().get(0).getRecievedAmount());
@@ -247,7 +245,7 @@ public class AccountFragment extends Fragment {
 
         }
 
-        if(fragmentAccountBinding.term2RadioButton.isChecked()){
+        if (fragmentAccountBinding.term2RadioButton.isChecked()) {
             AppConfiguration.TermId = "2";
             amount1 = String.valueOf(feesModelList.getTerm2().get(0).getTotalAmount());
             amount2 = String.valueOf(feesModelList.getTerm2().get(0).getRecievedAmount());

@@ -31,11 +31,11 @@
             tools:ignore="RtlCompat" />
 
         <TextView
-            android:id="@+id/section_txt"
+            android:id="@+id/range_txt"
             android:layout_width="0dp"
             android:layout_weight="1.2"
             android:layout_height="wrap_content"
-            android:text="@string/section"
+            android:text="@string/range_label"
             android:gravity="center"
             android:layout_gravity="center"
             android:visibility="gone"

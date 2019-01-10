@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,9 +15,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import anandniketan.com.bhadajadmin.Fragment.Fragment.HeadWiseFeeCollectionDetailFragment;
 import anandniketan.com.bhadajadmin.Model.MIS.MISFinanaceModel;
-import anandniketan.com.bhadajadmin.Model.MIS.MISSchoolResultModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+
+//Changed by Antra 7/1/2019
 
 public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceReportAdapter.MyViewHolder> {
 
@@ -25,16 +29,17 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private Bundle bundle;
+    private String termid;
 
-
-    public MISFinanceReportAdapter(Context mContext,List<MISFinanaceModel.FinalArray> dataValues) {
+    public MISFinanceReportAdapter(Context mContext, List<MISFinanaceModel.FinalArray> dataValues, String termid) {
         this.context = mContext;
         this.dataValues = dataValues;
+        this.termid = termid;
     }
 
     @Override
     public MISFinanceReportAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_mis_finance_list,parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_mis_finance_list, parent, false);
         return new MISFinanceReportAdapter.MyViewHolder(itemView);
     }
 
@@ -47,35 +52,125 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
             holder.term2_credit_txt.setText(String.valueOf(dataValues.get(position).getRecievedFeesTerm2()));
             holder.term2_debit_txt.setText(String.valueOf(dataValues.get(position).getTotalFeesTerm2()));
 
-            if(position == (dataValues.size() - 1)){
-                holder.head_txt.setTypeface(holder.head_txt.getTypeface(),Typeface.BOLD);
-                holder.term1_credit_txt.setTypeface(holder.term1_credit_txt.getTypeface(),Typeface.BOLD);
-                holder.term1_debit_txt.setTypeface(holder.term1_debit_txt.getTypeface(),Typeface.BOLD);
-                holder.term2_credit_txt.setTypeface(holder.term2_credit_txt.getTypeface(),Typeface.BOLD);
-                holder.term2_debit_txt.setTypeface(holder.term2_debit_txt.getTypeface(),Typeface.BOLD);
+            if (position == (dataValues.size() - 1)) {
+                holder.head_txt.setTypeface(holder.head_txt.getTypeface(), Typeface.BOLD);
+                holder.term1_credit_txt.setTypeface(holder.term1_credit_txt.getTypeface(), Typeface.BOLD);
+                holder.term1_debit_txt.setTypeface(holder.term1_debit_txt.getTypeface(), Typeface.BOLD);
+                holder.term2_credit_txt.setTypeface(holder.term2_credit_txt.getTypeface(), Typeface.BOLD);
+                holder.term2_debit_txt.setTypeface(holder.term2_debit_txt.getTypeface(), Typeface.BOLD);
+
+                holder.term1_credit_txt.setTextColor(context.getResources().getColor(R.color.blue));
+                holder.term1_debit_txt.setTextColor(context.getResources().getColor(R.color.blue));
+                holder.term2_credit_txt.setTextColor(context.getResources().getColor(R.color.blue));
+                holder.term2_debit_txt.setTextColor(context.getResources().getColor(R.color.blue));
+
+                holder.term1_debit_txt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragment = new HeadWiseFeeCollectionDetailFragment();
+                        bundle = new Bundle();
+                        bundle.putString("title", "Term 1 Total Fees");
+                        bundle.putString("requestType", "TotalFeesTerm1Count");
+                        bundle.putString("StndrdID", "0");
+                        bundle.putString("TermID", termid);
+//                        bundle.putString("countdata",holder.total_txt.getText().toString());
+//                        bundle.putString("Date",AppConfiguration.staffDate);
+//                        bundle.putString("deptID",String.valueOf(dataValues.get(position).getDepartmentID()));
+                        fragment.setArguments(bundle);
+                        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                                .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                        AppConfiguration.firsttimeback = true;
+                        AppConfiguration.position = 65;
+                    }
+                });
+
+                holder.term1_credit_txt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragment = new HeadWiseFeeCollectionDetailFragment();
+                        bundle = new Bundle();
+                        bundle.putString("title", "Term 1 Received Fees");
+                        bundle.putString("requestType", "RecievedFeesTerm1Count");
+                        bundle.putString("StndrdID", "0");
+                        bundle.putString("TermID", termid);
+//                        bundle.putString("countdata",holder.total_txt.getText().toString());
+//                        bundle.putString("Date",AppConfiguration.staffDate);
+//                        bundle.putString("deptID",String.valueOf(dataValues.get(position).getDepartmentID()));
+                        fragment.setArguments(bundle);
+                        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                                .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                        AppConfiguration.firsttimeback = true;
+                        AppConfiguration.position = 65;
+                    }
+                });
+
+                holder.term2_debit_txt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragment = new HeadWiseFeeCollectionDetailFragment();
+                        bundle = new Bundle();
+                        bundle.putString("title", "Term 2 Total Fees");
+                        bundle.putString("requestType", "TotalFeesTerm2Count");
+                        bundle.putString("StndrdID", "0");
+                        bundle.putString("TermID", termid);
+//                        bundle.putString("countdata",holder.total_txt.getText().toString());
+//                        bundle.putString("Date",AppConfiguration.staffDate);
+//                        bundle.putString("deptID",String.valueOf(dataValues.get(position).getDepartmentID()));
+                        fragment.setArguments(bundle);
+                        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                                .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                        AppConfiguration.firsttimeback = true;
+                        AppConfiguration.position = 65;
+                    }
+                });
+
+                holder.term2_credit_txt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragment = new HeadWiseFeeCollectionDetailFragment();
+                        bundle = new Bundle();
+                        bundle.putString("title", "Term 2 Received Fees");
+                        bundle.putString("requestType", "RecievedFeesTerm2Count");
+                        bundle.putString("StndrdID", "0");
+                        bundle.putString("TermID", termid);
+//                        bundle.putString("countdata",holder.total_txt.getText().toString());
+//                        bundle.putString("Date",AppConfiguration.staffDate);
+//                        bundle.putString("deptID",String.valueOf(dataValues.get(position).getDepartmentID()));
+                        fragment.setArguments(bundle);
+                        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                                .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                        AppConfiguration.firsttimeback = true;
+                        AppConfiguration.position = 65;
+                    }
+                });
 
             }
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
     public int getItemCount() {
-        return dataValues == null ? 0 :dataValues.size();
+        return dataValues == null ? 0 : dataValues.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView head_txt,term1_credit_txt,term1_debit_txt,term2_credit_txt,term2_debit_txt;
+        TextView head_txt, term1_credit_txt, term1_debit_txt, term2_credit_txt, term2_debit_txt;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            head_txt = (TextView) itemView.findViewById(R.id.head_txt);
-            term1_credit_txt = (TextView) itemView.findViewById(R.id.term1_credit_txt);
-            term1_debit_txt = (TextView) itemView.findViewById(R.id.term1_debit_txt);
-            term2_credit_txt = (TextView) itemView.findViewById(R.id.term2_credit_txt);
-            term2_debit_txt = (TextView) itemView.findViewById(R.id.term2_debit_txt);
+            head_txt = itemView.findViewById(R.id.head_txt);
+            term1_credit_txt = itemView.findViewById(R.id.term1_credit_txt);
+            term1_debit_txt = itemView.findViewById(R.id.term1_debit_txt);
+            term2_credit_txt = itemView.findViewById(R.id.term2_credit_txt);
+            term2_debit_txt = itemView.findViewById(R.id.term2_debit_txt);
         }
     }
+
 }

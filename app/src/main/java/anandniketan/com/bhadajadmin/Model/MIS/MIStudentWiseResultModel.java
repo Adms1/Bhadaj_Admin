@@ -33,7 +33,6 @@ public class MIStudentWiseResultModel {
         this.finalArray = finalArray;
     }
 
-
     public static class Datum implements Parcelable{
 
         @SerializedName("Subject")

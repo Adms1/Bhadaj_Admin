@@ -4,10 +4,6 @@ package anandniketan.com.bhadajadmin.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
-
 
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MISAccountFeesDetailFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MISAccountStudentFeesFragment;
@@ -105,7 +100,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
         switch (type) {
             case 0:
                 if(holder instanceof MISDetailListAdapter.StudentCommonViewHolder) {
-                    if (!requestType.equalsIgnoreCase("A.N.T.")) {
+                    if (!requestType.equalsIgnoreCase("ANT")) {
                         final MISStudentModel.StudentDatum datum = (MISStudentModel.StudentDatum) baseDataModel.get(position);
 
                         ((StudentCommonViewHolder) holder).grade_txt.setText(String.valueOf(datum.getGrade()));
@@ -169,18 +164,16 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                                     }).show();
                                 }
                             });
-
                         }
 
-
                     } else {
-                        final MISStudentModel.ANT datum = (MISStudentModel.ANT) baseDataModel.get(position);
+                        final MISStudentModel.StudentDatum datum = (MISStudentModel.StudentDatum) baseDataModel.get(position);
                         ((StudentCommonViewHolder) holder).grade_txt.setText(String.valueOf(datum.getGrade()));
                         ((StudentCommonViewHolder) holder).section_txt.setText(String.valueOf(datum.getGrade()+"-"+datum.getSection()));
-                        ((StudentCommonViewHolder) holder).student_txt.setText(String.valueOf(datum.getTotalStudent()));
+                        ((StudentCommonViewHolder) holder).student_txt.setText(String.valueOf(datum.getStudentName()));
                         ((StudentCommonViewHolder) holder).grno_txt.setVisibility(View.GONE);
                         ((StudentCommonViewHolder) holder).status_txt.setText("");
-                        ((StudentCommonViewHolder) holder).tv_tname.setVisibility(View.VISIBLE);
+                        ((StudentCommonViewHolder) holder).tv_tname.setVisibility(View.GONE);
                         ((StudentCommonViewHolder) holder).tv_tname.setText(String.valueOf(datum.getClassTeacher()));
                         ((StudentCommonViewHolder) holder).status_txt.setVisibility(View.GONE);
                         ((StudentCommonViewHolder) holder).grno_txt.setVisibility(View.GONE);
@@ -236,115 +229,114 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                 if(holder instanceof MISDetailListAdapter.StudentConsistentViewHolder) {
 
 
-                     if(requestType.equalsIgnoreCase("ConsistentAbsent")) {
+                    if (requestType.equalsIgnoreCase("ConsistentAbsent")) {
 
-                         final MISStudentModel.StudentDatum datum = (MISStudentModel.StudentDatum) baseDataModel.get(position);
+                        final MISStudentModel.StudentDatum datum = (MISStudentModel.StudentDatum) baseDataModel.get(position);
 
+                        ((StudentConsistentViewHolder) holder).grade_txt.setText(String.valueOf(datum.getGrade()));
+                        ((StudentConsistentViewHolder) holder).grade_txt.setVisibility(View.GONE);
 
-                         ((StudentConsistentViewHolder) holder).grade_txt.setText(String.valueOf(datum.getGrade()));
-                         ((StudentConsistentViewHolder) holder).grade_txt.setVisibility(View.GONE);
-
-                         ((StudentConsistentViewHolder) holder).section_txt.setText(String.valueOf(datum.getGrade()+"-"+datum.getSection()));
-                         ((StudentConsistentViewHolder) holder).studentname_txt.setText(String.valueOf(datum.getStudentName()));
-
-
-                         ((StudentConsistentViewHolder) holder).grno_txt.setText(String.valueOf(datum.getGRNO()));
-                         ((StudentConsistentViewHolder) holder).grno_txt.setVisibility(View.GONE);
+                        ((StudentConsistentViewHolder) holder).section_txt.setText(String.valueOf(datum.getGrade() + "-" + datum.getSection()));
+                        ((StudentConsistentViewHolder) holder).studentname_txt.setText(String.valueOf(datum.getStudentName()));
 
 
-                         ((StudentConsistentViewHolder) holder).absentfrom_txt.setText(String.valueOf(datum.getAbsentFrom()) + " days");
-
-                         ((StudentConsistentViewHolder) holder).class_teacher_txt.setText(String.valueOf(datum.getClassTeacher1()));
-
-                         ((StudentConsistentViewHolder) holder).ivPhone.setVisibility(View.VISIBLE);
-                         ((StudentConsistentViewHolder) holder).ivSMS.setVisibility(View.VISIBLE);
-
-                         ((StudentConsistentViewHolder) holder).ivPhone.setOnClickListener(new View.OnClickListener() {
-                             @Override
-                             public void onClick(View view) {
-                                 try {
-                                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                     intent.setData(Uri.parse("tel:" + datum.getPhoneNo()));
-                                     context.startActivity(intent);
-                                 } catch (Exception ex) {
-                                     ex.printStackTrace();
-                                 }
-                             }
-                         });
-
-                         ((StudentConsistentViewHolder) holder).ivSMS.setOnClickListener(new View.OnClickListener() {
-                             @Override
-                             public void onClick(View view) {
-                                 DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.msg_confirm_msg, new DialogInterface.OnClickListener() {
-                                     @Override
-                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                         dialogInterface.dismiss();
-                                     }
-                                 }, new DialogInterface.OnClickListener() {
-                                     @Override
-                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                         dialogInterface.dismiss();
-                                     }
-                                 }).show();
-                             }
-                         });
-                     }else if(requestType.equalsIgnoreCase("Attendance less then 70%")){
-
-                         final MISStudentModel.StudentDatum datum = (MISStudentModel.StudentDatum) baseDataModel.get(position);
-
-                         ((StudentConsistentViewHolder) holder).grade_txt.setText(String.valueOf(datum.getGrade()));
-                         ((StudentConsistentViewHolder) holder).grade_txt.setVisibility(View.GONE);
-
-                         ((StudentConsistentViewHolder) holder).section_txt.setText(String.valueOf(datum.getGrade()+"-"+datum.getSection()));
-                         ((StudentConsistentViewHolder) holder).studentname_txt.setText(String.valueOf(datum.getStudentName()));
+                        ((StudentConsistentViewHolder) holder).grno_txt.setText(String.valueOf(datum.getGRNO()));
+                        ((StudentConsistentViewHolder) holder).grno_txt.setVisibility(View.GONE);
 
 
-                         ((StudentConsistentViewHolder) holder).grno_txt.setText(String.valueOf(datum.getGRNO()));
-                         ((StudentConsistentViewHolder) holder).grno_txt.setVisibility(View.GONE);
+                        ((StudentConsistentViewHolder) holder).absentfrom_txt.setText(String.valueOf(datum.getAbsentFrom()) + " days");
+
+                        ((StudentConsistentViewHolder) holder).class_teacher_txt.setText(String.valueOf(datum.getClassTeacher1()));
+
+                        ((StudentConsistentViewHolder) holder).ivPhone.setVisibility(View.VISIBLE);
+                        ((StudentConsistentViewHolder) holder).ivSMS.setVisibility(View.VISIBLE);
+
+                        ((StudentConsistentViewHolder) holder).ivPhone.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                try {
+                                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setData(Uri.parse("tel:" + datum.getPhoneNo()));
+                                    context.startActivity(intent);
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        });
+
+                        ((StudentConsistentViewHolder) holder).ivSMS.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.msg_confirm_msg, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }).show();
+                            }
+                        });
+                    } else if (requestType.equalsIgnoreCase("Attendance less then 70%")) {
+
+                        final MISStudentModel.StudentDatum datum = (MISStudentModel.StudentDatum) baseDataModel.get(position);
+
+                        ((StudentConsistentViewHolder) holder).grade_txt.setText(String.valueOf(datum.getGrade()));
+                        ((StudentConsistentViewHolder) holder).grade_txt.setVisibility(View.GONE);
+
+                        ((StudentConsistentViewHolder) holder).section_txt.setText(String.valueOf(datum.getGrade() + "-" + datum.getSection()));
+                        ((StudentConsistentViewHolder) holder).studentname_txt.setText(String.valueOf(datum.getStudentName()));
 
 
-                         ((StudentConsistentViewHolder) holder).absentfrom_txt.setVisibility(View.VISIBLE);
-                         ((StudentConsistentViewHolder) holder).absentfrom_txt.setText(String.valueOf(datum.getPercentage()));
-
-                         ((StudentConsistentViewHolder) holder).class_teacher_txt.setText(String.valueOf(datum.getClassTeacher()));
-
-                         ((StudentConsistentViewHolder) holder).ivPhone.setVisibility(View.VISIBLE);
-
-                         ((StudentConsistentViewHolder) holder).ivSMS.setVisibility(View.VISIBLE);
+                        ((StudentConsistentViewHolder) holder).grno_txt.setText(String.valueOf(datum.getGRNO()));
+                        ((StudentConsistentViewHolder) holder).grno_txt.setVisibility(View.GONE);
 
 
-                         ((StudentConsistentViewHolder) holder).ivPhone.setOnClickListener(new View.OnClickListener() {
-                             @Override
-                             public void onClick(View view) {
-                                 try {
-                                     Intent intent = new Intent(Intent.ACTION_DIAL);
-                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                     intent.setData(Uri.parse("tel:" + datum.getPhoneNo()));
-                                     context.startActivity(intent);
-                                 } catch (Exception ex) {
-                                     ex.printStackTrace();
-                                 }
-                             }
-                         });
+                        ((StudentConsistentViewHolder) holder).absentfrom_txt.setVisibility(View.VISIBLE);
+                        ((StudentConsistentViewHolder) holder).absentfrom_txt.setText(String.valueOf(datum.getPercentage()));
 
-                         ((StudentConsistentViewHolder) holder).ivSMS.setOnClickListener(new View.OnClickListener() {
-                             @Override
-                             public void onClick(View view) {
-                                 DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.msg_confirm_msg, new DialogInterface.OnClickListener() {
-                                     @Override
-                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                         dialogInterface.dismiss();
-                                     }
-                                 }, new DialogInterface.OnClickListener() {
-                                     @Override
-                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                         dialogInterface.dismiss();
-                                     }
-                                 }).show();
-                             }
-                         });
-                     }
+                        ((StudentConsistentViewHolder) holder).class_teacher_txt.setText(String.valueOf(datum.getClassTeacher()));
+
+                        ((StudentConsistentViewHolder) holder).ivPhone.setVisibility(View.VISIBLE);
+
+                        ((StudentConsistentViewHolder) holder).ivSMS.setVisibility(View.VISIBLE);
+
+
+                        ((StudentConsistentViewHolder) holder).ivPhone.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                try {
+                                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.setData(Uri.parse("tel:" + datum.getPhoneNo()));
+                                    context.startActivity(intent);
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
+                        });
+
+                        ((StudentConsistentViewHolder) holder).ivSMS.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.msg_confirm_msg, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }).show();
+                            }
+                        });
+                    }
 
 
                 }
@@ -354,7 +346,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
             case 2:
                 if(holder instanceof MISDetailListAdapter.StaffCommonViewHolder) {
 
-                    if (!requestType.equalsIgnoreCase("A.N.T.")) {
+                    if (!requestType.equalsIgnoreCase("ANT")) {
 
                         if(requestType.equalsIgnoreCase("Work Plan") || requestType.equalsIgnoreCase("CW Submitted") ||requestType.equalsIgnoreCase("HW Submitted")) {
                             MISStaffModel.FinalArray datum1 = (MISStaffModel.FinalArray) baseDataModel.get(position);
@@ -782,8 +774,8 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                 }else if(requestType.equalsIgnoreCase("More then 3 days leave")){
 
                     ((StaffNewViewHolder) holder).name_txt.setText(String.valueOf(dataList.getName()));
-                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.5f);
-                     params.gravity = Gravity.CENTER;
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.5f);
+                    params.gravity = Gravity.CENTER;
                     ((StaffNewViewHolder) holder).status_txt.setLayoutParams(params);
                     ((StaffNewViewHolder) holder).status_txt.setText(String.valueOf(dataList.getDepartment()));
 
@@ -841,7 +833,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
             case  8:
 
-                 final MISTaskReportDetailModel.FinalArray misTaskReportDetailModel = (MISTaskReportDetailModel.FinalArray) baseDataModel.get(position);
+                final MISTaskReportDetailModel.FinalArray misTaskReportDetailModel = (MISTaskReportDetailModel.FinalArray) baseDataModel.get(position);
 
                 ((TaskReportViewHolder) holder).name_txt.setText(misTaskReportDetailModel.getName());
                 ((TaskReportViewHolder) holder).dept_txt.setText(misTaskReportDetailModel.getDepartment());
@@ -883,14 +875,14 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public StudentCommonViewHolder(View itemView) {
             super(itemView);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            section_txt = (TextView) itemView.findViewById(R.id.section_txt);
-            student_txt = (TextView) itemView.findViewById(R.id.student_txt);
-            grno_txt = (TextView) itemView.findViewById(R.id.grno_txt);
-            status_txt = (TextView) itemView.findViewById(R.id.status_txt);
-            ivPhone = (ImageView)itemView.findViewById(R.id.iv_phone);
-            ivSMS =(ImageView)itemView.findViewById(R.id.iv_sms);
-            tv_tname = (TextView)itemView.findViewById(R.id.teacher_name_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            section_txt = itemView.findViewById(R.id.section_txt);
+            student_txt = itemView.findViewById(R.id.student_txt);
+            grno_txt = itemView.findViewById(R.id.grno_txt);
+            status_txt = itemView.findViewById(R.id.status_txt);
+            ivPhone = itemView.findViewById(R.id.iv_phone);
+            ivSMS = itemView.findViewById(R.id.iv_sms);
+            tv_tname = itemView.findViewById(R.id.teacher_name_txt);
         }
     }
     public class StudentConsistentViewHolder extends RecyclerView.ViewHolder {
@@ -900,14 +892,14 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public StudentConsistentViewHolder(View itemView) {
             super(itemView);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            section_txt = (TextView) itemView.findViewById(R.id.section_txt);
-            studentname_txt = (TextView) itemView.findViewById(R.id.studentname_txt);
-            grno_txt = (TextView) itemView.findViewById(R.id.grno_txt);
-            absentfrom_txt = (TextView) itemView.findViewById(R.id.absentfrom_txt);
-            class_teacher_txt = (TextView) itemView.findViewById(R.id.class_teacher_txt);
-            ivPhone =(ImageView)itemView.findViewById(R.id.iv_phone);
-            ivSMS =(ImageView)itemView.findViewById(R.id.iv_sms);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            section_txt = itemView.findViewById(R.id.section_txt);
+            studentname_txt = itemView.findViewById(R.id.studentname_txt);
+            grno_txt = itemView.findViewById(R.id.grno_txt);
+            absentfrom_txt = itemView.findViewById(R.id.absentfrom_txt);
+            class_teacher_txt = itemView.findViewById(R.id.class_teacher_txt);
+            ivPhone = itemView.findViewById(R.id.iv_phone);
+            ivSMS = itemView.findViewById(R.id.iv_sms);
 
         }
     }
@@ -918,10 +910,10 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public StaffCommonViewHolder(View itemView) {
             super(itemView);
-            name_txt = (TextView) itemView.findViewById(R.id.name_txt);
-            code_txt = (TextView) itemView.findViewById(R.id.code_txt);
-            dept_txt = (TextView) itemView.findViewById(R.id.dept_txt);
-            status_txt = (TextView) itemView.findViewById(R.id.status_txt);
+            name_txt = itemView.findViewById(R.id.name_txt);
+            code_txt = itemView.findViewById(R.id.code_txt);
+            dept_txt = itemView.findViewById(R.id.dept_txt);
+            status_txt = itemView.findViewById(R.id.status_txt);
         }
     }
 
@@ -931,10 +923,10 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public AccountCommonViewHolder(View itemView) {
             super(itemView);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            fees_txt = (TextView) itemView.findViewById(R.id.fees_txt);
-            collection_txt = (TextView) itemView.findViewById(R.id.collection_txt);
-            duecollection_txt = (TextView) itemView.findViewById(R.id.duecollection_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            fees_txt = itemView.findViewById(R.id.fees_txt);
+            collection_txt = itemView.findViewById(R.id.collection_txt);
+            duecollection_txt = itemView.findViewById(R.id.duecollection_txt);
         }
     }
 
@@ -944,11 +936,11 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public AccountGradeWiseViewHolder(View itemView) {
             super(itemView);
-            student_txt = (TextView) itemView.findViewById(R.id.student_txt);
-            section_txt = (TextView) itemView.findViewById(R.id.section_txt);
-            fees_txt = (TextView) itemView.findViewById(R.id.fees_txt);
-            collection_txt = (TextView) itemView.findViewById(R.id.collection_txt);
-            duecollection_txt = (TextView) itemView.findViewById(R.id.duecollection_txt);
+            student_txt = itemView.findViewById(R.id.student_txt);
+            section_txt = itemView.findViewById(R.id.section_txt);
+            fees_txt = itemView.findViewById(R.id.fees_txt);
+            collection_txt = itemView.findViewById(R.id.collection_txt);
+            duecollection_txt = itemView.findViewById(R.id.duecollection_txt);
         }
     }
 
@@ -958,9 +950,9 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public AccountStudentWiseViewHolder(View itemView) {
             super(itemView);
-            detail_txt = (TextView) itemView.findViewById(R.id.detail_txt);
-            term1_txt = (TextView) itemView.findViewById(R.id.term1_txt);
-            term2_txt = (TextView) itemView.findViewById(R.id.term2_txt);
+            detail_txt = itemView.findViewById(R.id.detail_txt);
+            term1_txt = itemView.findViewById(R.id.term1_txt);
+            term2_txt = itemView.findViewById(R.id.term2_txt);
         }
     }
 
@@ -970,12 +962,12 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public NAViewHolder(View itemView) {
             super(itemView);
-            date_txt = (TextView) itemView.findViewById(R.id.date_txt);
-            name_txt = (TextView) itemView.findViewById(R.id.name_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            gender_txt = (TextView) itemView.findViewById(R.id.gender_txt);
-            current_status_txt = (TextView) itemView.findViewById(R.id.current_status_txt);
-            phone_txt = (TextView) itemView.findViewById(R.id.phone_txt1);
+            date_txt = itemView.findViewById(R.id.date_txt);
+            name_txt = itemView.findViewById(R.id.name_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            gender_txt = itemView.findViewById(R.id.gender_txt);
+            current_status_txt = itemView.findViewById(R.id.current_status_txt);
+            phone_txt = itemView.findViewById(R.id.phone_txt1);
         }
     }
 
@@ -986,12 +978,12 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public StaffNewViewHolder(View itemView) {
             super(itemView);
-            status_txt = (TextView) itemView.findViewById(R.id.status_txt);
-            name_txt = (TextView) itemView.findViewById(R.id.name_txt);
-            reason_txt = (TextView) itemView.findViewById(R.id.reason_txt);
-            leave_txt = (TextView) itemView.findViewById(R.id.leave_txt);
-            phone_txt = (TextView) itemView.findViewById(R.id.phone_txt);
-            ivPhone = (ImageView)itemView.findViewById(R.id.iv_phone);
+            status_txt = itemView.findViewById(R.id.status_txt);
+            name_txt = itemView.findViewById(R.id.name_txt);
+            reason_txt = itemView.findViewById(R.id.reason_txt);
+            leave_txt = itemView.findViewById(R.id.leave_txt);
+            phone_txt = itemView.findViewById(R.id.phone_txt);
+            ivPhone = itemView.findViewById(R.id.iv_phone);
         }
     }
 
@@ -1002,11 +994,10 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
         public TaskReportViewHolder(View itemView) {
             super(itemView);
-            dept_txt = (TextView) itemView.findViewById(R.id.dept_txt);
-            name_txt = (TextView) itemView.findViewById(R.id.name_txt);
-            code_txt = (TextView) itemView.findViewById(R.id.code_txt);
-            ivPhone = (ImageView)itemView.findViewById(R.id.iv_phone);
+            dept_txt = itemView.findViewById(R.id.dept_txt);
+            name_txt = itemView.findViewById(R.id.name_txt);
+            code_txt = itemView.findViewById(R.id.code_txt);
+            ivPhone = itemView.findViewById(R.id.iv_phone);
         }
     }
-
 }

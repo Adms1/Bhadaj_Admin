@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".Adapter.MISStudentRangeDetailFragment">
+
+    <include
+        android:id="@+id/lvExp_header"
+        layout="@layout/list_item_mis_school_result_header" />
+
+    <TextView
+        android:id="@+id/range_tv_no_records"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/_5sdp"
+        android:gravity="center"
+        android:text="No Records Found."
+        android:textColor="@color/red"
+        android:textSize="@dimen/_12ssp"
+        android:visibility="gone" />
+
+    <ExpandableListView
+        android:id="@+id/range_lvExpstudentlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/header"
+        android:layout_marginLeft="@dimen/_1sdp"
+        android:layout_marginRight="@dimen/_1sdp"
+        android:childDivider="@android:color/transparent"
+        android:divider="@android:color/white"
+        android:dividerHeight="1dp"
+        android:groupIndicator="@null"
+        android:scrollbars="none"
+        tools:ignore="NotSibling" />
+
+</LinearLayout>

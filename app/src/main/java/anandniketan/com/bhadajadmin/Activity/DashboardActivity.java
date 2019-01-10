@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -37,30 +36,22 @@ import anandniketan.com.bhadajadmin.Fragment.Fragment.ActivityLoggingFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.AnnoucementListFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.AnnouncementFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.AttendenceReportFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.BullkSmsFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.CircularListFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.DailyReportFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.EmployeeSmsFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HRFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HolidayFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HomeFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.MISDataListFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.MISFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MyLeaveFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.OtherFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.PTMMainFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.SMSFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.SearchStaffFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.SearchStudentFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.SingleSmsFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.StaffFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.StaffLeaveFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentAbsentFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentPermissionFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentViewInquiryFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.SummaryFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.TransportFragment;
 import anandniketan.com.bhadajadmin.Model.MenuoptionItemModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -75,6 +66,7 @@ public class DashboardActivity extends FragmentActivity {
     static RelativeLayout leftRl;
     static ExpandableListView mDrawerList;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    public String[] mThumbNames = {"Student", "Staff", "HR", "Account", "SMS"/*"Transport", "Other"*/};
     Context mContext;
     ActionBarDrawerToggle mDrawerToggle;
     String MenuName[];
@@ -93,8 +85,8 @@ public class DashboardActivity extends FragmentActivity {
     private MenuoptionItemAdapter adapter_menu_item;
     private String putData = "0";
     private FragmentManager fragmentManager = null;
-    private DialogInterface dialogInterfacePosivtive,dialogInterfaceNegative;
-    private TextView tvName,tvDesignation;
+    private DialogInterface dialogInterfacePosivtive, dialogInterfaceNegative;
+    private TextView tvName, tvDesignation;
     private PrefUtils prefUtils;
 
     public static void onLeft() {
@@ -127,24 +119,23 @@ public class DashboardActivity extends FragmentActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
     }
 
     private void Initialize() {
         // TODO Auto-generated method stub
         MenuName = getResources().getStringArray(R.array.menuoption1);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        leftRl = (RelativeLayout) findViewById(R.id.whatYouWantInLeftDrawer);
-        mDrawerList = (ExpandableListView) findViewById(R.id.list_slidermenu);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        leftRl = findViewById(R.id.whatYouWantInLeftDrawer);
+        mDrawerList = findViewById(R.id.list_slidermenu);
         navDrawerItems_main = new ArrayList<MenuoptionItemModel>();
 
-        tvName = (TextView)findViewById(R.id.teacher_name);
-        tvDesignation = (TextView)findViewById(R.id.teacher_designation);
+        tvName = findViewById(R.id.teacher_name);
+        tvDesignation = findViewById(R.id.teacher_designation);
         try {
-            tvName.setText(prefUtils.getStringValue("Emp_Name",""));
-            tvDesignation.setText(prefUtils.getStringValue("DesignationName",""));
-        }catch (Exception ex){
+            tvName.setText(prefUtils.getStringValue("Emp_Name", ""));
+            tvDesignation.setText(prefUtils.getStringValue("DesignationName", ""));
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 //        mDrawerList.setAdapter(new MenuoptionItemAdapter(mContext));
@@ -204,7 +195,6 @@ public class DashboardActivity extends FragmentActivity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-    public String[] mThumbNames = {"Student","Staff","HR","Account","SMS"/*"Transport", "Other"*/};
 
     public void displayView(int position) {
         switch (position) {
@@ -243,12 +233,12 @@ public class DashboardActivity extends FragmentActivity {
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 6:
-                DialogUtils.createConfirmDialog(DashboardActivity.this,R.string.app_name,R.string.logout_confirm_msg, new DialogInterface.OnClickListener() {
+                DialogUtils.createConfirmDialog(DashboardActivity.this, R.string.app_name, R.string.logout_confirm_msg, new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        Intent intentLogout = new Intent(DashboardActivity.this,LoginActivity.class);
+                        Intent intentLogout = new Intent(DashboardActivity.this, LoginActivity.class);
                         PrefUtils.getInstance(DashboardActivity.this).clear();
                         startActivity(intentLogout);
                         finishAffinity();
@@ -377,8 +367,8 @@ public class DashboardActivity extends FragmentActivity {
     public void onBackPressed() {
         if (AppConfiguration.firsttimeback) {
             if (AppConfiguration.position != 0) {
-                if (AppConfiguration.position == 1){
-                    getSupportFragmentManager().popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                if (AppConfiguration.position == 1) {
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     fragment = new HomeFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out).replace(R.id.frame_container, fragment).commit();
@@ -398,7 +388,7 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
-                }else if (AppConfiguration.position==13){
+                } else if (AppConfiguration.position == 13) {
                     fragment = new StudentPermissionFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -406,13 +396,13 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
-                }else if (AppConfiguration.position==2){
+                } else if (AppConfiguration.position == 2) {
                     fragment = new HomeFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                }else if (AppConfiguration.position==21){
+                } else if (AppConfiguration.position == 21) {
                     fragment = new StaffFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -420,7 +410,7 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 2;
-                }else if (AppConfiguration.position==22){
+                } else if (AppConfiguration.position == 22) {
                     fragment = new MyLeaveFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -428,13 +418,13 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
-                }else if (AppConfiguration.position==3){
+                } else if (AppConfiguration.position == 3) {
                     fragment = new HomeFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                }else if (AppConfiguration.position==31){
+                } else if (AppConfiguration.position == 31) {
                     fragment = new SMSFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -442,13 +432,13 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 3;
-                }else if (AppConfiguration.position==4){
+                } else if (AppConfiguration.position == 4) {
                     fragment = new HomeFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                }else if (AppConfiguration.position==41){
+                } else if (AppConfiguration.position == 41) {
                     fragment = new AccountFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -456,13 +446,13 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 4;
-                }else if (AppConfiguration.position==5){
+                } else if (AppConfiguration.position == 5) {
                     fragment = new HomeFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                } else if (AppConfiguration.position==51){
+                } else if (AppConfiguration.position == 51) {
                     fragment = new HRFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -470,7 +460,7 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 5;
-                }else if (AppConfiguration.position==52){
+                } else if (AppConfiguration.position == 52) {
                     fragment = new StaffLeaveFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -478,7 +468,7 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 52;
-                }else if (AppConfiguration.position==53){
+                } else if (AppConfiguration.position == 53) {
                     fragment = new AttendenceReportFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -486,7 +476,7 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 53;
-                }else if (AppConfiguration.position==54){
+                } else if (AppConfiguration.position == 54) {
                     fragment = new DailyReportFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -494,7 +484,7 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
-                }else if (AppConfiguration.position == 55){
+                } else if (AppConfiguration.position == 55) {
                     fragment = new AnnoucementListFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
@@ -502,39 +492,39 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 55;
-                }else if (AppConfiguration.position == 56){
+                } else if (AppConfiguration.position == 56) {
                     fragment = new StudentViewInquiryFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 56;
-                }else if (AppConfiguration.position == 59){
+                } else if (AppConfiguration.position == 59) {
                     fragment = new CircularListFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 56;
-                }else if (AppConfiguration.position == 61){
+                } else if (AppConfiguration.position == 61) {
                     fragment = new SearchStaffFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 61;
-                }else if (AppConfiguration.position == 65){
+                } else if (AppConfiguration.position == 65) {
                     fragment = new HomeFragment();
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 5;
-                }else if (AppConfiguration.position == 66){
+                } else if (AppConfiguration.position == 66) {
                     AppConfiguration.position = 65;
                     AppConfiguration.firsttimeback = true;
-                    getSupportFragmentManager().popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
 
-                } else if (AppConfiguration.position == 58){
+                } else if (AppConfiguration.position == 58) {
 
-                    if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                         getSupportFragmentManager().popBackStack();
                     }
 
@@ -545,15 +535,15 @@ public class DashboardActivity extends FragmentActivity {
 //                    AppConfiguration.position = 56;
                 }
             }
-            if(AppConfiguration.position  !=  65) {
+            if (AppConfiguration.position != 65) {
                 AppConfiguration.firsttimeback = false;
             }
 
         } else {
 
-            getSupportFragmentManager().popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-            if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
 
                 fragment = new StudentFragment();
                 fragmentManager = getSupportFragmentManager();
@@ -562,7 +552,7 @@ public class DashboardActivity extends FragmentActivity {
                 AppConfiguration.position = 1;
 
 
-            }else{
+            } else {
                 finish();
                 System.exit(0);
             }
@@ -583,9 +573,9 @@ public class DashboardActivity extends FragmentActivity {
         finalheaderArray.add("STAFF");
         finalheaderArray.add("HR");
         finalheaderArray.add("ACCOUNT");
-       // finalheaderArray.add("TRANSPORT");
+        // finalheaderArray.add("TRANSPORT");
         finalheaderArray.add("SMS");
-     //  finalheaderArray.add("OTHER");
+        //  finalheaderArray.add("OTHER");
         finalheaderArray.add("LOGOUT");
 
         ArrayList<String> finalchildArray = new ArrayList<>();
@@ -602,9 +592,9 @@ public class DashboardActivity extends FragmentActivity {
         imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_HR.png");
 
         imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Account.png");
-      //  imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Transport.png");
+        //  imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Transport.png");
         imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_SMS.png");
-      //  imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Other.png");
+        //  imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Other.png");
         imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Logout.png");
 
         for (int k = 0; k < imagesId.size(); k++) {
@@ -629,7 +619,6 @@ public class DashboardActivity extends FragmentActivity {
         expandableListAdapterMenu = new ExpandableListAdapterMenu(mContext, listDataHeader, listDataChild, imagesId);
         mDrawerList.setAdapter(expandableListAdapterMenu);
     }
-
 
 
     /**

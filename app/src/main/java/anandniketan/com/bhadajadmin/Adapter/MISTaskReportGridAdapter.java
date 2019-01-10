@@ -9,14 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MISDataListFragment;
-import anandniketan.com.bhadajadmin.Model.MIS.MISStaffNewModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -195,7 +193,7 @@ public class MISTaskReportGridAdapter extends RecyclerView.Adapter<MISTaskReport
                         fragment = new MISDataListFragment();
                         bundle = new Bundle();
                         bundle.putString("title","Task Report");
-                        bundle.putString("requestType","AttendanceDone");
+                        bundle.putString("requestType", "AttendanceNotDone");
                         bundle.putString("requestTitle","Attendance Not Done");
                         bundle.putString("TermID",AppConfiguration.TermId);
                         bundle.putString("countdata",holder.total_txt.getText().toString());
@@ -250,17 +248,10 @@ public class MISTaskReportGridAdapter extends RecyclerView.Adapter<MISTaskReport
 
             });
 
-
-
-
-
         }catch (Exception ex){
 
             ex.printStackTrace();
         }
-
-
-
     }
 
     @Override
@@ -273,10 +264,10 @@ public class MISTaskReportGridAdapter extends RecyclerView.Adapter<MISTaskReport
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            dept_txt = (TextView) itemView.findViewById(R.id.dept_txt);
-            total_txt = (TextView) itemView.findViewById(R.id.total_txt);
-            done_txt = (TextView) itemView.findViewById(R.id.absent_txt);
-            notDone_txt = (TextView) itemView.findViewById(R.id.leave_txt);
+            dept_txt = itemView.findViewById(R.id.dept_txt);
+            total_txt = itemView.findViewById(R.id.total_txt);
+            done_txt = itemView.findViewById(R.id.absent_txt);
+            notDone_txt = itemView.findViewById(R.id.leave_txt);
 
         }
     }

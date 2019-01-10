@@ -1,7 +1,5 @@
 package anandniketan.com.bhadajadmin.Utility;
 
-import anandniketan.com.bhadajadmin.base.BaseApp;
-
 /**
  * Created by admsandroid on 11/20/2017.
  */
@@ -21,9 +19,11 @@ public class AppConfiguration {
 
     public static String GET_API_URL = "http://anandniketanbhadaj.org/appService/5b9a72856992e144c74fc836ed6e76a2/appsUrl";
 
+//    public static String GET_API_URL = "http://192.168.1.8:8086/";
+
     public static String BASE_API_CONTAINER ="MobileApp_Service.asmx/";
-    public static String LIVE_BASE_URL = PrefUtils.getInstance(BaseApp.mAppcontext).getStringValue("live_base_url","http://103.250.144.109:8085/");
-   // public static String LIVE_BASE_URL = "http://192.168.1.28:8086/";
+    //    public static String LIVE_BASE_URL = PrefUtils.getInstance(BaseApp.mAppcontext).getStringValue("live_base_url","http://192.168.1.28:8086/");
+    public static String LIVE_BASE_URL = "http://192.168.1.26:8086/";
 
     //public static String LIVE_BASE_URL = "http://103.250.144.109:8085/";
 

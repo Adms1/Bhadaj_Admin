@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -67,7 +66,6 @@ public class MISAccountFeesDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
-
 
     @Nullable
     @Override
@@ -144,7 +142,7 @@ public class MISAccountFeesDetailFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(subtitle);
 //                }
 

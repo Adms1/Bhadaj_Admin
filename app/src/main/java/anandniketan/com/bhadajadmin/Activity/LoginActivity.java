@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,7 +39,7 @@ public class LoginActivity extends Activity {
     HashMap<Integer, String> spinnerStandardMap;
     HashMap<Integer, String> spinnerSectionMap;
     HashMap<Integer, String> studentMap;
-  //  private ForgotpasswordAsyncTask forgotpasswordAsyncTask = null;
+    //  private ForgotpasswordAsyncTask forgotpasswordAsyncTask = null;
 //    private GetStandardSectionAsyncTask getStandardSectionAsyncTask = null;
 //    private GetStudentListAsyncTask getStudentListAsyncTask = null;
     private EditText edtUserName, edtPassword, edtmobileno;
@@ -76,11 +75,11 @@ public class LoginActivity extends Activity {
     }
 
     public void initViews() {
-        edtUserName = (EditText) findViewById(R.id.edtUserName);
-        edtPassword = (EditText) findViewById(R.id.edtPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        chkRemember = (CheckBox) findViewById(R.id.chkRemember);
-        forgot_title_txt = (TextView) findViewById(R.id.forgot_title_txt);
+        edtUserName = findViewById(R.id.edtUserName);
+        edtPassword = findViewById(R.id.edtPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        chkRemember = findViewById(R.id.chkRemember);
+        forgot_title_txt = findViewById(R.id.forgot_title_txt);
     }
 
     public void setListners() {
@@ -90,7 +89,7 @@ public class LoginActivity extends Activity {
                 if (Utils.isNetworkConnected(mContext)) {
                     if (!edtUserName.getText().toString().equalsIgnoreCase("")) {
                         if (!edtPassword.getText().toString().equalsIgnoreCase("")) {
-                            login(edtUserName.getText().toString(),edtPassword.getText().toString());
+                            login(edtUserName.getText().toString(), edtPassword.getText().toString());
                         } else {
                             Utils.ping(mContext, "Please Enter Password");
                             edtPassword.requestFocus();
@@ -104,12 +103,14 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
         forgot_title_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // forgotPasswordDialog();
+                // forgotPasswordDialog();
             }
         });
+
         edtPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -117,7 +118,7 @@ public class LoginActivity extends Activity {
                     if (Utils.isNetworkConnected(mContext)) {
                         if (!edtUserName.getText().toString().equalsIgnoreCase("")) {
                             if (!edtPassword.getText().toString().equalsIgnoreCase("")) {
-                                login(edtUserName.getText().toString(),edtPassword.getText().toString());
+                                login(edtUserName.getText().toString(), edtPassword.getText().toString());
                             } else {
                                 Utils.pong(mContext, "Please Enter Password");
                                 edtPassword.requestFocus();
@@ -135,15 +136,15 @@ public class LoginActivity extends Activity {
         });
     }
 
-    public void login(String UserId,String pwd) {
+    public void login(String UserId, String pwd) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),LoginActivity.this);
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), LoginActivity.this);
             return;
         }
 
         Utils.showDialog(LoginActivity.this);
-        ApiHandler.getApiService().login(getLoginDetail(UserId,pwd),new retrofit.Callback<LogInModel>() {
+        ApiHandler.getApiService().login(getLoginDetail(UserId, pwd), new retrofit.Callback<LogInModel>() {
             @Override
             public void success(LogInModel termModel, Response response) {
                 Utils.dismissDialog();
@@ -156,63 +157,61 @@ public class LoginActivity extends Activity {
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,"UserName or Password Not Match");
+                    Utils.ping(mContext, "UserName or Password Not Match");
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
-                        mData = termModel.getFinalArray();
-                        if (mData != null) {
-                            Intent intentDashboard = new Intent(LoginActivity.this, DashboardActivity.class);//SplashScreenActivity
-                            PrefUtils.getInstance(LoginActivity.this).setValue("Loginwithother", "false");
+                    mData = termModel.getFinalArray();
+                    if (mData != null) {
+                        Intent intentDashboard = new Intent(LoginActivity.this, DashboardActivity.class);//SplashScreenActivity
+                        PrefUtils.getInstance(LoginActivity.this).setValue("Loginwithother", "false");
 
-                            String staffId = mData.get(0).getStaffID();
-                            String empCode = mData.get(0).getEmpCode();
-                            String empDesg = mData.get(0).getDesignationName();
-                            String empName  = mData.get(0).getEmpName();
-                            String deptId = mData.get(0).getDepratmentID();
-                            String desgId = mData.get(0).getDesignationID();
-                            String empDept = mData.get(0).getDepratmentName();
-                            String pwd = edtPassword.getText().toString();
-                            String deviceId = mData.get(0).getDeviceId();
+                        String staffId = mData.get(0).getStaffID();
+                        String empCode = mData.get(0).getEmpCode();
+                        String empDesg = mData.get(0).getDesignationName();
+                        String empName = mData.get(0).getEmpName();
+                        String deptId = mData.get(0).getDepratmentID();
+                        String desgId = mData.get(0).getDesignationID();
+                        String empDept = mData.get(0).getDepratmentName();
+                        String pwd = edtPassword.getText().toString();
+                        String deviceId = mData.get(0).getDeviceId();
 
-                            saveDetails(staffId,empCode,empName,deptId,desgId,empDept,empDesg,deviceId,pwd);
+                        saveDetails(staffId, empCode, empName, deptId, desgId, empDept, empDesg, deviceId, pwd);
 
-                            intentDashboard.putExtra("message", putExtrasData);
-                            intentDashboard.putExtra("fromNotification", putExtras);
-                            System.out.println("messageLogin: " + putExtrasData);
+                        intentDashboard.putExtra("message", putExtrasData);
+                        intentDashboard.putExtra("fromNotification", putExtras);
+                        System.out.println("messageLogin: " + putExtrasData);
 
-                            startActivity(intentDashboard);
-                            overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-                            finish();
-                        }
+                        startActivity(intentDashboard);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                        finish();
                     }
                 }
+            }
 
-                @Override
-                public void failure(RetrofitError error) {
-                    Utils.dismissDialog();
-                    error.printStackTrace();
-                    error.getMessage();
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                }
-            });
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+    }
 
-        }
-
-    private Map<String, String> getLoginDetail(String userId,String pwd) {
+    private Map<String, String> getLoginDetail(String userId, String pwd) {
         Map<String, String> map = new HashMap<>();
-        map.put("UserID",userId);
-        map.put("Password",pwd);
+        map.put("UserID", userId);
+        map.put("Password", pwd);
         return map;
     }
 
-
     private Map<String, String> getAdminDeviceDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("StaffID","");
-        map.put("DeviceID","");
-        map.put("TokenID","");
-        map.put("DeviceType","");
+        map.put("StaffID", "");
+        map.put("DeviceID", "");
+        map.put("TokenID", "");
+        map.put("DeviceType", "");
 
         return map;
     }
@@ -220,11 +219,11 @@ public class LoginActivity extends Activity {
     public void addDeviceDetail() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),LoginActivity.this);
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), LoginActivity.this);
             return;
         }
         Utils.showDialog(LoginActivity.this);
-        ApiHandler.getApiService().addDeviceDetailAdmin(getAdminDeviceDetail(),new retrofit.Callback<MISModel>() {
+        ApiHandler.getApiService().addDeviceDetailAdmin(getAdminDeviceDetail(), new retrofit.Callback<MISModel>() {
             @Override
             public void success(MISModel termModel, Response response) {
                 Utils.dismissDialog();
@@ -237,7 +236,7 @@ public class LoginActivity extends Activity {
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,"UserName or Password Not Match");
+                    Utils.ping(mContext, "UserName or Password Not Match");
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -265,8 +264,8 @@ public class LoginActivity extends Activity {
 //                        startActivity(intentDashboard);
 //                        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
 //                        finish();
-                    }
                 }
+            }
 
             @Override
             public void failure(RetrofitError error) {
@@ -276,16 +275,13 @@ public class LoginActivity extends Activity {
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
 
-
-
     public void checkUnmPwd() {
-        if (!PrefUtils.getInstance(LoginActivity.this).getStringValue( "Emp_Name","").equalsIgnoreCase("")) {
+        if (!PrefUtils.getInstance(LoginActivity.this).getStringValue("Emp_Name", "").equalsIgnoreCase("")) {
 
             Intent intentDashboard = new Intent(LoginActivity.this, DashboardActivity.class);
-           // Utility.setPref(mContext, "Loginwithother", "false");
+            // Utility.setPref(mContext, "Loginwithother", "false");
             intentDashboard.putExtra("message", putExtrasData);
             intentDashboard.putExtra("fromNotification", putExtras);
             startActivity(intentDashboard);
@@ -293,7 +289,7 @@ public class LoginActivity extends Activity {
         }
     }
 
-    public void saveDetails(String staffId,String empCode,String empName,String deptId,String desgId,String depName,String desgName,String deviceId, String pwd) {
+    public void saveDetails(String staffId, String empCode, String empName, String deptId, String desgId, String depName, String desgName, String deviceId, String pwd) {
         PrefUtils prefUtils = PrefUtils.getInstance(LoginActivity.this);
         prefUtils.setValue("StaffID", staffId);
         prefUtils.setValue("Emp_Code", empCode);

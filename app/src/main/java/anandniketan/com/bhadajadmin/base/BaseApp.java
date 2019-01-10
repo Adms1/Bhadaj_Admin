@@ -1,11 +1,7 @@
 package anandniketan.com.bhadajadmin.base;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
-
-import anandniketan.com.bhadajadmin.asynctasks.GetAPIURLTask;
 
 public class BaseApp extends Application {
 
@@ -24,7 +20,7 @@ public class BaseApp extends Application {
 //        FontsOverride.setDefaultFont(this, "SANS_SERIF", "font/TitilliumWeb-Regular.ttf");
 
         try {
-            new GetAPIURLTask(mAppcontext).execute();
+//            new GetAPIURLTask(mAppcontext).execute();
         }catch (Exception ex){
             ex.printStackTrace();
         }

@@ -2,9 +2,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -29,8 +26,8 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExapandableListAdapterSMSRepoetData;
 import anandniketan.com.bhadajadmin.Adapter.MISAccountHeaderAdapter;
-import anandniketan.com.bhadajadmin.Adapter.MISStudentAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISDetailListAdapter;
+import anandniketan.com.bhadajadmin.Adapter.MISStudentAdapter;
 import anandniketan.com.bhadajadmin.Model.MIS.MISAccountModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISNewAdmissionModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStaffModel;
@@ -44,8 +41,6 @@ import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentMisData2Binding;
-
-import okhttp3.internal.Util;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -54,7 +49,7 @@ public class MISDataListFragment extends Fragment {
     private FragmentMisData2Binding fragmentMisDataBinding;
     private View rootView;
     private Context mContext;
-    private String title = "",requestType = "",date = "",termID = "",deptId = "";
+    private String title = "", requestType = "", date = "", termID = "", deptId = "";
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private List<MISStudentModel.FinalArray> misStudentFinalDataList;
@@ -66,7 +61,7 @@ public class MISDataListFragment extends Fragment {
 
     private List<MISStaffModel.StaffDatum> misStaffDataList;
     private List<MISStaffModel.ANT> misStaffANTDataList;
-    private  List<MISAccountModel.Datum> misAccountHeaderDataList;
+    private List<MISAccountModel.Datum> misAccountHeaderDataList;
     private List<MISAccountModel.ClassDatum> misAccountDataList;
     private List<MISNewAdmissionModel.FinalArray> misNADataList;
     private ExapandableListAdapterSMSRepoetData exapandableListAdapterSMSRepoetData;
@@ -77,9 +72,9 @@ public class MISDataListFragment extends Fragment {
 
     private MISStudentAdapter misStudentAdapter;
     private MISDetailListAdapter misDetailListAdapter;
-    private TextView mTvInnerTitle,mTvInnerAttendanceStatus,mTvinnerGrno,mTvStudent,mTvDept,mTvCode,mTvName,mTvPhone,mTvGRNO,mTvClassTeacher,mTVGrade,mTvSection,mTvLeaveDay,mTvReason,mTvAbsentFrom;
-    private View innerTitleView,innerListHeaderView;
-    private String countdata = "",requestTitle = "";
+    private TextView mTvInnerTitle, mTvInnerAttendanceStatus, mTvinnerGrno, mTvStudent, mTvDept, mTvCode, mTvName, mTvPhone, mTvGRNO, mTvClassTeacher, mTVGrade, mTvSection, mTvLeaveDay, mTvReason, mTvAbsentFrom;
+    private View innerTitleView, innerListHeaderView;
+    private String countdata = "", requestTitle = "";
     private MISAccountHeaderAdapter misAccountHeaderAdapter;
     private List<String> listDataHeader;
     private HashMap<String, List<StudentAttendanceFinalArray>> listDataChild;
@@ -96,13 +91,13 @@ public class MISDataListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentMisDataBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_mis_data2,container,false);
+        fragmentMisDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_mis_data2, container, false);
 
         AppConfiguration.position = 66;
         AppConfiguration.firsttimeback = true;
 
         rootView = fragmentMisDataBinding.getRoot();
-        progressBar = (ProgressBar)rootView.findViewById(R.id.loader);
+        progressBar = rootView.findViewById(R.id.loader);
         mContext = getActivity();
 
 
@@ -115,30 +110,30 @@ public class MISDataListFragment extends Fragment {
 
             try {
                 countdata = bundle.getString("countdata");
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
             try {
                 requestTitle = bundle.getString("requestTitle");
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
 
-            if(title != null && !TextUtils.isEmpty(title)){
+            if (title != null && !TextUtils.isEmpty(title)) {
                 fragmentMisDataBinding.textView3.setText(title);
             }
 
 
-            try{
+            try {
                 deptId = bundle.getString("deptID");
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
 
-            if(title.equalsIgnoreCase("Student")) {
+            if (title.equalsIgnoreCase("Student")) {
                 //set header view by requestType.
 
                 if (requestType.equalsIgnoreCase("Total")) {
@@ -148,7 +143,7 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText("Total Students");
 
                 } else if (requestType.equalsIgnoreCase("Present")) {
@@ -159,13 +154,13 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestType);
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
-                } else if(requestType.equalsIgnoreCase("Absent") || requestType.equalsIgnoreCase("Leave")){
+                } else if (requestType.equalsIgnoreCase("Absent") || requestType.equalsIgnoreCase("Leave")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.layout_mis_student_detail_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
@@ -173,23 +168,22 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestType);
 
-                    mTvGRNO = (TextView)innerListHeaderView.findViewById(R.id.grno_txt);
+                    mTvGRNO = innerListHeaderView.findViewById(R.id.grno_txt);
                     mTvGRNO.setVisibility(View.VISIBLE);
                     mTvGRNO.setText("Phone No.");
-                    mTvGRNO.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                    mTvGRNO.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.VISIBLE);
                     mTvInnerAttendanceStatus.setText("SMS");
 
-                    mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                    mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
 
-
-                } else if (requestType.equalsIgnoreCase("A.N.T.")) {
+                } else if (requestType.equalsIgnoreCase("ANT")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.layout_mis_student_detail_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
@@ -197,36 +191,33 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText("Attendance Not Taken");
-
-
 
 
 //                    mTvInnerAttendanceStatus = (TextView) innerListHeaderView.findViewById(R.id.status_txt);
 //                    mTvInnerAttendanceStatus.setText("Class Teacher");
 //                    mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f));
 
-                    mTvGRNO = (TextView)innerListHeaderView.findViewById(R.id.grno_txt);
+                    mTvGRNO = innerListHeaderView.findViewById(R.id.grno_txt);
                     mTvGRNO.setVisibility(View.VISIBLE);
                     mTvGRNO.setText("Phone No.");
-                    mTvGRNO.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
+                    mTvGRNO.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.VISIBLE);
                     mTvInnerAttendanceStatus.setText("SMS");
-                    mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
+                    mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
 
-                    mTvClassTeacher = (TextView)innerListHeaderView.findViewById(R.id.teacher_name_txt);
+                    mTvClassTeacher = innerListHeaderView.findViewById(R.id.teacher_name_txt);
                     mTvClassTeacher.setVisibility(View.VISIBLE);
 
 
-                    mTvStudent = (TextView) innerListHeaderView.findViewById(R.id.student_txt);
+                    mTvStudent = innerListHeaderView.findViewById(R.id.student_txt);
                     mTvStudent.setText("Total Students");
 
 
-
-                }else if(requestType.equalsIgnoreCase("ConsistentAbsent")){
+                } else if (requestType.equalsIgnoreCase("ConsistentAbsent")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_absent3day_student_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
@@ -235,29 +226,27 @@ public class MISDataListFragment extends Fragment {
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
                     innerTitleView.setVisibility(View.VISIBLE);
 
-                    mTvInnerTitle = (TextView) innerListHeaderView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerListHeaderView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestType);
 
 
-                    mTVGrade = (TextView) innerListHeaderView.findViewById(R.id.grade_txt);
+                    mTVGrade = innerListHeaderView.findViewById(R.id.grade_txt);
                     mTVGrade.setVisibility(View.VISIBLE);
                     mTVGrade.setText("Phone No.");
-                    mTVGrade.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
+                    mTVGrade.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
 
-                    mTvGRNO = (TextView)innerListHeaderView.findViewById(R.id.grno_txt);
+                    mTvGRNO = innerListHeaderView.findViewById(R.id.grno_txt);
                     mTvGRNO.setVisibility(View.VISIBLE);
                     mTvGRNO.setText("SMS");
-                    mTvGRNO.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
+                    mTvGRNO.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f));
 
-                    mTvSection = (TextView)innerListHeaderView.findViewById(R.id.section_txt);
+                    mTvSection = innerListHeaderView.findViewById(R.id.section_txt);
                     mTvSection.setVisibility(View.VISIBLE);
                     mTvSection.setText("Class");
-                    mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f));
+                    mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f));
 
 
-
-
-                }else if(requestType.equalsIgnoreCase("Attendance less then 70%")){
+                } else if (requestType.equalsIgnoreCase("Attendance less then 70%")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_absent3day_student_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
@@ -265,46 +254,44 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestType);
 
-                    mTvAbsentFrom = (TextView)innerListHeaderView.findViewById(R.id.absentfrom_txt);
+                    mTvAbsentFrom = innerListHeaderView.findViewById(R.id.absentfrom_txt);
                     mTvAbsentFrom.setText("Absent(in %)");
                     mTvAbsentFrom.setVisibility(View.VISIBLE);
 
-                    mTVGrade = (TextView) innerListHeaderView.findViewById(R.id.grade_txt);
+                    mTVGrade = innerListHeaderView.findViewById(R.id.grade_txt);
                     mTVGrade.setText("Phone No.");
                     mTVGrade.setVisibility(View.VISIBLE);
 
-                    LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.7f);
+                    LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f);
                     params1.gravity = Gravity.CENTER;
                     mTVGrade.setLayoutParams(params1);
 
-                    mTvGRNO = (TextView)innerListHeaderView.findViewById(R.id.grno_txt);
+                    mTvGRNO = innerListHeaderView.findViewById(R.id.grno_txt);
                     mTvGRNO.setVisibility(View.VISIBLE);
                     mTvGRNO.setText("SMS");
-                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.7f);
+                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f);
                     params2.gravity = Gravity.CENTER;
                     mTvGRNO.setLayoutParams(params2);
 
 
-
-                    mTvSection = (TextView)innerListHeaderView.findViewById(R.id.section_txt);
+                    mTvSection = innerListHeaderView.findViewById(R.id.section_txt);
                     mTvSection.setVisibility(View.VISIBLE);
                     mTvSection.setText("Class");
-                    LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,1.2f);
+                    LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f);
                     params3.gravity = Gravity.CENTER;
                     mTvSection.setLayoutParams(params3);
 
 
-
                 }
 
 
-            }else if(title.equalsIgnoreCase("Staff")){
+            } else if (title.equalsIgnoreCase("Staff")) {
 
 
-                if(requestType.equalsIgnoreCase("Total")) {
+                if (requestType.equalsIgnoreCase("Total")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_detail_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
@@ -313,12 +300,12 @@ public class MISDataListFragment extends Fragment {
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText("Total Staff");
 
                     fragmentMisDataBinding.layoutStub1.getViewStub().setVisibility(View.GONE);
 
-                }else if(requestType.equalsIgnoreCase("A.N.T.")){
+                } else if (requestType.equalsIgnoreCase("ANT")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_detail_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
@@ -326,47 +313,44 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerAttendanceStatus = (TextView) innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.VISIBLE);
                     mTvInnerAttendanceStatus.setText(getString(R.string.section));
                     mTvInnerAttendanceStatus.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f));
 
-                    mTvDept = (TextView)innerListHeaderView.findViewById(R.id.dept_txt);
+                    mTvDept = innerListHeaderView.findViewById(R.id.dept_txt);
                     mTvDept.setText(getString(R.string.grade));
                     mTvDept.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.8f));
 
-                    mTvCode = (TextView)innerListHeaderView.findViewById(R.id.dept_txt);
+                    mTvCode = innerListHeaderView.findViewById(R.id.dept_txt);
                     mTvCode.setText("Teacher Code");
                     mTvCode.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f));
 
 
-
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestType);
 
 
-
-                }else if(requestType.equalsIgnoreCase("Work Plan") || requestType.equalsIgnoreCase("CW Submitted") ||requestType.equalsIgnoreCase("HW Submitted")){
+                } else if (requestType.equalsIgnoreCase("Work Plan") || requestType.equalsIgnoreCase("CW Submitted") || requestType.equalsIgnoreCase("HW Submitted")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_detail_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
 
-                    mTvName =(TextView)innerListHeaderView.findViewById(R.id.name_txt);
+                    mTvName = innerListHeaderView.findViewById(R.id.name_txt);
                     mTvName.setText("TeacherName");
                     mTvName.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.3f));
 
-                    mTvCode = (TextView)innerListHeaderView.findViewById(R.id.code_txt);
+                    mTvCode = innerListHeaderView.findViewById(R.id.code_txt);
                     mTvCode.setText("Class");
                     mTvCode.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.5f));
 
 
-                    mTvDept = (TextView)innerListHeaderView.findViewById(R.id.dept_txt);
+                    mTvDept = innerListHeaderView.findViewById(R.id.dept_txt);
                     mTvDept.setText("Subject");
                     mTvDept.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f));
 
 
-
-                    mTvInnerAttendanceStatus = (TextView) innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
 
@@ -374,31 +358,28 @@ public class MISDataListFragment extends Fragment {
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
 
-
-
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestType);
 
 
-                } else{
+                } else {
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_detail_header);
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
 
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerAttendanceStatus = (TextView) innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestType);
                 }
 
 
+            } else if (title.equalsIgnoreCase("Staff New")) {
 
-            }  else if(title.equalsIgnoreCase("Staff New")){
-
-                if(requestType.equalsIgnoreCase("Total")) {
+                if (requestType.equalsIgnoreCase("Total")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_new_header);
 
@@ -407,17 +388,17 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvLeaveDay = (TextView)innerListHeaderView.findViewById(R.id.leave_txt);
+                    mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.GONE);
 
-                    mTvReason = (TextView)innerListHeaderView.findViewById(R.id.reason_txt);
+                    mTvReason = innerListHeaderView.findViewById(R.id.reason_txt);
                     mTvReason.setVisibility(View.GONE);
 
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestTitle);
 
-                }else if(requestType.equalsIgnoreCase("Absent")){
+                } else if (requestType.equalsIgnoreCase("Absent")) {
 
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_new_header);
@@ -427,22 +408,22 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvLeaveDay = (TextView)innerListHeaderView.findViewById(R.id.leave_txt);
+                    mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.VISIBLE);
                     mTvLeaveDay.setText("Employee Code");
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
-                    mTvReason = (TextView)innerListHeaderView.findViewById(R.id.reason_txt);
+                    mTvReason = innerListHeaderView.findViewById(R.id.reason_txt);
                     mTvReason.setVisibility(View.GONE);
 
 
-                    mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestTitle);
 
 
-                }else if(requestType.equalsIgnoreCase("Leave")){
+                } else if (requestType.equalsIgnoreCase("Leave")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_new_header);
 
@@ -451,20 +432,20 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
-                    mTvLeaveDay = (TextView)innerListHeaderView.findViewById(R.id.leave_txt);
+                    mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.VISIBLE);
                     mTvLeaveDay.setText("Leave Days");
 
-                    mTvReason = (TextView)innerListHeaderView.findViewById(R.id.reason_txt);
+                    mTvReason = innerListHeaderView.findViewById(R.id.reason_txt);
                     mTvReason.setVisibility(View.VISIBLE);
 
-                    mTvInnerTitle = (TextView)innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestTitle);
 
-                }else if(requestType.equalsIgnoreCase("Staff absent more then 10%")){
+                } else if (requestType.equalsIgnoreCase("Staff absent more then 10%")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_new_header);
 
@@ -473,20 +454,20 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
-                    mTvLeaveDay = (TextView)innerListHeaderView.findViewById(R.id.leave_txt);
+                    mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.VISIBLE);
 
-                    mTvReason = (TextView)innerListHeaderView.findViewById(R.id.reason_txt);
+                    mTvReason = innerListHeaderView.findViewById(R.id.reason_txt);
                     mTvReason.setVisibility(View.VISIBLE);
                     mTvReason.setText("Department");
 
-                    mTvInnerTitle = (TextView)innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestTitle);
 
-                }else if(requestType.equalsIgnoreCase("More then 3 days leave")){
+                } else if (requestType.equalsIgnoreCase("More then 3 days leave")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_new_header);
 
@@ -495,7 +476,7 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.VISIBLE);
                     mTvInnerAttendanceStatus.setText("Department");
 
@@ -504,17 +485,17 @@ public class MISDataListFragment extends Fragment {
                     mTvInnerAttendanceStatus.setLayoutParams(params);
 
 
-                    mTvLeaveDay = (TextView)innerListHeaderView.findViewById(R.id.leave_txt);
+                    mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.VISIBLE);
                     mTvLeaveDay.setText("Leave Days");
 
-                    mTvReason = (TextView)innerListHeaderView.findViewById(R.id.reason_txt);
+                    mTvReason = innerListHeaderView.findViewById(R.id.reason_txt);
                     mTvReason.setVisibility(View.GONE);
 
-                    mTvInnerTitle = (TextView)innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestTitle);
 
-                }else if(requestType.equalsIgnoreCase("More then 3 days absent")){
+                } else if (requestType.equalsIgnoreCase("More then 3 days absent")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_staff_new_header);
 
@@ -523,7 +504,7 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.VISIBLE);
                     mTvInnerAttendanceStatus.setText("Department");
 
@@ -532,23 +513,20 @@ public class MISDataListFragment extends Fragment {
                     mTvInnerAttendanceStatus.setLayoutParams(params);
 
 
-                    mTvLeaveDay = (TextView)innerListHeaderView.findViewById(R.id.leave_txt);
+                    mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.VISIBLE);
                     mTvLeaveDay.setText("Absent Days");
 
-                    mTvReason = (TextView)innerListHeaderView.findViewById(R.id.reason_txt);
+                    mTvReason = innerListHeaderView.findViewById(R.id.reason_txt);
                     mTvReason.setVisibility(View.GONE);
 
-                    mTvInnerTitle = (TextView)innerTitleView.findViewById(R.id.title_txt);
+                    mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                     mTvInnerTitle.setText(requestTitle);
 
                 }
 
 
-            }
-
-
-            else if(title.equalsIgnoreCase("Account")){
+            } else if (title.equalsIgnoreCase("Account")) {
 
                 fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_account_inner_header);
 
@@ -558,40 +536,38 @@ public class MISDataListFragment extends Fragment {
                 innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
 
-                mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                 mTvInnerTitle.setText(requestTitle);
 
-            }else if(title.equalsIgnoreCase("New Addmission")){
+            } else if (title.equalsIgnoreCase("New Addmission")) {
 
 
-                if(requestType.equalsIgnoreCase("FeesNotPaid")){
+                if (requestType.equalsIgnoreCase("FeesNotPaid")) {
 
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_new_addmission_header);
 
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
-                    mTvPhone = (TextView)innerListHeaderView.findViewById(R.id.phone_txt);
+                    mTvPhone = innerListHeaderView.findViewById(R.id.phone_txt);
 
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                    mTvInnerAttendanceStatus = (TextView)innerListHeaderView.findViewById(R.id.current_status_txt);
+                    mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.current_status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
 
-
-
-                }else{
+                } else {
                     fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_new_addmission_header);
 
                     innerListHeaderView = fragmentMisDataBinding.layoutStub.getViewStub().inflate();
-                    mTvPhone = (TextView)innerListHeaderView.findViewById(R.id.phone_txt);
+                    mTvPhone = innerListHeaderView.findViewById(R.id.phone_txt);
 
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
 
-                    if(requestType.equalsIgnoreCase("Rejected")) {
-                        mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                    if (requestType.equalsIgnoreCase("Rejected")) {
+                        mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                         mTvInnerTitle.setText(requestTitle);
 
                         mTvPhone.setText("Reason");
@@ -599,7 +575,7 @@ public class MISDataListFragment extends Fragment {
 
                 }
 
-            }else if(title.equalsIgnoreCase("Message")){
+            } else if (title.equalsIgnoreCase("Message")) {
 
                 fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.sms_report_header);
 
@@ -609,12 +585,10 @@ public class MISDataListFragment extends Fragment {
                 innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
 
-                mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                 mTvInnerTitle.setText(requestTitle);
 
-            }
-
-            else if(title.equalsIgnoreCase("Task Report")){
+            } else if (title.equalsIgnoreCase("Task Report")) {
 
                 fragmentMisDataBinding.layoutStub.getViewStub().setLayoutResource(R.layout.list_item_mis_task_report_innerlist_header);
 
@@ -623,13 +597,13 @@ public class MISDataListFragment extends Fragment {
                 fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                 innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
 
-                mTvInnerTitle = (TextView) innerTitleView.findViewById(R.id.title_txt);
+                mTvInnerTitle = innerTitleView.findViewById(R.id.title_txt);
                 mTvInnerTitle.setText(requestTitle);
 
             }
 
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
 
         }
@@ -642,23 +616,23 @@ public class MISDataListFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    if(title.equalsIgnoreCase("Student")) {
-                        callStudentMISDataApi();
-                    }else if(title.equalsIgnoreCase("Staff")){
+                    if (title.equalsIgnoreCase("Student")) {
+//                        callStudentMISDataApi();
+                    } else if (title.equalsIgnoreCase("Staff")) {
                         callStaffMISDataApi();
-                    }else if(title.equalsIgnoreCase("Staff New")){
+                    } else if (title.equalsIgnoreCase("Staff New")) {
                         callStaffNewMISDataApi();
-                    } else if(title.equalsIgnoreCase("Account")){
+                    } else if (title.equalsIgnoreCase("Account")) {
                         callAccountMISDataApi();
-                    }else if(title.equalsIgnoreCase("New Addmission")){
+                    } else if (title.equalsIgnoreCase("New Addmission")) {
                         callNewAddmissionMISDataApi();
-                    }else if(title.equalsIgnoreCase("Message")){
+                    } else if (title.equalsIgnoreCase("Message")) {
                         callMessageMISDataApi();
-                    }else if(title.equalsIgnoreCase("Task Report")){
+                    } else if (title.equalsIgnoreCase("Task Report")) {
                         callTaskReportMISDataApi();
                     }
 
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
@@ -677,7 +651,7 @@ public class MISDataListFragment extends Fragment {
 //                fragmentManager = getFragmentManager();
 //                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
 
-                getActivity().getSupportFragmentManager().popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
         fragmentMisDataBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
@@ -689,179 +663,178 @@ public class MISDataListFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         AppConfiguration.position = 66;
         AppConfiguration.firsttimeback = true;
     }
 
-    private void callStudentMISDataApi() {
-
-        if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
-            return;
-        }
-        progressBar.setVisibility(View.VISIBLE);
-
-         //Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISStudentdata(getParams(), new retrofit.Callback<MISStudentModel>() {
-            @Override
-            public void success(MISStudentModel staffSMSDataModel, Response response) {
-                //Utils.dismissDialog();
-
-                if (staffSMSDataModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
-                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
-                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
-
-                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
-                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
-                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
-                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
-                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
-                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
-                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
-                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
-
-
-                    try {
-
-                        progressBar.setVisibility(View.GONE);
-
-                        misStudentStandardDataList = staffSMSDataModel.getFinalArray().get(0).getStandardData();
-                        misStudentDataList = staffSMSDataModel.getFinalArray().get(0).getStudentData();
-                        misStudentANTDataList = staffSMSDataModel.getFinalArray().get(0).getANT();
-                        misStudentFinalDataList = staffSMSDataModel.getFinalArray();
-
-
-                        fragmentMisDataBinding.lvHeader2.setVisibility(View.VISIBLE);
-                        fragmentMisDataBinding.lvHeader.setVisibility(View.VISIBLE);
-                        fragmentMisDataBinding.recyclerLinear.setVisibility(View.VISIBLE);
-                        fragmentMisDataBinding.recyclerLinear1.setVisibility(View.VISIBLE);
-                        fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);
-
-
-                        if (!requestType.equalsIgnoreCase("A.N.T.")) {
-
-                            int totalCount = 0;
-
-                            for (int count = 0; count < misStudentStandardDataList.size(); count++) {
-
-                                totalCount += Integer.parseInt(misStudentStandardDataList.get(count).getTotalStudent());
-                            }
-
-                            if (requestType.equalsIgnoreCase("Present") || requestType.equalsIgnoreCase("Absent") || requestType.equalsIgnoreCase("Leave") || requestType.equalsIgnoreCase("ConsistentAbsent") || requestType.equalsIgnoreCase("Attendance less then 70%")) {
-                                fragmentMisDataBinding.tvTxt.setText(requestType + ": " + totalCount);
-                            } else if (requestType.equalsIgnoreCase("Total")) {
-                                fragmentMisDataBinding.tvTxt.setText("Total Student: " + totalCount);
-                            }
-
-                            misStudentAdapter = new MISStudentAdapter(mContext, misStudentStandardDataList, 0);
-                            fragmentMisDataBinding.rvMisdataList1.setLayoutManager(new LinearLayoutManager(mContext));
-                            fragmentMisDataBinding.rvMisdataList1.setAdapter(misStudentAdapter);
-
-                            if(requestType.equalsIgnoreCase("ConsistentAbsent") ) {
-                                misDetailListAdapter = new MISDetailListAdapter(getActivity(),misStudentDataList,1, requestType);
-                                fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
-                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
-
-                            }else if(requestType.equalsIgnoreCase("Attendance less then 70%")){
-                                misDetailListAdapter = new MISDetailListAdapter(getActivity(),misStudentDataList,1, requestType);
-                                fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
-                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
-                            }
-
-                            else{
-                                misDetailListAdapter = new MISDetailListAdapter(getActivity(),misStudentDataList, 0, requestType);
-                                fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
-                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
-                            }
-
-                        }else if(requestType.equalsIgnoreCase("A.N.T.")){
-
-                            int totalCount = 0;
-
-                            for (int count = 0; count < misStudentANTDataList.size(); count++) {
-
-                                totalCount += misStudentANTDataList.get(count).getTotalStudent();
-                            }
-                            fragmentMisDataBinding.tvTxt.setText("Attendance Not Taken: " +totalCount);
-
-                            if(requestType.equalsIgnoreCase("A.N.T.")){
-
-                                fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-                                fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
-
-
-                                misDetailListAdapter = new MISDetailListAdapter(mContext, misStudentANTDataList,0,requestType);
-                                fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
-                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
-                            }
-                        }
-
-
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-               // Utils.dismissDialog();
-                error.printStackTrace();
-                error.getMessage();
-                progressBar.setVisibility(View.GONE);
-                fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-                fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
-                fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
-                fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
-                fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
-                fragmentMisDataBinding.txtNoRecords.setText(error.getMessage());
-                //Utils.ping(mContext, getString(R.string.something_wrong));
-            }
-        });
-
-    }
-
+//    private void callStudentMISDataApi() {
+//
+//        if (!Utils.checkNetwork(mContext)) {
+//            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+//            return;
+//        }
+//        progressBar.setVisibility(View.VISIBLE);
+//
+//        //Utils.showDialog(getActivity());
+//        ApiHandler.getApiService().getMISStudentdata(getParams(), new retrofit.Callback<MISStudentModel>() {
+//            @Override
+//            public  void  success ( MISStudentModel  staffSMSDataModel , Response  response ) {
+//                //Utils.dismissDialog();
+//
+//                if (staffSMSDataModel == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
+//                    progressBar.setVisibility(View.GONE);
+//
+//                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess() == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    progressBar.setVisibility(View.GONE);
+//
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
+//                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
+//                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    progressBar.setVisibility(View.GONE);
+//
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
+//
+//
+//                    try {
+//
+//                        progressBar.setVisibility(View.GONE);
+//
+//                        misStudentStandardDataList = staffSMSDataModel.getFinalArray().get(0).getStandardData();
+//                        misStudentDataList = staffSMSDataModel . getFinalArray () . get ( 0 ) . getStudentData ();
+//                        misStudentANTDataList = staffSMSDataModel.getFinalArray().get(0).getANT();
+//                        misStudentFinalDataList = staffSMSDataModel . getFinalArray ();
+//
+//
+//                        fragmentMisDataBinding.lvHeader2.setVisibility(View.VISIBLE);
+//                        fragmentMisDataBinding.lvHeader.setVisibility(View.VISIBLE);
+//                        fragmentMisDataBinding.recyclerLinear.setVisibility(View.VISIBLE);
+//                        fragmentMisDataBinding.recyclerLinear1.setVisibility(View.VISIBLE);
+//                        fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);
+//
+//
+//                        if (!requestType.equalsIgnoreCase("ANT")) {
+//
+//                            int totalCount = 0;
+//
+//                            for (int count = 0; count < misStudentStandardDataList.size(); count++) {
+//
+//                                totalCount + =  Integer . parseInt (misStudentStandardDataList . get (count) . getTotalStudent ());
+//                            }
+//
+//                            if (requestType.equalsIgnoreCase("Present") || requestType.equalsIgnoreCase("Absent") || requestType.equalsIgnoreCase("Leave") || requestType.equalsIgnoreCase("ConsistentAbsent") || requestType.equalsIgnoreCase("Attendance less then 70%")) {
+//                                fragmentMisDataBinding.tvTxt.setText(requestType + ": " + totalCount);
+//                            } else if (requestType.equalsIgnoreCase("Total")) {
+//                                fragmentMisDataBinding.tvTxt.setText("Total Student: " + totalCount);
+//                            }
+//
+//                            misStudentAdapter =  new  MISStudentAdapter (mContext, misStudentStandardDataList, 0 );
+//                            fragmentMisDataBinding . rvMisdataList1 . setLayoutManager ( new  linearLayoutManager (mContext));
+//                            fragmentMisDataBinding . rvMisdataList1 . setAdapter (lost dent adapter);
+//
+//                            if(requestType.equalsIgnoreCase("ConsistentAbsent") ) {
+//                                misDetailListAdapter = new MISDetailListAdapter(getActivity(),misStudentDataList,1, requestType);
+//                                fragmentMisDataBinding . rvMisdataList . setLayoutManager ( new  linearLayoutManager (mContext));
+//                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+//
+//                            }else if(requestType.equalsIgnoreCase("Attendance less then 70%")){
+//                                misDetailListAdapter = new MISDetailListAdapter(getActivity(),misStudentDataList,1, requestType);
+//                                fragmentMisDataBinding . rvMisdataList . setLayoutManager ( new  linearLayoutManager (mContext));
+//                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+//                            }
+//
+//                            else{
+//                                misDetailListAdapter = new MISDetailListAdapter(getActivity(),misStudentDataList, 0, requestType);
+//                                fragmentMisDataBinding . rvMisdataList . setLayoutManager ( new  linearLayoutManager (mContext));
+//                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+//                            }
+//
+//                        }else if(requestType.equalsIgnoreCase("ANT")){
+//
+//                            int totalCount = 0;
+//
+//                            for (int count = 0; count < misStudentANTDataList.size(); count++) {
+//
+//                                totalCount + = misStudentANTDataList . get (count) .
+//                            }
+//                            fragmentMisDataBinding.tvTxt.setText("Attendance Not Taken: " +totalCount);
+//
+//                            if(requestType.equalsIgnoreCase("ANT")){
+//
+//                                fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
+//                                fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
+//
+//
+//                                misDetailListAdapter = new MISDetailListAdapter(mContext, misStudentANTDataList,0,requestType);
+//                                fragmentMisDataBinding . rvMisdataList . setLayoutManager ( new LinearLayoutManager (mContext));
+//                                fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+//                            }
+//                        }
+//
+//
+//
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                // Utils.dismissDialog();
+//                error.printStackTrace();
+//                error.getMessage();
+//                progressBar.setVisibility(View.GONE);
+//                fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
+//                fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+//                fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+//                fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
+//                fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                fragmentMisDataBinding.txtNoRecords.setText(error.getMessage());
+//                //Utils.ping(mContext, getString(R.string.something_wrong));
+//            }
+//        });
+//
+//    }
 
 
     private void callStaffMISDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-       // Utils.showDialog(getActivity());
+        // Utils.showDialog(getActivity());
         progressBar.setVisibility(View.VISIBLE);
 
         ApiHandler.getApiService().getMISStaffdata(getParams(), new retrofit.Callback<MISStaffModel>() {
             @Override
             public void success(MISStaffModel staffSMSDataModel, Response response) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
 
                 if (staffSMSDataModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -918,34 +891,30 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
 
 
-
-
-
                         if (requestType.equalsIgnoreCase("Total")) {
                             int totalCount = 0;
 
                             totalCount += misStaffDataList.size();
                             fragmentMisDataBinding.tvTxt.setText("Total Staff: " + totalCount);
-                        }else {
+                        } else {
 
-                            if(countdata != null){
-                                fragmentMisDataBinding.tvTxt.setText(requestTitle+": " + countdata);
+                            if (countdata != null) {
+                                fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
                             }
-
                         }
 
-                        if(requestType.equalsIgnoreCase("A.N.T.")){
-                            misDetailListAdapter = new MISDetailListAdapter(mContext,misStaffANTDataList,2, requestType);
+                        if (requestType.equalsIgnoreCase("ANT")) {
+                            misDetailListAdapter = new MISDetailListAdapter(mContext, misStaffANTDataList, 2, requestType);
                             fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
                             fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
 
-                        }else if(requestType.equalsIgnoreCase("Work Plan") || requestType.equalsIgnoreCase("CW Submitted") ||requestType.equalsIgnoreCase("HW Submitted")){
-                            misDetailListAdapter = new MISDetailListAdapter(mContext,misStaffFinalDataList,2, requestType);
+                        } else if (requestType.equalsIgnoreCase("Work Plan") || requestType.equalsIgnoreCase("CW Submitted") || requestType.equalsIgnoreCase("HW Submitted")) {
+                            misDetailListAdapter = new MISDetailListAdapter(mContext, misStaffFinalDataList, 2, requestType);
                             fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
                             fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
 
-                        } else{
-                            misDetailListAdapter = new MISDetailListAdapter(mContext,misStaffDataList,2, requestType);
+                        } else {
+                            misDetailListAdapter = new MISDetailListAdapter(mContext, misStaffDataList, 2, requestType);
                             fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
                             fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
                         }
@@ -958,7 +927,7 @@ public class MISDataListFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
                 fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
@@ -978,14 +947,14 @@ public class MISDataListFragment extends Fragment {
     private void callStaffNewMISDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         //Utils.showDialog(getActivity());
         progressBar.setVisibility(View.VISIBLE);
 
-        ApiHandler.getApiService().getMISStaffAttendanceDetail(getStaffNewParams(),new retrofit.Callback<MISStaffNewDetailModel>() {
+        ApiHandler.getApiService().getMISStaffAttendanceDetail(getStaffNewParams(), new retrofit.Callback<MISStaffNewDetailModel>() {
             @Override
             public void success(MISStaffNewDetailModel staffSMSDataModel, Response response) {
                 //Utils.dismissDialog();
@@ -1044,11 +1013,11 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
 
 
-                        if(countdata != null){
-                            fragmentMisDataBinding.tvTxt.setText(requestTitle+": " + countdata);
+                        if (countdata != null) {
+                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
                         }
 
-                        misDetailListAdapter = new MISDetailListAdapter(mContext,staffNewDetailModelList,7, requestType);
+                        misDetailListAdapter = new MISDetailListAdapter(mContext, staffNewDetailModelList, 7, requestType);
                         fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
                         fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
 
@@ -1060,7 +1029,7 @@ public class MISDataListFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-              //  Utils.dismissDialog();
+                //  Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
                 fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
@@ -1080,14 +1049,14 @@ public class MISDataListFragment extends Fragment {
     private void callTaskReportMISDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         //Utils.showDialog(getActivity());
         progressBar.setVisibility(View.VISIBLE);
 
-        ApiHandler.getApiService().getMISTaskData(getTaskReportParams(),new retrofit.Callback<MISTaskReportDetailModel>() {
+        ApiHandler.getApiService().getMISTaskData(getTaskReportParams(), new retrofit.Callback<MISTaskReportDetailModel>() {
             @Override
             public void success(MISTaskReportDetailModel staffSMSDataModel, Response response) {
                 //Utils.dismissDialog();
@@ -1146,11 +1115,11 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
 
 
-                        if(countdata != null){
-                            fragmentMisDataBinding.tvTxt.setText(requestTitle+": " + countdata);
+                        if (countdata != null) {
+                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
                         }
 
-                        misDetailListAdapter = new MISDetailListAdapter(mContext,taskReportModelList,8,requestType);
+                        misDetailListAdapter = new MISDetailListAdapter(mContext, taskReportModelList, 8, requestType);
                         fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
                         fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
 
@@ -1183,14 +1152,14 @@ public class MISDataListFragment extends Fragment {
     private void callAccountMISDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
         progressBar.setVisibility(View.VISIBLE);
 
-        ApiHandler.getApiService().getMISAccountByType(getAccountParams(),new retrofit.Callback<MISAccountModel>() {
+        ApiHandler.getApiService().getMISAccountByType(getAccountParams(), new retrofit.Callback<MISAccountModel>() {
             @Override
             public void success(MISAccountModel staffSMSDataModel, Response response) {
                 //Utils.dismissDialog();
@@ -1243,10 +1212,8 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);
 
 
-
-
-                        if(countdata != null){
-                            fragmentMisDataBinding.tvTxt.setText(requestTitle+": " + countdata);
+                        if (countdata != null) {
+                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
                         }
 
 
@@ -1255,17 +1222,14 @@ public class MISDataListFragment extends Fragment {
 //                            fragmentMisDataBinding.rvMisdataList1.setAdapter(misAccountHeaderAdapter);
 
 
-
-                            misAccountHeaderAdapter = new MISAccountHeaderAdapter(getActivity(),misAccountHeaderDataList,0);
-                            fragmentMisDataBinding.rvMisdataList1.setLayoutManager(new LinearLayoutManager(mContext));
-                            fragmentMisDataBinding.rvMisdataList1.setAdapter(misAccountHeaderAdapter);
-
-
-                            misDetailListAdapter = new MISDetailListAdapter(getActivity(),misAccountDataList,3,requestType);
-                            fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
-                            fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+                        misAccountHeaderAdapter = new MISAccountHeaderAdapter(getActivity(), misAccountHeaderDataList, 0);
+                        fragmentMisDataBinding.rvMisdataList1.setLayoutManager(new LinearLayoutManager(mContext));
+                        fragmentMisDataBinding.rvMisdataList1.setAdapter(misAccountHeaderAdapter);
 
 
+                        misDetailListAdapter = new MISDetailListAdapter(getActivity(), misAccountDataList, 3, requestType);
+                        fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
+                        fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
 
 
                     } catch (Exception ex) {
@@ -1276,7 +1240,7 @@ public class MISDataListFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-               /// Utils.dismissDialog();
+                /// Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
                 fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
@@ -1293,31 +1257,29 @@ public class MISDataListFragment extends Fragment {
     }
 
 
-    private Map<String,String> getAccountParams() {
+    private Map<String, String> getAccountParams() {
         Map<String, String> map = new HashMap<>();
-       // map.put("Date",date);
-        map.put("TermID",termID);
-        map.put("RequestType",requestType);
+        // map.put("Date",date);
+        map.put("TermID", termID);
+        map.put("RequestType", requestType);
         return map;
     }
-
-
 
 
     private void callNewAddmissionMISDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         //Utils.showDialog(getActivity());
         progressBar.setVisibility(View.VISIBLE);
 
-        ApiHandler.getApiService().getMISNewAddmission(getNewAdmissionParams(),new retrofit.Callback<MISNewAdmissionModel>() {
+        ApiHandler.getApiService().getMISNewAddmission(getNewAdmissionParams(), new retrofit.Callback<MISNewAdmissionModel>() {
             @Override
             public void success(MISNewAdmissionModel staffSMSDataModel, Response response) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
 
                 if (staffSMSDataModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -1371,11 +1333,11 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
 
 
-                        if(countdata != null){
-                            fragmentMisDataBinding.tvTxt.setText(requestTitle+": " +countdata);
+                        if (countdata != null) {
+                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
                         }
 
-                        misDetailListAdapter = new MISDetailListAdapter(getActivity(),misNADataList,6,requestType);
+                        misDetailListAdapter = new MISDetailListAdapter(getActivity(), misNADataList, 6, requestType);
                         fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
                         fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
 
@@ -1387,7 +1349,7 @@ public class MISDataListFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-              //  Utils.dismissDialog();
+                //  Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
                 progressBar.setVisibility(View.GONE);
@@ -1403,7 +1365,6 @@ public class MISDataListFragment extends Fragment {
         });
 
     }
-
 
 
     private void callMessageMISDataApi() {
@@ -1446,7 +1407,7 @@ public class MISDataListFragment extends Fragment {
                     return;
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     Utils.dismissDialog();
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
@@ -1463,7 +1424,7 @@ public class MISDataListFragment extends Fragment {
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("True")) {
 
 
-                    if(requestType != null) {
+                    if (requestType != null) {
 
                         if (!TextUtils.isEmpty(requestType)) {
 
@@ -1493,8 +1454,8 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
 
-                        if(countdata != null){
-                            fragmentMisDataBinding.tvTxt.setText(requestTitle+": " + countdata);
+                        if (countdata != null) {
+                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
                         }
                         fragmentMisDataBinding.listHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
@@ -1536,43 +1497,43 @@ public class MISDataListFragment extends Fragment {
 
     private Map<String, String> getMessageReportDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("StartDate",Utils.getTodaysDate());
-        map.put("EndDate",Utils.getTodaysDate());
+        map.put("StartDate", Utils.getTodaysDate());
+        map.put("EndDate", Utils.getTodaysDate());
         return map;
     }
 
 
-    private Map<String,String> getNewAdmissionParams() {
+    private Map<String, String> getNewAdmissionParams() {
         Map<String, String> map = new HashMap<>();
         // map.put("Date",date);
-        map.put("TermID",termID);
-        map.put("RequestType",requestType);
+        map.put("TermID", termID);
+        map.put("RequestType", requestType);
         return map;
     }
 
-    private Map<String,String> getTaskReportParams() {
+    private Map<String, String> getTaskReportParams() {
         Map<String, String> map = new HashMap<>();
-        map.put("Date",date);
-        map.put("TermID",termID);
-        map.put("TaskType",requestType);
+        map.put("Date", date);
+        map.put("TermID", termID);
+        map.put("TaskType", requestType);
         return map;
     }
 
-    private Map<String,String> getStaffNewParams() {
+    private Map<String, String> getStaffNewParams() {
         Map<String, String> map = new HashMap<>();
-        map.put("Date",date);
-        map.put("TermID",termID);
-        map.put("DepartmentID",deptId);
-        map.put("RequestType",requestType);
+        map.put("Date", date);
+        map.put("TermID", termID);
+        map.put("DepartmentID", deptId);
+        map.put("RequestType", requestType);
         return map;
     }
 
 
-    private Map<String,String> getParams() {
+    private Map<String, String> getParams() {
         Map<String, String> map = new HashMap<>();
-        map.put("Date",date);
-        map.put("TermID",termID);
-        map.put("RequestType",requestType);
+        map.put("Date", date);
+        map.put("TermID", termID);
+        map.put("RequestType", requestType);
         return map;
     }
 
@@ -1584,30 +1545,30 @@ public class MISDataListFragment extends Fragment {
             listDataHeader = new ArrayList<>();
             listDataChild = new HashMap<String, List<StudentAttendanceFinalArray>>();
 
-                for (int i = 0; i < finalArrayinquiryCountList.size(); i++) {
+            for (int i = 0; i < finalArrayinquiryCountList.size(); i++) {
 
-                    listDataHeader.add(finalArrayinquiryCountList.get(i).getMobileNo() + "|" +
-                                finalArrayinquiryCountList.get(i).getSendtime() + "|" +
-                                finalArrayinquiryCountList.get(i).getRectime() + "|" +
-                                finalArrayinquiryCountList.get(i).getDeliverstatus());
-                        Log.d("header", "" + listDataHeader);
-                        ArrayList<StudentAttendanceFinalArray> row = new ArrayList<StudentAttendanceFinalArray>();
+                listDataHeader.add(finalArrayinquiryCountList.get(i).getMobileNo() + "|" +
+                        finalArrayinquiryCountList.get(i).getSendtime() + "|" +
+                        finalArrayinquiryCountList.get(i).getRectime() + "|" +
+                        finalArrayinquiryCountList.get(i).getDeliverstatus());
+                Log.d("header", "" + listDataHeader);
+                ArrayList<StudentAttendanceFinalArray> row = new ArrayList<StudentAttendanceFinalArray>();
 
-                        row.add(finalArrayinquiryCountList.get(i));
-                        Log.d("row", "" + row);
+                row.add(finalArrayinquiryCountList.get(i));
+                Log.d("row", "" + row);
 
-                        listDataChild.put(listDataHeader.get(i), row);
-                        Log.d("child", "" + listDataChild);
-                    }
+                listDataChild.put(listDataHeader.get(i), row);
+                Log.d("child", "" + listDataChild);
+            }
 
 
-
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
- }
+}
+
 
 
 

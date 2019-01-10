@@ -3,23 +3,19 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import java.lang.reflect.Field;
@@ -30,59 +26,59 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExapandableSchoolResultAdapter;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableListCircular;
-import anandniketan.com.bhadajadmin.Adapter.GRRegisterAdapter;
+import anandniketan.com.bhadajadmin.Adapter.MISStudentRangeDetailAdapter;
 import anandniketan.com.bhadajadmin.Interface.ResponseCallBack;
-import anandniketan.com.bhadajadmin.Interface.onViewClick;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
-import anandniketan.com.bhadajadmin.Model.HR.HrHeadModel;
-import anandniketan.com.bhadajadmin.Model.MIS.MISClassWiseResultModel;
+import anandniketan.com.bhadajadmin.Model.MIS.MISStudentRange;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
-import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
+import anandniketan.com.bhadajadmin.Utility.WebServices;
 import anandniketan.com.bhadajadmin.databinding.FragmentClasswiseResultBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 
+// changed by Antra 10/01/2019
 
-public class MISClasswiseResultFragment extends Fragment implements ResponseCallBack{
+public class MISClasswiseResultFragment extends Fragment implements ResponseCallBack {
 
+    boolean dispatchMode = false;
     private View rootView;
     private FragmentClasswiseResultBinding fragmentClasswiseResultBinding;
     private List<FinalArrayStandard> finalArrayStandardsList;
     private Context mContext;
     private HashMap<Integer, String> spinnerStandardMap;
-    private String FinalTermIdStr, FinalstandardIdStr = "",FinalStandardIdStr = "",StandardName="",FinalStandardStr="",FinalClassIdStr="",FinalSectionStr = "",FinalRangeStr = "",FinalRangeIdStr= "";
+    private String FinalTermIdStr, FinalstandardIdStr = "", FinalStandardIdStr = "", StandardName = "", FinalStandardStr = "", FinalClassIdStr = "", FinalSectionStr = "", FinalRangeStr = "", FinalRangeIdStr = "";
     private HashMap<Integer, String> spinnerSectionMap;
     private HashMap<Integer, String> spinnerStatusMap;
     private Fragment fragment = null;
+    private RecyclerView rvList;
     private FragmentManager fragmentManager = null;
+    private View ll;
+    private ProgressBar progressBar;
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<MISStudentResultDataModel.TermDatum>> listDataChild;
     private List<MISStudentResultDataModel.FinalArray> finalArrayAnnouncementFinal;
     private ExapandableSchoolResultAdapter expandableSchoolResultAdapter;
     private ResponseCallBack responseCallBack;
-
     private int lastExpandedPosition = -1;
-    boolean dispatchMode=false;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        responseCallBack = (ResponseCallBack)this;
-    }
 
     public MISClasswiseResultFragment() {
         // Required empty public constructor
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        responseCallBack = this;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,10 +89,14 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentClasswiseResultBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_classwise_result,container, false);
+        fragmentClasswiseResultBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_classwise_result, container, false);
 
         mContext = getActivity();
         rootView = fragmentClasswiseResultBinding.getRoot();
+
+        ll = rootView.findViewById(R.id.lvExp_header_one);
+        rvList = rootView.findViewById(R.id.rvStudentList);
+        progressBar = rootView.findViewById(R.id.studentlist_progress);
 
         setListener();
 
@@ -106,8 +106,8 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
     }
 
 
-    private void setListener(){
-        fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.GONE);
+    private void setListener() {
+        progressBar.setVisibility(View.GONE);
         fragmentClasswiseResultBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,8 +127,12 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         fragmentClasswiseResultBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.VISIBLE);
-                callResultClassWise2();
+                progressBar.setVisibility(View.VISIBLE);
+                if (fragmentClasswiseResultBinding.rangeSpinner.getSelectedItem().toString().equalsIgnoreCase("No")) {
+                    callResultClassWise2();
+                } else {
+                    callStudentRangeDetail(FinalStandardStr, FinalSectionStr);
+                }
             }
         });
 
@@ -147,7 +151,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                 } else {
                     FinalStandardStr = name;
                 }
-                Log.d("StandardName",FinalStandardStr);
+                Log.d("StandardName", FinalStandardStr);
                 fillSection();
                 fillRange();
             }
@@ -166,9 +170,9 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
 
                 Log.d("value", selectedsectionstr + " " + getid);
                 FinalClassIdStr = getid.toString();
-                if (selectedsectionstr.equalsIgnoreCase("All")){
+                if (selectedsectionstr.equalsIgnoreCase("All")) {
                     FinalSectionStr = "0";
-                }else{
+                } else {
                     FinalSectionStr = selectedsectionstr;
                 }
 
@@ -185,15 +189,17 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedstatusstr = fragmentClasswiseResultBinding.rangeSpinner.getSelectedItem().toString();
-                String getid = spinnerStatusMap.get(fragmentClasswiseResultBinding.rangeSpinner.getSelectedItemPosition());
-                Log.d("value", selectedstatusstr + "" + getid);
-                FinalRangeStr = selectedstatusstr;
-                Log.d("value", selectedstatusstr + " " + getid);
-                FinalRangeIdStr = getid;
+//                String getid = spinnerStatusMap.get(fragmentClasswiseResultBinding.rangeSpinner.getSelectedItemPosition());
+//                Log.d("value", selectedstatusstr + "" + getid);
+//                FinalRangeStr = selectedstatusstr;
+//                Log.d("value", selectedstatusstr + " " + getid);
+//                FinalRangeIdStr = getid;
 
-                if (selectedstatusstr.equalsIgnoreCase("All")){
+                if (selectedstatusstr.equalsIgnoreCase("No")) {
                     FinalRangeStr = "";
-                }else{
+
+                } else {
+
                     FinalRangeStr = selectedstatusstr;
                 }
 
@@ -212,18 +218,15 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
                 String studentId = String.valueOf(finalArrayAnnouncementFinal.get(i).getStudentID());
                 callChildItemAPI(studentId);
-                if(expandableListView.isGroupExpanded(i)){
+                if (expandableListView.isGroupExpanded(i)) {
                     expandableListView.collapseGroup(i);
-                }else {
+                } else {
                     expandableListView.expandGroup(i);
                 }
 
                 return true;
             }
         });
-
-
-
 
         fragmentClasswiseResultBinding.lvExpstudentlist.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
@@ -246,7 +249,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         }
 
 //        Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getStandardDetail(getStandardDetail(),new retrofit.Callback<GetStandardModel>() {
+        ApiHandler.getApiService().getStandardDetail(getStandardDetail(), new retrofit.Callback<GetStandardModel>() {
             @Override
             public void success(GetStandardModel standardModel, Response response) {
                 Utils.dismissDialog();
@@ -285,7 +288,6 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         Map<String, String> map = new HashMap<>();
         return map;
     }
-
 
 
     public void fillGradeSpinner() {
@@ -330,7 +332,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         }
 
 
-        ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout,spinnerstandardIdArray);
+        ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
         fragmentClasswiseResultBinding.gradeSpinner.setAdapter(adapterstandard);
 
         FinalStandardIdStr = spinnerStandardMap.get(0);
@@ -412,45 +414,44 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         statusdetailId.add("33% - 40%");
         statusdetailId.add("32% & Below");
 
-
-
         ArrayList<String> statusdetail = new ArrayList<>();
 
-        statusdetail.add("All");
-        statusdetail.add("91% - 100%");
-        statusdetail.add("81% - 90%");
-        statusdetail.add("71 % - 80%");
-        statusdetail.add("61% - 70%");
-        statusdetail.add("51% - 60%");
-        statusdetail.add("41% - 50%");
-        statusdetail.add("33% - 40%");
-        statusdetail.add("32% & Below");
+//        statusdetail.add("All");
+//        statusdetail.add("91% - 100%");
+//        statusdetail.add("81% - 90%");
+//        statusdetail.add("71 % - 80%");
+//        statusdetail.add("61% - 70%");
+//        statusdetail.add("51% - 60%");
+//        statusdetail.add("41% - 50%");
+//        statusdetail.add("33% - 40%");
+//        statusdetail.add("32% & Below");
 
+        statusdetail.add("No");
+        statusdetail.add("Yes");
 
         String[] spinnerstatusdetailIdArray = new String[statusdetailId.size()];
 
-        spinnerStatusMap = new HashMap<Integer, String>();
-        for (int i = 0; i < statusdetailId.size(); i++) {
-            spinnerStatusMap.put(i, String.valueOf(statusdetailId.get(i)));
-            spinnerstatusdetailIdArray[i] = statusdetail.get(i).trim();
-        }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
+//        spinnerStatusMap = new HashMap<Integer, String>();
+//        for (int i = 0; i < statusdetailId.size(); i++) {
+//            spinnerStatusMap.put(i, String.valueOf(statusdetailId.get(i)));
+//            spinnerstatusdetailIdArray[i] = statusdetail.get(i).trim();
+//        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentClasswiseResultBinding.rangeSpinner);
+//
+//            popupWindow.setHeight(spinnerstatusdetailIdArray.length > 4 ? 500 : spinnerstatusdetailIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentClasswiseResultBinding.rangeSpinner);
-
-            popupWindow.setHeight(spinnerstatusdetailIdArray.length > 4 ? 500 : spinnerstatusdetailIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
-
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstatusdetailIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, statusdetail);
         fragmentClasswiseResultBinding.rangeSpinner.setAdapter(adapterTerm);
-        FinalRangeStr = spinnerStatusMap.get(0);
+//        FinalRangeStr = spinnerStatusMap.get(0);
     }
-
 
 
 ////    private void callResultClassWise() {
@@ -527,13 +528,13 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
 
     private void callResultClassWise2() {
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
         Utils.showDialog(getActivity());
-        //fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
 
-        ApiHandler.getApiService().getResultData(getClasswiseResultParams(),new retrofit.Callback<MISStudentResultDataModel>() {
+        ApiHandler.getApiService().getResultData(getClasswiseResultParams(), new retrofit.Callback<MISStudentResultDataModel>() {
             @Override
             public void success(MISStudentResultDataModel studentFullDetailModel, Response response) {
                 Utils.dismissDialog();
@@ -542,7 +543,9 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                     fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.VISIBLE);
                     fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
                     fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
-                    fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.GONE);
+                    ll.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (studentFullDetailModel.getSuccess() == null) {
@@ -550,7 +553,9 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                     fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.VISIBLE);
                     fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
                     fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
-                    fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.GONE);
+                    ll.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("False")) {
@@ -559,7 +564,9 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                     fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.VISIBLE);
                     fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
                     fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
-                    fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.GONE);
+                    ll.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("True")) {
@@ -572,16 +579,18 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                             fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.GONE);
                             fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.VISIBLE);
                             fragmentClasswiseResultBinding.listHeader.setVisibility(View.VISIBLE);
-                            fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.VISIBLE);
+                            ll.setVisibility(View.GONE);
+                            rvList.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.VISIBLE);
                             fillExpLV();
-                            expandableSchoolResultAdapter = new ExapandableSchoolResultAdapter(getActivity(),listDataHeader,listDataChild,responseCallBack);
+                            expandableSchoolResultAdapter = new ExapandableSchoolResultAdapter(getActivity(), listDataHeader, listDataChild, responseCallBack);
                             fragmentClasswiseResultBinding.lvExpstudentlist.setAdapter(expandableSchoolResultAdapter);
-                            fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                         } else {
                             fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.VISIBLE);
                             fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
                             fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
-                            fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                         }
 
                     } else {
@@ -598,32 +607,29 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                 fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.VISIBLE);
                 fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
                 fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
-                fragmentClasswiseResultBinding.studentlistProgress.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
-
 
     private Map<String, String> getClasswiseResultParams() {
         Map<String, String> map = new HashMap<>();
         map.put("TermDetailID", AppConfiguration.schoolResultTermID);
 
-        if(FinalStandardStr.equalsIgnoreCase("0")){
+        if (FinalStandardStr.equalsIgnoreCase("0")) {
             map.put("StandardID", "");
-        }else{
-            map.put("StandardID",FinalStandardIdStr);
+        } else {
+            map.put("StandardID", FinalStandardIdStr);
         }
 
-
-        if(FinalSectionStr.equalsIgnoreCase("0")){
+        if (FinalSectionStr.equalsIgnoreCase("0")) {
             map.put("ClassID", "");
-        }else{
-            map.put("ClassID",FinalClassIdStr);
+        } else {
+            map.put("ClassID", FinalClassIdStr);
         }
 
-        map.put("RangeID",FinalRangeStr);
+        map.put("RangeID", FinalRangeStr);
         return map;
     }
 
@@ -631,7 +637,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<String, ArrayList<MISStudentResultDataModel.TermDatum>>();
         for (int i = 0; i < finalArrayAnnouncementFinal.size(); i++) {
-            listDataHeader.add(finalArrayAnnouncementFinal.get(i).getStandard()+"|"+finalArrayAnnouncementFinal.get(i).getClassName()+"|"+finalArrayAnnouncementFinal.get(i).getName()+"|"+finalArrayAnnouncementFinal.get(i).getPercentage());
+            listDataHeader.add(finalArrayAnnouncementFinal.get(i).getStandard() + "|" + finalArrayAnnouncementFinal.get(i).getClassName() + "|" + finalArrayAnnouncementFinal.get(i).getName() + "|" + finalArrayAnnouncementFinal.get(i).getPercentage());
             Log.d("header", "" + listDataHeader);
             ArrayList<MISStudentResultDataModel.TermDatum> row = new ArrayList<MISStudentResultDataModel.TermDatum>();
             row.addAll(finalArrayAnnouncementFinal.get(i).getTermData());
@@ -685,7 +691,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
 
     private Map<String, String> getStudentwiseResultParams(String studentId) {
         Map<String, String> map = new HashMap<>();
-        map.put("StudentID",studentId);
+        map.put("StudentID", studentId);
         return map;
     }
 
@@ -700,4 +706,78 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         expandableSchoolResultAdapter.onFailure(errorMessage);
 
     }
+
+    private void callStudentRangeDetail(String standardid, String classid) {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+//        fragmentMisBinding.LLFinance.setVisibility(View.GONE);
+        // Utils.showDialog(getActivity());
+//        ApiHandler.getApiService().getHeadWiseFeesCollectionStudent(getFinanceListParams(studentId, term),new retrofit.Callback<MISFinanaceModel>() {
+        WebServices apiService =
+                ApiClient.getClient().create(WebServices.class);
+        Call<MISStudentRange> call = apiService.getStudentRange(AppConfiguration.BASEURL + "GetResultRangeWise?StandardID=" + standardid + "&ClassID=" + classid);
+
+        call.enqueue(new Callback<MISStudentRange>() {
+
+            @Override
+            public void onResponse(Call<MISStudentRange> call, retrofit2.Response<MISStudentRange> response) {
+                //Utils.dismissDialog();
+                progressBar.setVisibility(View.GONE);
+                MISStudentRange staffSMSDataModel = response.body();
+                if (staffSMSDataModel == null) {
+                    rvList.setVisibility(View.GONE);
+                    ll.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (staffSMSDataModel.getSuccess() == null) {
+                    rvList.setVisibility(View.GONE);
+                    ll.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    progressBar.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    ll.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    progressBar.setVisibility(View.GONE);
+                    ll.setVisibility(View.VISIBLE);
+                    fragmentClasswiseResultBinding.lvExpHeader.setVisibility(View.GONE);
+                    fragmentClasswiseResultBinding.listHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.VISIBLE);
+                    fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.GONE);
+
+                    rvList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                    rvList.setAdapter(new MISStudentRangeDetailAdapter(getContext(), staffSMSDataModel.getFinalArray(), FinalSectionStr, FinalStandardStr));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MISStudentRange> call, Throwable t) {
+                t.printStackTrace();
+                t.getMessage();
+                progressBar.setVisibility(View.GONE);
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+    }
+
 }

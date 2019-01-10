@@ -1,9 +1,7 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
-
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,37 +18,39 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
+import anandniketan.com.bhadajadmin.Adapter.MISFinanceListAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISFinanceReportAdapter;
-import anandniketan.com.bhadajadmin.Adapter.MISListAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISSchoolReportAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISStaffGridAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISStaffListAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISTaskReportGridAdapter;
-import anandniketan.com.bhadajadmin.Adapter.SimpleSectionedRecyclerViewAdapter;
 import anandniketan.com.bhadajadmin.Model.MIS.MISFinanaceModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISSchoolResultModel;
-import anandniketan.com.bhadajadmin.Model.MIS.MISStaffModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStaffNewModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportModel;
 import anandniketan.com.bhadajadmin.Model.MISModel;
-import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
@@ -60,11 +59,8 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.SpacesItemDecoration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentMis2Binding;
-import okhttp3.internal.Util;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-
 
 public class MISFragment extends Fragment implements View.OnClickListener,DatePickerDialog.OnDateSetListener {
 
@@ -99,17 +95,21 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
     private MISStaffGridAdapter misStaffGridAdapter;
     private MISStaffListAdapter misStaffListAdapter;
+    public static final String inputFormat = "HH:mm";
    // private MISStaffListAdapter misStaffListAdapter;
 
     private MISSchoolReportAdapter misSchoolReportAdapter;
     private MISFinanceReportAdapter misFinanceReportAdapter;
+    long specifictime, currenttime;
+    SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.US);
+    private MISFinanceListAdapter misFinanceListAdapter;
+    private Date date;
+    private Date dateCompareOne;
+    private String compareStringOne = "04:00";
 
     public MISFragment() {
         // Required empty public constructor
     }
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,48 +126,48 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 5;
 
-        btnBack = (Button)rootView.findViewById(R.id.btnBack);
-        btnMenu = (Button)rootView.findViewById(R.id.btnmenu);
+        btnBack = rootView.findViewById(R.id.btnBack);
+        btnMenu = rootView.findViewById(R.id.btnmenu);
         mContext = getActivity().getApplicationContext();
 
-        student_total_txt = (TextView)rootView.findViewById(R.id.student_total_txt);
-        student_present_txt = (TextView)rootView.findViewById(R.id.student_present_txt);
-        student_absent_txt = (TextView)rootView.findViewById(R.id.student_absent_txt);
-        student_leave_txt = (TextView)rootView.findViewById(R.id.student_leave_txt);
-        antstudent_txt = (TextView)rootView.findViewById(R.id.antstudent_txt);
-        abstudent_txt = (TextView)rootView.findViewById(R.id.abstudent_txt);
-        student_attendance_less_70_txt = (TextView)rootView.findViewById(R.id.student_attendance_less_70_txt);
-        staff_total_txt = (TextView)rootView.findViewById(R.id.staff_total_txt);
-        staff_present_txt = (TextView)rootView.findViewById(R.id.staff_present_txt);
-        absent_txt = (TextView)rootView.findViewById(R.id.absent_txt);
-        staffleave_txt = (TextView)rootView.findViewById(R.id.staffleave_txt);
-        abstaff_txt = (TextView)rootView.findViewById(R.id.abstaff_txt);
-        antstaff_txt = (TextView)rootView.findViewById(R.id.antstaff_txt);
-        staff_workplan_txt = (TextView)rootView.findViewById(R.id.staff_workplan_txt);
-        staff_cw_txt = (TextView)rootView.findViewById(R.id.staff_cw_txt);
-        staff_hw_submitted_txt = (TextView)rootView.findViewById(R.id.staff_hw_submitted_txt);
-        actotaltobecall_txt = (TextView)rootView.findViewById(R.id.actotaltobecall_txt);
-        acterm1fess_txt = (TextView)rootView.findViewById(R.id.acterm1fess_txt);
-        acterm2fess_txt = (TextView)rootView.findViewById(R.id.acterm2fess_txt);
-        acterm1_collection = (TextView)rootView.findViewById(R.id.acterm1_collection);
-        acterm2_collection = (TextView)rootView.findViewById(R.id.acterm2_collection);
-        acos_txt  = (TextView)rootView.findViewById(R.id.acos_txt);
-        accashcollection_txt = (TextView)rootView.findViewById(R.id.accashcollection_txt);
-        acchhqdd_txt = (TextView)rootView.findViewById(R.id.acchhqdd_txt);
-        aconine_txt = (TextView)rootView.findViewById(R.id.aconline_txt);
-        na_inquiry_txt = (TextView)rootView.findViewById(R.id.na_inquiry_txt);
-        na_issueadd_txt = (TextView)rootView.findViewById(R.id.na_issueadd_txt);
-        na_rcvform_txt = (TextView)rootView.findViewById(R.id.na_rcvform_txt);
-        na_CallForInterview_txt = (TextView)rootView.findViewById(R.id.na_CallForInterview_txt);
-        na_comeforinterview_txt = (TextView)rootView.findViewById(R.id.na_comeforinterview_txt);
-        na_confirmaddmission_txt = (TextView)rootView.findViewById(R.id.na_confirmaddmission_txt);
-        na_rejected_txt = (TextView)rootView.findViewById(R.id.na_rejected_txt);
-        na_fees_rec_txt= (TextView)rootView.findViewById(R.id.na_fees_rec_txt);
-        na_fees_not_rec_txt =(TextView)rootView.findViewById(R.id.na_fees_not_rec_txt);
+        student_total_txt = rootView.findViewById(R.id.student_total_txt);
+        student_present_txt = rootView.findViewById(R.id.student_present_txt);
+        student_absent_txt = rootView.findViewById(R.id.student_absent_txt);
+        student_leave_txt = rootView.findViewById(R.id.student_leave_txt);
+        antstudent_txt = rootView.findViewById(R.id.antstudent_txt);
+        abstudent_txt = rootView.findViewById(R.id.abstudent_txt);
+        student_attendance_less_70_txt = rootView.findViewById(R.id.student_attendance_less_70_txt);
+        staff_total_txt = rootView.findViewById(R.id.staff_total_txt);
+        staff_present_txt = rootView.findViewById(R.id.staff_present_txt);
+        absent_txt = rootView.findViewById(R.id.absent_txt);
+        staffleave_txt = rootView.findViewById(R.id.staffleave_txt);
+        abstaff_txt = rootView.findViewById(R.id.abstaff_txt);
+        antstaff_txt = rootView.findViewById(R.id.antstaff_txt);
+        staff_workplan_txt = rootView.findViewById(R.id.staff_workplan_txt);
+        staff_cw_txt = rootView.findViewById(R.id.staff_cw_txt);
+        staff_hw_submitted_txt = rootView.findViewById(R.id.staff_hw_submitted_txt);
+        actotaltobecall_txt = rootView.findViewById(R.id.actotaltobecall_txt);
+        acterm1fess_txt = rootView.findViewById(R.id.acterm1fess_txt);
+        acterm2fess_txt = rootView.findViewById(R.id.acterm2fess_txt);
+        acterm1_collection = rootView.findViewById(R.id.acterm1_collection);
+        acterm2_collection = rootView.findViewById(R.id.acterm2_collection);
+        acos_txt = rootView.findViewById(R.id.acos_txt);
+        accashcollection_txt = rootView.findViewById(R.id.accashcollection_txt);
+        acchhqdd_txt = rootView.findViewById(R.id.acchhqdd_txt);
+        aconine_txt = rootView.findViewById(R.id.aconline_txt);
+        na_inquiry_txt = rootView.findViewById(R.id.na_inquiry_txt);
+        na_issueadd_txt = rootView.findViewById(R.id.na_issueadd_txt);
+        na_rcvform_txt = rootView.findViewById(R.id.na_rcvform_txt);
+        na_CallForInterview_txt = rootView.findViewById(R.id.na_CallForInterview_txt);
+        na_comeforinterview_txt = rootView.findViewById(R.id.na_comeforinterview_txt);
+        na_confirmaddmission_txt = rootView.findViewById(R.id.na_confirmaddmission_txt);
+        na_rejected_txt = rootView.findViewById(R.id.na_rejected_txt);
+        na_fees_rec_txt = rootView.findViewById(R.id.na_fees_rec_txt);
+        na_fees_not_rec_txt = rootView.findViewById(R.id.na_fees_not_rec_txt);
 
-        smssent_txt = (TextView)rootView.findViewById(R.id.smssent_txt);
-        smsdelivered_txt = (TextView)rootView.findViewById(R.id.smsdelivered_txt);
-        smspedning_txt = (TextView)rootView.findViewById(R.id.smspedning_txt);
+        smssent_txt = rootView.findViewById(R.id.smssent_txt);
+        smsdelivered_txt = rootView.findViewById(R.id.smsdelivered_txt);
+        smspedning_txt = rootView.findViewById(R.id.smspedning_txt);
 
         fragmentMisBinding.LLStudentcontainer.setVisibility(View.GONE);
         fragmentMisBinding.LLStaffcontainer.setVisibility(View.GONE);
@@ -178,8 +178,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         fragmentMisBinding.taskReportInnercontainer.setVisibility(View.GONE);
         fragmentMisBinding.resultOfSchoolInnercontainer.setVisibility(View.GONE);
         fragmentMisBinding.LLFinance.setVisibility(View.GONE);
-
-
 
         fragmentMisBinding.progressStudent.setVisibility(View.VISIBLE);
         fragmentMisBinding.progressStaff.setVisibility(View.VISIBLE);
@@ -201,7 +199,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         staff_total_txt.setOnClickListener(this);
         staff_present_txt.setOnClickListener(this);
-        absent_txt.setOnClickListener(this);;
+        absent_txt.setOnClickListener(this);
         staffleave_txt.setOnClickListener(this);
         abstaff_txt.setOnClickListener(this);
         antstaff_txt.setOnClickListener(this);
@@ -251,6 +249,52 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         AppConfiguration.position = 5;
         AppConfiguration.firsttimeback = true;
     }
+
+    private void compareDates() {
+        Calendar now = Calendar.getInstance();
+
+        int hour = now.get(Calendar.HOUR);
+        int minute = now.get(Calendar.MINUTE);
+
+        date = parseDate(hour + ":" + minute);
+        dateCompareOne = parseDate(compareStringOne);
+//        dateCompareTwo = parseDate(compareStringTwo);
+
+        if (date.after(dateCompareOne)) {
+            //yada yada
+            fragmentMisBinding.studentDateBtn.setText(Utils.getTodaysDate());
+            fragmentMisBinding.staffDateBtn.setText(Utils.getTodaysDate());
+            fragmentMisBinding.taskreportDateBtn.setText(Utils.getTodaysDate());
+        } else {
+            String sDate = Utils.getTodaysDate();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Date date = null;
+            try {
+                date = dateFormat.parse(sDate);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.DATE, -1);
+                String yesterdayAsString = dateFormat.format(calendar.getTime());
+
+                fragmentMisBinding.studentDateBtn.setText(yesterdayAsString);
+                fragmentMisBinding.staffDateBtn.setText(yesterdayAsString);
+                fragmentMisBinding.taskreportDateBtn.setText(yesterdayAsString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Date parseDate(String date) {
+
+        try {
+            return inputParser.parse(date);
+        } catch (java.text.ParseException e) {
+            return new Date(0);
+        }
+    }
+
     public void setListners() {
 
         calendar = Calendar.getInstance();
@@ -261,7 +305,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
         second = calendar.get(Calendar.SECOND);
-
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,13 +323,78 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             }
         });
 
-        fragmentMisBinding.studentDateBtn.setText(Utils.getTodaysDate());
-        fragmentMisBinding.staffDateBtn.setText(Utils.getTodaysDate());
-        fragmentMisBinding.taskreportDateBtn.setText(Utils.getTodaysDate());
+        compareDates();
+//        SimpleDateFormat df = new SimpleDateFormat("hh:mm a");
+////        String date = df.format(Calendar.getInstance().getTime());
+//        Date CurrentTime = null;
+//        Date EndTime = null;
+//        try {
+//
+//            String str_date= Utils.getTodaysDate()+" "+"16:00:00";
+//            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+//            Date date = (Date)formatter.parse(str_date);
+//
+//            System.out.println("Today is " +date.getTime());
+//
+//             specifictime = date.getTime();
+//
+//
+//            String current_date = Utils.getTodaysDate();
+//            DateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+//            Date date1 = (Date)formatter1.parse(current_date);
+//
+//            Calendar current_time = Calendar.getInstance ();
+//            current_time.add(Calendar.YEAR, 0);
+//            current_time.add(Calendar.DAY_OF_YEAR, 0);
+//            current_time.set(Calendar.HOUR_OF_DAY,0);
+//            current_time.set(Calendar.MINUTE, 0);
+//            current_time.set(Calendar.SECOND, 0);
+//
+//
+//            CurrentTime = df.parse(df.format(currenttime));
+//            currenttime = CurrentTime.getTime();
+//            //EndTime = df.parse("04:00 PM");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        Log.d("time",String.valueOf(specifictime) + " " + String.valueOf(currenttime));
+//
+//        //if (CurrentTime.after(EndTime))
+//        if (specifictime <  currenttime) {
+//            fragmentMisBinding.studentDateBtn.setText(Utils.getTodaysDate());
+//            fragmentMisBinding.staffDateBtn.setText(Utils.getTodaysDate());
+//            fragmentMisBinding.taskreportDateBtn.setText(Utils.getTodaysDate());
+//        }
+//        else {
+//
+//            String sDate = Utils.getTodaysDate();
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+//            Date date = null;
+//            try {
+//                date = dateFormat.parse(sDate);
+//
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime(date);
+//                calendar.add(Calendar.DATE, -1);
+//                String yesterdayAsString = dateFormat.format(calendar.getTime());
+//
+//                fragmentMisBinding.studentDateBtn.setText(yesterdayAsString);
+//                fragmentMisBinding.staffDateBtn.setText(yesterdayAsString);
+//                fragmentMisBinding.taskreportDateBtn.setText(yesterdayAsString);
+//
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+
+//        fragmentMisBinding.studentDateBtn.setText(Utils.getTodaysDate());
+//        fragmentMisBinding.staffDateBtn.setText(Utils.getTodaysDate());
+//        fragmentMisBinding.taskreportDateBtn.setText(Utils.getTodaysDate());
 
         AppConfiguration.staffDate = fragmentMisBinding.staffDateBtn.getText().toString();
         AppConfiguration.taskReportDate = fragmentMisBinding.taskreportDateBtn.getText().toString();
-
 
         fragmentMisBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -342,8 +450,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             }
         });
 
-
-
         fragmentMisBinding.spinnerFinance.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,int position,long id) {
@@ -366,6 +472,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+
                                 callFinanceMISDataApi(FinalFinanaceTermId);
 
                                 //fillFinanceTermSpinner();
@@ -516,7 +623,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         });
 
     }
-
 
     private void callTermApi() {
 
@@ -762,12 +868,10 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         };
 
-
-
         fragmentMisBinding.spinnerNa.setAdapter(adapter);
         FinalNATermID = spinnerTermMap3.get(1);
         AppConfiguration.NA_TERM_ID = FinalNATermID;
-        fragmentMisBinding.spinnerNa.setSelection(1,false);
+        fragmentMisBinding.spinnerNa.setSelection(0, false);
 
 
     }
@@ -849,7 +953,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     }
 
 
-    private void callStudentMISDataApi(String requestType,String date) {
+    private void callStudentMISDataApi(String requestType, String date, final String termid) {
 
 
         if (!Utils.checkNetwork(mContext)) {
@@ -899,7 +1003,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                             if(isAdded()) {
                                 if(isRequireCallNestedAPI || isFirmtimeLoad) {
                                     //callStafftMISDataApi("Staff");
-                                    callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString());
+                                    callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString(), termid);
 
                                 }
                             }
@@ -928,7 +1032,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     }
 
 
-    private void callStafftMISDataApi(String requestType) throws  Exception{
+    private void callStafftMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
@@ -973,7 +1077,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                       try {
                           if(isAdded()) {
-                              callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString());
+//                              callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString());
                           }
                       }catch (Exception ex){
 
@@ -997,11 +1101,10 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 Utils.ping(mContext,error.getMessage());
             }
         });
-
     }
 
 
-    private void callNewStafftMISDataApi(String date) throws  Exception{
+    private void callNewStafftMISDataApi(String date, final String termid) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
@@ -1079,7 +1182,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                             }
                             AppConfiguration.TAG = "Staff";
 
-                            misStaffListAdapter = new MISStaffListAdapter(getActivity(),dataValues1,keyValues);
+                            misStaffListAdapter = new MISStaffListAdapter(getActivity(), dataValues1, keyValues, termid);
                             fragmentMisBinding.rvStaffList.setLayoutManager(new LinearLayoutManager(getActivity()));
                             fragmentMisBinding.rvStaffList.setAdapter(misStaffListAdapter);
 
@@ -1119,7 +1222,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
     }
 
-    private void callTaskReportMISDataApi(String date) throws  Exception{
+    private void callTaskReportMISDataApi(String date) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
@@ -1190,7 +1293,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     }
 
     private void callSchoolTopperListMISDataApi() {
-
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
@@ -1275,7 +1377,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
     }
 
-    private void callFinanceMISDataApi(String termId) {
+    private void callFinanceMISDataApi(final String termId) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
@@ -1318,12 +1420,10 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                         financedataValues = staffSMSDataModel.getFinalArray();
 
-                        misFinanceReportAdapter = new MISFinanceReportAdapter(getActivity(),financedataValues);
+                        misFinanceReportAdapter = new MISFinanceReportAdapter(getActivity(), financedataValues, termId);
                         fragmentMisBinding.rvFinanceList.setLayoutManager(new GridLayoutManager(getActivity(),financedataValues.size(),OrientationHelper.HORIZONTAL,false));
                         fragmentMisBinding.rvFinanceList.addItemDecoration(new SpacesItemDecoration(0));
                         fragmentMisBinding.rvFinanceList.setAdapter(misFinanceReportAdapter);
-
-
 
                         try {
                             Gson gson = new Gson();
@@ -1356,10 +1456,13 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                                 dataValues1.add(value);
                             }
 
-                            misStaffListAdapter = new MISStaffListAdapter(getActivity(),dataValues1,keyValues);
+
                             AppConfiguration.TAG = "Finance";
+
+                            misFinanceListAdapter = new MISFinanceListAdapter(getActivity(), dataValues1, keyValues, termId);
+
                             fragmentMisBinding.rvFinanceList2.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            fragmentMisBinding.rvFinanceList2.setAdapter(misStaffListAdapter);
+                            fragmentMisBinding.rvFinanceList2.setAdapter(misFinanceListAdapter);
 
                         }catch (Exception ex){
                             ex.printStackTrace();
@@ -1374,7 +1477,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                                    // callAccounttMISDataApi("Account");
                                     //callNAMISDataApi("New Addmission");
 
-                                  callStudentMISDataApi("Student",fragmentMisBinding.studentDateBtn.getText().toString());
+                                    callStudentMISDataApi("Student", fragmentMisBinding.studentDateBtn.getText().toString(), termId);
 
                                 }
                             }
@@ -1400,7 +1503,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
     }
 
-    private void callAccounttMISDataApi(String requestType) throws  Exception{
+    private void callAccounttMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
@@ -1470,7 +1573,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     }
 
 
-    private void callNAMISDataApi(String requestType) throws  Exception  {
+    private void callNAMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
@@ -1548,8 +1651,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     }
 
 
-
-    private void callMessgeMISDataApi(String requestType) throws  Exception{
+    private void callMessgeMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
@@ -1669,7 +1771,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         switch (view.getId()){
             case R.id.student_total_txt:
-                fragment = new MISDataListFragment();
+                fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title","Student");
                 bundle.putString("requestType","Total");
@@ -1686,7 +1788,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 break;
 
             case R.id.student_present_txt:
-                fragment = new MISDataListFragment();
+                fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title","Student");
                 bundle.putString("requestType","Present");
@@ -1702,7 +1804,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 break;
 
             case R.id.student_leave_txt:
-                fragment = new MISDataListFragment();
+                fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title","Student");
                 bundle.putString("requestType","Leave");
@@ -1718,7 +1820,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 break;
 
             case R.id.student_absent_txt:
-                fragment = new MISDataListFragment();
+                fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title","Student");
                 bundle.putString("requestType","Absent");
@@ -1734,7 +1836,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 break;
 
             case R.id.student_attendance_less_70_txt:
-                fragment = new MISDataListFragment();
+                fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title","Student");
                 bundle.putString("requestType","Attendance less then 70%");
@@ -1753,10 +1855,10 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
 
             case R.id.antstudent_txt:
-                fragment = new MISDataListFragment();
+                fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title","Student");
-                bundle.putString("requestType","A.N.T.");
+                bundle.putString("requestType", "ANT");
                 bundle.putString("TermID",FinalTermIdStr);
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -1768,7 +1870,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 break;
 
             case R.id.abstudent_txt:
-                fragment = new MISDataListFragment();
+                fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title","Student");
                 bundle.putString("requestType","ConsistentAbsent");
@@ -2277,13 +2379,12 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 public void run() {
                     //Do something after  2 secs
                     try {
-                        callStudentMISDataApi("Student",fragmentMisBinding.studentDateBtn.getText().toString());
+                        callStudentMISDataApi("Student", fragmentMisBinding.studentDateBtn.getText().toString(), "");
                     }catch (Exception ex){
 
                     }
                 }
             }, 2000);
-
 
         }else if(whichDateClicked == 2){
             isRequireCallNestedAPI = false;
@@ -2299,7 +2400,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 public void run() {
                     //Do something after  2 secs
                     try {
-                        callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString());
+                        callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString(), "");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

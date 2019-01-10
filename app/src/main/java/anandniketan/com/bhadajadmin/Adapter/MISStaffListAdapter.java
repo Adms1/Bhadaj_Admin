@@ -25,11 +25,13 @@ public class MISStaffListAdapter extends RecyclerView.Adapter<MISStaffListAdapte
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private Bundle bundle;
+    private String termid;
 
-    public MISStaffListAdapter(Context mContext, ArrayList<String> dataValues, ArrayList<String> keyValues) {
+    public MISStaffListAdapter(Context mContext, ArrayList<String> dataValues, ArrayList<String> keyValues, String termid) {
         this.context = mContext;
         this.dataValues = dataValues;
         this.keyValues = keyValues;
+        this.termid = termid;
 
     }
 
@@ -41,7 +43,7 @@ public class MISStaffListAdapter extends RecyclerView.Adapter<MISStaffListAdapte
     }
 
     @Override
-    public void onBindViewHolder(final MISStaffListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MISStaffListAdapter.MyViewHolder holder, final int position) {
         try {
             String sr = String.valueOf(position + 1);
 
@@ -53,21 +55,17 @@ public class MISStaffListAdapter extends RecyclerView.Adapter<MISStaffListAdapte
             holder.key_text.setText(String.valueOf(key));
             holder.value_txt.setText(String.valueOf(value));
 
-
             holder.value_txt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
-                    if(AppConfiguration.TAG.equalsIgnoreCase("Staff")) {
                         fragment = new MISDataListFragment();
                         bundle = new Bundle();
                         bundle.putString("title", "Staff New");
                         bundle.putString("requestType", holder.key_text.getText().toString());
                         bundle.putString("requestTitle", holder.key_text.getText().toString());
                         bundle.putString("TermID", AppConfiguration.TermId);
-                        bundle.putString("countdata", holder.value_txt.getText().toString());
-                        bundle.putString("Date", AppConfiguration.staffDate);
+                    bundle.putString("countdata", holder.value_txt.getText().toString());
+                    bundle.putString("Date", AppConfiguration.staffDate);
                         bundle.putString("deptID", "0");
                         fragment.setArguments(bundle);
                         fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
@@ -75,35 +73,31 @@ public class MISStaffListAdapter extends RecyclerView.Adapter<MISStaffListAdapte
                                 .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                         AppConfiguration.firsttimeback = true;
                         AppConfiguration.position = 65;
-                    }
+
                 }
             });
 
-
-
-
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
             ex.printStackTrace();
         }
-
 
 
     }
 
     @Override
     public int getItemCount() {
-        return dataValues == null ? 0 :dataValues.size();
+        return dataValues == null ? 0 : dataValues.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView key_text,value_txt;
+        TextView key_text, value_txt;
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            key_text = (TextView) itemView.findViewById(R.id.key_txt);
-            value_txt = (TextView) itemView.findViewById(R.id.value_txt);
+            key_text = itemView.findViewById(R.id.key_txt);
+            value_txt = itemView.findViewById(R.id.value_txt);
 
         }
     }

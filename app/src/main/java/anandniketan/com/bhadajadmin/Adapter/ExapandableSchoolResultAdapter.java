@@ -1,15 +1,12 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +18,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import anandniketan.com.bhadajadmin.Fragment.Fragment.MISClasswiseResultFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MISStudentWiseResultInnerTab;
 import anandniketan.com.bhadajadmin.Interface.ResponseCallBack;
-import anandniketan.com.bhadajadmin.Model.HR.DailyAccountModel;
-import anandniketan.com.bhadajadmin.Model.MIS.MISClassWiseResultModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
+    ProgressBar progressBar;
+    int countItem = 0;
     private Context _context;
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<MISStudentResultDataModel.TermDatum>> listChildData;
@@ -44,10 +39,8 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
     private ResponseCallBack responseCallBack;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    ProgressBar progressBar;
     private String[] tabsTitles;
     private List<MIStudentWiseResultModel.FinalArray> dataList;
-    int countItem = 0;
 
 
     public ExapandableSchoolResultAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<MISStudentResultDataModel.TermDatum>> listDataChild, ResponseCallBack responseCallBack) {
@@ -80,9 +73,9 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
         }
 
 
-        tabLayout = (TabLayout) convertView.findViewById(R.id.tabLayout);
-        viewPager = (ViewPager) convertView.findViewById(R.id.viewPager);
-        progressBar = (ProgressBar) convertView.findViewById(R.id.inner_list_loader);
+        tabLayout = convertView.findViewById(R.id.tabLayout);
+        viewPager = convertView.findViewById(R.id.viewPager);
+        progressBar = convertView.findViewById(R.id.inner_list_loader);
 
 
         return convertView;
@@ -126,12 +119,12 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
         ImageView ivArrow;
 
 
-        grade_txt = (TextView) convertView.findViewById(R.id.grade_txt);
-        section_txt = (TextView) convertView.findViewById(R.id.section_txt);
-        student_txt = (TextView) convertView.findViewById(R.id.student_txt);
-        percentage_txt = (TextView) convertView.findViewById(R.id.percentage_txt);
-        view_txt = (TextView) convertView.findViewById(R.id.view_txt);
-        ivArrow = (ImageView) convertView.findViewById(R.id.iv_indicatior);
+        grade_txt = convertView.findViewById(R.id.grade_txt);
+        section_txt = convertView.findViewById(R.id.section_txt);
+        student_txt = convertView.findViewById(R.id.student_txt);
+        percentage_txt = convertView.findViewById(R.id.percentage_txt);
+        view_txt = convertView.findViewById(R.id.view_txt);
+        ivArrow = convertView.findViewById(R.id.iv_indicatior);
 
         grade_txt.setText(String.valueOf(headerTitle1) + "-" + String.valueOf(headerTitle2));
         section_txt.setText(String.valueOf(headerTitle2));
@@ -180,7 +173,7 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
                 }
 
 
-                ViewPagerAdapter adapter = new ViewPagerAdapter(((FragmentActivity) _context).getSupportFragmentManager(),data1.size(),data1);
+                ViewPagerAdapter adapter = new ViewPagerAdapter(((FragmentActivity) _context).getSupportFragmentManager(), data1.size(), data1);
                 viewPager.setAdapter(adapter);
                 viewPager.setCurrentItem(0);
                 tabLayout.setupWithViewPager(viewPager);
@@ -194,7 +187,7 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
                     @Override
                     public void onPageSelected(int position) {
                         viewPager.setCurrentItem(position);
-                      //  tabLayout.getTabAt(position).select();
+                        //  tabLayout.getTabAt(position).select();
 
                     }
 
@@ -231,9 +224,6 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
             }
         }
     }
-
-
-
 
 
     public void onFailure(String errorMessage) {
@@ -281,7 +271,7 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
                     if (i == position) {
 //                    if(fragment == null) {
 //                        if (fragment == null) {
-                            fragment = MISStudentWiseResultInnerTab.newInstance(datumList.get(position).getData());
+                        fragment = MISStudentWiseResultInnerTab.newInstance(datumList.get(position).getData());
 //                            if(fragment.isAdded()){
 //                                String fragmentTag = getFragmentTag(R.id.viewPager,position);
 //                              //  fragment = ((FragmentActivity)_context).getSupportFragmentManager().findFragmentByTag(fragmentTag);
