@@ -73,6 +73,7 @@ public class TransportAdapter extends RecyclerView.Adapter<TransportAdapter.MyVi
 //                    AppConfiguration.firsttimeback = true;
 //                    AppConfiguration.position = 65;
                 }
+
             });
 
             holder.personal_txt.setOnClickListener(new View.OnClickListener() {
