@@ -13,8 +13,8 @@
         android:orientation="horizontal"
         android:padding="@dimen/_1sdp"
         android:paddingBottom="1dp"
+        android:layout_gravity="center"
         android:visibility="visible">
-
 
         <TextView
             android:id="@+id/section_txt"
@@ -69,7 +69,7 @@
             android:src="@drawable/ic_phone"
             android:tint="@color/scheduleheadertextcolor"
             android:layout_weight="0.7"
-            android:layout_gravity="center"
+            android:layout_gravity="bottom"
             />
         <ImageView
             android:id="@+id/iv_sms"

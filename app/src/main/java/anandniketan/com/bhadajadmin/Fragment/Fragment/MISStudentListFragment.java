@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -37,7 +38,7 @@ import retrofit.client.Response;
  */
 public class MISStudentListFragment extends Fragment {
 
-    private String title = "", requestType = "", date = "", termID = "", deptId = "";
+    private String title = "", requestType = "", date = "", termID = "", deptId = "", gender = "";
     private String countdata = "", requestTitle = "";
     private FragmentMisstudentListBinding fragmentMisDataBinding;
     private View rootView;
@@ -51,6 +52,8 @@ public class MISStudentListFragment extends Fragment {
     private View innerTitleView, innerListHeaderView;
     private ExpandableListView rvMisdataList1;
     private Context mContext;
+    private LinearLayout llHeader;
+    private int lastExpandedPosition = -1;
     private TextView mTvInnerTitle, mTvInnerAttendanceStatus, mTvinnerGrno, mTvStudent, mTvDept, mTvCode, mTvName, mTvPhone, mTvGRNO, mTvClassTeacher, mTVGrade, mTvSection, mTvLeaveDay, mTvReason, mTvAbsentFrom;
 
     public MISStudentListFragment() {
@@ -68,6 +71,7 @@ public class MISStudentListFragment extends Fragment {
         rootView = fragmentMisDataBinding.getRoot();
         progressBar = rootView.findViewById(R.id.loader);
         rvMisdataList1 = rootView.findViewById(R.id.rv_misdata_list1);
+        llHeader = rootView.findViewById(R.id.misstudent_llHeader);
         mContext = getActivity();
         return rootView;
     }
@@ -81,6 +85,19 @@ public class MISStudentListFragment extends Fragment {
         requestType = bundle.getString("requestType");
         termID = bundle.getString("TermID");
         date = bundle.getString("Date");
+        gender = bundle.getString("Gender");
+
+        rvMisdataList1.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    rvMisdataList1.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
 
         try {
             countdata = bundle.getString("countdata");
@@ -320,6 +337,7 @@ public class MISStudentListFragment extends Fragment {
         map.put("Date", date);
         map.put("TermID", termID);
         map.put("RequestType", requestType);
+        map.put("Gender", gender);
         return map;
     }
 
@@ -341,7 +359,7 @@ public class MISStudentListFragment extends Fragment {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
 ////                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
-//                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+                    llHeader.setVisibility(View.GONE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
 
@@ -352,7 +370,7 @@ public class MISStudentListFragment extends Fragment {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
 ////                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
-//                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+                    llHeader.setVisibility(View.GONE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
@@ -363,7 +381,7 @@ public class MISStudentListFragment extends Fragment {
                     Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
 //                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
-//                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+                    llHeader.setVisibility(View.GONE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
@@ -381,7 +399,7 @@ public class MISStudentListFragment extends Fragment {
 //                        misStudentFinalDataList = staffSMSDataModel.getFinalArray();
 //
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.VISIBLE);
-//                        fragmentMisDataBinding.lvHeader.setVisibility(View.VISIBLE);
+                    llHeader.setVisibility(View.VISIBLE);
 //                        fragmentMisDataBinding.recyclerLinear.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);

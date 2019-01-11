@@ -69,7 +69,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                     public void onClick(View v) {
                         fragment = new HeadWiseFeeCollectionDetailFragment();
                         bundle = new Bundle();
-                        bundle.putString("title", "Term 1 Total Fees");
+                        bundle.putString("title", "Term 1 Total Debits");
                         bundle.putString("requestType", "TotalFeesTerm1Count");
                         bundle.putString("StndrdID", "0");
                         bundle.putString("TermID", termid);
@@ -90,7 +90,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                     public void onClick(View v) {
                         fragment = new HeadWiseFeeCollectionDetailFragment();
                         bundle = new Bundle();
-                        bundle.putString("title", "Term 1 Received Fees");
+                        bundle.putString("title", "Term 1 Received Credits");
                         bundle.putString("requestType", "RecievedFeesTerm1Count");
                         bundle.putString("StndrdID", "0");
                         bundle.putString("TermID", termid);
@@ -111,7 +111,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                     public void onClick(View v) {
                         fragment = new HeadWiseFeeCollectionDetailFragment();
                         bundle = new Bundle();
-                        bundle.putString("title", "Term 2 Total Fees");
+                        bundle.putString("title", "Term 2 Total Debits");
                         bundle.putString("requestType", "TotalFeesTerm2Count");
                         bundle.putString("StndrdID", "0");
                         bundle.putString("TermID", termid);
@@ -132,7 +132,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                     public void onClick(View v) {
                         fragment = new HeadWiseFeeCollectionDetailFragment();
                         bundle = new Bundle();
-                        bundle.putString("title", "Term 2 Received Fees");
+                        bundle.putString("title", "Term 2 Received Credits");
                         bundle.putString("requestType", "RecievedFeesTerm2Count");
                         bundle.putString("StndrdID", "0");
                         bundle.putString("TermID", termid);

@@ -1,4 +1,4 @@
-package anandniketan.com.bhadajadmin.Adapter;
+package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
+import anandniketan.com.bhadajadmin.Adapter.ExapandableSchoolResultAdapter;
 import anandniketan.com.bhadajadmin.Interface.ResponseCallBack;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
@@ -33,6 +36,7 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
 
     private ExpandableListView expandableListView;
     private TextView tvNoRecords;
+    private Button btnBack, btnMenu;
     private List<MISStudentResultDataModel.FinalArray> finalArrayAnnouncementFinal;
     private ExapandableSchoolResultAdapter expandableSchoolResultAdapter;
     private ResponseCallBack responseCallBack;
@@ -65,6 +69,8 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
 
         expandableListView = view.findViewById(R.id.range_lvExpstudentlist);
         tvNoRecords = view.findViewById(R.id.range_tv_no_records);
+        btnBack = view.findViewById(R.id.range_btnBack);
+        btnMenu = view.findViewById(R.id.range_btnmenu);
 
         try {
             Bundle bundle = this.getArguments();
@@ -88,6 +94,21 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
                 }
 
                 return true;
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
+//                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+        });
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DashboardActivity.onLeft();
             }
         });
 

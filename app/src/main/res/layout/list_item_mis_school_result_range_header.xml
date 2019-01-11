@@ -15,41 +15,40 @@
         android:visibility="visible"
         android:weightSum="1">
 
-        <!--<TextView-->
-        <!--android:id="@+id/grade_txt"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_weight="1.6"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="Class"-->
-        <!--android:gravity="left"-->
-        <!--android:layout_marginLeft="@dimen/_10ssp"-->
-        <!--android:textAlignment="textStart"-->
-        <!--android:textColor="@color/app_bg"-->
-        <!--android:textSize="@dimen/_11sdp"-->
-        <!--tools:ignore="RtlCompat" />-->
-
         <TextView
             android:id="@+id/range_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.5"
+            android:layout_weight="0.4"
             android:gravity="center"
             android:text="@string/range_label"
             android:textAlignment="center"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
 
-
-        <ImageView
-            android:id="@+id/range_iv_indicatior"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:src="@drawable/arrow_1_42"
-            android:visibility="gone" />
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:text="@string/totalstudent"
+            android:textAlignment="center"
+            android:textColor="@color/app_bg"
+            android:textSize="@dimen/_11sdp" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/view"
+            android:textAlignment="center"
+            android:textColor="@color/app_bg"
+            android:textSize="@dimen/_11sdp" />
 
     </LinearLayout>
 

@@ -72,7 +72,8 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private FragmentManager fragmentManager = null;
     FragmentMis2Binding fragmentMisBinding;
     //FragmentMisBinding fragmentMisBinding;
-    private TextView student_total_txt,student_present_txt,student_absent_txt,student_leave_txt,antstudent_txt,abstudent_txt,student_attendance_less_70_txt,staff_total_txt,staff_present_txt,absent_txt,staffleave_txt,abstaff_txt,antstaff_txt,staff_workplan_txt,staff_hw_submitted_txt,staff_cw_txt,actotaltobecall_txt,acterm1fess_txt,acterm2fess_txt,acterm1_collection,acterm2_collection,acos_txt,accashcollection_txt,acchhqdd_txt,aconine_txt,na_inquiry_txt,na_issueadd_txt,na_rcvform_txt,na_CallForInterview_txt,na_comeforinterview_txt,na_confirmaddmission_txt,na_rejected_txt,na_fees_rec_txt,na_fees_not_rec_txt,smssent_txt,smsdelivered_txt,smspedning_txt;
+    private TextView student_total_txt, student_present_txt, student_absent_txt, student_leave_txt, antstudent_txt, abstudent_txt, student_attendance_less_70_txt, staff_total_txt, staff_present_txt, absent_txt, staffleave_txt, abstaff_txt, antstaff_txt, staff_workplan_txt, staff_hw_submitted_txt, staff_cw_txt, actotaltobecall_txt, acterm1fess_txt, acterm2fess_txt, acterm1_collection, acterm2_collection, acos_txt, accashcollection_txt, acchhqdd_txt, aconine_txt, na_inquiry_txt, na_issueadd_txt, na_rcvform_txt, na_CallForInterview_txt, na_comeforinterview_txt, na_confirmaddmission_txt, na_rejected_txt, na_fees_rec_txt, na_fees_not_rec_txt, smssent_txt, smsdelivered_txt, smspedning_txt, boy_total_txt, girl_total_txt, boy_present_txt, girl_present_txt, boy_absent_txt, girl_absent_txt, boy_leave_txt, girl_leave_txt, antboy_txt, antgirl_txt, abboy_txt, abgirl_txt, boy_attendance_less_70_txt, girl_attendance_less_70_txt, student_transport_detail;
+
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
     private HashMap<Integer, String> spinnerTermMap,spinnerSchoolResultMap,spinnerTermMap2,spinnerTermMap3;
     private String FinalTermIdStr = "",FinalSchoolResultTermID = "1",FinalFinanaceTermId ="3",FinalNATermID = "3";
@@ -130,6 +131,8 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         btnMenu = rootView.findViewById(R.id.btnmenu);
         mContext = getActivity().getApplicationContext();
 
+        student_transport_detail = rootView.findViewById(R.id.tv_transport);
+
         student_total_txt = rootView.findViewById(R.id.student_total_txt);
         student_present_txt = rootView.findViewById(R.id.student_present_txt);
         student_absent_txt = rootView.findViewById(R.id.student_absent_txt);
@@ -137,6 +140,23 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         antstudent_txt = rootView.findViewById(R.id.antstudent_txt);
         abstudent_txt = rootView.findViewById(R.id.abstudent_txt);
         student_attendance_less_70_txt = rootView.findViewById(R.id.student_attendance_less_70_txt);
+
+        boy_total_txt = rootView.findViewById(R.id.boy_total_txt);
+        boy_present_txt = rootView.findViewById(R.id.boy_present_txt);
+        boy_absent_txt = rootView.findViewById(R.id.boy_absent_txt);
+        boy_leave_txt = rootView.findViewById(R.id.boy_leave_txt);
+        antboy_txt = rootView.findViewById(R.id.antboy_txt);
+        abboy_txt = rootView.findViewById(R.id.abboy_txt);
+        boy_attendance_less_70_txt = rootView.findViewById(R.id.boy_attendance_less_70_txt);
+
+        girl_total_txt = rootView.findViewById(R.id.girl_total_txt);
+        girl_present_txt = rootView.findViewById(R.id.girl_present_txt);
+        girl_absent_txt = rootView.findViewById(R.id.girl_absent_txt);
+        girl_leave_txt = rootView.findViewById(R.id.girl_leave_txt);
+        antgirl_txt = rootView.findViewById(R.id.antgirl_txt);
+        abgirl_txt = rootView.findViewById(R.id.abgirl_txt);
+        girl_attendance_less_70_txt = rootView.findViewById(R.id.girl_attendance_less_70_txt);
+
         staff_total_txt = rootView.findViewById(R.id.staff_total_txt);
         staff_present_txt = rootView.findViewById(R.id.staff_present_txt);
         absent_txt = rootView.findViewById(R.id.absent_txt);
@@ -189,6 +209,8 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         fragmentMisBinding.progressResultOfSchool.setVisibility(View.VISIBLE);
         fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
 
+        student_transport_detail.setOnClickListener(this);
+
         student_total_txt.setOnClickListener(this);
         student_present_txt.setOnClickListener(this);
         student_leave_txt.setOnClickListener(this);
@@ -196,6 +218,22 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         antstudent_txt.setOnClickListener(this);
         abstudent_txt.setOnClickListener(this);
         student_attendance_less_70_txt.setOnClickListener(this);
+
+        boy_total_txt.setOnClickListener(this);
+        boy_present_txt.setOnClickListener(this);
+        boy_leave_txt.setOnClickListener(this);
+        boy_absent_txt.setOnClickListener(this);
+        antboy_txt.setOnClickListener(this);
+        abboy_txt.setOnClickListener(this);
+        boy_attendance_less_70_txt.setOnClickListener(this);
+
+        girl_total_txt.setOnClickListener(this);
+        girl_present_txt.setOnClickListener(this);
+        girl_leave_txt.setOnClickListener(this);
+        girl_absent_txt.setOnClickListener(this);
+        antgirl_txt.setOnClickListener(this);
+        abgirl_txt.setOnClickListener(this);
+        girl_attendance_less_70_txt.setOnClickListener(this);
 
         staff_total_txt.setOnClickListener(this);
         staff_present_txt.setOnClickListener(this);
@@ -987,13 +1025,29 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                     try {
 
-                        student_total_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotal()));
-                        student_present_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalPresent()));
-                        student_absent_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalAbsent()));
-                        student_leave_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalLeave()));
-                        antstudent_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalStudentANT()));
-                        abstudent_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalConsistanceAbsent()));
-                        student_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getAttendance()));
+                        student_total_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotal()));
+                        student_present_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalPresent()));
+                        student_absent_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalAbsent()));
+                        student_leave_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalLeave()));
+                        antstudent_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalStudentANT()));
+                        abstudent_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalConsistanceAbsent()));
+                        student_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getAttendance()));
+
+                        boy_total_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotal()));
+                        boy_present_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalPresent()));
+                        boy_absent_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalAbsent()));
+                        boy_leave_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalLeave()));
+                        antboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalStudentANT()));
+                        abboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalConsistanceAbsent()));
+                        boy_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getAttendance()));
+
+                        girl_total_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotal()));
+                        girl_present_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalPresent()));
+                        girl_absent_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalAbsent()));
+                        girl_leave_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalLeave()));
+                        antgirl_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalStudentANT()));
+                        abgirl_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalConsistanceAbsent()));
+                        girl_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getAttendance()));
 
                         fragmentMisBinding.progressStudent.setVisibility(View.GONE);
                         fragmentMisBinding.LLStudentcontainer.setVisibility(View.VISIBLE);
@@ -1770,6 +1824,21 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     public void onClick(View view) {
 
         switch (view.getId()){
+
+            case R.id.tv_transport:
+                fragment = new MISStudentTransportFragment();
+                bundle = new Bundle();
+                bundle.putString("TermID", FinalTermIdStr);
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+
+                break;
+
             case R.id.student_total_txt:
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
@@ -1777,6 +1846,43 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("requestType","Total");
                 bundle.putString("TermID",FinalTermIdStr);
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+
+                break;
+
+            case R.id.boy_total_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Total");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "boys");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+
+                break;
+
+            case R.id.girl_total_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Total");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "girls");
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -1794,6 +1900,41 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("requestType","Present");
                 bundle.putString("TermID",FinalTermIdStr);
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.boy_present_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Present");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "boys");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.girl_present_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Present");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "girls");
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -1810,6 +1951,41 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("requestType","Leave");
                 bundle.putString("TermID",FinalTermIdStr);
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.boy_leave_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Leave");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "boys");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.girl_leave_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Leave");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "girls");
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -1826,6 +2002,41 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("requestType","Absent");
                 bundle.putString("TermID",FinalTermIdStr);
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.boy_absent_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Absent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "boys");
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.girl_absent_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Absent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Gender", "girls");
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -1843,6 +2054,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("requestTitle","Attendance less then 70%");
                 bundle.putString("countdata",student_attendance_less_70_txt.getText().toString());
                 bundle.putString("TermID",FinalTermIdStr);
+                bundle.putString("Gender", "");
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -1852,7 +2064,41 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 AppConfiguration.position = 65;
                 break;
 
+            case R.id.boy_attendance_less_70_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Attendance less then 70%");
+                bundle.putString("requestTitle", "Attendance less then 70%");
+                bundle.putString("countdata", student_attendance_less_70_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "boys");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
 
+            case R.id.girl_attendance_less_70_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "Attendance less then 70%");
+                bundle.putString("requestTitle", "Attendance less then 70%");
+                bundle.putString("countdata", student_attendance_less_70_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "girls");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
 
             case R.id.antstudent_txt:
                 fragment = new MISStudentListFragment();
@@ -1860,6 +2106,39 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("title","Student");
                 bundle.putString("requestType", "ANT");
                 bundle.putString("TermID",FinalTermIdStr);
+                bundle.putString("Gender", "");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.antboy_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "ANT");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "boys");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.antgirl_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "ANT");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "girls");
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -1875,6 +2154,41 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("title","Student");
                 bundle.putString("requestType","ConsistentAbsent");
                 bundle.putString("TermID",FinalTermIdStr);
+                bundle.putString("Gender", "");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.abboy_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "ConsistentAbsent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "boys");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.abgirl_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Student");
+                bundle.putString("requestType", "ConsistentAbsent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "girls");
                 bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
 
                 fragment.setArguments(bundle);

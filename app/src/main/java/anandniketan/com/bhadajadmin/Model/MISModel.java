@@ -1,7 +1,6 @@
 package anandniketan.com.bhadajadmin.Model;
 
 
-import android.accounts.Account;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -18,6 +17,10 @@ public class MISModel {
     @SerializedName("FinalArray")
     @Expose
     private List<FinalArray> finalArray = null;
+
+    @SerializedName("DetailArray")
+    @Expose
+    private List<DetailArray> detailArray = null;
 
     public String getSuccess() {
         return success;
@@ -43,7 +46,39 @@ public class MISModel {
         this.finalArray = finalArray;
     }
 
+    public List<DetailArray> getDetailArray() {
+        return detailArray;
+    }
 
+    public void setDetailArray(List<DetailArray> detailArray) {
+        this.detailArray = detailArray;
+    }
+
+    public class DetailArray {
+        @SerializedName("Count")
+        @Expose
+        private String count;
+
+        @SerializedName("Data")
+        @Expose
+        private List<FinalArray> data = null;
+
+        public String getCount() {
+            return count;
+        }
+
+        public void setCount(String count) {
+            this.count = count;
+        }
+
+        public List<FinalArray> getData() {
+            return data;
+        }
+
+        public void setData(List<FinalArray> data) {
+            this.data = data;
+        }
+    }
 
     public class FinalArray {
 

@@ -7,7 +7,7 @@
         android:background="@color/white1">
 
         <RelativeLayout
-            android:id="@+id/main_header"
+            android:id="@+id/transport_main_header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="0dp"
@@ -16,14 +16,14 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/header"
+                android:id="@+id/transport_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/header_blue"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnBack"
+                    android:id="@+id/transport_btnBack"
                     android:layout_width="@dimen/_14sdp"
                     android:layout_height="@dimen/_14sdp"
                     android:layout_alignParentLeft="true"
@@ -33,19 +33,19 @@
                     android:background="@drawable/back_btn" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/transport_textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_42sdp"
-                    android:text=""
+                    android:text="Student Transport"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="normal" />
 
                 <Button
-                    android:id="@+id/btnmenu"
+                    android:id="@+id/transport_btnmenu"
                     android:layout_width="@dimen/_17sdp"
                     android:layout_height="@dimen/_17sdp"
                     android:layout_alignParentRight="true"
@@ -56,17 +56,17 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/ll_firstconatiner"
+                android:id="@+id/transport_ll_firstconatiner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/header"
+                android:layout_below="@+id/transport_header"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="horizontal"
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/tv_txt"
+                    android:id="@+id/transport_tv_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -75,14 +75,14 @@
                     android:textColor="@color/scheduleheadertextcolor"
                     android:textSize="@dimen/_11sdp"
                     android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/txtNoRecords"
+                android:id="@+id/transport_txtNoRecords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_firstconatiner"
+                android:layout_below="@+id/transport_ll_firstconatiner"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="No Records Found..."
@@ -101,28 +101,28 @@
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/txtNoRecords"
+                android:layout_below="@+id/transport_txtNoRecords"
                 android:background="@color/white1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/studetail_header_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_23sdp"
-                    android:background="@drawable/box"
-                    android:gravity="center_vertical"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textColor="@color/scheduleheadertextcolor"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                <!--android:id="@+id/transport_studetail_header_txt"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/_23sdp"-->
+                <!--android:background="@drawable/box"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text=""-->
+                <!--android:textAlignment="center"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textColor="@color/scheduleheadertextcolor"-->
+                <!--android:textSize="@dimen/_12sdp"-->
+                <!--android:textStyle="bold" />-->
 
                 <LinearLayout
-                    android:id="@+id/lv_header2"
+                    android:id="@+id/transport_lv_header2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/main_header"
+                    android:layout_below="@+id/transport_main_header"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -130,7 +130,7 @@
                     android:visibility="visible">
 
                     <LinearLayout
-                        android:id="@+id/misstudent_llHeader"
+                        android:id="@+id/transport_misstudent_llHeader"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_31sdp"
                         android:background="@drawable/box_blue"
@@ -160,7 +160,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="0.35"
                             android:gravity="center"
-                            android:text="@string/grade"
+                            android:text="@string/classes"
                             android:textAlignment="center"
                             android:textColor="@color/app_bg"
                             android:textSize="@dimen/_11sdp" />
@@ -172,8 +172,9 @@
                             android:layout_gravity="center"
                             android:layout_weight="0.35"
                             android:gravity="center"
-                            android:text="@string/totalstudent"
+                            android:text="@string/transport1"
                             android:textAlignment="center"
+                            android:textAllCaps="false"
                             android:textColor="@color/app_bg"
                             android:textSize="@dimen/_11sdp" />
 
@@ -183,7 +184,7 @@
                             android:layout_gravity="center"
                             android:layout_weight="0.35"
                             android:gravity="center"
-                            android:text="@string/view"
+                            android:text="@string/personal"
                             android:textAlignment="center"
                             android:textColor="@color/app_bg"
                             android:textSize="@dimen/_11sdp" />
@@ -193,7 +194,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/recycler_linear1"
+                    android:id="@+id/transport_recycler_linear1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
@@ -201,13 +202,13 @@
                     android:background="@drawable/linear_border"
                     android:orientation="vertical">
 
-                    <ExpandableListView
-                        android:id="@+id/rv_misdata_list1"
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/transport_rv_misdata_list1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
-                        android:layout_below="@+id/header"
+                        android:layout_below="@+id/transport_header"
                         android:layout_marginLeft="@dimen/_1sdp"
                         android:layout_marginRight="@dimen/_1sdp"
                         android:childDivider="@android:color/transparent"
@@ -286,7 +287,7 @@
             <!--</anandniketan.com.bhadajadmin.StickyNestedScrollView>-->
 
             <ProgressBar
-                android:id="@+id/loader"
+                android:id="@+id/transport_loader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

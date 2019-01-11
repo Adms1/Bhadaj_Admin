@@ -506,5 +506,7 @@
 
     <string name="with">With</string>
 
+    <string name="personal">Personal</string>
+    <string name="transport1">Transport</string>
 
 </resources>

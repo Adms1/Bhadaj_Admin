@@ -382,11 +382,17 @@ public class MISStudenttAdapter extends BaseExpandableListAdapter {
         LinearLayout headerList = convertView.findViewById(R.id.child_header);
         LinearLayout headerList1 = convertView.findViewById(R.id.child_header_less);
         LinearLayout headerList2 = convertView.findViewById(R.id.child_header_absent3);
+        LinearLayout headerList3 = convertView.findViewById(R.id.child_header_present);
+        LinearLayout headerList4 = convertView.findViewById(R.id.child_header_total);
         if (isExpanded) {
             if (requestType.equalsIgnoreCase("Attendance less then 70%")) {
                 headerList1.setVisibility(View.VISIBLE);
             } else if (requestType.equalsIgnoreCase("ConsistentAbsent")) {
                 headerList2.setVisibility(View.VISIBLE);
+            } else if (requestType.equalsIgnoreCase("Present")) {
+                headerList3.setVisibility(View.VISIBLE);
+            } else if (requestType.equalsIgnoreCase("Total")) {
+                headerList4.setVisibility(View.VISIBLE);
             } else {
                 headerList.setVisibility(View.VISIBLE);
             }
@@ -394,6 +400,8 @@ public class MISStudenttAdapter extends BaseExpandableListAdapter {
             headerList.setVisibility(View.GONE);
             headerList1.setVisibility(View.GONE);
             headerList2.setVisibility(View.GONE);
+            headerList3.setVisibility(View.GONE);
+            headerList4.setVisibility(View.GONE);
         }
 
         grade_txt = convertView.findViewById(R.id.txt_grade);
@@ -403,7 +411,7 @@ public class MISStudenttAdapter extends BaseExpandableListAdapter {
         view_txt = convertView.findViewById(R.id.view_txt);
         ivArrow = convertView.findViewById(R.id.student_item_view_txt);
 
-        grade_txt.setText(String.valueOf(headerTitle1) + "-" + String.valueOf(headerTitle2));
+        grade_txt.setText(String.valueOf(headerTitle1));
         section_txt.setText(String.valueOf(headerTitle2));
 
         if (isExpanded) {

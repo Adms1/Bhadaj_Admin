@@ -131,7 +131,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                 if (fragmentClasswiseResultBinding.rangeSpinner.getSelectedItem().toString().equalsIgnoreCase("No")) {
                     callResultClassWise2();
                 } else {
-                    callStudentRangeDetail(FinalStandardStr, FinalSectionStr);
+                    callStudentRangeDetail(FinalStandardIdStr, FinalClassIdStr);
                 }
             }
         });
@@ -765,7 +765,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                     fragmentClasswiseResultBinding.tvNoRecords.setVisibility(View.GONE);
 
                     rvList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-                    rvList.setAdapter(new MISStudentRangeDetailAdapter(getContext(), staffSMSDataModel.getFinalArray(), FinalSectionStr, FinalStandardStr));
+                    rvList.setAdapter(new MISStudentRangeDetailAdapter(getContext(), staffSMSDataModel.getFinalArray(), FinalClassIdStr, FinalStandardIdStr));
 
                 }
             }
