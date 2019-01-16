@@ -671,8 +671,13 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
                 if(requestType.equalsIgnoreCase("Total")){
 
+                    ((StaffNewViewHolder) holder).age_txt.setVisibility(View.VISIBLE);
+                    ((StaffNewViewHolder) holder).since_txt.setVisibility(View.VISIBLE);
+
                     ((StaffNewViewHolder) holder).name_txt.setText(String.valueOf(dataList.getName()));
                     ((StaffNewViewHolder) holder).status_txt.setText(String.valueOf(dataList.getStatus()));
+                    ((StaffNewViewHolder) holder).age_txt.setText(String.valueOf(dataList.getAge()));
+                    ((StaffNewViewHolder) holder).since_txt.setText(String.valueOf(dataList.getSince()));
                     ((StaffNewViewHolder) holder).ivPhone.setVisibility(View.VISIBLE);
                     ((StaffNewViewHolder) holder).leave_txt.setVisibility(View.GONE);
                     ((StaffNewViewHolder) holder).reason_txt.setVisibility(View.GONE);
@@ -701,8 +706,14 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                     ((StaffNewViewHolder) holder).status_txt.setVisibility(View.GONE);
                     ((StaffNewViewHolder) holder).ivPhone.setVisibility(View.VISIBLE);
                     ((StaffNewViewHolder) holder).leave_txt.setVisibility(View.VISIBLE);
+
+                    ((StaffNewViewHolder) holder).age_txt.setVisibility(View.VISIBLE);
+                    ((StaffNewViewHolder) holder).since_txt.setVisibility(View.VISIBLE);
+
                     ((StaffNewViewHolder) holder).leave_txt.setText(String.valueOf(dataList.getCode()));
                     ((StaffNewViewHolder) holder).reason_txt.setVisibility(View.GONE);
+                    ((StaffNewViewHolder) holder).age_txt.setText(String.valueOf(dataList.getAge()));
+                    ((StaffNewViewHolder) holder).since_txt.setText(String.valueOf(dataList.getSince()));
 
                     ((StaffNewViewHolder) holder).ivPhone.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -725,11 +736,16 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                     ((StaffNewViewHolder) holder).status_txt.setText(String.valueOf(dataList.getStatus()));
                     ((StaffNewViewHolder) holder).status_txt.setVisibility(View.GONE);
 
+                    ((StaffNewViewHolder) holder).age_txt.setVisibility(View.VISIBLE);
+                    ((StaffNewViewHolder) holder).since_txt.setVisibility(View.VISIBLE);
+
                     ((StaffNewViewHolder) holder).ivPhone.setVisibility(View.VISIBLE);
                     ((StaffNewViewHolder) holder).leave_txt.setVisibility(View.VISIBLE);
                     ((StaffNewViewHolder) holder).leave_txt.setText(String.valueOf(dataList.getLeaveDays()));
                     ((StaffNewViewHolder) holder).reason_txt.setVisibility(View.VISIBLE);
                     ((StaffNewViewHolder) holder).reason_txt.setText(String.valueOf(dataList.getLeaveReason()));
+                    ((StaffNewViewHolder) holder).age_txt.setText(String.valueOf(dataList.getAge()));
+                    ((StaffNewViewHolder) holder).since_txt.setText(String.valueOf(dataList.getSince()));
 
                     ((StaffNewViewHolder) holder).ivPhone.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -973,7 +989,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
     public class StaffNewViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name_txt,status_txt,reason_txt,leave_txt,phone_txt;
+        TextView name_txt, status_txt, reason_txt, leave_txt, phone_txt, age_txt, since_txt;
         ImageView ivPhone;
 
         public StaffNewViewHolder(View itemView) {
@@ -984,6 +1000,8 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
             leave_txt = itemView.findViewById(R.id.leave_txt);
             phone_txt = itemView.findViewById(R.id.phone_txt);
             ivPhone = itemView.findViewById(R.id.iv_phone);
+            age_txt = itemView.findViewById(R.id.age_txt);
+            since_txt = itemView.findViewById(R.id.since_txt);
         }
     }
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/linear_border2"
     android:orientation="vertical">
 
     <LinearLayout
@@ -39,7 +40,8 @@
 
         <ImageView
             android:id="@+id/range_iv_indicatior"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"

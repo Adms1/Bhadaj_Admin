@@ -158,19 +158,18 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="0.35"
+                            android:layout_weight="0.33"
                             android:gravity="center"
                             android:text="@string/classes"
                             android:textAlignment="center"
                             android:textColor="@color/app_bg"
                             android:textSize="@dimen/_11sdp" />
 
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="0.35"
+                            android:layout_weight="0.33"
                             android:gravity="center"
                             android:text="@string/transport1"
                             android:textAlignment="center"
@@ -182,7 +181,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="0.35"
+                            android:layout_weight="0.33"
                             android:gravity="center"
                             android:text="@string/personal"
                             android:textAlignment="center"

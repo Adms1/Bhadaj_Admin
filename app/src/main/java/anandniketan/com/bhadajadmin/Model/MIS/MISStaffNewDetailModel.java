@@ -69,6 +69,14 @@ public class MISStaffNewDetailModel {
         @Expose
         private String days;
 
+        @SerializedName("Age")
+        @Expose
+        private String age;
+
+        @SerializedName("Working From")
+        @Expose
+        private String since;
+
 
         public String getDepartment() {
             return department;
@@ -150,6 +158,22 @@ public class MISStaffNewDetailModel {
 
         public void setDays(String days) {
             this.days = days;
+        }
+
+        public String getAge() {
+            return age;
+        }
+
+        public void setAge(String age) {
+            this.age = age;
+        }
+
+        public String getSince() {
+            return since;
+        }
+
+        public void setSince(String since) {
+            this.since = since;
         }
     }
 

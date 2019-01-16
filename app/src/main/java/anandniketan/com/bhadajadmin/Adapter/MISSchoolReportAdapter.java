@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import anandniketan.com.bhadajadmin.Model.MIS.MISSchoolResultModel;
 import anandniketan.com.bhadajadmin.R;
 
@@ -37,10 +39,10 @@ public class MISSchoolReportAdapter extends RecyclerView.Adapter<MISSchoolReport
     @Override
     public void onBindViewHolder(final MISSchoolReportAdapter.MyViewHolder holder, final int position) {
         try {
-            holder.grade_txt.setText(String.valueOf(dataValues.get(position).getStandard()));
-            holder.section_txt.setText(String.valueOf(dataValues.get(position).getClassName()));
+//            holder.grade_txt.setText(String.valueOf(dataValues.get(position).getStandard()));
+            holder.section_txt.setText(String.valueOf(dataValues.get(position).getStandard()) + "-" + String.valueOf(dataValues.get(position).getClassName()));
             holder.student_txt.setText(String.valueOf(dataValues.get(position).getName()));
-            holder.percentage_txt.setText(String.valueOf(dataValues.get(position).getPercentage()));
+            holder.grade1_txt.setText(String.valueOf(dataValues.get(position).getGrade()));
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -55,14 +57,14 @@ public class MISSchoolReportAdapter extends RecyclerView.Adapter<MISSchoolReport
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView grade_txt,section_txt,student_txt,percentage_txt;
+        TextView section_txt, student_txt, percentage_txt, grade1_txt;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            section_txt = (TextView) itemView.findViewById(R.id.section_txt);
-            student_txt = (TextView) itemView.findViewById(R.id.student_txt);
-            percentage_txt = (TextView) itemView.findViewById(R.id.percentage_txt);
+//            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
+            section_txt = itemView.findViewById(R.id.section_txt);
+            student_txt = itemView.findViewById(R.id.student_txt);
+            grade1_txt = itemView.findViewById(R.id.grade_txt_1);
 
         }
     }

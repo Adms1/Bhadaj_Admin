@@ -35,14 +35,15 @@ import retrofit.client.Response;
 public class MISStudentRangeDetailFragment extends Fragment implements ResponseCallBack {
 
     private ExpandableListView expandableListView;
-    private TextView tvNoRecords;
+    private TextView tvNoRecords, tvTxt, tvHeader;
     private Button btnBack, btnMenu;
     private List<MISStudentResultDataModel.FinalArray> finalArrayAnnouncementFinal;
     private ExapandableSchoolResultAdapter expandableSchoolResultAdapter;
     private ResponseCallBack responseCallBack;
     private List<String> listDataHeader;
+    private View header;
     private HashMap<String, ArrayList<MISStudentResultDataModel.TermDatum>> listDataChild;
-    private String stndrdID, classiD, termId, rangeId;
+    private String stndrdID, classiD, termId, rangeId, count;
     private int lastExpandedPosition = -1;
 
     public MISStudentRangeDetailFragment() {
@@ -54,7 +55,6 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
         super.onAttach(context);
         responseCallBack = this;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +71,11 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
         tvNoRecords = view.findViewById(R.id.range_tv_no_records);
         btnBack = view.findViewById(R.id.range_btnBack);
         btnMenu = view.findViewById(R.id.range_btnmenu);
+        tvTxt = view.findViewById(R.id.range_tv_txt);
+        header = view.findViewById(R.id.range_lvExp_header);
+        tvHeader = view.findViewById(R.id.range_textView3);
+
+        tvHeader.setText("Rangewise Students");
 
         try {
             Bundle bundle = this.getArguments();
@@ -78,9 +83,14 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
             classiD = bundle.getString("ClassID");
             termId = bundle.getString("TermDetailID");
             rangeId = bundle.getString("RangeID");
+            count = bundle.getString("count");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        tvTxt.setVisibility(View.GONE);
+        header.setVisibility(View.GONE);
 
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -144,15 +154,18 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
                     return;
                 }
                 if (studentFullDetailModel.getSuccess() == null) {
+
                     responseCallBack.onFailure(getString(R.string.false_msg));
 
                     return;
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("False")) {
+
                     responseCallBack.onFailure(getString(R.string.false_msg));
                     return;
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("True")) {
+
                     if (studentFullDetailModel.getFinalArray().size() > 0) {
 
                         responseCallBack.onResponse(studentFullDetailModel.getFinalArray());
@@ -211,17 +224,23 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
                 Utils.dismissDialog();
                 if (studentFullDetailModel == null) {
                     Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    tvTxt.setVisibility(View.GONE);
+                    header.setVisibility(View.GONE);
                     tvNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (studentFullDetailModel.getSuccess() == null) {
                     Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    tvTxt.setVisibility(View.GONE);
+                    header.setVisibility(View.GONE);
                     tvNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("False")) {
                     Utils.ping(getActivity(), getString(R.string.false_msg));
                     Utils.dismissDialog();
+                    tvTxt.setVisibility(View.GONE);
+                    header.setVisibility(View.GONE);
                     tvNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -229,6 +248,10 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
                     if (studentFullDetailModel.getFinalArray().size() > 0) {
 
                         Utils.dismissDialog();
+
+                        tvTxt.setVisibility(View.VISIBLE);
+                        tvTxt.setText("Total Students : " + count);
+                        header.setVisibility(View.VISIBLE);
 
                         finalArrayAnnouncementFinal = studentFullDetailModel.getFinalArray();
                         if (finalArrayAnnouncementFinal != null) {

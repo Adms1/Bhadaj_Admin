@@ -51,6 +51,10 @@ public class MISSchoolResultModel {
         @Expose
         private String percentage;
 
+        @SerializedName("Grade")
+        @Expose
+        private String grade;
+
         public String getStandard() {
             return standard;
         }
@@ -99,5 +103,12 @@ public class MISSchoolResultModel {
             this.percentage = percentage;
         }
 
+        public String getGrade() {
+            return grade;
+        }
+
+        public void setGrade(String grade) {
+            this.grade = grade;
+        }
     }
 }

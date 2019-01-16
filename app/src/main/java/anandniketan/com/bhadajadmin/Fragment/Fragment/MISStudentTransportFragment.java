@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,9 +41,11 @@ public class MISStudentTransportFragment extends Fragment {
     private ArrayList<TransportMainModel.StandardDatum> transportMainArray;
     private ProgressBar progressBar;
     private TextView tvNorecord, tvHeader;
-    private RelativeLayout llHeader;
-    private String termid = "";
+    private LinearLayout llHeader;
+    private String termid = "", stdid = "";
     private Button btnBack, btnMenu;
+    private Fragment fragment;
+    private FragmentManager fragmentManager = null;
 
     public MISStudentTransportFragment() {
         // Required empty public constructor
@@ -61,11 +64,12 @@ public class MISStudentTransportFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         termid = bundle.getString("TermID");
+        stdid = bundle.getString("stdID");
 
         rvList = view.findViewById(R.id.transport_rv_misdata_list1);
         progressBar = view.findViewById(R.id.transport_loader);
         tvNorecord = view.findViewById(R.id.transport_txtNoRecords);
-        llHeader = view.findViewById(R.id.transport_header);
+        llHeader = view.findViewById(R.id.transport_lv_header2);
         btnBack = view.findViewById(R.id.transport_btnBack);
         btnMenu = view.findViewById(R.id.transport_btnmenu);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -79,10 +83,10 @@ public class MISStudentTransportFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
-//                fragment = new MISFragment();
-//                fragmentManager = getFragmentManager();
-//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+//                getActivity().getSupportFragmentManager().popBackStackImmediate();
+                fragment = new MISFragment();
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 
@@ -92,7 +96,7 @@ public class MISStudentTransportFragment extends Fragment {
     private void callTransportDetail() {
         WebServices apiService = ApiClient.getClient().create(WebServices.class);
 
-        Call<TransportMainModel> call = apiService.getTransportDetail(AppConfiguration.BASEURL + "GetMISTransport?RequestType=" + "&TermID=" + termid);
+        Call<TransportMainModel> call = apiService.getTransportDetail(AppConfiguration.BASEURL + "GetMISTransport?RequestType=" + "&TermID=" + termid + "&StandardID=" + stdid);
         call.enqueue(new Callback<TransportMainModel>() {
 
             @Override
@@ -103,14 +107,16 @@ public class MISStudentTransportFragment extends Fragment {
                     rvList.setVisibility(View.GONE);
                     llHeader.setVisibility(View.GONE);
                     Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    tvNorecord.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (response.body().getSuccess().equalsIgnoreCase("false")) {
                     progressBar.setVisibility(View.GONE);
                     rvList.setVisibility(View.GONE);
-                    llHeader.setVisibility(View.GONE);
                     Utils.ping(getActivity(), getString(R.string.false_msg));
+                    llHeader.setVisibility(View.GONE);
+                    tvNorecord.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (response.body().getSuccess().equalsIgnoreCase("True")) {
@@ -124,7 +130,6 @@ public class MISStudentTransportFragment extends Fragment {
                         transportMainArray = response.body().getFinalArray().get(0).getStandarddata();
 
                         if (transportMainArray != null) {
-                            llHeader.setVisibility(View.VISIBLE);
                             tvNorecord.setVisibility(View.GONE);
                             transportAdapter = new TransportAdapter(getActivity(), transportMainArray, termid);
                             rvList.setAdapter(transportAdapter);

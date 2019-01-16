@@ -234,10 +234,10 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
-                                <anandniketan.com.bhadajadmin.StickyScrollView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:scrollbars="none">
+                                <!--<anandniketan.com.bhadajadmin.StickyScrollView-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="wrap_content"-->
+                                <!--android:scrollbars="none">-->
 
                                     <LinearLayout
                                         android:id="@+id/linear_finance_recyler_grid"
@@ -268,7 +268,7 @@
 
                                     </LinearLayout>
 
-                                </anandniketan.com.bhadajadmin.StickyScrollView>
+                                <!--</anandniketan.com.bhadajadmin.StickyScrollView>-->
 
                                 <LinearLayout
                                     android:id="@+id/linear_finance_recyler_list2"

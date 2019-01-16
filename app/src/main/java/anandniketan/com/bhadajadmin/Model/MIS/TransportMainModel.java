@@ -71,6 +71,10 @@ public class TransportMainModel {
         @Expose
         private String personal;
 
+        @SerializedName("StandardID")
+        @Expose
+        private String standardid;
+
         public String getStandard() {
             return standard;
         }
@@ -93,6 +97,14 @@ public class TransportMainModel {
 
         public void setPersonal(String personal) {
             this.personal = personal;
+        }
+
+        public String getStandardid() {
+            return standardid;
+        }
+
+        public void setStandardid(String standardid) {
+            this.standardid = standardid;
         }
     }
 

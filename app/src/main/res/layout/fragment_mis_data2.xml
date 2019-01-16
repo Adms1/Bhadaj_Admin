@@ -192,9 +192,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:nestedScrollingEnabled="false"
-
                             android:scrollbars="vertical" />
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -216,8 +214,8 @@
                             android:nestedScrollingEnabled="true"
                             android:dividerHeight="5dp"
                             android:groupIndicator="@null"
-                            android:scrollbars="none"
-                            />
+                            android:scrollbars="none" />
+
                     </LinearLayout>
 
                 </android.support.v7.widget.LinearLayoutCompat>

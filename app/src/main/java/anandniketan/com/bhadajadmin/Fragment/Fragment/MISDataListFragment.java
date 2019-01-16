@@ -994,13 +994,11 @@ public class MISDataListFragment extends Fragment {
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
 
-
                     try {
 
                         progressBar.setVisibility(View.GONE);
 
                         staffNewDetailModelList = staffSMSDataModel.getFinalArray();
-
 
                         fragmentMisDataBinding.lvHeader2.setVisibility(View.VISIBLE);
                         fragmentMisDataBinding.lvHeader.setVisibility(View.VISIBLE);
@@ -1008,10 +1006,8 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.VISIBLE);
                         fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);
 
-
                         fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
-
 
                         if (countdata != null) {
                             fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);

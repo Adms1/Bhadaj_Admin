@@ -26,7 +26,7 @@
         android:layout_weight="0.33"
         android:gravity="center"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/blue"
         android:textSize="@dimen/_11sdp" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_weight="0.33"
         android:gravity="center"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/blue"
         android:textSize="@dimen/_11sdp" />
 
 </LinearLayout>

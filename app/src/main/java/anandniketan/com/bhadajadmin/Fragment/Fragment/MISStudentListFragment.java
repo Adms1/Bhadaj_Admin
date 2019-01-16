@@ -54,7 +54,10 @@ public class MISStudentListFragment extends Fragment {
     private Context mContext;
     private LinearLayout llHeader;
     private int lastExpandedPosition = -1;
-    private TextView mTvInnerTitle, mTvInnerAttendanceStatus, mTvinnerGrno, mTvStudent, mTvDept, mTvCode, mTvName, mTvPhone, mTvGRNO, mTvClassTeacher, mTVGrade, mTvSection, mTvLeaveDay, mTvReason, mTvAbsentFrom;
+    private TextView mTvInnerTitle, mTvInnerAttendanceStatus, mTvinnerGrno, mTvStudent, mTvDept, mTvCode, mTvName, mTvPhone, mTvGRNO, mTvClassTeacher, mTVGrade, mTvSection, mTvLeaveDay, mTvReason, mTvAbsentFrom, header_txt;
+
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
 
     public MISStudentListFragment() {
         // Required empty public constructor
@@ -72,6 +75,8 @@ public class MISStudentListFragment extends Fragment {
         progressBar = rootView.findViewById(R.id.loader);
         rvMisdataList1 = rootView.findViewById(R.id.rv_misdata_list1);
         llHeader = rootView.findViewById(R.id.misstudent_llHeader);
+        header_txt = rootView.findViewById(R.id.studetail_header_txt);
+
         mContext = getActivity();
         return rootView;
     }
@@ -86,6 +91,10 @@ public class MISStudentListFragment extends Fragment {
         termID = bundle.getString("TermID");
         date = bundle.getString("Date");
         gender = bundle.getString("Gender");
+
+        header_txt.setVisibility(View.GONE);
+
+        header_txt.setText(title);
 
         rvMisdataList1.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -291,6 +300,7 @@ public class MISStudentListFragment extends Fragment {
 //        }
 
 
+        llHeader.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
         handler = new Handler();
@@ -309,12 +319,12 @@ public class MISStudentListFragment extends Fragment {
         fragmentMisDataBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AppConfiguration.ReverseTermDetailId = "";
-//                fragment = new MISFragment();
-//                fragmentManager = getFragmentManager();
-//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
-
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                AppConfiguration.ReverseTermDetailId = "";
+                fragment = new MISFragment();
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+//
+//                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
         fragmentMisDataBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
@@ -358,7 +368,7 @@ public class MISStudentListFragment extends Fragment {
                 if (staffSMSDataModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-////                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+                    header_txt.setVisibility(View.GONE);
                     llHeader.setVisibility(View.GONE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
@@ -369,7 +379,7 @@ public class MISStudentListFragment extends Fragment {
                 if (staffSMSDataModel.getSuccess() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-////                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+                    header_txt.setVisibility(View.GONE);
                     llHeader.setVisibility(View.GONE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -380,7 +390,7 @@ public class MISStudentListFragment extends Fragment {
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
-//                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+                    header_txt.setVisibility(View.GONE);
                     llHeader.setVisibility(View.GONE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -400,6 +410,7 @@ public class MISStudentListFragment extends Fragment {
 //
                     fragmentMisDataBinding.lvHeader2.setVisibility(View.VISIBLE);
                     llHeader.setVisibility(View.VISIBLE);
+                    header_txt.setVisibility(View.VISIBLE);
 //                        fragmentMisDataBinding.recyclerLinear.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);
@@ -493,6 +504,7 @@ public class MISStudentListFragment extends Fragment {
                 fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
 //                fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
 //                fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+                header_txt.setVisibility(View.GONE);
                 fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                 fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                 fragmentMisDataBinding.txtNoRecords.setText(error.getMessage());

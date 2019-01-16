@@ -59,7 +59,7 @@ public class MISStudentRangeDetailAdapter extends RecyclerView.Adapter<MISStuden
                 bundle.putString("StandardID", stdid);
                 bundle.putString("ClassID", classid);
                 bundle.putString("RangeID", standardDataModel.get(position).getRange());
-//                        bundle.putString("countdata",holder.total_txt.getText().toString());
+                bundle.putString("count", standardDataModel.get(position).getCount());
 //                        bundle.putString("Date",AppConfiguration.staffDate);
 //                        bundle.putString("deptID",String.valueOf(dataValues.get(position).getDepartmentID()));
                 fragment.setArguments(bundle);
