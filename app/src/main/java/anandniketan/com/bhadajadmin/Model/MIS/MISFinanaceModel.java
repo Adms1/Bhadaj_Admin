@@ -127,12 +127,21 @@ public class MISFinanaceModel {
         @SerializedName("RecievedFeesTerm1")
         @Expose
         private String recievedFeesTerm1;
+
+        @SerializedName("DueTerm1")
+        @Expose
+        private String dueterm1;
+
         @SerializedName("TotalFeesTerm2")
         @Expose
         private String totalFeesTerm2;
         @SerializedName("RecievedFeesTerm2")
         @Expose
         private String recievedFeesTerm2;
+
+        @SerializedName("DueTerm2")
+        @Expose
+        private String dueterm2;
 
         public String getHead() {
             return head;
@@ -174,6 +183,21 @@ public class MISFinanaceModel {
             this.recievedFeesTerm2 = recievedFeesTerm2;
         }
 
+        public String getDueterm1() {
+            return dueterm1;
+        }
+
+        public void setDueterm1(String dueterm1) {
+            this.dueterm1 = dueterm1;
+        }
+
+        public String getDueterm2() {
+            return dueterm2;
+        }
+
+        public void setDueterm2(String dueterm2) {
+            this.dueterm2 = dueterm2;
+        }
     }
 
 }

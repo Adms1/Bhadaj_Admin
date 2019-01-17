@@ -42,7 +42,6 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
     private String[] tabsTitles;
     private List<MIStudentWiseResultModel.FinalArray> dataList;
 
-
     public ExapandableSchoolResultAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<MISStudentResultDataModel.TermDatum>> listDataChild, ResponseCallBack responseCallBack) {
         this._context = context;
         this._listDataHeader = listDataHeader;
@@ -63,20 +62,16 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-
         final List<MISStudentResultDataModel.TermDatum> childData = getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_mis_student_wise_result, null);
-
         }
-
 
         tabLayout = convertView.findViewById(R.id.tabLayout);
         viewPager = convertView.findViewById(R.id.viewPager);
         progressBar = convertView.findViewById(R.id.inner_list_loader);
-
 
         return convertView;
     }

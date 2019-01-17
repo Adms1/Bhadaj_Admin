@@ -36,7 +36,7 @@ public class AppConfiguration {
     public static String UPLOAD_IMAGE_URL  = LIVE_BASE_URL+"upload.aspx";
 
     public static String StudentId = "",StandardId ="",Subtitle = "",Coundata = "",Grade = "",pageInnerTitle = "",CountdataAccount = "",acReqTitle = "";
-    public static String TermId,schoolResultTermID = "",financeTermId = "",NA_TERM_ID ="",TAG = "Staff";
+    public static String TermId, schoolResultTermID = "", financeTermId = "", NA_TERM_ID = "", TAG = "Staff", calendarTermId = "";
     public static String DesgId;
     public static String DeptId;
 

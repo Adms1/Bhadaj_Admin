@@ -3,15 +3,9 @@ package anandniketan.com.bhadajadmin.Adapter;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,7 +14,6 @@ import java.util.List;
 
 import anandniketan.com.bhadajadmin.Interface.getEmployeeCheck;
 import anandniketan.com.bhadajadmin.Model.Account.TallyTranscationModel;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
 import anandniketan.com.bhadajadmin.R;
 
 public class TallyTransactionAdapter extends RecyclerView.Adapter<TallyTransactionAdapter.MyViewHolder> {
@@ -53,18 +46,15 @@ public class TallyTransactionAdapter extends RecyclerView.Adapter<TallyTransacti
         holder.vno_txt.setText(String.valueOf(data.getVoucherNo()));
         holder.studentname_txt.setText(finalArrayBulkSMSModelList.get(position).getStudentName());
         holder.grno_txt.setText(finalArrayBulkSMSModelList.get(position).getGRNO());
-        holder.amount_txt.setText("₹"+String.valueOf(finalArrayBulkSMSModelList.get(position).getAmount()));
+        holder.amount_txt.setText("₹" + String.valueOf(finalArrayBulkSMSModelList.get(position).getAmount()));
 
         if (data.getStatus().equalsIgnoreCase("Pending Receipt")) {
-            holder.iv_status.setColorFilter(ContextCompat.getColor(context,R.color.red),android.graphics.PorterDuff.Mode.MULTIPLY);
+            holder.iv_status.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         } else {
-            holder.iv_status.setColorFilter(ContextCompat.getColor(context,R.color.green),android.graphics.PorterDuff.Mode.MULTIPLY);
+            holder.iv_status.setColorFilter(ContextCompat.getColor(context, R.color.green), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         }
-
-
-
     }
 
     @Override
@@ -83,24 +73,22 @@ public class TallyTransactionAdapter extends RecyclerView.Adapter<TallyTransacti
         return finalArrayBulkSMSModelList.size();
     }
 
+    public ArrayList<String> getData() {
+        return dataCheck;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView vno_txt,studentname_txt, grno_txt, amount_txt;
+        TextView vno_txt, studentname_txt, grno_txt, amount_txt;
         ImageView iv_status;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            vno_txt = (TextView) itemView.findViewById(R.id.vno_txt);
-            studentname_txt = (TextView) itemView.findViewById(R.id.studentname_txt);
-            grno_txt = (TextView) itemView.findViewById(R.id.grno_txt);
-            amount_txt = (TextView) itemView.findViewById(R.id.amount_txt);
-            iv_status = (ImageView) itemView.findViewById(R.id.iv_status);
+            vno_txt = itemView.findViewById(R.id.vno_txt);
+            studentname_txt = itemView.findViewById(R.id.studentname_txt);
+            grno_txt = itemView.findViewById(R.id.grno_txt);
+            amount_txt = itemView.findViewById(R.id.amount_txt);
+            iv_status = itemView.findViewById(R.id.iv_status);
 
         }
-    }
-
-
-
-    public ArrayList<String> getData() {
-        return dataCheck;
     }
 }

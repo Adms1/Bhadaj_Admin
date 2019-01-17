@@ -46,6 +46,13 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
     @Override
     public void onBindViewHolder(final MISFinanceReportAdapter.MyViewHolder holder, final int position) {
         try {
+
+            holder.term1_due.setVisibility(View.VISIBLE);
+            holder.term2_due.setVisibility(View.VISIBLE);
+
+            holder.term1_due.setText(dataValues.get(position).getDueterm1());
+            holder.term2_due.setText(dataValues.get(position).getDueterm2());
+
             holder.head_txt.setText(String.valueOf(dataValues.get(position).getHead()));
             holder.term1_credit_txt.setText(String.valueOf(dataValues.get(position).getRecievedFeesTerm1()));
             holder.term1_debit_txt.setText(String.valueOf(dataValues.get(position).getTotalFeesTerm1()));
@@ -53,16 +60,27 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
             holder.term2_debit_txt.setText(String.valueOf(dataValues.get(position).getTotalFeesTerm2()));
 
             if (position == (dataValues.size() - 1)) {
+                holder.term1_credit_txt.setVisibility(View.GONE);
+                holder.term1_due.setVisibility(View.GONE);
+                holder.term2_credit_txt.setVisibility(View.GONE);
+                holder.term2_due.setVisibility(View.GONE);
+            }
+
+            if (position == (dataValues.size() - 2)) {
                 holder.head_txt.setTypeface(holder.head_txt.getTypeface(), Typeface.BOLD);
                 holder.term1_credit_txt.setTypeface(holder.term1_credit_txt.getTypeface(), Typeface.BOLD);
                 holder.term1_debit_txt.setTypeface(holder.term1_debit_txt.getTypeface(), Typeface.BOLD);
                 holder.term2_credit_txt.setTypeface(holder.term2_credit_txt.getTypeface(), Typeface.BOLD);
                 holder.term2_debit_txt.setTypeface(holder.term2_debit_txt.getTypeface(), Typeface.BOLD);
+                holder.term1_due.setTypeface(holder.term2_debit_txt.getTypeface(), Typeface.BOLD);
+                holder.term2_due.setTypeface(holder.term2_debit_txt.getTypeface(), Typeface.BOLD);
 
                 holder.term1_credit_txt.setTextColor(context.getResources().getColor(R.color.blue));
                 holder.term1_debit_txt.setTextColor(context.getResources().getColor(R.color.blue));
                 holder.term2_credit_txt.setTextColor(context.getResources().getColor(R.color.blue));
                 holder.term2_debit_txt.setTextColor(context.getResources().getColor(R.color.blue));
+                holder.term1_due.setTextColor(context.getResources().getColor(R.color.blue));
+                holder.term2_due.setTextColor(context.getResources().getColor(R.color.blue));
 
                 holder.term1_debit_txt.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -161,7 +179,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView head_txt, term1_credit_txt, term1_debit_txt, term2_credit_txt, term2_debit_txt;
+        TextView head_txt, term1_credit_txt, term1_debit_txt, term2_credit_txt, term2_debit_txt, term1_due, term2_due;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -170,6 +188,8 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
             term1_debit_txt = itemView.findViewById(R.id.term1_debit_txt);
             term2_credit_txt = itemView.findViewById(R.id.term2_credit_txt);
             term2_debit_txt = itemView.findViewById(R.id.term2_debit_txt);
+            term1_due = itemView.findViewById(R.id.term1_due_txt);
+            term2_due = itemView.findViewById(R.id.term2_due_txt);
         }
     }
 

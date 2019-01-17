@@ -109,6 +109,9 @@ public class MISModel {
         @Expose
         private String attendance;
 
+        @SerializedName("Between alumini left")
+        @Expose
+        private String betAlumini;
 
         @SerializedName("DailyEntryTotal")
         @Expose
@@ -218,6 +221,14 @@ public class MISModel {
 
         public void setIssueAddmissionForm(Integer issueAddmissionForm) {
             this.issueAddmissionForm = issueAddmissionForm;
+        }
+
+        public String getBetAlumini() {
+            return betAlumini;
+        }
+
+        public void setBetAlumini(String betAlumini) {
+            this.betAlumini = betAlumini;
         }
 
         public Integer getRcvAddmissionForm() {

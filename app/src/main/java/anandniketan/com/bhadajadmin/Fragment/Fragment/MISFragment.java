@@ -5,8 +5,10 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -18,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,67 +50,76 @@ import anandniketan.com.bhadajadmin.Adapter.MISSchoolReportAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISStaffGridAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISStaffListAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISTaskReportGridAdapter;
+import anandniketan.com.bhadajadmin.Adapter.ViewPagerAdapter;
 import anandniketan.com.bhadajadmin.Model.MIS.MISFinanaceModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISSchoolResultModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStaffNewModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportModel;
 import anandniketan.com.bhadajadmin.Model.MISModel;
+import anandniketan.com.bhadajadmin.Model.MIStudentWiseCalendarModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.SpacesItemDecoration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
+import anandniketan.com.bhadajadmin.Utility.WebServices;
 import anandniketan.com.bhadajadmin.databinding.FragmentMis2Binding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 
-public class MISFragment extends Fragment implements View.OnClickListener,DatePickerDialog.OnDateSetListener {
+public class MISFragment extends Fragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    private Button btnBack,btnMenu;
+    public static final String inputFormat = "HH:mm";
+    private static String dateFinal = "";
+    FragmentMis2Binding fragmentMisBinding;
+    long specifictime, currenttime;
+    SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.US);
+    private Button btnBack, btnMenu;
     private View view;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    FragmentMis2Binding fragmentMisBinding;
     //FragmentMisBinding fragmentMisBinding;
-    private TextView student_total_txt, student_present_txt, student_absent_txt, student_leave_txt, antstudent_txt, abstudent_txt, student_attendance_less_70_txt, staff_total_txt, staff_present_txt, absent_txt, staffleave_txt, abstaff_txt, antstaff_txt, staff_workplan_txt, staff_hw_submitted_txt, staff_cw_txt, actotaltobecall_txt, acterm1fess_txt, acterm2fess_txt, acterm1_collection, acterm2_collection, acos_txt, accashcollection_txt, acchhqdd_txt, aconine_txt, na_inquiry_txt, na_issueadd_txt, na_rcvform_txt, na_CallForInterview_txt, na_comeforinterview_txt, na_confirmaddmission_txt, na_rejected_txt, na_fees_rec_txt, na_fees_not_rec_txt, smssent_txt, smsdelivered_txt, smspedning_txt, boy_total_txt, girl_total_txt, boy_present_txt, girl_present_txt, boy_absent_txt, girl_absent_txt, boy_leave_txt, girl_leave_txt, antboy_txt, antgirl_txt, abboy_txt, abgirl_txt, boy_attendance_less_70_txt, girl_attendance_less_70_txt, student_transport_detail;
-
+    private TextView student_total_txt, student_present_txt, student_absent_txt, student_leave_txt, antstudent_txt, abstudent_txt, student_attendance_less_70_txt, staff_total_txt, staff_present_txt, absent_txt, staffleave_txt, abstaff_txt, antstaff_txt, staff_workplan_txt, staff_hw_submitted_txt, staff_cw_txt, actotaltobecall_txt, acterm1fess_txt, acterm2fess_txt, acterm1_collection, acterm2_collection, acos_txt, accashcollection_txt, acchhqdd_txt, aconine_txt, na_inquiry_txt, na_issueadd_txt, na_rcvform_txt, na_CallForInterview_txt, na_comeforinterview_txt, na_confirmaddmission_txt, na_rejected_txt, na_fees_rec_txt, na_fees_not_rec_txt, smssent_txt, smsdelivered_txt, smspedning_txt, boy_total_txt, girl_total_txt, boy_present_txt, girl_present_txt, boy_absent_txt, girl_absent_txt, boy_leave_txt, girl_leave_txt, antboy_txt, antgirl_txt, abboy_txt, abgirl_txt, boy_attendance_less_70_txt, girl_attendance_less_70_txt, student_transport_detail, ba_txt, baboy_txt, bagirl_txt;
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
-    private HashMap<Integer, String> spinnerTermMap,spinnerSchoolResultMap,spinnerTermMap2,spinnerTermMap3;
-    private String FinalTermIdStr = "",FinalSchoolResultTermID = "1",FinalFinanaceTermId ="3",FinalNATermID = "3";
+    private HashMap<Integer, String> spinnerTermMap, spinnerSchoolResultMap, spinnerTermMap2, spinnerTermMap3, spinnerTermMap4;
+    private String FinalTermIdStr = "", FinalSchoolResultTermID = "1", FinalFinanaceTermId = "3", FinalNATermID = "3", FinalCalendarTermID = "3";
     private Bundle bundle;
-    private static String dateFinal = "";
     private int whichDateClicked = 1;
     private DatePickerDialog datePickerDialog;
-    private int Year,Month,Day,hour,minute,second;
+    private int Year, Month, Day, hour, minute, second;
     private int mYear, mMonth, mDay;
     private Calendar calendar;
-    private boolean isRequireCallNestedAPI = true,isFirmtimeLoad = true;
+    private Spinner spCalendar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ProgressBar progressBar;
+    private String[] tabsTitles;
+    private LinearLayout llCalendar;
+    private boolean isRequireCallNestedAPI = true, isFirmtimeLoad = true;
     private List<MISStaffNewModel.FinalArray> dataValues;
     private List<MISTaskReportModel.FinalArray> taskReportdataValues;
     private List<MISSchoolResultModel.FinalArray> topperdataValues;
     private List<MISFinanaceModel.FinalArray> financedataValues;
-
     private ArrayList<String> dataValues1;
     private ArrayList<String> keyValues;
     private MISTaskReportGridAdapter misTaskReportGridAdapter;
-
+    // private MISStaffListAdapter misStaffListAdapter;
     private MISStaffGridAdapter misStaffGridAdapter;
     private MISStaffListAdapter misStaffListAdapter;
-    public static final String inputFormat = "HH:mm";
-   // private MISStaffListAdapter misStaffListAdapter;
-
     private MISSchoolReportAdapter misSchoolReportAdapter;
     private MISFinanceReportAdapter misFinanceReportAdapter;
-    long specifictime, currenttime;
-    SimpleDateFormat inputParser = new SimpleDateFormat(inputFormat, Locale.US);
     private MISFinanceListAdapter misFinanceListAdapter;
     private Date date;
     private Date dateCompareOne;
     private String compareStringOne = "04:00";
+    private TextView tvTerm1Due, tvTerm2Due;
 
     public MISFragment() {
         // Required empty public constructor
@@ -121,7 +134,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentMisBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_mis2,container,false);
+        fragmentMisBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_mis2, container, false);
         rootView = fragmentMisBinding.getRoot();
         //rootView = fragmentMisBinding.getRoot();
         AppConfiguration.firsttimeback = true;
@@ -129,7 +142,19 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         btnBack = rootView.findViewById(R.id.btnBack);
         btnMenu = rootView.findViewById(R.id.btnmenu);
+        tvTerm1Due = rootView.findViewById(R.id.term1_due_txt);
+        tvTerm2Due = rootView.findViewById(R.id.term2_due_txt);
+
+        spCalendar = rootView.findViewById(R.id.spinner_schoolcalendar);
+        tabLayout = rootView.findViewById(R.id.schoolcalendar_tabLayout);
+        viewPager = rootView.findViewById(R.id.schoolcalendar_viewPager);
+        progressBar = rootView.findViewById(R.id.progress_schoolcalendar);
+        llCalendar = rootView.findViewById(R.id.LL_schoolcalendar);
+
         mContext = getActivity().getApplicationContext();
+
+        tvTerm1Due.setVisibility(View.VISIBLE);
+        tvTerm2Due.setVisibility(View.VISIBLE);
 
         student_transport_detail = rootView.findViewById(R.id.tv_transport);
 
@@ -139,6 +164,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         student_leave_txt = rootView.findViewById(R.id.student_leave_txt);
         antstudent_txt = rootView.findViewById(R.id.antstudent_txt);
         abstudent_txt = rootView.findViewById(R.id.abstudent_txt);
+        ba_txt = rootView.findViewById(R.id.ba_txt);
         student_attendance_less_70_txt = rootView.findViewById(R.id.student_attendance_less_70_txt);
 
         boy_total_txt = rootView.findViewById(R.id.boy_total_txt);
@@ -147,6 +173,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         boy_leave_txt = rootView.findViewById(R.id.boy_leave_txt);
         antboy_txt = rootView.findViewById(R.id.antboy_txt);
         abboy_txt = rootView.findViewById(R.id.abboy_txt);
+        baboy_txt = rootView.findViewById(R.id.baboy_txt);
         boy_attendance_less_70_txt = rootView.findViewById(R.id.boy_attendance_less_70_txt);
 
         girl_total_txt = rootView.findViewById(R.id.girl_total_txt);
@@ -155,6 +182,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         girl_leave_txt = rootView.findViewById(R.id.girl_leave_txt);
         antgirl_txt = rootView.findViewById(R.id.antgirl_txt);
         abgirl_txt = rootView.findViewById(R.id.abgirl_txt);
+        bagirl_txt = rootView.findViewById(R.id.bagirl_txt);
         girl_attendance_less_70_txt = rootView.findViewById(R.id.girl_attendance_less_70_txt);
 
         staff_total_txt = rootView.findViewById(R.id.staff_total_txt);
@@ -217,6 +245,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         student_absent_txt.setOnClickListener(this);
         antstudent_txt.setOnClickListener(this);
         abstudent_txt.setOnClickListener(this);
+        ba_txt.setOnClickListener(this);
         student_attendance_less_70_txt.setOnClickListener(this);
 
         boy_total_txt.setOnClickListener(this);
@@ -225,6 +254,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         boy_absent_txt.setOnClickListener(this);
         antboy_txt.setOnClickListener(this);
         abboy_txt.setOnClickListener(this);
+        baboy_txt.setOnClickListener(this);
         boy_attendance_less_70_txt.setOnClickListener(this);
 
         girl_total_txt.setOnClickListener(this);
@@ -233,6 +263,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         girl_absent_txt.setOnClickListener(this);
         antgirl_txt.setOnClickListener(this);
         abgirl_txt.setOnClickListener(this);
+        bagirl_txt.setOnClickListener(this);
         girl_attendance_less_70_txt.setOnClickListener(this);
 
         staff_total_txt.setOnClickListener(this);
@@ -273,7 +304,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         try {
             callTermApi();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -281,7 +312,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         AppConfiguration.ReverseTermDetailId = "";
         AppConfiguration.position = 5;
@@ -350,7 +381,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 AppConfiguration.ReverseTermDetailId = "";
                 fragment = new HomeFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 
@@ -436,7 +467,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         fragmentMisBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,int position,long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = fragmentMisBinding.termSpinner.getSelectedItem().toString();
                 String getid = spinnerTermMap.get(fragmentMisBinding.termSpinner.getSelectedItemPosition());
 
@@ -444,7 +475,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 FinalTermIdStr = getid.toString();
                 AppConfiguration.TermId = FinalTermIdStr;
 
-                Log.d("FinalTermIdStr",FinalTermIdStr);
+                Log.d("FinalTermIdStr", FinalTermIdStr);
                 AppConfiguration.TermName = name;
 
                 fragmentMisBinding.LLStudentcontainer.setVisibility(View.GONE);
@@ -461,7 +492,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 fragmentMisBinding.progressMsg.setVisibility(View.VISIBLE);
 
                 try {
-                    if(isAdded()) {
+                    if (isAdded()) {
 //                        final Handler handler = new Handler();
 //                        handler.postDelayed(new Runnable() {
 //                            @Override
@@ -475,7 +506,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         fillFinanceTermSpinner();
 
                     }
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
@@ -490,7 +521,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         fragmentMisBinding.spinnerFinance.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,int position,long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = fragmentMisBinding.spinnerFinance.getSelectedItem().toString();
                 String getid = spinnerTermMap2.get(fragmentMisBinding.spinnerFinance.getSelectedItemPosition());
 
@@ -498,14 +529,14 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 FinalFinanaceTermId = getid.toString();
                 AppConfiguration.financeTermId = FinalFinanaceTermId;
 
-                Log.d("FinalFinanaceTermId",FinalFinanaceTermId);
+                Log.d("FinalFinanaceTermId", FinalFinanaceTermId);
                 //AppConfiguration.TermName = name;
 
                 fragmentMisBinding.LLFinance.setVisibility(View.GONE);
                 fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
 
                 try {
-                    if(isAdded()) {
+                    if (isAdded()) {
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -518,7 +549,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         }, 2000);
 
                     }
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
@@ -530,9 +561,53 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             }
         });
+
+        spCalendar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = spCalendar.getSelectedItem().toString();
+                String getid = spinnerTermMap4.get(spCalendar.getSelectedItemPosition());
+
+                Log.d("value", name + " " + getid);
+                FinalCalendarTermID = getid.toString();
+                AppConfiguration.calendarTermId = FinalCalendarTermID;
+
+                Log.d("FinalFinanaceTermId", FinalCalendarTermID);
+                //AppConfiguration.TermName = name;
+
+                llCalendar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
+
+                try {
+                    if (isAdded()) {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                callSchoolCalendar(FinalCalendarTermID);
+
+                                //fillFinanceTermSpinner();
+                            }
+                        }, 2000);
+
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         fragmentMisBinding.spinnerNa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,int position,long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = fragmentMisBinding.spinnerNa.getSelectedItem().toString();
                 String getid = spinnerTermMap3.get(fragmentMisBinding.spinnerNa.getSelectedItemPosition());
 
@@ -540,24 +615,24 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 FinalNATermID = getid.toString();
                 AppConfiguration.NA_TERM_ID = FinalNATermID;
 
-                Log.d("FinalNATermID",FinalNATermID);
+                Log.d("FinalNATermID", FinalNATermID);
                 //AppConfiguration.TermName = name;
 
                 fragmentMisBinding.progressNa.setVisibility(View.VISIBLE);
                 fragmentMisBinding.LLNacontainer.setVisibility(View.GONE);
 
                 try {
-                    if(isAdded()) {
+                    if (isAdded()) {
 
                         try {
-                             callNAMISDataApi("New Addmission");
-                            } catch (Exception e) {
+                            callNAMISDataApi("New Addmission");
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                         //fillFinanceTermSpinner();
 
                     }
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
@@ -581,15 +656,15 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 FinalSchoolResultTermID = getid;
                 AppConfiguration.schoolResultTermID = FinalSchoolResultTermID;
 
-                Log.d("FinalTermIdStr",FinalSchoolResultTermID);
+                Log.d("FinalTermIdStr", FinalSchoolResultTermID);
 
                 isRequireCallNestedAPI = false;
 
                 try {
-                    if(isAdded()) {
+                    if (isAdded()) {
                         callSchoolTopperListMISDataApi();
                     }
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
@@ -603,20 +678,18 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         });
 
 
-
-
         fragmentMisBinding.studentDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 whichDateClicked = 1;
-                datePickerDialog = DatePickerDialog.newInstance(MISFragment.this,Year,Month,Day);
+                datePickerDialog = DatePickerDialog.newInstance(MISFragment.this, Year, Month, Day);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.setMaxDate(calendar);
                 datePickerDialog.showYearPickerFirst(false);
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date");
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
             }
         });
 
@@ -624,14 +697,14 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             @Override
             public void onClick(View v) {
                 whichDateClicked = 2;
-                datePickerDialog = DatePickerDialog.newInstance(MISFragment.this,Year,Month,Day);
+                datePickerDialog = DatePickerDialog.newInstance(MISFragment.this, Year, Month, Day);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.setMaxDate(calendar);
                 datePickerDialog.showYearPickerFirst(false);
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date");
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
             }
         });
 
@@ -639,14 +712,14 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             @Override
             public void onClick(View v) {
                 whichDateClicked = 3;
-                datePickerDialog = DatePickerDialog.newInstance(MISFragment.this,Year,Month,Day);
+                datePickerDialog = DatePickerDialog.newInstance(MISFragment.this, Year, Month, Day);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.setMaxDate(calendar);
                 datePickerDialog.showYearPickerFirst(false);
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date");
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(getActivity().getFragmentManager(), "DatePickerDialog");
             }
         });
         fragmentMisBinding.tvGradewise.setOnClickListener(new View.OnClickListener() {
@@ -654,7 +727,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             public void onClick(View view) {
                 fragment = new MISClasswiseResultFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out).add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out).add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 66;
             }
@@ -665,12 +738,12 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callTermApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getTerm(getTermDetail(),new retrofit.Callback<TermModel>() {
+        ApiHandler.getApiService().getTerm(getTermDetail(), new retrofit.Callback<TermModel>() {
             @Override
             public void success(TermModel termModel, Response response) {
                 Utils.dismissDialog();
@@ -691,6 +764,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     if (finalArrayGetTermModels != null) {
                         fillTermSpinner();
                         fillFinanceTermSpinner();
+                        fillSchoolCalendarSpinner();
                     }
                 }
             }
@@ -700,7 +774,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
@@ -732,7 +806,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         }
 
 
-
         try {
             Field popup = Spinner.class.getDeclaredField("mPopup");
             popup.setAccessible(true);
@@ -745,9 +818,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             // silently fail...
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray) {
 
-            public View getView(int position, View convertView,ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent) {
 
                 View v = super.getView(position, convertView, parent);
 
@@ -758,9 +831,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             }
 
-            public View getDropDownView(int position, View convertView,ViewGroup parent) {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-                View v = super.getDropDownView(position, convertView,parent);
+                View v = super.getDropDownView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.LEFT);
 
@@ -769,7 +842,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             }
 
         };
-
 
 
         fragmentMisBinding.termSpinner.setAdapter(adapter);
@@ -800,7 +872,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         }
 
 
-
         try {
             Field popup = Spinner.class.getDeclaredField("mPopup");
             popup.setAccessible(true);
@@ -813,9 +884,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             // silently fail...
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray) {
 
-            public View getView(int position, View convertView,ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent) {
 
                 View v = super.getView(position, convertView, parent);
 
@@ -826,9 +897,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             }
 
-            public View getDropDownView(int position, View convertView,ViewGroup parent) {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-                View v = super.getDropDownView(position, convertView,parent);
+                View v = super.getDropDownView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.LEFT);
 
@@ -839,12 +910,73 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         };
 
 
-
         fragmentMisBinding.spinnerFinance.setAdapter(adapter);
         FinalFinanaceTermId = spinnerTermMap2.get(1);
         AppConfiguration.financeTermId = FinalFinanaceTermId;
-        fragmentMisBinding.spinnerFinance.setSelection(1,false);
+        fragmentMisBinding.spinnerFinance.setSelection(1, false);
 
+
+    }
+
+    public void fillSchoolCalendarSpinner() {
+
+        ArrayList<Integer> calId = new ArrayList<Integer>();
+        for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
+            calId.add(finalArrayGetTermModels.get(i).getTermId());
+        }
+        ArrayList<String> Cal = new ArrayList<String>();
+        for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
+            Cal.add(finalArrayGetTermModels.get(j).getTerm());
+        }
+
+        String[] spinnertermIdArray = new String[calId.size()];
+
+        spinnerTermMap4 = new HashMap<Integer, String>();
+        for (int i = 0; i < calId.size(); i++) {
+            spinnerTermMap4.put(i, String.valueOf(calId.get(i)));
+            spinnertermIdArray[i] = Cal.get(i).trim();
+        }
+
+
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(spCalendar);
+
+            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+            // silently fail...
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray) {
+
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+
+                //((TextView) v).setTextSize(16);
+                ((TextView) v).setGravity(Gravity.CENTER_HORIZONTAL);
+
+                return v;
+
+            }
+
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getDropDownView(position, convertView, parent);
+
+                ((TextView) v).setGravity(Gravity.LEFT);
+
+                return v;
+            }
+        };
+
+        spCalendar.setAdapter(adapter);
+        FinalCalendarTermID = spinnerTermMap4.get(1);
+        AppConfiguration.calendarTermId = FinalCalendarTermID;
+        spCalendar.setSelection(1, false);
 
     }
 
@@ -868,7 +1000,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         }
 
 
-
         try {
             Field popup = Spinner.class.getDeclaredField("mPopup");
             popup.setAccessible(true);
@@ -881,9 +1012,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             // silently fail...
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray) {
 
-            public View getView(int position, View convertView,ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent) {
 
                 View v = super.getView(position, convertView, parent);
 
@@ -894,9 +1025,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             }
 
-            public View getDropDownView(int position, View convertView,ViewGroup parent) {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-                View v = super.getDropDownView(position, convertView,parent);
+                View v = super.getDropDownView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.LEFT);
 
@@ -940,7 +1071,6 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         }
 
 
-
         try {
             Field popup = Spinner.class.getDeclaredField("mPopup");
             popup.setAccessible(true);
@@ -953,9 +1083,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             // silently fail...
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray) {
 
-            public View getView(int position, View convertView,ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent) {
 
                 View v = super.getView(position, convertView, parent);
 
@@ -966,9 +1096,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             }
 
-            public View getDropDownView(int position, View convertView,ViewGroup parent) {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
 
-                View v = super.getDropDownView(position, convertView,parent);
+                View v = super.getDropDownView(position, convertView, parent);
 
                 ((TextView) v).setGravity(Gravity.LEFT);
 
@@ -982,8 +1112,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
         fragmentMisBinding.resultOfSchoolTermSpinner.setAdapter(adapter);
         FinalSchoolResultTermID = spinnerSchoolResultMap.get(0);
         AppConfiguration.schoolResultTermID = FinalSchoolResultTermID;
-        fragmentMisBinding.resultOfSchoolTermSpinner.setSelection(0,false);
-
+        fragmentMisBinding.resultOfSchoolTermSpinner.setSelection(0, false);
 
 
     }
@@ -993,14 +1122,14 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         fragmentMisBinding.progressStudent.setVisibility(View.VISIBLE);
         fragmentMisBinding.LLStudentcontainer.setVisibility(View.GONE);
-       // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISdata(getStudentParams(requestType,date),new retrofit.Callback<MISModel>() {
+        // Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getMISdata(getStudentParams(requestType, date), new retrofit.Callback<MISModel>() {
 
             @Override
             public void success(MISModel staffSMSDataModel, Response response) {
@@ -1016,7 +1145,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
@@ -1029,6 +1158,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         student_leave_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalLeave()));
                         antstudent_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalStudentANT()));
                         abstudent_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getTotalConsistanceAbsent()));
+                        ba_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getBetAlumini()));
                         student_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getAttendance()));
 
                         boy_total_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotal()));
@@ -1037,6 +1167,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         boy_leave_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalLeave()));
                         antboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalStudentANT()));
                         abboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalConsistanceAbsent()));
+                        baboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getBetAlumini()));
                         boy_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getAttendance()));
 
                         girl_total_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotal()));
@@ -1045,6 +1176,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         girl_leave_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalLeave()));
                         antgirl_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalStudentANT()));
                         abgirl_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalConsistanceAbsent()));
+                        bagirl_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getBetAlumini()));
                         girl_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getAttendance()));
 
                         fragmentMisBinding.progressStudent.setVisibility(View.GONE);
@@ -1052,20 +1184,19 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
 
                         try {
-                            if(isAdded()) {
-                                if(isRequireCallNestedAPI || isFirmtimeLoad) {
+                            if (isAdded()) {
+                                if (isRequireCallNestedAPI || isFirmtimeLoad) {
                                     //callStafftMISDataApi("Staff");
                                     callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString(), termid);
 
                                 }
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 
 
-
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -1073,7 +1204,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             @Override
             public void failure(RetrofitError error) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
                 fragmentMisBinding.progressStudent.setVisibility(View.GONE);
@@ -1087,15 +1218,15 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callStafftMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-       // Utils.showDialog(getActivity());
+        // Utils.showDialog(getActivity());
         ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
             @Override
             public void success(MISModel staffSMSDataModel, Response response) {
-              //  Utils.dismissDialog();
+                //  Utils.dismissDialog();
                 fragmentMisBinding.progressStaff.setVisibility(View.GONE);
 
                 if (staffSMSDataModel == null) {
@@ -1107,7 +1238,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
@@ -1119,7 +1250,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         staffleave_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalLeave()));
                         abstaff_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalAbsent()));
                         antstaff_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalStudentANT()));
-                        staff_workplan_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getDailyEntryDone()+ "/" + staffSMSDataModel.getFinalArray().get(0).getDailyEntryTotal()));
+                        staff_workplan_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getDailyEntryDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getDailyEntryTotal()));
                         staff_cw_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getCWDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getCWTotal()));
                         staff_hw_submitted_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getHWDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getHWTotal()));
 
@@ -1127,17 +1258,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         fragmentMisBinding.LLStaffcontainer.setVisibility(View.VISIBLE);
 
 
-                      try {
-                          if(isAdded()) {
+                        try {
+                            if (isAdded()) {
 //                              callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString());
-                          }
-                      }catch (Exception ex){
+                            }
+                        } catch (Exception ex) {
 
-                      }
+                        }
 
 
-
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -1150,7 +1280,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,error.getMessage());
+                Utils.ping(mContext, error.getMessage());
             }
         });
     }
@@ -1159,31 +1289,31 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callNewStafftMISDataApi(String date, final String termid) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
 
         // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISStaffAttendance(getStaffNewParams(date),new retrofit.Callback<MISStaffNewModel>() {
+        ApiHandler.getApiService().getMISStaffAttendance(getStaffNewParams(date), new retrofit.Callback<MISStaffNewModel>() {
             @Override
             public void success(MISStaffNewModel staffSMSDataModel, Response response) {
                 //  Utils.dismissDialog();
                 fragmentMisBinding.progressStaff1.setVisibility(View.GONE);
 
                 if (staffSMSDataModel == null) {
-                    Utils.ping(mContext,getString(R.string.something_wrong));
+                    Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentMisBinding.progressStaff.setVisibility(View.GONE);
                     return;
                 }
                 if (staffSMSDataModel.getSuccess() == null) {
                     fragmentMisBinding.progressStaff1.setVisibility(View.GONE);
-                    Utils.ping(mContext,getString(R.string.something_wrong));
+                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
                     fragmentMisBinding.progressStaff1.setVisibility(View.GONE);
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
@@ -1195,16 +1325,15 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                         dataValues = staffSMSDataModel.getFinalArray();
 
-                        misStaffGridAdapter = new MISStaffGridAdapter(getActivity(),dataValues);
-                        fragmentMisBinding.rvStaffGridList.setLayoutManager(new GridLayoutManager(getActivity(),dataValues.size(),OrientationHelper.HORIZONTAL,false));
+                        misStaffGridAdapter = new MISStaffGridAdapter(getActivity(), dataValues);
+                        fragmentMisBinding.rvStaffGridList.setLayoutManager(new GridLayoutManager(getActivity(), dataValues.size(), OrientationHelper.HORIZONTAL, false));
                         fragmentMisBinding.rvStaffGridList.addItemDecoration(new SpacesItemDecoration(0));
                         fragmentMisBinding.rvStaffGridList.setAdapter(misStaffGridAdapter);
 
 
-
                         try {
                             Gson gson = new Gson();
-                            String json  = gson.toJson(staffSMSDataModel);
+                            String json = gson.toJson(staffSMSDataModel);
 
                             JSONObject dataObject = new JSONObject(json);
 
@@ -1212,7 +1341,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                             JSONObject innerdataObject = null;
 
-                            for(int countArray = 0; countArray<dataArray.length();countArray++) {
+                            for (int countArray = 0; countArray < dataArray.length(); countArray++) {
 
                                 innerdataObject = dataArray.getJSONObject(countArray);
 
@@ -1228,7 +1357,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                                 }
                             }
 
-                            for(int count  = 0; count<keyValues.size();count++){
+                            for (int count = 0; count < keyValues.size(); count++) {
                                 String value = innerdataObject.optString(keyValues.get(count));
                                 dataValues1.add(value);
                             }
@@ -1238,23 +1367,21 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                             fragmentMisBinding.rvStaffList.setLayoutManager(new LinearLayoutManager(getActivity()));
                             fragmentMisBinding.rvStaffList.setAdapter(misStaffListAdapter);
 
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-
 
 
                         try {
-                            if(isAdded()) {
+                            if (isAdded()) {
                                 callTaskReportMISDataApi(fragmentMisBinding.taskreportDateBtn.getText().toString());
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 
 
-
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -1267,7 +1394,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,error.getMessage());
+                Utils.ping(mContext, error.getMessage());
             }
         });
 
@@ -1276,31 +1403,31 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callTaskReportMISDataApi(String date) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
 
         // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISTask(getTaskReportParams(date),new retrofit.Callback<MISTaskReportModel>() {
+        ApiHandler.getApiService().getMISTask(getTaskReportParams(date), new retrofit.Callback<MISTaskReportModel>() {
             @Override
             public void success(MISTaskReportModel staffSMSDataModel, Response response) {
                 //  Utils.dismissDialog();
                 fragmentMisBinding.progressTaskReport.setVisibility(View.GONE);
 
                 if (staffSMSDataModel == null) {
-                    Utils.ping(mContext,getString(R.string.something_wrong));
+                    Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentMisBinding.progressTaskReport.setVisibility(View.GONE);
                     return;
                 }
                 if (staffSMSDataModel.getSuccess() == null) {
                     fragmentMisBinding.progressTaskReport.setVisibility(View.GONE);
-                    Utils.ping(mContext,getString(R.string.something_wrong));
+                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
                     fragmentMisBinding.progressTaskReport.setVisibility(View.GONE);
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
@@ -1311,20 +1438,20 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         fragmentMisBinding.taskReportInnercontainer.setVisibility(View.VISIBLE);
 
                         taskReportdataValues = staffSMSDataModel.getFinalArray();
-                        misTaskReportGridAdapter = new MISTaskReportGridAdapter(getActivity(),taskReportdataValues);
-                        fragmentMisBinding.rvTaskreportGridList.setLayoutManager(new GridLayoutManager(getActivity(),taskReportdataValues.size(),OrientationHelper.HORIZONTAL,false));
+                        misTaskReportGridAdapter = new MISTaskReportGridAdapter(getActivity(), taskReportdataValues);
+                        fragmentMisBinding.rvTaskreportGridList.setLayoutManager(new GridLayoutManager(getActivity(), taskReportdataValues.size(), OrientationHelper.HORIZONTAL, false));
                         fragmentMisBinding.rvTaskreportGridList.addItemDecoration(new SpacesItemDecoration(0));
                         fragmentMisBinding.rvTaskreportGridList.setAdapter(misTaskReportGridAdapter);
 
                         try {
-                            if(isAdded()) {
+                            if (isAdded()) {
                                 fillSchoolResultTermSpinner();
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -1337,7 +1464,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,error.getMessage());
+                Utils.ping(mContext, error.getMessage());
             }
         });
 
@@ -1346,14 +1473,14 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callSchoolTopperListMISDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         fragmentMisBinding.progressResultOfSchool.setVisibility(View.VISIBLE);
         fragmentMisBinding.resultOfSchoolInnercontainer.setVisibility(View.GONE);
         // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getTopperList(getTopperListParams(),new retrofit.Callback<MISSchoolResultModel>() {
+        ApiHandler.getApiService().getTopperList(getTopperListParams(), new retrofit.Callback<MISSchoolResultModel>() {
 
             @Override
             public void success(MISSchoolResultModel staffSMSDataModel, Response response) {
@@ -1369,7 +1496,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentMisBinding.progressResultOfSchool.setVisibility(View.GONE);
                     fragmentMisBinding.resultOfSchoolInnercontainer.setVisibility(View.VISIBLE);
                     fragmentMisBinding.linearResultOfSchoolDate.setVisibility(View.VISIBLE);
@@ -1389,30 +1516,29 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         fragmentMisBinding.linearResultOfSchoolRecylerGrid.setVisibility(View.VISIBLE);
 
                         topperdataValues = staffSMSDataModel.getFinalArray();
-                        misSchoolReportAdapter = new MISSchoolReportAdapter(getActivity(),topperdataValues);
-                        fragmentMisBinding.rvResultOfSchoolGridList.setLayoutManager(new GridLayoutManager(getActivity(),topperdataValues.size(),OrientationHelper.HORIZONTAL,false));
+                        misSchoolReportAdapter = new MISSchoolReportAdapter(getActivity(), topperdataValues);
+                        fragmentMisBinding.rvResultOfSchoolGridList.setLayoutManager(new GridLayoutManager(getActivity(), topperdataValues.size(), OrientationHelper.HORIZONTAL, false));
                         fragmentMisBinding.rvResultOfSchoolGridList.addItemDecoration(new SpacesItemDecoration(0));
                         fragmentMisBinding.rvResultOfSchoolGridList.setAdapter(misSchoolReportAdapter);
 
 
-
                         try {
-                            if(isAdded()) {
-                                if(isRequireCallNestedAPI || isFirmtimeLoad) {
-                                   // fillFinanceTermSpinner();
+                            if (isAdded()) {
+                                if (isRequireCallNestedAPI || isFirmtimeLoad) {
+                                    // fillFinanceTermSpinner();
                                     fillNATermSpinner();
-                                     //callNAMISDataApi("New Addmission");
+                                    //callNAMISDataApi("New Addmission");
 
 
                                 }
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 
-                        }catch (Exception ex){
-                            ex.printStackTrace();
-                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
 
@@ -1431,14 +1557,14 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callFinanceMISDataApi(final String termId) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
         fragmentMisBinding.LLFinance.setVisibility(View.GONE);
         // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getHeadWiseFeesCollection(getFinanceListParams(termId),new retrofit.Callback<MISFinanaceModel>() {
+        ApiHandler.getApiService().getHeadWiseFeesCollection(getFinanceListParams(termId), new retrofit.Callback<MISFinanaceModel>() {
 
             @Override
             public void success(MISFinanaceModel staffSMSDataModel, Response response) {
@@ -1454,7 +1580,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentMisBinding.progressFinance.setVisibility(View.GONE);
                     fragmentMisBinding.LLFinance.setVisibility(View.GONE);
                     fragmentMisBinding.tvNoRecordsOfFinance.setVisibility(View.VISIBLE);
@@ -1472,13 +1598,13 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         financedataValues = staffSMSDataModel.getFinalArray();
 
                         misFinanceReportAdapter = new MISFinanceReportAdapter(getActivity(), financedataValues, termId);
-                        fragmentMisBinding.rvFinanceList.setLayoutManager(new GridLayoutManager(getActivity(),financedataValues.size(),OrientationHelper.HORIZONTAL,false));
+                        fragmentMisBinding.rvFinanceList.setLayoutManager(new GridLayoutManager(getActivity(), financedataValues.size(), OrientationHelper.HORIZONTAL, false));
                         fragmentMisBinding.rvFinanceList.addItemDecoration(new SpacesItemDecoration(0));
                         fragmentMisBinding.rvFinanceList.setAdapter(misFinanceReportAdapter);
 
                         try {
                             Gson gson = new Gson();
-                            String json  = gson.toJson(staffSMSDataModel);
+                            String json = gson.toJson(staffSMSDataModel);
 
                             JSONObject dataObject = new JSONObject(json);
 
@@ -1486,7 +1612,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                             JSONObject innerdataObject = null;
 
-                            for(int countArray = 0; countArray<dataArray.length();countArray++) {
+                            for (int countArray = 0; countArray < dataArray.length(); countArray++) {
 
                                 innerdataObject = dataArray.getJSONObject(countArray);
 
@@ -1502,7 +1628,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                                 }
                             }
 
-                            for(int count  = 0; count<keyValues.size();count++){
+                            for (int count = 0; count < keyValues.size(); count++) {
                                 String value = innerdataObject.optString(keyValues.get(count));
                                 dataValues1.add(value);
                             }
@@ -1515,28 +1641,25 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                             fragmentMisBinding.rvFinanceList2.setLayoutManager(new LinearLayoutManager(getActivity()));
                             fragmentMisBinding.rvFinanceList2.setAdapter(misFinanceListAdapter);
 
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 
-
-
-
                         try {
-                            if(isAdded()) {
-                                if(isRequireCallNestedAPI || isFirmtimeLoad) {
-                                   // callAccounttMISDataApi("Account");
+                            if (isAdded()) {
+                                if (isRequireCallNestedAPI || isFirmtimeLoad) {
+                                    // callAccounttMISDataApi("Account");
                                     //callNAMISDataApi("New Addmission");
 
                                     callStudentMISDataApi("Student", fragmentMisBinding.studentDateBtn.getText().toString(), termId);
 
                                 }
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
 
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -1557,16 +1680,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callAccounttMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-       // Utils.showDialog(getActivity());
+        // Utils.showDialog(getActivity());
         ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
 
             @Override
             public void success(MISModel staffSMSDataModel, Response response) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
                 fragmentMisBinding.progressAccount.setVisibility(View.GONE);
 
                 if (staffSMSDataModel == null) {
@@ -1578,7 +1701,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
@@ -1598,14 +1721,14 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         fragmentMisBinding.progressAccount.setVisibility(View.GONE);
                         fragmentMisBinding.LLAccount.setVisibility(View.VISIBLE);
                         try {
-                            if(isAdded()) {
+                            if (isAdded()) {
                                 fillNATermSpinner();
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
 
                         }
 
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -1613,7 +1736,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             @Override
             public void failure(RetrofitError error) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
                 fragmentMisBinding.progressAccount.setVisibility(View.GONE);
                 error.printStackTrace();
                 error.getMessage();
@@ -1627,11 +1750,11 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callNAMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-      //  Utils.showDialog(getActivity());
+        //  Utils.showDialog(getActivity());
         fragmentMisBinding.progressNa.setVisibility(View.GONE);
 
         ApiHandler.getApiService().getMISdata(getNAParams(requestType), new retrofit.Callback<MISModel>() {
@@ -1649,7 +1772,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
@@ -1672,17 +1795,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                         isFirmtimeLoad = false;
 
                         try {
-                            if(isAdded()) {
+                            if (isAdded()) {
 
                                 //callMessgeMISDataApi("Message");
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
 
                         }
 
 
-
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -1690,7 +1812,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             @Override
             public void failure(RetrofitError error) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
                 fragmentMisBinding.progressNa.setVisibility(View.GONE);
 
                 error.printStackTrace();
@@ -1705,38 +1827,38 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     private void callMessgeMISDataApi(String requestType) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-       // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISdata(getParams(requestType),new retrofit.Callback<MISModel>() {
+        // Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
             @Override
             public void success(MISModel staffSMSDataModel, Response response) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
                 fragmentMisBinding.progressMsg.setVisibility(View.GONE);
 
                 if (staffSMSDataModel == null) {
-                    if(isAdded()) {
+                    if (isAdded()) {
                         Utils.ping(mContext, getString(R.string.something_wrong));
                     }
                     return;
                 }
                 if (staffSMSDataModel.getSuccess() == null) {
-                    if(isAdded()) {
+                    if (isAdded()) {
                         Utils.ping(mContext, getString(R.string.something_wrong));
                     }
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    if(isAdded()) {
+                    if (isAdded()) {
                         Utils.ping(mContext, getString(R.string.false_msg));
                     }
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
 
-                    if(isAdded()) {
+                    if (isAdded()) {
                         fragmentMisBinding.progressMsg.setVisibility(View.GONE);
                         fragmentMisBinding.LLMsgcontainer.setVisibility(View.VISIBLE);
 
@@ -1754,65 +1876,67 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
             @Override
             public void failure(RetrofitError error) {
-               // Utils.dismissDialog();
+                // Utils.dismissDialog();
                 fragmentMisBinding.progressMsg.setVisibility(View.GONE);
 
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
     }
 
 
-    private Map<String,String> getFinanceListParams(String termId) {
+    private Map<String, String> getFinanceListParams(String termId) {
         Map<String, String> map = new HashMap<>();
-        map.put("TermID",String.valueOf(termId));
-        return map;
-    }
-    private Map<String,String> getTopperListParams() {
-        Map<String, String> map = new HashMap<>();
-        map.put("TermDetailID",String.valueOf(FinalSchoolResultTermID));
-        return map;
-    }
-    private Map<String,String> getStudentParams(String reqType,String date) {
-        Map<String, String> map = new HashMap<>();
-        map.put("Date",date);
-        map.put("TermID",FinalTermIdStr);
-        map.put("RequestType",reqType);
+        map.put("TermID", String.valueOf(termId));
         return map;
     }
 
-
-    private Map<String,String> getParams(String params) {
+    private Map<String, String> getTopperListParams() {
         Map<String, String> map = new HashMap<>();
-        map.put("Date",Utils.getTodaysDate());
-        map.put("TermID",FinalTermIdStr);
-        map.put("RequestType",params);
+        map.put("TermDetailID", String.valueOf(FinalSchoolResultTermID));
         return map;
     }
 
-    private Map<String,String> getNAParams(String params) {
+    private Map<String, String> getStudentParams(String reqType, String date) {
         Map<String, String> map = new HashMap<>();
-        map.put("Date",Utils.getTodaysDate());
-        map.put("TermID",FinalNATermID);
-        map.put("RequestType",params);
+        map.put("Date", date);
+        map.put("TermID", FinalTermIdStr);
+        map.put("RequestType", reqType);
         return map;
     }
 
-    private Map<String,String> getTaskReportParams(String date) {
+
+    private Map<String, String> getParams(String params) {
         Map<String, String> map = new HashMap<>();
-        map.put("Date",date);
-        map.put("TermID",FinalTermIdStr);
+        map.put("Date", Utils.getTodaysDate());
+        map.put("TermID", FinalTermIdStr);
+        map.put("RequestType", params);
+        return map;
+    }
+
+    private Map<String, String> getNAParams(String params) {
+        Map<String, String> map = new HashMap<>();
+        map.put("Date", Utils.getTodaysDate());
+        map.put("TermID", FinalNATermID);
+        map.put("RequestType", params);
+        return map;
+    }
+
+    private Map<String, String> getTaskReportParams(String date) {
+        Map<String, String> map = new HashMap<>();
+        map.put("Date", date);
+        map.put("TermID", FinalTermIdStr);
 
         return map;
     }
 
-    private Map<String,String> getStaffNewParams(String date) {
+    private Map<String, String> getStaffNewParams(String date) {
         Map<String, String> map = new HashMap<>();
-        map.put("Date",date);
-        map.put("TermID",FinalTermIdStr);
+        map.put("Date", date);
+        map.put("TermID", FinalTermIdStr);
 
         return map;
     }
@@ -1820,7 +1944,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
 
             case R.id.tv_transport:
 
@@ -1852,9 +1976,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
-                bundle.putString("requestType","Total");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("requestType", "Total");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
                 fragment.setArguments(bundle);
@@ -1895,8 +2019,8 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
 
@@ -1906,9 +2030,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
-                bundle.putString("requestType","Present");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("requestType", "Present");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
                 fragment.setArguments(bundle);
@@ -1947,8 +2071,8 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -1957,9 +2081,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
-                bundle.putString("requestType","Leave");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("requestType", "Leave");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
                 fragment.setArguments(bundle);
@@ -1998,8 +2122,8 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2008,9 +2132,9 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
-                bundle.putString("requestType","Absent");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("requestType", "Absent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
                 fragment.setArguments(bundle);
@@ -2049,8 +2173,8 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2059,16 +2183,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
-                bundle.putString("requestType","Attendance less then 70%");
-                bundle.putString("requestTitle","Attendance less then 70%");
-                bundle.putString("countdata",student_attendance_less_70_txt.getText().toString());
-                bundle.putString("TermID",FinalTermIdStr);
+                bundle.putString("requestType", "Attendance less then 70%");
+                bundle.putString("requestTitle", "Attendance less then 70%");
+                bundle.putString("countdata", student_attendance_less_70_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
                 bundle.putString("Gender", "");
-                bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2114,7 +2238,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "ANT");
-                bundle.putString("TermID",FinalTermIdStr);
+                bundle.putString("TermID", FinalTermIdStr);
                 bundle.putString("Gender", "");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -2148,11 +2272,11 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("requestType", "ANT");
                 bundle.putString("TermID", FinalTermIdStr);
                 bundle.putString("Gender", "girls");
-                bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2161,8 +2285,25 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
-                bundle.putString("requestType","ConsistentAbsent");
-                bundle.putString("TermID",FinalTermIdStr);
+                bundle.putString("requestType", "ConsistentAbsent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.ba_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "All Student");
+                bundle.putString("requestType", "Between alumini left");
+                bundle.putString("TermID", FinalTermIdStr);
                 bundle.putString("Gender", "");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
@@ -2191,6 +2332,23 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 AppConfiguration.position = 65;
                 break;
 
+            case R.id.baboy_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Boys");
+                bundle.putString("requestType", "Between alumini left");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "boys");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
             case R.id.abgirl_txt:
                 fragment = new MISStudentListFragment();
                 bundle = new Bundle();
@@ -2198,12 +2356,29 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                 bundle.putString("requestType", "ConsistentAbsent");
                 bundle.putString("TermID", FinalTermIdStr);
                 bundle.putString("Gender", "girls");
-                bundle.putString("Date",fragmentMisBinding.studentDateBtn.getText().toString());
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 65;
+                break;
+
+            case R.id.bagirl_txt:
+                fragment = new MISStudentListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "Girls");
+                bundle.putString("requestType", "Between alumini left");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Gender", "girls");
+                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2211,15 +2386,15 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.staff_total_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","Total");
-                bundle.putString("requestTitle","Total Staff");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "Total");
+                bundle.putString("requestTitle", "Total Staff");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2227,17 +2402,17 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.staff_present_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","Present");
-                bundle.putString("requestTitle","Present");
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "Present");
+                bundle.putString("requestTitle", "Present");
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",staff_present_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", staff_present_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2246,17 +2421,17 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.absent_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","Absent");
-                bundle.putString("requestTitle","Absent");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",absent_txt.getText().toString());
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "Absent");
+                bundle.putString("requestTitle", "Absent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", absent_txt.getText().toString());
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2265,17 +2440,17 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.staffleave_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","Leave");
-                bundle.putString("requestTitle","Leave");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",staffleave_txt.getText().toString());
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "Leave");
+                bundle.putString("requestTitle", "Leave");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", staffleave_txt.getText().toString());
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2284,17 +2459,17 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.antstaff_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","A.N.T.");
-                bundle.putString("requestTitle","A.N.T. Class Teacher");
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "A.N.T.");
+                bundle.putString("requestTitle", "A.N.T. Class Teacher");
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",antstaff_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", antstaff_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2303,18 +2478,18 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.staff_workplan_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","Work Plan");
-                bundle.putString("requestTitle","Work Plan Submitted");
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "Work Plan");
+                bundle.putString("requestTitle", "Work Plan Submitted");
 
-                bundle.putString("countdata",staff_workplan_txt.getText().toString());
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
+                bundle.putString("countdata", staff_workplan_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2323,17 +2498,17 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.staff_cw_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","CW Submitted");
-                bundle.putString("requestTitle","Classwork Submitted");
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "CW Submitted");
+                bundle.putString("requestTitle", "Classwork Submitted");
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",staff_cw_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", staff_cw_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2341,16 +2516,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.staff_hw_submitted_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Staff");
-                bundle.putString("requestType","HW Submitted");
-                bundle.putString("requestTitle1","HomeWork Submitted");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",staff_hw_submitted_txt.getText().toString());
+                bundle.putString("title", "Staff");
+                bundle.putString("requestType", "HW Submitted");
+                bundle.putString("requestTitle1", "HomeWork Submitted");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", staff_hw_submitted_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2358,21 +2533,21 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.actotaltobecall_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Account");
-                bundle.putString("requestType","Total To Be Collect");
-                bundle.putString("requestTitle","Total To Be Collect");
+                bundle.putString("title", "Account");
+                bundle.putString("requestType", "Total To Be Collect");
+                bundle.putString("requestTitle", "Total To Be Collect");
 
                 AppConfiguration.acReqTitle = "Total To Be Collect";
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",actotaltobecall_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", actotaltobecall_txt.getText().toString());
                 AppConfiguration.CountdataAccount = actotaltobecall_txt.getText().toString();
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2381,20 +2556,20 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.acterm1fess_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Account");
-                bundle.putString("requestType","Term 1 Fees");
-                bundle.putString("requestTitle","Term 1 Fees");
+                bundle.putString("title", "Account");
+                bundle.putString("requestType", "Term 1 Fees");
+                bundle.putString("requestTitle", "Term 1 Fees");
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",acterm1fess_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", acterm1fess_txt.getText().toString());
                 AppConfiguration.CountdataAccount = acterm1fess_txt.getText().toString();
                 AppConfiguration.acReqTitle = "Term 1 Fees";
 
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2403,19 +2578,19 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.acterm2fess_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Account");
-                bundle.putString("requestType","Term 2 Fees");
-                bundle.putString("requestTitle","Term 2 Fees");
+                bundle.putString("title", "Account");
+                bundle.putString("requestType", "Term 2 Fees");
+                bundle.putString("requestTitle", "Term 2 Fees");
                 AppConfiguration.acReqTitle = "Term 2 Fees";
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",acterm2fess_txt.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", acterm2fess_txt.getText().toString());
                 AppConfiguration.CountdataAccount = acterm2fess_txt.getText().toString();
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2423,19 +2598,19 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.acterm1_collection:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Account");
-                bundle.putString("requestType","Term 1 Collection");
-                bundle.putString("requestTitle","Term 1 Collection");
+                bundle.putString("title", "Account");
+                bundle.putString("requestType", "Term 1 Collection");
+                bundle.putString("requestTitle", "Term 1 Collection");
                 AppConfiguration.acReqTitle = "Term 1 Collection";
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",acterm1_collection.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", acterm1_collection.getText().toString());
                 AppConfiguration.CountdataAccount = acterm1_collection.getText().toString();
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2444,19 +2619,19 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.acterm2_collection:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Account");
-                bundle.putString("requestType","Term 2 Collection");
-                bundle.putString("requestTitle","Term 2 Collection");
+                bundle.putString("title", "Account");
+                bundle.putString("requestType", "Term 2 Collection");
+                bundle.putString("requestTitle", "Term 2 Collection");
                 AppConfiguration.acReqTitle = "Term 2 Collection";
 
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",acterm2_collection.getText().toString());
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", acterm2_collection.getText().toString());
                 AppConfiguration.CountdataAccount = acterm2_collection.getText().toString();
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2464,32 +2639,32 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.na_inquiry_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Inquiry");
-                bundle.putString("requestTitle","Inquiry");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Inquiry");
+                bundle.putString("requestTitle", "Inquiry");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_inquiry_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_inquiry_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
             case R.id.na_issueadd_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Issue Addmission Form");
-                bundle.putString("requestTitle","Issue Addmission Form");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Issue Addmission Form");
+                bundle.putString("requestTitle", "Issue Addmission Form");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_issueadd_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_issueadd_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2497,16 +2672,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.na_rcvform_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Rcv Form");
-                bundle.putString("requestTitle","Recieved Form");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Rcv Form");
+                bundle.putString("requestTitle", "Recieved Form");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_rcvform_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_rcvform_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2514,32 +2689,32 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.na_CallForInterview_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Call for Interview");
-                bundle.putString("requestTitle","Call for Interview");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Call for Interview");
+                bundle.putString("requestTitle", "Call for Interview");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_CallForInterview_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_CallForInterview_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
             case R.id.na_comeforinterview_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Come for Interview");
-                bundle.putString("requestTitle","Come for Interview");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Come for Interview");
+                bundle.putString("requestTitle", "Come for Interview");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_comeforinterview_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_comeforinterview_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2548,16 +2723,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.na_confirmaddmission_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Confirm Addmission");
-                bundle.putString("requestTitle","Confirm Addmission");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Confirm Addmission");
+                bundle.putString("requestTitle", "Confirm Addmission");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_confirmaddmission_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_confirmaddmission_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2565,32 +2740,32 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.na_rejected_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Rejected");
-                bundle.putString("requestTitle","Rejected");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Rejected");
+                bundle.putString("requestTitle", "Rejected");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_rejected_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_rejected_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
             case R.id.na_fees_rec_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","Fees Received");
-                bundle.putString("requestTitle","Fees Received");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "Fees Received");
+                bundle.putString("requestTitle", "Fees Received");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_fees_rec_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_fees_rec_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2599,16 +2774,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.na_fees_not_rec_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","New Addmission");
-                bundle.putString("requestType","FeesNotPaid");
-                bundle.putString("requestTitle","Fees Not Received");
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "FeesNotPaid");
+                bundle.putString("requestTitle", "Fees Not Received");
                 bundle.putString("TermID", FinalNATermID);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",na_fees_not_rec_txt.getText().toString());
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_fees_not_rec_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2617,16 +2792,16 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.smssent_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Message");
-                bundle.putString("requestType","Sent");
-                bundle.putString("requestTitle","SMS Sent");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",smssent_txt.getText().toString());
+                bundle.putString("title", "Message");
+                bundle.putString("requestType", "Sent");
+                bundle.putString("requestTitle", "SMS Sent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", smssent_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2634,32 +2809,32 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
             case R.id.smsdelivered_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Message");
-                bundle.putString("requestType","Delivered");
-                bundle.putString("requestTitle","SMS Sent");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",smsdelivered_txt.getText().toString());
+                bundle.putString("title", "Message");
+                bundle.putString("requestType", "Delivered");
+                bundle.putString("requestTitle", "SMS Sent");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", smsdelivered_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
             case R.id.smspedning_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
-                bundle.putString("title","Message");
-                bundle.putString("requestType","Pending");
-                bundle.putString("requestTitle","SMS Pending");
-                bundle.putString("TermID",FinalTermIdStr);
-                bundle.putString("Date",Utils.getTodaysDate());
-                bundle.putString("countdata",smspedning_txt.getText().toString());
+                bundle.putString("title", "Message");
+                bundle.putString("requestType", "Pending");
+                bundle.putString("requestTitle", "SMS Pending");
+                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", smspedning_txt.getText().toString());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                        .add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 65;
                 break;
@@ -2670,7 +2845,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        populateSetDate(year,monthOfYear,dayOfMonth);
+        populateSetDate(year, monthOfYear, dayOfMonth);
     }
 
     public void populateSetDate(int year, int month, int day) {
@@ -2690,7 +2865,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
         dateFinal = d + "/" + m + "/" + y;
 
-        if(whichDateClicked == 1) {
+        if (whichDateClicked == 1) {
             isRequireCallNestedAPI = false;
             fragmentMisBinding.studentDateBtn.setText(dateFinal);
             fragmentMisBinding.progressStudent.setVisibility(View.VISIBLE);
@@ -2703,13 +2878,13 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     //Do something after  2 secs
                     try {
                         callStudentMISDataApi("Student", fragmentMisBinding.studentDateBtn.getText().toString(), "");
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
 
                     }
                 }
             }, 2000);
 
-        }else if(whichDateClicked == 2){
+        } else if (whichDateClicked == 2) {
             isRequireCallNestedAPI = false;
             fragmentMisBinding.staffDateBtn.setText(dateFinal);
             AppConfiguration.staffDate = fragmentMisBinding.staffDateBtn.getText().toString();
@@ -2729,7 +2904,7 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
                     }
                 }
             }, 2000);
-        }else if(whichDateClicked == 3){
+        } else if (whichDateClicked == 3) {
             isRequireCallNestedAPI = false;
             fragmentMisBinding.taskreportDateBtn.setText(dateFinal);
             AppConfiguration.taskReportDate = fragmentMisBinding.taskreportDateBtn.getText().toString();
@@ -2753,5 +2928,126 @@ public class MISFragment extends Fragment implements View.OnClickListener,DatePi
 
     }
 
+    private TabLayout.OnTabSelectedListener onTabSelectedListener(final ViewPager pager) {
+        return new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                pager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        };
+    }
+
+    private void callSchoolCalendar(String term) {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        WebServices apiService = ApiClient.getClient().create(WebServices.class);
+        Call<MIStudentWiseCalendarModel> call = apiService.getSchoolCalendarDetail(AppConfiguration.BASEURL + "GetMISCalender?TermID=" + term);
+        call.enqueue(new Callback<MIStudentWiseCalendarModel>() {
+            //
+            @Override
+            public void onResponse(Call<MIStudentWiseCalendarModel> call, retrofit2.Response<MIStudentWiseCalendarModel> response) {
+                Utils.dismissDialog();
+//                if (response.body() == null) {
+//                    progressBar.setVisibility(View.GONE);
+//                    llCalendar.setVisibility(View.VISIBLE);
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (response.body().getSuccess() == null) {
+//                    llCalendar.setVisibility(View.VISIBLE);
+//                    progressBar.setVisibility(View.GONE);
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (response.body().getSuccess().equalsIgnoreCase("false")) {
+//                    llCalendar.setVisibility(View.VISIBLE);
+//                    progressBar.setVisibility(View.GONE);
+//                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    return;
+//                }
+//                if (response.body().getSuccess().equalsIgnoreCase("True")) {
+
+                llCalendar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+
+                if (tabLayout != null && viewPager != null && progressBar != null) {
+
+                    try {
+
+                        List<MIStudentWiseCalendarModel.FinalArray> data1 = response.body().getFinalarray();
+
+//                            for (int i = 0; i < termModel.getFinalarray().size(); i++) {
+//                                data1.add(termModel.getFinalarray().get(i).getType());
+//                            }
+
+                        tabsTitles = new String[data1.size()];
+
+                        if (tabLayout.getTabCount() > 0) {
+                            tabLayout.removeAllTabs();
+                        }
+
+                        for (int count = 0; count < data1.size(); count++) {
+                            tabLayout.addTab(tabLayout.newTab().setText(data1.get(count).getType()));
+                            tabsTitles[count] = data1.get(count).getType();
+                        }
+
+                        if (data1.size() > 0) {
+                            ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), data1.size(), data1, tabsTitles);
+                            viewPager.setAdapter(adapter);
+                            viewPager.setCurrentItem(0);
+                            tabLayout.setupWithViewPager(viewPager);
+
+                            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                                @Override
+                                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                                }
+
+                                @Override
+                                public void onPageSelected(int position) {
+                                    viewPager.setCurrentItem(position);
+                                    //  tabLayout.getTabAt(position).select();
+
+                                }
+
+                                @Override
+                                public void onPageScrollStateChanged(int state) {
+
+                                }
+                            });
+                        }
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+//                }
+            }
+
+            @Override
+            public void onFailure(Call<MIStudentWiseCalendarModel> call, Throwable t) {
+                Utils.dismissDialog();
+                tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+    }
 
 }

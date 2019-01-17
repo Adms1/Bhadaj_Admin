@@ -44,6 +44,7 @@ import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
 import anandniketan.com.bhadajadmin.Model.MIS.TransportMainModel;
 import anandniketan.com.bhadajadmin.Model.MISModel;
+import anandniketan.com.bhadajadmin.Model.MIStudentWiseCalendarModel;
 import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
@@ -929,5 +930,8 @@ public interface WebServices {
 
     @retrofit2.http.GET
     Call<TransportMainModel> getTransportDetail(@Url String url);
+
+    @retrofit2.http.GET
+    Call<MIStudentWiseCalendarModel> getSchoolCalendarDetail(@Url String url);
 
 }
