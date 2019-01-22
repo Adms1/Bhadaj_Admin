@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableListAnnoucement;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListCircular;
 import anandniketan.com.bhadajadmin.Interface.OnUpdateRecord;
 import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
@@ -52,6 +51,7 @@ public class CircularListFragment extends Fragment implements onDeleteWithId,OnU
     private onDeleteWithId onDeleteWithIdRef;
     private OnUpdateRecord onUpdateRecordRef;
     private Button backBtn;
+    private String status, updateStatus, deleteStatus;
 
     public CircularListFragment() {
         mContext = getActivity();
@@ -60,10 +60,17 @@ public class CircularListFragment extends Fragment implements onDeleteWithId,OnU
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        onDeleteWithIdRef = (onDeleteWithId)this;
-        onUpdateRecordRef = (OnUpdateRecord)this;
+        onDeleteWithIdRef = this;
+        onUpdateRecordRef = this;
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 11;
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
+        updateStatus = bundle.getString("updatestatus");
+        deleteStatus = bundle.getString("deletestatus");
+
+
     }
 
     @Nullable
@@ -73,11 +80,11 @@ public class CircularListFragment extends Fragment implements onDeleteWithId,OnU
         mContext = getActivity();
         rootView = inflater.inflate(R.layout.fragment_circular_list,container,false);
 
-        fabAdd = (FloatingActionButton)rootView.findViewById(R.id.fab_add_annoucement);
-        expandableListView = (ExpandableListView)rootView.findViewById(R.id.annoucement_list);
-        txtNoRecordsAnnouncement = (TextView)rootView.findViewById(R.id.txt_empty_view);
-        btnMenuLinear = (Button)rootView.findViewById(R.id.btnmenu);
-        backBtn = (Button)rootView.findViewById(R.id.btnBack);
+        fabAdd = rootView.findViewById(R.id.fab_add_annoucement);
+        expandableListView = rootView.findViewById(R.id.annoucement_list);
+        txtNoRecordsAnnouncement = rootView.findViewById(R.id.txt_empty_view);
+        btnMenuLinear = rootView.findViewById(R.id.btnmenu);
+        backBtn = rootView.findViewById(R.id.btnBack);
 
         setListners();
 
@@ -153,7 +160,7 @@ public class CircularListFragment extends Fragment implements onDeleteWithId,OnU
                         txtNoRecordsAnnouncement.setVisibility(View.GONE);
                         expandableListView.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        expandableListCircular = new ExpandableListCircular(getActivity(),listDataHeader,listDataChild,onDeleteWithIdRef,onUpdateRecordRef);
+                        expandableListCircular = new ExpandableListCircular(getActivity(), listDataHeader, listDataChild, onDeleteWithIdRef, onUpdateRecordRef, status, updateStatus, deleteStatus);
                         expandableListView.setAdapter(expandableListCircular);
                     } else {
                         txtNoRecordsAnnouncement.setVisibility(View.VISIBLE);

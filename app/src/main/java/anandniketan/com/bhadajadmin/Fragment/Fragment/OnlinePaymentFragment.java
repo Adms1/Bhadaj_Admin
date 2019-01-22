@@ -32,7 +32,6 @@ import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
@@ -66,7 +65,7 @@ public class OnlinePaymentFragment extends Fragment {
     OnlinePaymentPermissionAdapter onlinePaymentPermissionAdapter;
 
     String FinalTermIdStr, FinalGradeIsStr = "", FinalTermDetailIdStr = "",  FinalStatusStr = "1";
-
+    private String status, updatestatus, deletestatus;
 
     public OnlinePaymentFragment() {
     }
@@ -75,6 +74,11 @@ public class OnlinePaymentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentOnlinePaymentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_online_payment, container, false);
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("onlinepayviewstatus");
+        updatestatus = bundle.getString("onlinepayupdatestatus");
+        deletestatus = bundle.getString("onlinepaydeletestatus");
 
         rootView = fragmentOnlinePaymentBinding.getRoot();
         mContext = getActivity().getApplicationContext();
@@ -98,7 +102,7 @@ public class OnlinePaymentFragment extends Fragment {
         fragmentOnlinePaymentBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new StudentPermissionFragment();
+                fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
@@ -144,7 +148,7 @@ public class OnlinePaymentFragment extends Fragment {
         fragmentOnlinePaymentBinding.statusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                RadioButton rb = (RadioButton) radioGroup.findViewById(checkedId);
+                RadioButton rb = radioGroup.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
                     // checkedId is the RadioButton selected
                     switch (checkedId) {
@@ -161,11 +165,26 @@ public class OnlinePaymentFragment extends Fragment {
         fragmentOnlinePaymentBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFinalIdStr();
-                if (!FinalGradeIsStr.equalsIgnoreCase("")) {
-                    callInsertOnlinePaymentPermission();
+                if (fragmentOnlinePaymentBinding.searchBtn.getText().toString().equalsIgnoreCase("Update")) {
+
+                    if (updatestatus.equalsIgnoreCase("true")) {
+
+                        getFinalIdStr();
+                        if (!FinalGradeIsStr.equalsIgnoreCase("")) {
+                            callInsertOnlinePaymentPermission();
+                        } else {
+                            Utils.ping(mContext, "Please Select Grade.");
+                        }
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
                 } else {
-                    Utils.ping(mContext, "Please Select Grade.");
+                    getFinalIdStr();
+                    if (!FinalGradeIsStr.equalsIgnoreCase("")) {
+                        callInsertOnlinePaymentPermission();
+                    } else {
+                        Utils.ping(mContext, "Please Select Grade.");
+                    }
                 }
 
             }
@@ -316,7 +335,7 @@ public class OnlinePaymentFragment extends Fragment {
                             public void getEditpermission() {
                                 UpdatePermission();
                             }
-                        });
+                        }, status);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentOnlinePaymentBinding.onlinePermissionList.setLayoutManager(mLayoutManager);
                         fragmentOnlinePaymentBinding.onlinePermissionList.setItemAnimator(new DefaultItemAnimator());

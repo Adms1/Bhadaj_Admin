@@ -55,6 +55,7 @@ public class LeftDetailFragment extends Fragment {
     HashMap<Integer, String> spinnerStatusMap;
     String FinalStandardIdStr, FinalClassIdStr,StandardName,FinalTermIdStr,FinalStandardStr,FinalSectionStr,FinalStatusStr,FinalStatusIdStr;
     GRRegisterAdapter grRegisterAdapter;
+    private String status;
 
     public LeftDetailFragment() {
     }
@@ -66,6 +67,9 @@ public class LeftDetailFragment extends Fragment {
 
         rootView = fragmentLeftDetailBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
 
         setListners();
         callTermApi();
@@ -329,7 +333,7 @@ public class LeftDetailFragment extends Fragment {
                                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                                         .replace(R.id.frame_container, fragment).commit();
                             }
-                        });
+                        }, status);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentLeftDetailBinding.studentLeftdetailList.setLayoutManager(mLayoutManager);
                         fragmentLeftDetailBinding.studentLeftdetailList.setItemAnimator(new DefaultItemAnimator());

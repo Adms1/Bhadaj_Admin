@@ -27,7 +27,6 @@ import anandniketan.com.bhadajadmin.Adapter.MISStudenttAdapter;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStudentModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentMisstudentListBinding;
 import retrofit.RetrofitError;
@@ -67,9 +66,6 @@ public class MISStudentListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentMisDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_misstudent_list, container, false);
-
-        AppConfiguration.position = 66;
-        AppConfiguration.firsttimeback = true;
 
         rootView = fragmentMisDataBinding.getRoot();
         progressBar = rootView.findViewById(R.id.loader);
@@ -121,8 +117,8 @@ public class MISStudentListFragment extends Fragment {
         }
 
 
-        if (title != null && !TextUtils.isEmpty(title)) {
-            fragmentMisDataBinding.textView3.setText(title);
+        if (requestType != null && !TextUtils.isEmpty(requestType)) {
+            fragmentMisDataBinding.textView3.setText(requestType);
         }
 
 
@@ -319,7 +315,6 @@ public class MISStudentListFragment extends Fragment {
         fragmentMisDataBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppConfiguration.ReverseTermDetailId = "";
                 fragment = new MISFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
@@ -333,13 +328,6 @@ public class MISStudentListFragment extends Fragment {
                 DashboardActivity.onLeft();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        AppConfiguration.position = 66;
-        AppConfiguration.firsttimeback = true;
     }
 
     private Map<String, String> getParams() {

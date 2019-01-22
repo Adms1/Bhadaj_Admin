@@ -8,36 +8,27 @@ import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.GridView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterInquiryData;
 import anandniketan.com.bhadajadmin.Adapter.PlannerAdapter;
 import anandniketan.com.bhadajadmin.Adapter.StandardAdapter;
 import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
-import anandniketan.com.bhadajadmin.Interface.OnUpdateRecord;
 import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
-import anandniketan.com.bhadajadmin.Interface.onViewClick;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
 import anandniketan.com.bhadajadmin.Model.Student.PlannerModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -46,8 +37,9 @@ import anandniketan.com.bhadajadmin.databinding.FragmentPlannerBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class FragmentPlanner extends Fragment implements OnEditRecordWithPosition,onDeleteWithId,DatePickerDialog.OnDateSetListener{
+public class FragmentPlanner extends Fragment implements OnEditRecordWithPosition, onDeleteWithId, DatePickerDialog.OnDateSetListener {
 
+    private static String dateFinal;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
@@ -59,33 +51,36 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     private PlannerAdapter plannerAdapter;
     private OnEditRecordWithPosition onUpdateRecordRef;
     private onDeleteWithId onDeleteWithIdRef;
-    private String FinalType = "Holiday",FinalTitle = "",FinalStartDate = "",FinalEnddate = "",FinalGradeIds = "",FinalID = "",PK_ID = "0";
+    private String FinalType = "Holiday", FinalTitle = "", FinalStartDate = "", FinalEnddate = "", FinalGradeIds = "", FinalID = "", PK_ID = "0";
     private DatePickerDialog datePickerDialog;
-    private int whichdateViewClick = 1 ;
+    private int whichdateViewClick = 1;
     private Calendar calendar;
-    private static String dateFinal;
     private int Year, Month, Day;
     private boolean isRecordInUpdate = false;
+    private String status, updateStatus, deletestatus;
 
-
-
-    public FragmentPlanner(){
+    public FragmentPlanner() {
 
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
         AppConfiguration.position = 11;
         AppConfiguration.firsttimeback = true;
-        onDeleteWithIdRef = (onDeleteWithId)this;
-        onUpdateRecordRef = (OnEditRecordWithPosition)this;
+        onDeleteWithIdRef = this;
+        onUpdateRecordRef = this;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentPlannerBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_planner,container, false);
+        fragmentPlannerBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_planner, container, false);
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
+        updateStatus = bundle.getString("updatestatus");
+        deletestatus = bundle.getString("deletestatus");
 
         rootView = fragmentPlannerBinding.getRoot();
         mContext = getActivity().getApplicationContext();
@@ -100,7 +95,8 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
 
         return rootView;
     }
-    private void setListner(){
+
+    private void setListner() {
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -122,17 +118,22 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                 FinalType = compoundButton.getText().toString();
             }
         });
+
         fragmentPlannerBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                fragment = new StudentFragment();
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                        .replace(R.id.frame_container, fragment).commit();
             }
         });
         fragmentPlannerBinding.rbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-                    if(!isRecordInUpdate) {
+                if (b) {
+                    if (!isRecordInUpdate) {
                         if (finalArrayStandardsList != null) {
                             if (finalArrayStandardsList.size() > 0) {
 
@@ -153,8 +154,8 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
         fragmentPlannerBinding.rbIndividual.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-                    if(!isRecordInUpdate) {
+                if (b) {
+                    if (!isRecordInUpdate) {
                         if (finalArrayStandardsList != null) {
                             if (finalArrayStandardsList.size() > 0) {
 
@@ -203,8 +204,19 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
         fragmentPlannerBinding.btnAddUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate()){
-                    callInsertUpdatePlannerDataApi();
+
+                if (fragmentPlannerBinding.btnAddUpdate.getText().toString().equalsIgnoreCase("Update")) {
+                    if (updateStatus.equalsIgnoreCase("true")) {
+                        if (validate()) {
+                            callInsertUpdatePlannerDataApi();
+                        }
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
+                } else {
+                    if (validate()) {
+                        callInsertUpdatePlannerDataApi();
+                    }
                 }
             }
         });
@@ -214,7 +226,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     private void callStandardApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
         Utils.showDialog(getActivity());
@@ -225,7 +237,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
             public void success(GetStandardModel standardModel, Response response) {
                 Utils.dismissDialog();
                 if (standardModel == null) {
-                    Utils.ping(mContext,getString(R.string.something_wrong));
+                    Utils.ping(mContext, getString(R.string.something_wrong));
                     Utils.dismissDialog();
                     return;
                 }
@@ -246,7 +258,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                         for (int i = 0; i < finalArrayStandardsList.size(); i++) {
                             finalArrayStandardsList.get(i).setCheckedStatus("1");
                         }
-                        standardAdapter = new StandardAdapter(mContext,finalArrayStandardsList);
+                        standardAdapter = new StandardAdapter(mContext, finalArrayStandardsList);
 
                         fragmentPlannerBinding.standardGridView.setAdapter(standardAdapter);
                     }
@@ -262,7 +274,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
@@ -274,16 +286,14 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     }
 
 
-
-
     private void callPlannerDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getPlanner(getPlannerParams(),new retrofit.Callback<PlannerModel>() {
+        ApiHandler.getApiService().getPlanner(getPlannerParams(), new retrofit.Callback<PlannerModel>() {
             @Override
             public void success(PlannerModel inquiryDataModel, Response response) {
                 if (inquiryDataModel == null) {
@@ -313,12 +323,12 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                         fragmentPlannerBinding.listHeader.setVisibility(View.VISIBLE);
                         fragmentPlannerBinding.recyclerLinear.setVisibility(View.VISIBLE);
 
-                        plannerAdapter = new PlannerAdapter(getActivity(),finalArrayPlannerList1,onUpdateRecordRef,onDeleteWithIdRef);
+                        plannerAdapter = new PlannerAdapter(getActivity(), finalArrayPlannerList1, onUpdateRecordRef, onDeleteWithIdRef, status, updateStatus, deletestatus);
                         fragmentPlannerBinding.plannerList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         fragmentPlannerBinding.plannerList.setAdapter(plannerAdapter);
 
 
-                    }else{
+                    } else {
                         fragmentPlannerBinding.txtNoRecords.setVisibility(View.VISIBLE);
                         fragmentPlannerBinding.listHeader.setVisibility(View.GONE);
                         fragmentPlannerBinding.recyclerLinear.setVisibility(View.GONE);
@@ -346,11 +356,11 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     private void callInsertUpdatePlannerDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().insertPlanner(getInsertUpdatePlannerParams(),new retrofit.Callback<PlannerModel>() {
+        ApiHandler.getApiService().insertPlanner(getInsertUpdatePlannerParams(), new retrofit.Callback<PlannerModel>() {
             @Override
             public void success(PlannerModel inquiryDataModel, Response response) {
                 if (inquiryDataModel == null) {
@@ -370,10 +380,10 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("True")) {
                     Utils.dismissDialog();
-                    if(!isRecordInUpdate){
-                        Utils.ping(getActivity(),"Added Successfully.");
-                    }else{
-                        Utils.ping(getActivity(),"Updated Successfully.");
+                    if (!isRecordInUpdate) {
+                        Utils.ping(getActivity(), "Added Successfully.");
+                    } else {
+                        Utils.ping(getActivity(), "Updated Successfully.");
                     }
 
                     PK_ID = "0";
@@ -404,31 +414,28 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
 
     private Map<String, String> getInsertUpdatePlannerParams() {
         Map<String, String> map = new HashMap<>();
-        map.put("Type",FinalType);
-        map.put("Title",fragmentPlannerBinding.titleEdt.getText().toString());
-        map.put("StartDate",fragmentPlannerBinding.fromDate1Edt.getText().toString());
-        map.put("EndDate",fragmentPlannerBinding.toDate2Edt.getText().toString());
+        map.put("Type", FinalType);
+        map.put("Title", fragmentPlannerBinding.titleEdt.getText().toString());
+        map.put("StartDate", fragmentPlannerBinding.fromDate1Edt.getText().toString());
+        map.put("EndDate", fragmentPlannerBinding.toDate2Edt.getText().toString());
 
-        if(fragmentPlannerBinding.rbAll.isChecked()) {
+        if (fragmentPlannerBinding.rbAll.isChecked()) {
             // map.put("GradeID", "0");
-            if(standardAdapter != null){
-                String selectedGradeIds  = TextUtils.join(",", standardAdapter.getCheckedStandards());
-                map.put("GradeIds",selectedGradeIds);
+            if (standardAdapter != null) {
+                String selectedGradeIds = TextUtils.join(",", standardAdapter.getCheckedStandards());
+                map.put("GradeIds", selectedGradeIds);
             }
-        }else{
-            if(standardAdapter != null){
-                String selectedGradeIds  = TextUtils.join(",", standardAdapter.getCheckedStandards());
-                map.put("GradeIds",selectedGradeIds);
+        } else {
+            if (standardAdapter != null) {
+                String selectedGradeIds = TextUtils.join(",", standardAdapter.getCheckedStandards());
+                map.put("GradeIds", selectedGradeIds);
             }
         }
 
-        map.put("ID",PK_ID);
+        map.put("ID", PK_ID);
 
         return map;
     }
-
-
-
 
 
     @Override
@@ -440,11 +447,11 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     private void callDeleteePlannerDataApi(String id) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().deletePlanner(getDeletePlannerParams(id),new retrofit.Callback<PlannerModel>() {
+        ApiHandler.getApiService().deletePlanner(getDeletePlannerParams(id), new retrofit.Callback<PlannerModel>() {
             @Override
             public void success(PlannerModel inquiryDataModel, Response response) {
                 if (inquiryDataModel == null) {
@@ -464,7 +471,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("True")) {
                     Utils.dismissDialog();
-                    Utils.ping(getActivity(),"Deleted Successfully.");
+                    Utils.ping(getActivity(), "Deleted Successfully.");
                     callPlannerDataApi();
                 }
             }
@@ -482,17 +489,14 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
 
     private Map<String, String> getDeletePlannerParams(String id) {
         Map<String, String> map = new HashMap<>();
-        map.put("ID",id);
+        map.put("ID", id);
         return map;
     }
 
 
-
-
-
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        populateSetDate(year,monthOfYear,dayOfMonth);
+        populateSetDate(year, monthOfYear, dayOfMonth);
     }
 
     public void populateSetDate(int year, int month, int day) {
@@ -508,46 +512,46 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
         }
 
         dateFinal = d + "/" + m + "/" + y;
-        if (whichdateViewClick  == 1) {
+        if (whichdateViewClick == 1) {
             fragmentPlannerBinding.fromDate1Edt.setText(dateFinal);
-            FinalStartDate =  dateFinal;
+            FinalStartDate = dateFinal;
 
         } else {
-            if (whichdateViewClick  == 2) {
+            if (whichdateViewClick == 2) {
                 fragmentPlannerBinding.toDate2Edt.setText(dateFinal);
-                FinalEnddate =  dateFinal;
+                FinalEnddate = dateFinal;
             }
 
         }
     }
 
-    private boolean validate(){
+    private boolean validate() {
         try {
-            if(TextUtils.isEmpty(fragmentPlannerBinding.titleEdt.getText().toString().trim())){
-                Utils.ping(getActivity(),"Please enter title");
+            if (TextUtils.isEmpty(fragmentPlannerBinding.titleEdt.getText().toString().trim())) {
+                Utils.ping(getActivity(), "Please enter title");
                 return false;
             }
-            if(fragmentPlannerBinding.rbIndividual.isChecked()){
-                if(standardAdapter != null){
-                    if(standardAdapter.getCheckedStandards() != null){
-                        if(standardAdapter.getCheckedStandards().size() <= 0){
-                            Utils.ping(getActivity(),"Please select standard");
+            if (fragmentPlannerBinding.rbIndividual.isChecked()) {
+                if (standardAdapter != null) {
+                    if (standardAdapter.getCheckedStandards() != null) {
+                        if (standardAdapter.getCheckedStandards().size() <= 0) {
+                            Utils.ping(getActivity(), "Please select standard");
                             return false;
                         }
                     }
                 }
             }
-            if(fragmentPlannerBinding.rbAll.isChecked()){
-                if(standardAdapter != null){
-                    if(standardAdapter.getCheckedStandards() != null){
-                        if(standardAdapter.getCheckedStandards().size() <= 0){
-                            Utils.ping(getActivity(),"Please select standard");
+            if (fragmentPlannerBinding.rbAll.isChecked()) {
+                if (standardAdapter != null) {
+                    if (standardAdapter.getCheckedStandards() != null) {
+                        if (standardAdapter.getCheckedStandards().size() <= 0) {
+                            Utils.ping(getActivity(), "Please select standard");
                             return false;
                         }
                     }
                 }
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return true;
@@ -565,65 +569,65 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
 
                     PlannerModel.FinalArray dataList = finalArrayPlannerList1.getFinalArray().get(pos);
 
-                     if(dataList != null){
+                    if (dataList != null) {
 
-                         PK_ID = String.valueOf(dataList.getID());
+                        PK_ID = String.valueOf(dataList.getID());
 
-                         if(!TextUtils.isEmpty(dataList.getType())){
-                             if(dataList.getType().equalsIgnoreCase("Holiday")){
-                                 fragmentPlannerBinding.rbHoliday.setChecked(true);
-                                 fragmentPlannerBinding.rbEvent.setChecked(false);
-                             }else if(dataList.getType().equalsIgnoreCase("Event")){
-                                 fragmentPlannerBinding.rbHoliday.setChecked(false);
-                                 fragmentPlannerBinding.rbEvent.setChecked(true);
-                             }
-                         }
+                        if (!TextUtils.isEmpty(dataList.getType())) {
+                            if (dataList.getType().equalsIgnoreCase("Holiday")) {
+                                fragmentPlannerBinding.rbHoliday.setChecked(true);
+                                fragmentPlannerBinding.rbEvent.setChecked(false);
+                            } else if (dataList.getType().equalsIgnoreCase("Event")) {
+                                fragmentPlannerBinding.rbHoliday.setChecked(false);
+                                fragmentPlannerBinding.rbEvent.setChecked(true);
+                            }
+                        }
 
-                        if(!TextUtils.isEmpty(dataList.getStartDate())){
-                             fragmentPlannerBinding.fromDate1Edt.setText(dataList.getStartDate());
-                         }
-                         if(!TextUtils.isEmpty(dataList.getEndDate())){
-                             fragmentPlannerBinding.toDate2Edt.setText(dataList.getEndDate());
-                         }
-                         if(!TextUtils.isEmpty(dataList.getName())){
-                             fragmentPlannerBinding.titleEdt.setText(dataList.getName());
-                         }
+                        if (!TextUtils.isEmpty(dataList.getStartDate())) {
+                            fragmentPlannerBinding.fromDate1Edt.setText(dataList.getStartDate());
+                        }
+                        if (!TextUtils.isEmpty(dataList.getEndDate())) {
+                            fragmentPlannerBinding.toDate2Edt.setText(dataList.getEndDate());
+                        }
+                        if (!TextUtils.isEmpty(dataList.getName())) {
+                            fragmentPlannerBinding.titleEdt.setText(dataList.getName());
+                        }
 
-                         if (standardAdapter != null) {
-
-
-                             String[] standards = dataList.getGradeID().split(",");
-
-                             // standardAdapter.setCheckedStandards(items);
-
-                             if(finalArrayStandardsList != null){
-                                 if(finalArrayStandardsList.size() > 0){
-
-                                     for(int count2 = 0;count2 <finalArrayStandardsList.size();count2++){
-                                         finalArrayStandardsList.get(count2).setCheckedStatus("0");
-                                     }
-
-                                     for(int count3 = 0;count3 <finalArrayStandardsList.size();count3++){
-                                         for(int count1 = 0;count1<standards.length;count1++){
-                                             if(standards[count1].equalsIgnoreCase(String.valueOf(finalArrayStandardsList.get(count3).getStandardID()))){
-                                                 finalArrayStandardsList.get(count3).setCheckedStatus("1");
-                                             }
-                                         }
-                                     }
-                                     standardAdapter.notifyDataSetChanged();
-
-                                 }
-                             }
-                             //  standardAdapter.notifyDataSetChanged();
-
-                         }
+                        if (standardAdapter != null) {
 
 
-                     }
+                            String[] standards = dataList.getGradeID().split(",");
+
+                            // standardAdapter.setCheckedStandards(items);
+
+                            if (finalArrayStandardsList != null) {
+                                if (finalArrayStandardsList.size() > 0) {
+
+                                    for (int count2 = 0; count2 < finalArrayStandardsList.size(); count2++) {
+                                        finalArrayStandardsList.get(count2).setCheckedStatus("0");
+                                    }
+
+                                    for (int count3 = 0; count3 < finalArrayStandardsList.size(); count3++) {
+                                        for (int count1 = 0; count1 < standards.length; count1++) {
+                                            if (standards[count1].equalsIgnoreCase(String.valueOf(finalArrayStandardsList.get(count3).getStandardID()))) {
+                                                finalArrayStandardsList.get(count3).setCheckedStatus("1");
+                                            }
+                                        }
+                                    }
+                                    standardAdapter.notifyDataSetChanged();
+
+                                }
+                            }
+                            //  standardAdapter.notifyDataSetChanged();
+
+                        }
+
+
+                    }
 
                 }
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

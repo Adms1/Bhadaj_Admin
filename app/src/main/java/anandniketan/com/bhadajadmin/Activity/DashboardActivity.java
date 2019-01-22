@@ -28,6 +28,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterMenu;
 import anandniketan.com.bhadajadmin.Adapter.MenuoptionItemAdapter;
@@ -41,6 +42,7 @@ import anandniketan.com.bhadajadmin.Fragment.Fragment.DailyReportFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HRFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HolidayFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HomeFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.MISFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MyLeaveFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.PTMMainFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.SMSFragment;
@@ -53,10 +55,12 @@ import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentPermissionFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentViewInquiryFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.SummaryFragment;
 import anandniketan.com.bhadajadmin.Model.MenuoptionItemModel;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.DialogUtils;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 
 public class DashboardActivity extends FragmentActivity {
@@ -88,6 +92,7 @@ public class DashboardActivity extends FragmentActivity {
     private DialogInterface dialogInterfacePosivtive, dialogInterfaceNegative;
     private TextView tvName, tvDesignation;
     private PrefUtils prefUtils;
+    private Map<String, ArrayList<PermissionDataModel.Detaill>> hashMap;
 
     public static void onLeft() {
         // TODO Auto-generated method stub
@@ -124,6 +129,7 @@ public class DashboardActivity extends FragmentActivity {
     private void Initialize() {
         // TODO Auto-generated method stub
         MenuName = getResources().getStringArray(R.array.menuoption1);
+//        hashMap= PrefUtils.getInstance(DashboardActivity.this).loadMap(DashboardActivity.this);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         leftRl = findViewById(R.id.whatYouWantInLeftDrawer);
@@ -201,38 +207,53 @@ public class DashboardActivity extends FragmentActivity {
             case 0:
                 fragment = new HomeFragment();
                 myid = fragment.getId();
+//                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 1:
+
                 fragment = new StudentFragment();
                 myid = fragment.getId();
+
+//                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 2:
-                fragment = new StaffFragment();
-                myid = fragment.getId();
+//                fragment = new StaffFragment();
+//                myid = fragment.getId();
+                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 3:
-                fragment = new HRFragment();
-                myid = fragment.getId();
+//                fragment = new HRFragment();
+//                myid = fragment.getId();
+                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
                 break;
             case 4:
-                fragment = new AccountFragment();
-                myid = fragment.getId();
+//                fragment = new AccountFragment();
+//                myid = fragment.getId();
+                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 //                fragment = new TransportFragment();
 //                myid = fragment.getId();
 //                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 5:
-                fragment = new SMSFragment();
+//                fragment = new SMSFragment();
+//                myid = fragment.getId();
+                Utils.ping(DashboardActivity.this, "Access Denied");
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                break;
+
+            case 6:
+                fragment = new MISFragment();
                 myid = fragment.getId();
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
-            case 6:
+
+            case 7:
                 DialogUtils.createConfirmDialog(DashboardActivity.this, R.string.app_name, R.string.logout_confirm_msg, new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
@@ -521,7 +542,14 @@ public class DashboardActivity extends FragmentActivity {
                     AppConfiguration.firsttimeback = true;
                     getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-
+                } else if (AppConfiguration.position == 67) {
+                    fragment = new MISFragment();
+                    fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 5;
                 } else if (AppConfiguration.position == 58) {
 
                     if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -575,6 +603,7 @@ public class DashboardActivity extends FragmentActivity {
         finalheaderArray.add("ACCOUNT");
         // finalheaderArray.add("TRANSPORT");
         finalheaderArray.add("SMS");
+        finalheaderArray.add("MIS");
         //  finalheaderArray.add("OTHER");
         finalheaderArray.add("LOGOUT");
 
@@ -594,6 +623,7 @@ public class DashboardActivity extends FragmentActivity {
         imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Account.png");
         //  imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Transport.png");
         imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_SMS.png");
+        imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Account.png");
         //  imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Other.png");
         imagesId.add(AppConfiguration.BASEURL_IMAGES + "SideMenu/" + "Menu_Logout.png");
 

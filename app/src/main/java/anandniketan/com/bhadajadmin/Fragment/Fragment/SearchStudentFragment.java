@@ -41,8 +41,9 @@ import retrofit.client.Response;
 
 public class SearchStudentFragment extends Fragment {
 
-    public SearchStudentFragment() {
+    private String status;
 
+    public SearchStudentFragment() {
     }
 
     private FragmentSearchStudentBinding fragmentSearchStudentBinding;
@@ -77,6 +78,10 @@ public class SearchStudentFragment extends Fragment {
     public void initViews() {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 11;
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
+
     }
 
     public void setListner() {
@@ -488,7 +493,7 @@ public class SearchStudentFragment extends Fragment {
                                 fragmentManager = getFragmentManager();
                                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container,fragment).addToBackStack(null).commit();
                             }
-                        });
+                        }, status);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentSearchStudentBinding.studentSearchList.setLayoutManager(mLayoutManager);
                         fragmentSearchStudentBinding.studentSearchList.setItemAnimator(new DefaultItemAnimator());

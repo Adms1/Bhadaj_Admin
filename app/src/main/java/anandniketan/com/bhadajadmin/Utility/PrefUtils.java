@@ -2,6 +2,17 @@ package anandniketan.com.bhadajadmin.Utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 
 public class PrefUtils {
 
@@ -196,5 +207,45 @@ public class PrefUtils {
         mSharedPreferencesEditor.clear().commit();
     }
 
+    public void saveMap(Context context, String key, Map<String, PermissionDataModel.Detaill> inputMap) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(inputMap);
+        editor.putString(key, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+
+    public HashMap<String, PermissionDataModel.Detaill> loadMap(Context context, String key) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = prefs.getString(key, "");
+        java.lang.reflect.Type type = new TypeToken<HashMap<String, PermissionDataModel.Detaill>>() {
+        }.getType();
+        HashMap<String, PermissionDataModel.Detaill> obj = gson.fromJson(json, type);
+        return obj;
+    }
+
+    public void saveArr(Context context, String key, ArrayList<HashMap<String, PermissionDataModel.Detaill>> arrayList) {
+        SharedPreferences db = PreferenceManager.getDefaultSharedPreferences(context);
+
+        SharedPreferences.Editor collection = db.edit();
+        Gson gson = new Gson();
+        String arrayList1 = gson.toJson(arrayList);
+
+        collection.putString(key, arrayList1);
+        collection.commit();
+    }
+
+    public ArrayList<HashMap<String, PermissionDataModel.Detaill>> loadArr(Context context, String key) {
+        SharedPreferences db = PreferenceManager.getDefaultSharedPreferences(context);
+
+        Gson gson = new Gson();
+        String arrayListString = db.getString(key, null);
+        Type type = new TypeToken<ArrayList<HashMap<String, PermissionDataModel.Detaill>>>() {
+        }.getType();
+        ArrayList<HashMap<String, PermissionDataModel.Detaill>> arrayList = gson.fromJson(arrayListString, type);
+        return arrayList;
+    }
 
 }

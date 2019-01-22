@@ -6,7 +6,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="@dimen/_5sdp"
-        android:background="@drawable/linear_border2">
+        android:background="@drawable/greybg_border"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/grade_txt"
@@ -66,7 +67,7 @@
         <ImageView
             android:id="@+id/iv_phone"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_18sdp"
             android:layout_weight="0.6"
             android:tint="@color/scheduleheadertextcolor"
             android:visibility="gone"
@@ -87,7 +88,7 @@
         <ImageView
             android:id="@+id/iv_sms"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_18sdp"
             android:layout_weight="0.5"
             android:visibility="gone"
             android:layout_gravity="center"

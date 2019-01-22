@@ -3,7 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/linear_border2"
+    android:background="@drawable/greybg_border"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="@dimen/_1sdp"
-        android:paddingBottom="1dp"
+        android:gravity="center"
+        android:padding="@dimen/_7sdp"
         android:layout_gravity="center"
         android:visibility="visible">
 
@@ -22,7 +22,6 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:padding="@dimen/_7sdp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
@@ -61,20 +60,19 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
 
-
         <ImageView
             android:id="@+id/iv_phone"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/ic_phone"
             android:tint="@color/scheduleheadertextcolor"
             android:layout_weight="0.7"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center"
             />
         <ImageView
             android:id="@+id/iv_sms"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_height="@dimen/_18sdp"
             android:src="@drawable/ic_sms"
             android:tint="@color/scheduleheadertextcolor"
             android:layout_weight="0.7"

@@ -118,7 +118,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private MISFinanceListAdapter misFinanceListAdapter;
     private Date date;
     private Date dateCompareOne;
-    private String compareStringOne = "04:00";
+    private String compareStringOne = "4:00";
     private TextView tvTerm1Due, tvTerm2Due;
 
     public MISFragment() {
@@ -320,38 +320,47 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     }
 
     private void compareDates() {
-        Calendar now = Calendar.getInstance();
 
-        int hour = now.get(Calendar.HOUR);
-        int minute = now.get(Calendar.MINUTE);
+        Date date2 = parseDate("16:00"); //The date to compare with the current date
+        Date nowdate = new Date();//Get the current date
+        SimpleDateFormat sdff = new SimpleDateFormat("HH:mm");//This is the time and minute to remove
+        String str1 = sdff.format(date2);
+        String str2 = sdff.format(nowdate);
+        Date d;
+        Date dd;//current date
+        try {
+            d = sdff.parse(str1);
+            dd = sdff.parse(str2);
 
-        date = parseDate(hour + ":" + minute);
-        dateCompareOne = parseDate(compareStringOne);
-//        dateCompareTwo = parseDate(compareStringTwo);
+//This date is executed before today...
 
-        if (date.after(dateCompareOne)) {
-            //yada yada
-            fragmentMisBinding.studentDateBtn.setText(Utils.getTodaysDate());
-            fragmentMisBinding.staffDateBtn.setText(Utils.getTodaysDate());
-            fragmentMisBinding.taskreportDateBtn.setText(Utils.getTodaysDate());
-        } else {
-            String sDate = Utils.getTodaysDate();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            Date date = null;
-            try {
-                date = dateFormat.parse(sDate);
+            if (d.getTime() < dd.getTime()) {
+                //yada yada
+                fragmentMisBinding.studentDateBtn.setText(Utils.getTodaysDate());
+                fragmentMisBinding.staffDateBtn.setText(Utils.getTodaysDate());
+                fragmentMisBinding.taskreportDateBtn.setText(Utils.getTodaysDate());
+            } else {
+                String sDate = Utils.getTodaysDate();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                Date date1 = null;
+                try {
+                    date1 = dateFormat.parse(sDate);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.add(Calendar.DATE, -1);
-                String yesterdayAsString = dateFormat.format(calendar.getTime());
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(date1);
+                    calendar.add(Calendar.DATE, -1);
+                    String yesterdayAsString = dateFormat.format(calendar.getTime());
 
-                fragmentMisBinding.studentDateBtn.setText(yesterdayAsString);
-                fragmentMisBinding.staffDateBtn.setText(yesterdayAsString);
-                fragmentMisBinding.taskreportDateBtn.setText(yesterdayAsString);
-            } catch (ParseException e) {
-                e.printStackTrace();
+                    fragmentMisBinding.studentDateBtn.setText(yesterdayAsString);
+                    fragmentMisBinding.staffDateBtn.setText(yesterdayAsString);
+                    fragmentMisBinding.taskreportDateBtn.setText(yesterdayAsString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
@@ -729,7 +738,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out).add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 66;
+                AppConfiguration.position = 67;
             }
         });
 
@@ -1957,7 +1966,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out).add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 66;
+                AppConfiguration.position = 67;
 
 //                fragment = new MISStudentTransportFragment();
 //                bundle = new Bundle();
@@ -1968,7 +1977,8 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 //                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
 //                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
 //                AppConfiguration.firsttimeback = true;
-//                AppConfiguration.position = 65;
+//                AppConfiguration.position = 67
+//;
 
                 break;
 
@@ -1986,7 +1996,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
 
                 break;
 
@@ -2004,7 +2014,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
 
                 break;
 
@@ -2022,7 +2032,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
 
                 break;
 
@@ -2040,7 +2050,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.boy_present_txt:
@@ -2057,7 +2067,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.girl_present_txt:
@@ -2074,7 +2084,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.student_leave_txt:
@@ -2091,7 +2101,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.boy_leave_txt:
@@ -2108,7 +2118,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.girl_leave_txt:
@@ -2125,7 +2135,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.student_absent_txt:
@@ -2142,7 +2152,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.boy_absent_txt:
@@ -2159,7 +2169,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.girl_absent_txt:
@@ -2176,7 +2186,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.student_attendance_less_70_txt:
@@ -2194,7 +2204,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.boy_attendance_less_70_txt:
@@ -2212,7 +2222,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.girl_attendance_less_70_txt:
@@ -2230,7 +2240,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.antstudent_txt:
@@ -2246,7 +2256,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.antboy_txt:
@@ -2262,7 +2272,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.antgirl_txt:
@@ -2278,7 +2288,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.abstudent_txt:
@@ -2295,7 +2305,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.ba_txt:
@@ -2312,7 +2322,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.abboy_txt:
@@ -2329,7 +2339,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.baboy_txt:
@@ -2346,7 +2356,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.abgirl_txt:
@@ -2363,7 +2373,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.bagirl_txt:
@@ -2380,7 +2390,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.staff_total_txt:
@@ -2396,7 +2406,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.staff_present_txt:
@@ -2414,7 +2424,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2433,7 +2443,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2452,7 +2462,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2471,7 +2481,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2491,7 +2501,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2510,7 +2520,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.staff_hw_submitted_txt:
@@ -2527,7 +2537,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.actotaltobecall_txt:
@@ -2549,7 +2559,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2571,7 +2581,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2592,7 +2602,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.acterm1_collection:
@@ -2612,7 +2622,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2633,7 +2643,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.na_inquiry_txt:
@@ -2650,7 +2660,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
             case R.id.na_issueadd_txt:
                 fragment = new MISDataListFragment();
@@ -2666,7 +2676,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.na_rcvform_txt:
@@ -2683,7 +2693,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.na_CallForInterview_txt:
@@ -2700,7 +2710,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
             case R.id.na_comeforinterview_txt:
                 fragment = new MISDataListFragment();
@@ -2716,7 +2726,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2734,7 +2744,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.na_rejected_txt:
@@ -2751,7 +2761,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
             case R.id.na_fees_rec_txt:
                 fragment = new MISDataListFragment();
@@ -2767,7 +2777,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2785,7 +2795,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
 
@@ -2803,7 +2813,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
             case R.id.smsdelivered_txt:
@@ -2820,7 +2830,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
             case R.id.smspedning_txt:
                 fragment = new MISDataListFragment();
@@ -2836,7 +2846,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 65;
+                AppConfiguration.position = 67;
                 break;
 
         }
@@ -2955,6 +2965,8 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         }
 
         Utils.showDialog(getActivity());
+        llCalendar.setVisibility(View.GONE);
+
         WebServices apiService = ApiClient.getClient().create(WebServices.class);
         Call<MIStudentWiseCalendarModel> call = apiService.getSchoolCalendarDetail(AppConfiguration.BASEURL + "GetMISCalender?TermID=" + term);
         call.enqueue(new Callback<MIStudentWiseCalendarModel>() {
@@ -3049,5 +3061,4 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
             }
         });
     }
-
 }

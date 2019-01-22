@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
@@ -33,8 +32,6 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterInquiryData;
 import anandniketan.com.bhadajadmin.Interface.onViewClick;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
-import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
@@ -73,12 +70,10 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private ExpandableListAdapterInquiryData expandableListAdapterInquiryData;
     private List<StudentInquiryModel.FinalArray> listDataHeader;
     private HashMap<String,List<StudentInquiryModel.StausDetail>> listDataChild;
-
+    private String status;
 
     public StudentViewInquiryFragment() {
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstance){
@@ -96,6 +91,9 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
 
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 11;
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
 
         setListners();
         callTermApi();
@@ -133,9 +131,11 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container,fragment).commit();
             }
         });
+
         fragmentStudentViewInquiryBinding.lvExpviewinquiry.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
+
                 if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
                     fragmentStudentViewInquiryBinding.lvExpviewinquiry.collapseGroup(lastExpandedPosition);
                 }
@@ -143,7 +143,6 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             }
 
         });
-
 
         fragmentStudentViewInquiryBinding.fabAddInquiry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +193,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             @SuppressLint("ResourceType")
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                RadioButton rb = (RadioButton) radioGroup.findViewById(checkedId);
+                RadioButton rb = radioGroup.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
                     // checkedId is the RadioButton selected
                     switch (checkedId) {
@@ -400,7 +399,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                                 fragmentManager.beginTransaction()
                                         .setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
                             }
-                        });
+                        }, status);
                         fragmentStudentViewInquiryBinding.lvExpviewinquiry.setAdapter(expandableListAdapterInquiryData);
                         Utils.dismissDialog();
                     }else{

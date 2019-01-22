@@ -72,7 +72,7 @@ public class MISDataListFragment extends Fragment {
 
     private MISStudentAdapter misStudentAdapter;
     private MISDetailListAdapter misDetailListAdapter;
-    private TextView mTvInnerTitle, mTvInnerAttendanceStatus, mTvinnerGrno, mTvStudent, mTvDept, mTvCode, mTvName, mTvPhone, mTvGRNO, mTvClassTeacher, mTVGrade, mTvSection, mTvLeaveDay, mTvReason, mTvAbsentFrom;
+    private TextView mTvInnerTitle, mTvInnerAttendanceStatus, mTvinnerGrno, mTvStudent, mTvDept, mTvCode, mTvName, mTvPhone, mTvGRNO, mTvClassTeacher, mTVGrade, mTvSection, mTvLeaveDay, mTvReason, mTvAbsentFrom, mTvInnerAttendanceAge, mTvInnerAttendanceSince;
     private View innerTitleView, innerListHeaderView;
     private String countdata = "", requestTitle = "";
     private MISAccountHeaderAdapter misAccountHeaderAdapter;
@@ -93,7 +93,7 @@ public class MISDataListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentMisDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_mis_data2, container, false);
 
-        AppConfiguration.position = 66;
+        AppConfiguration.position = 67;
         AppConfiguration.firsttimeback = true;
 
         rootView = fragmentMisDataBinding.getRoot();
@@ -457,6 +457,12 @@ public class MISDataListFragment extends Fragment {
                     mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.GONE);
 
+                    mTvInnerAttendanceAge = innerListHeaderView.findViewById(R.id.age_txt);
+                    mTvInnerAttendanceAge.setVisibility(View.GONE);
+
+                    mTvInnerAttendanceSince = innerListHeaderView.findViewById(R.id.since_txt);
+                    mTvInnerAttendanceSince.setVisibility(View.GONE);
+
                     mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.VISIBLE);
 
@@ -485,6 +491,13 @@ public class MISDataListFragment extends Fragment {
                     mTvInnerAttendanceStatus.setLayoutParams(params);
 
 
+                    mTvInnerAttendanceAge = innerListHeaderView.findViewById(R.id.age_txt);
+                    mTvInnerAttendanceAge.setVisibility(View.GONE);
+
+                    mTvInnerAttendanceSince = innerListHeaderView.findViewById(R.id.since_txt);
+                    mTvInnerAttendanceSince.setVisibility(View.GONE);
+
+
                     mTvLeaveDay = innerListHeaderView.findViewById(R.id.leave_txt);
                     mTvLeaveDay.setVisibility(View.VISIBLE);
                     mTvLeaveDay.setText("Leave Days");
@@ -503,6 +516,13 @@ public class MISDataListFragment extends Fragment {
 
                     fragmentMisDataBinding.layoutStub1.getViewStub().setLayoutResource(R.layout.list_item_mis_data_header);
                     innerTitleView = fragmentMisDataBinding.layoutStub1.getViewStub().inflate();
+
+
+                    mTvInnerAttendanceAge = innerListHeaderView.findViewById(R.id.age_txt);
+                    mTvInnerAttendanceAge.setVisibility(View.GONE);
+
+                    mTvInnerAttendanceSince = innerListHeaderView.findViewById(R.id.since_txt);
+                    mTvInnerAttendanceSince.setVisibility(View.GONE);
 
                     mTvInnerAttendanceStatus = innerListHeaderView.findViewById(R.id.status_txt);
                     mTvInnerAttendanceStatus.setVisibility(View.VISIBLE);
@@ -665,7 +685,7 @@ public class MISDataListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppConfiguration.position = 66;
+        AppConfiguration.position = 67;
         AppConfiguration.firsttimeback = true;
     }
 

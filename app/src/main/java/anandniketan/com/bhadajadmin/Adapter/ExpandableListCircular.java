@@ -19,9 +19,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import anandniketan.com.bhadajadmin.Fragment.Fragment.CircularFragment;
 import anandniketan.com.bhadajadmin.Interface.OnUpdateRecord;
 import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
@@ -42,13 +44,17 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
     private OnUpdateRecord onUpdateRecordRef;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    private String status, updatestatus, deletestatus;
 
-    public ExpandableListCircular(Context context, List<String> listDataHeader, HashMap<String, ArrayList<CircularModel.FinalArray>> listDataChild, onDeleteWithId onDeleteWithIdref, OnUpdateRecord onUpdateRecordRef) {
+    public ExpandableListCircular(Context context, List<String> listDataHeader, HashMap<String, ArrayList<CircularModel.FinalArray>> listDataChild, onDeleteWithId onDeleteWithIdref, OnUpdateRecord onUpdateRecordRef, String status, String updatestatus, String deletestatus) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
         this.onDeleteWithIdref = onDeleteWithIdref;
         this.onUpdateRecordRef = onUpdateRecordRef;
+        this.status = status;
+        this.updatestatus = updatestatus;
+        this.deletestatus = deletestatus;
     }
 
     @Override
@@ -75,13 +81,13 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
 
         TextView txtGradelabel, txtGrade, txtPdfLink, txtAnnsLabel;
         LinearLayout Ll_AnnsView, LL_PDFView;
-        txtGrade = (TextView) convertView.findViewById(R.id.txt_grade);
-        txtPdfLink = (TextView) convertView.findViewById(R.id.txt_pdf_link);
-        txtAnnsLabel = (TextView) convertView.findViewById(R.id.txt_annoucement);
-        LL_PDFView = (LinearLayout) convertView.findViewById(R.id.pdf_view);
-        Ll_AnnsView = (LinearLayout) convertView.findViewById(R.id.announcement_view);
-        Button btnDelete = (Button) convertView.findViewById(R.id.btn_delete);
-        Button btnEdit = (Button) convertView.findViewById(R.id.btn_edit);
+        txtGrade = convertView.findViewById(R.id.txt_grade);
+        txtPdfLink = convertView.findViewById(R.id.txt_pdf_link);
+        txtAnnsLabel = convertView.findViewById(R.id.txt_annoucement);
+        LL_PDFView = convertView.findViewById(R.id.pdf_view);
+        Ll_AnnsView = convertView.findViewById(R.id.announcement_view);
+        Button btnDelete = convertView.findViewById(R.id.btn_delete);
+        Button btnEdit = convertView.findViewById(R.id.btn_edit);
 
 
         if (!TextUtils.isEmpty(childData.get(childPosition).getCircularPDF()) || !childData.get(childPosition).getCircularPDF().equalsIgnoreCase("")) {
@@ -117,20 +123,23 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (updatestatus.equalsIgnoreCase("true")) {
+                    DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.delete_confirm_msg, new DialogInterface.OnClickListener() {
 
-                DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.delete_confirm_msg, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            onDeleteWithIdref.deleteRecordWithId(String.valueOf(childData.get(childPosition).getPKCircularID()));
+                        }
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        onDeleteWithIdref.deleteRecordWithId(String.valueOf(childData.get(childPosition).getPKCircularID()));
-                    }
-
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+                } else {
+                    Utils.ping(_context, "Access Denied");
+                }
             }
         });
 
@@ -138,16 +147,19 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onUpdateRecordRef.onUpdateRecordCircular(childData);
-                AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 11;
-                Bundle bundleData = new Bundle();
-                bundleData.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) childData);
-                fragment = new CircularFragment();
-                fragmentManager = ((FragmentActivity) _context).getSupportFragmentManager();
-                fragment.setArguments(bundleData);
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
-
+                if (updatestatus.equalsIgnoreCase("true")) {
+                    onUpdateRecordRef.onUpdateRecordCircular(childData);
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 11;
+                    Bundle bundleData = new Bundle();
+                    bundleData.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) childData);
+                    fragment = new CircularFragment();
+                    fragmentManager = ((FragmentActivity) _context).getSupportFragmentManager();
+                    fragment.setArguments(bundleData);
+                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                } else {
+                    Utils.ping(_context, "Access Denied");
+                }
 
             }
         });
@@ -157,7 +169,12 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        if (status.equalsIgnoreCase("true")) {
+            return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override
@@ -191,10 +208,10 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
         TextView txt_subject, txt_date;
         ImageView iv_status, iv_indicator;
 
-        txt_subject = (TextView) convertView.findViewById(R.id.subject_txt);
-        txt_date = (TextView) convertView.findViewById(R.id.createdate_txt);
-        iv_status = (ImageView) convertView.findViewById(R.id.iv_status);
-        iv_indicator = (ImageView) convertView.findViewById(R.id.iv_indicator);
+        txt_subject = convertView.findViewById(R.id.subject_txt);
+        txt_date = convertView.findViewById(R.id.createdate_txt);
+        iv_status = convertView.findViewById(R.id.iv_status);
+        iv_indicator = convertView.findViewById(R.id.iv_indicator);
 
         txt_subject.setText(headerTitle1);
         txt_date.setText(headerTitle2);

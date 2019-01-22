@@ -84,7 +84,7 @@ public class TransportAdapter extends RecyclerView.Adapter<TransportAdapter.MyVi
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 66;
+                AppConfiguration.position = 67;
             }
 
         });
@@ -113,7 +113,7 @@ public class TransportAdapter extends RecyclerView.Adapter<TransportAdapter.MyVi
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 66;
+                AppConfiguration.position = 67;
             }
         });
 

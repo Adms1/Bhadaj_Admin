@@ -55,6 +55,7 @@ public class GRRegisterFragment extends Fragment {
     HashMap<Integer, String> spinnerStatusMap;
     String FinalStandardIdStr, FinalClassIdStr, StandardName, FinalTermIdStr, FinalStandardStr, FinalSectionStr, FinalStatusStr, FinalStatusIdStr;
     GRRegisterAdapter grRegisterAdapter;
+    private String status;
 
     public GRRegisterFragment() {
     }
@@ -66,6 +67,9 @@ public class GRRegisterFragment extends Fragment {
 
         rootView = fragmentGrregisterBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
 
         setListners();
         callTermApi();
@@ -331,7 +335,7 @@ public class GRRegisterFragment extends Fragment {
                                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                                         .replace(R.id.frame_container, fragment).commit();
                             }
-                        });
+                        }, status);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentGrregisterBinding.studentGrregisterList.setLayoutManager(mLayoutManager);
                         fragmentGrregisterBinding.studentGrregisterList.setItemAnimator(new DefaultItemAnimator());

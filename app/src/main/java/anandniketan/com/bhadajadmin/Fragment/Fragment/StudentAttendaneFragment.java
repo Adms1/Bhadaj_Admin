@@ -32,7 +32,6 @@ import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AttendanceAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
@@ -65,6 +64,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     private DatePickerDialog datePickerDialog;
     private  PrefUtils prefUtils ;
     private String Attendanceidstr = "",Attendacestatusstr = "",studentidstr = "";
+    private String status, updateStatus, update;
 
     public StudentAttendaneFragment() {
     }
@@ -73,6 +73,10 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentStudentAttendaneBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_attendane, container, false);
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
+        updateStatus = bundle.getString("updatestatus");
 
         prefUtils = PrefUtils.getInstance(getActivity());
         rootView = fragmentStudentAttendaneBinding.getRoot();
@@ -112,7 +116,16 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callInsertAttendanceApi();
+
+                if (update.equalsIgnoreCase("yes")) {
+                    if (updateStatus.equalsIgnoreCase("true")) {
+                        callInsertAttendanceApi();
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
+                } else {
+                    callInsertAttendanceApi();
+                }
             }
         });
         fragmentStudentAttendaneBinding.gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -168,7 +181,13 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         fragmentStudentAttendaneBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callAttendence_AdminApi();
+
+                if (status.equalsIgnoreCase("true")) {
+
+                    callAttendence_AdminApi();
+                } else {
+                    Utils.ping(getActivity(), "Access Denied");
+                }
             }
         });
     }
@@ -277,8 +296,11 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                         //fragmentStudentAttendaneBinding.ondutyTxt.setText(Html.fromHtml("OnDuty : " + "<font color='#d8b834'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalOnDuty() + "</b>"));
 
                         if (!attendanceModel.getFinalArray().get(0).getStudentDetail().get(0).getAttendenceStatus().equalsIgnoreCase("-2")) {
+
+                            update = "yes";
                             fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setImageResource(R.drawable.update_1);
                         } else {
+                            update = "no";
                             fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setImageResource(R.drawable.submit);
                         }
 
@@ -424,7 +446,14 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         fragmentStudentAttendaneBinding.sectionSpinner.setAdapter(adapterstandard);
 
         FinalClassIdStr = spinnerSectionMap.get(0);
-        callAttendence_AdminApi();
+
+
+        if (status.equalsIgnoreCase("true")) {
+
+            callAttendence_AdminApi();
+        } else {
+            Utils.ping(getActivity(), "Access Denied");
+        }
     }
 
     public void SetData() {
@@ -491,7 +520,12 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                 if (attendanceModel.getSuccess().equalsIgnoreCase("True")) {
                     Utils.dismissDialog();
                     Utils.ping(getActivity(),"Attendance updated successfully");
-                    callAttendence_AdminApi();
+                    if (status.equalsIgnoreCase("true")) {
+
+                        callAttendence_AdminApi();
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
                     return;
                 }
             }

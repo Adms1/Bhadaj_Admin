@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:tint="@color/light_blue"
             android:src="@drawable/ic_phone" />
     </LinearLayout>
 

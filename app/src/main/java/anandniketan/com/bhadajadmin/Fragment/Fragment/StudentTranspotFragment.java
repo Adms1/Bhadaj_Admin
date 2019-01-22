@@ -23,7 +23,6 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterStudentTransportDetail;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
@@ -58,6 +57,7 @@ public class StudentTranspotFragment extends Fragment {
     List<String> listDataHeader;
     HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild;
     ExpandableListAdapterStudentTransportDetail expandableListAdapterStudentTransportDetail;
+    private String status;
 
     public StudentTranspotFragment() {
     }
@@ -69,6 +69,9 @@ public class StudentTranspotFragment extends Fragment {
 
         rootView = fragmentStudentTranspotBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
 
         setListners();
         callTermApi();
@@ -312,7 +315,7 @@ public class StudentTranspotFragment extends Fragment {
                         fragmentStudentTranspotBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         fragmentStudentTranspotBinding.lvExpStudenttransport.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        expandableListAdapterStudentTransportDetail = new ExpandableListAdapterStudentTransportDetail(getActivity(), listDataHeader, listDataChild);
+                        expandableListAdapterStudentTransportDetail = new ExpandableListAdapterStudentTransportDetail(getActivity(), listDataHeader, listDataChild, status);
                         fragmentStudentTranspotBinding.lvExpStudenttransport.setAdapter(expandableListAdapterStudentTransportDetail);
                         Utils.dismissDialog();
                     } else {

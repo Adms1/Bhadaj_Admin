@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.ListGroupStudentRouteTransportDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemStudentRouteTransportDetailBinding;
 
@@ -31,13 +31,14 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<StudentAttendanceFinalArray>> _listDataChild;
     ImageLoader imageLoader;
-
+    private String status;
 
     public ExpandableListAdapterStudentTransportDetail(Context context, List<String> listDataHeader,
-                                                       HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild) {
+                                                       HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild, String status) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
+        this.status = status;
     }
 
 
@@ -66,8 +67,13 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .size();
+        if (status.equalsIgnoreCase("true")) {
+            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+                    .size();
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override

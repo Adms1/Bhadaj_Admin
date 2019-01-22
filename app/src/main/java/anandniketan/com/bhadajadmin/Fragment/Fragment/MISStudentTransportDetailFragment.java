@@ -91,7 +91,11 @@ public class MISStudentTransportDetailFragment extends Fragment {
         termid = bundle.getString("TermID");
         count = bundle.getString("count");
 
-        tvTotal.setText("Total Students : " + count);
+        if (!count.equalsIgnoreCase("0")) {
+            tvTotal.setText("Total Students : " + count);
+        } else {
+            tvTotal.setVisibility(View.GONE);
+        }
 
         rvExp.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -123,7 +127,7 @@ public class MISStudentTransportDetailFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
 //                fragment = new MISStudentTransportFragment();
 //                fragmentManager = getFragmentManager();
 //                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
@@ -237,7 +241,6 @@ public class MISStudentTransportDetailFragment extends Fragment {
                 }
             }
 
-            //
             @Override
             public void onFailure(Call<TransportMainModel> call, Throwable t) {
                 // Log error here since request failed

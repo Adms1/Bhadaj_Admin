@@ -193,7 +193,7 @@ public class MISAccountFeesDetailFragment extends Fragment {
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
                                 .replace(R.id.frame_container,fragment).commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 66;
+                        AppConfiguration.position = 67;
                     }
                     return true;
                 }
@@ -219,7 +219,7 @@ public class MISAccountFeesDetailFragment extends Fragment {
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
                         .replace(R.id.frame_container,fragment).commit();
 //                AppConfiguration.firsttimeback = true;
-//                AppConfiguration.position = 66;
+//                AppConfiguration.position = 67;
 
 //                AppConfiguration.ReverseTermDetailId = "";
 //                AppConfiguration.firsttimeback = true;

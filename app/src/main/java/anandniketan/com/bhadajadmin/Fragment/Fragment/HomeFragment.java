@@ -15,6 +15,7 @@ import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ImageAdapter;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentHomeBinding;
 
 
@@ -66,39 +67,53 @@ public class HomeFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 1;
+
+//                    Utils.ping(getActivity(), "Access Denied");
+
                 } else if (position == 1) {
-                    fragment = new StaffFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
-                            .replace(R.id.frame_container, fragment).commit();
-                    AppConfiguration.firsttimeback = true;
-                    AppConfiguration.position = 2;
+//                    fragment = new StaffFragment();
+//                    fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+//                            .replace(R.id.frame_container, fragment).commit();
+//                    AppConfiguration.firsttimeback = true;
+//                    AppConfiguration.position = 2;
+
+                    Utils.ping(getActivity(), "Access Denied");
+
                 } else if (position == 2) {
-                    fragment = new HRFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
-                            .replace(R.id.frame_container, fragment).commit();
-                    AppConfiguration.firsttimeback = true;
-                    AppConfiguration.position = 5;
+//                    fragment = new HRFragment();
+//                    fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
+//                            .replace(R.id.frame_container, fragment).commit();
+//                    AppConfiguration.firsttimeback = true;
+//                    AppConfiguration.position = 5;
+
+                    Utils.ping(getActivity(), "Access Denied");
 
                 }else if (position == 3) {
-                    fragment = new AccountFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
-                            .replace(R.id.frame_container, fragment).commit();
-                    AppConfiguration.firsttimeback = true;
-                    AppConfiguration.position = 4;
+//                    fragment = new AccountFragment();
+//                    fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+//                            .replace(R.id.frame_container, fragment).commit();
+//                    AppConfiguration.firsttimeback = true;
+//                    AppConfiguration.position = 4;
+
+                    Utils.ping(getActivity(), "Access Denied");
+
                 }  else if (position == 4) {
-                    fragment = new SMSFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
-                            .replace(R.id.frame_container, fragment).commit();
-                    AppConfiguration.firsttimeback = true;
-                    AppConfiguration.position = 3;
+//                    fragment = new SMSFragment();
+//                    fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+//                            .replace(R.id.frame_container, fragment).commit();
+//                    AppConfiguration.firsttimeback = true;
+//                    AppConfiguration.position = 3;
+
+                    Utils.ping(getActivity(), "Access Denied");
+
                 }else if (position == 5) {
                     fragment = new MISFragment();
                     fragmentManager = getFragmentManager();

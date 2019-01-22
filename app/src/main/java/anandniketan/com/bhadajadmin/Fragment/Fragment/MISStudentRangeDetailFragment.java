@@ -209,7 +209,6 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
         return map;
     }
 
-
     private void callResultClassWise2() {
         if (!Utils.checkNetwork(getActivity())) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
@@ -283,7 +282,7 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
 
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<MISStudentResultDataModel.TermDatum>>();
+        listDataChild = new HashMap<>();
         for (int i = 0; i < finalArrayAnnouncementFinal.size(); i++) {
             listDataHeader.add(finalArrayAnnouncementFinal.get(i).getStandard() + "|" + finalArrayAnnouncementFinal.get(i).getClassName() + "|" + finalArrayAnnouncementFinal.get(i).getName() + "|" + finalArrayAnnouncementFinal.get(i).getPercentage());
             Log.d("header", "" + listDataHeader);

@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Interface.onViewClick;
-import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.ListGroupStudentInquiryDataDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemHeaderBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemInquiryDataBinding;
@@ -35,13 +35,14 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
     private HashMap<String, List<StudentInquiryModel.StausDetail>> listChildData;
     private HashMap<String, String> listfooterDate;
     private onViewClick onViewClickRef;
+    private String status;
 
-
-    public ExpandableListAdapterInquiryData(Context context, List<StudentInquiryModel.FinalArray> listDataHeader, HashMap<String,List<StudentInquiryModel.StausDetail>> listDataChild,onViewClick onViewClickRef ) {
+    public ExpandableListAdapterInquiryData(Context context, List<StudentInquiryModel.FinalArray> listDataHeader, HashMap<String, List<StudentInquiryModel.StausDetail>> listDataChild, onViewClick onViewClickRef, String status) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
         this.onViewClickRef = onViewClickRef;
+        this.status = status;
     }
 
     @Override
@@ -60,10 +61,13 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
         ListItemInquiryDataBinding rowBinding;
 //        LayoutInflater infalInflater = (LayoutInflater) this._context
 //                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         if (childPosition > 0 && childPosition < getChildrenCount(groupPosition)) {
 
             final StudentInquiryModel.StausDetail currentchild = getChild(groupPosition, childPosition - 1);
-            rowBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.list_item_inquiry_data, parent, false);
+            rowBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.list_item_inquiry_data, parent, false);
+
+
             convertView = rowBinding.getRoot();
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -78,9 +82,9 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
             }
             rowBinding.statusTxt.setText(currentchild.getStatus1());
 
-            if(childPosition == listChildData.get(String.valueOf(_listDataHeader.get(groupPosition).getStudentID())).size()){
+            if (childPosition == listChildData.get(String.valueOf(_listDataHeader.get(groupPosition).getStudentID())).size()) {
                 rowBinding.profileTxt.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 rowBinding.profileTxt.setVisibility(View.GONE);
             }
 
@@ -88,22 +92,29 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
 
                 @Override
                 public void onClick(View view) {
-                   AppConfiguration.StudentId = String.valueOf(currentchild.getStudentId());
+
+                    AppConfiguration.StudentId = String.valueOf(currentchild.getStudentId());
                     //AppConfiguration.StudentStatus = String.valueOf(currentchild. get);
                     onViewClickRef.getViewClick();
                 }
             });
 
         } else if (childPosition == 0) {
-            headerBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.list_item_header,parent, false);
+            headerBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.list_item_header, parent, false);
             convertView = headerBinding.getRoot();
         }
+
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(String.valueOf(this._listDataHeader.get(groupPosition).getStudentID())).size() + 1;
+        if (status.equalsIgnoreCase("true")) {
+            return this.listChildData.get(String.valueOf(this._listDataHeader.get(groupPosition).getStudentID())).size() + 1;
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override
@@ -139,7 +150,8 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
         if (convertView == null) {
 
         }
-        groupBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.list_group_student_inquiry_data_detail, parent, false);
+
+        groupBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.list_group_student_inquiry_data_detail, parent, false);
         convertView = groupBinding.getRoot();
         String str = String.valueOf(groupPosition + 1);
 
@@ -154,7 +166,6 @@ public class ExpandableListAdapterInquiryData extends BaseExpandableListAdapter 
         } else {
             groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.absent));
         }
-
 
         return convertView;
     }

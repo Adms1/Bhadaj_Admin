@@ -4,10 +4,14 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,11 +24,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import anandniketan.com.bhadajadmin.Interface.RecyclerItemClick;
 import anandniketan.com.bhadajadmin.Model.MIS.HeadwiseStudent;
 import anandniketan.com.bhadajadmin.Model.MIS.MISHeadwiseFee;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.DialogUtils;
 import anandniketan.com.bhadajadmin.Utility.SpacesItemDecoration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.Utility.WebServices;
@@ -44,14 +50,18 @@ public class HeadwiseFeeAdapter extends RecyclerView.Adapter<HeadwiseFeeAdapter.
     private String termid;
     private HeaderwiseStudentDetailAdapter misFinanceReportAdapter;
     private ArrayList<HeadwiseStudent.Finalarray> financedataValues;
+    private String reqType;
+    private LinearLayoutManager linearLayoutManager;
+    private RecyclerItemClick recyclerItemClick;
 
-    public HeadwiseFeeAdapter(Context context, ArrayList<MISHeadwiseFee.FinalArray> finalArrayGetFeeModels, String termid) {
+    public HeadwiseFeeAdapter(Context context, ArrayList<MISHeadwiseFee.FinalArray> finalArrayGetFeeModels, String termid, String reqType, LinearLayoutManager linearLayoutManager, RecyclerItemClick recyclerItemClick) {
 
         this.context = context;
         this.finalArrayGetFeeModels = finalArrayGetFeeModels;
         this.termid = termid;
-
-//        sparseBooleanArray=new SparseBooleanArray();
+        this.reqType = reqType;
+        this.linearLayoutManager = linearLayoutManager;
+        this.recyclerItemClick = recyclerItemClick;
 
     }
 
@@ -65,7 +75,18 @@ public class HeadwiseFeeAdapter extends RecyclerView.Adapter<HeadwiseFeeAdapter.
     public void onBindViewHolder(final HeadwiseFeeAdapter.MyViewHolder holder, final int position) {
 
 //        holder.ivview.setChecked(finalArrayGetFeeModels.get(position).isSelected());
-        holder.ivview.setTag(new Integer(position));
+
+        if (reqType.equalsIgnoreCase("DueTerm1") || reqType.equalsIgnoreCase("DueTerm2")) {
+            holder.phonetxt.setVisibility(View.GONE);
+            holder.ivPhone.setVisibility(View.VISIBLE);
+            holder.ivSMS.setVisibility(View.VISIBLE);
+        } else {
+            holder.phonetxt.setVisibility(View.VISIBLE);
+            holder.ivPhone.setVisibility(View.GONE);
+            holder.ivSMS.setVisibility(View.GONE);
+        }
+
+        holder.llMain.setTag(new Integer(position));
 
         if (finalArrayGetFeeModels.get(position).isSelected()) {
 
@@ -135,7 +156,39 @@ public class HeadwiseFeeAdapter extends RecyclerView.Adapter<HeadwiseFeeAdapter.
 
 //        setClickListner(holder, position);
 
-        holder.ivview.setOnClickListener(new View.OnClickListener() {
+        holder.ivPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setData(Uri.parse("tel:" + finalArrayGetFeeModels.get(position).getMobileNo()));
+                    context.startActivity(intent);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        holder.ivSMS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.msg_confirm_msg, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+
+                    }
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+            }
+        });
+
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                notifyDataSetChanged();
@@ -152,6 +205,7 @@ public class HeadwiseFeeAdapter extends RecyclerView.Adapter<HeadwiseFeeAdapter.
                 }
 
                 notifyDataSetChanged();
+
 //                act.fillSubCategories(position);
 
 //                lastCheckedPosition=position;
@@ -190,13 +244,13 @@ public class HeadwiseFeeAdapter extends RecyclerView.Adapter<HeadwiseFeeAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView classtxt, stndrdtxt, phonetxt;
-        ImageView ivview;
-        LinearLayout ll;
+        ImageView ivview, ivPhone, ivSMS;
+        LinearLayout ll, llMain;
         RecyclerView rvList;
 
         private boolean mIsViewExpanded;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(final View itemView) {
             super(itemView);
 //            head_txt = (TextView) itemView.findViewById(R.id.head_txt);
             classtxt = itemView.findViewById(R.id.head_item_class_txt);
@@ -204,7 +258,18 @@ public class HeadwiseFeeAdapter extends RecyclerView.Adapter<HeadwiseFeeAdapter.
             phonetxt = itemView.findViewById(R.id.head_item_phone_txt);
             ivview = itemView.findViewById(R.id.head_item_view_txt);
             rvList = itemView.findViewById(R.id.headwisestudent_rv_finance_list);
+            ivPhone = itemView.findViewById(R.id.head_item_iv_phone);
+            ivSMS = itemView.findViewById(R.id.head_item_iv_sms);
             ll = itemView.findViewById(R.id.headwisestudent_linear_finance_recyler_grid);
+            llMain = itemView.findViewById(R.id.llHeader);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recyclerItemClick.onItemClick(itemView, getAdapterPosition());
+                }
+            });
+
 
         }
 

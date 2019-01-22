@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import anandniketan.com.bhadajadmin.Interface.onViewClick;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 /**
  * Created by admsandroid on 11/21/2017.
@@ -23,13 +22,14 @@ public class StudentFilteredDataAdapter extends RecyclerView.Adapter<StudentFilt
     private Context context;
     private StudentAttendanceModel filteredDataModel;
     private onViewClick onViewClick;
+    private String status;
 
-    public StudentFilteredDataAdapter(Context mContext, StudentAttendanceModel filteredDataModel, onViewClick onViewClick) {
+    public StudentFilteredDataAdapter(Context mContext, StudentAttendanceModel filteredDataModel, onViewClick onViewClick, String status) {
         this.context = mContext;
         this.filteredDataModel = filteredDataModel;
         this.onViewClick = onViewClick;
+        this.status = status;
     }
-
 
     @Override
     public StudentFilteredDataAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,9 +48,14 @@ public class StudentFilteredDataAdapter extends RecyclerView.Adapter<StudentFilt
         holder.view_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppConfiguration.StudentId = filter.getStudentID().toString();
-                AppConfiguration.StudentStatus  = filter.getCurrentStatus();
-                onViewClick.getViewClick();
+
+                if (status.equalsIgnoreCase("true")) {
+                    AppConfiguration.StudentId = filter.getStudentID().toString();
+                    AppConfiguration.StudentStatus = filter.getCurrentStatus();
+                    onViewClick.getViewClick();
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
     }
@@ -65,13 +70,12 @@ public class StudentFilteredDataAdapter extends RecyclerView.Adapter<StudentFilt
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            parentsname_txt = (TextView) itemView.findViewById(R.id.parentsname_txt);
-            studentname_txt = (TextView) itemView.findViewById(R.id.studentname_txt);
-            grnno_txt = (TextView) itemView.findViewById(R.id.grnno_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            view_txt = (TextView) itemView.findViewById(R.id.view_txt);
+            parentsname_txt = itemView.findViewById(R.id.parentsname_txt);
+            studentname_txt = itemView.findViewById(R.id.studentname_txt);
+            grnno_txt = itemView.findViewById(R.id.grnno_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            view_txt = itemView.findViewById(R.id.view_txt);
 
         }
     }
-
 }

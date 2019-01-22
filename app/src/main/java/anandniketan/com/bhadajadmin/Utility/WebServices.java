@@ -46,6 +46,7 @@ import anandniketan.com.bhadajadmin.Model.MIS.TransportMainModel;
 import anandniketan.com.bhadajadmin.Model.MISModel;
 import anandniketan.com.bhadajadmin.Model.MIStudentWiseCalendarModel;
 import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
@@ -111,7 +112,6 @@ public interface WebServices {
     @POST("/Admin_SearchStudent")
     void getAdmin_SearchStudent(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
-
     @FormUrlEncoded
     @POST("/GetStaffFullDetail")
     void getAdmin_SearchStaff(@FieldMap Map<String, String> map, Callback<SearchStaffModel> callback);
@@ -119,7 +119,6 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("/Admin_StudentFullDetail")
     void getStudentFullDetail(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
-
 
     @FormUrlEncoded
     @POST("/StudentTransportDetail")
@@ -140,7 +139,6 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("/GetOnlinePaymentPermission")
     void getOnlinePaymentPermission(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
-
 
     @FormUrlEncoded
     @POST("/GetRoutePickUpPointDetail")
@@ -228,7 +226,6 @@ public interface WebServices {
     @POST("/DeleteClassTeacher")
     void DeleteClassTeacher(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 
-
     @FormUrlEncoded
     @POST("/InsertMenuPermission")
     void InsertMenuPermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
@@ -261,7 +258,6 @@ public interface WebServices {
     @POST("/SendAppSMS")
     void SendAppSMS(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
 
-
     @FormUrlEncoded
     @POST("/InsertAbsentTodaySMS")
     void InsertAbsentTodaySMS(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
@@ -273,7 +269,6 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("/InsertProfilePermission")
     void InsertProfilePermission(@FieldMap Map<String, String> map, Callback<InsertMenuPermissionModel> callback);
-
 
     @FormUrlEncoded
     @POST("/InsertOnlinePaymentPermission")
@@ -538,8 +533,6 @@ public interface WebServices {
     @POST("/OnlineTransactionList")
     void getOnlineTransactionList(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 
-
-
     @FormUrlEncoded
     @POST("/GetTrasportCharges")
     void getTransportChargesDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
@@ -547,7 +540,6 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("/GetVehicleDetail")
     void getVehicleDetail(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
-
 
     @FormUrlEncoded
     @POST("/GetLeaveStatus")
@@ -609,7 +601,6 @@ public interface WebServices {
     @POST("/GetDesignation")
     void getDesignation(@FieldMap Map<String, String> map, Callback<DesignationModel> callback);
 
-
     @FormUrlEncoded
     @POST("/GetStaffFullDetail")
     void getStaffFullDetail(@FieldMap Map<String, String> map, Callback<SearchStaffModel> callback);
@@ -621,7 +612,6 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("/GetTestForMarks")
     void getTestForMarks(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
-
 
     @FormUrlEncoded
     @POST("/GetMarks")
@@ -639,11 +629,9 @@ public interface WebServices {
     @POST("uploadpdf.aspx")
     Call<UploadObject> uploadMultiFile(@Part MultipartBody.Part file1,@Part MultipartBody.Part file2,@Part MultipartBody.Part file3);
 
-
     @Multipart
     @retrofit2.http.POST("uploadpdf.aspx")
     Call<okhttp3.ResponseBody> uploadSingleFile(@Part MultipartBody.Part file);
-
 
     @FormUrlEncoded
     @POST("/TotalFeesCollectionByTerm")
@@ -664,7 +652,6 @@ public interface WebServices {
     @FormUrlEncoded
     @POST("/GetMISAccountByType")
     void getMISAccountByType(@FieldMap Map<String, String> map, Callback<MISAccountModel> callback);
-
 
     @FormUrlEncoded
     @POST("/GetMISAccountByStandard")
@@ -694,7 +681,6 @@ public interface WebServices {
     @POST("/GetMISTaskData")
     void getMISTaskData(@FieldMap Map<String, String> map, Callback<MISTaskReportDetailModel> callback);
 
-
     @FormUrlEncoded
     @POST("/GetTopperList")
     void getTopperList(@FieldMap Map<String, String> map, Callback<MISSchoolResultModel> callback);
@@ -715,11 +701,9 @@ public interface WebServices {
     @POST("/HeadWiseFeesCollection")
     void getHeadWiseFeesCollection(@FieldMap Map<String, String> map, Callback<MISFinanaceModel> callback);
 
-
     @FormUrlEncoded
     @POST("/AddDeviceDetailAdmin")
     void addDeviceDetailAdmin(@FieldMap Map<String, String> map, Callback<MISModel> callback);
-
 
 //    static let baseUrl:String            = "http://192.168.1.11:8086/MobileApp_Service.asmx/"
 //
@@ -914,13 +898,11 @@ public interface WebServices {
 //    static let getHolidayCategoryApi:String                        = "\(baseUrl)GetHolidayCategory"
 //    static let insertHolidayApi:String                             = "\(baseUrl)InsertHoliday"
 
-
     //Antra from 7/1/2018
 
     @FormUrlEncoded
     @retrofit2.http.GET
     Call<HeadwiseStudent> getHeadWiseFeesCollectionStudent(@Url String url);
-
 
     @retrofit2.http.GET
     Call<MISHeadwiseFee> getHeadwiseFeeDetail(@Url String url);
@@ -933,5 +915,8 @@ public interface WebServices {
 
     @retrofit2.http.GET
     Call<MIStudentWiseCalendarModel> getSchoolCalendarDetail(@Url String url);
+
+    @retrofit2.http.GET
+    Call<PermissionDataModel> getPermissionData(@Url String url);
 
 }

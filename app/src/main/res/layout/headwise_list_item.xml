@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/linear_border2"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/llHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/divider"
         android:orientation="horizontal"
         android:paddingBottom="1dp"
         android:visibility="visible"
+        android:gravity="center"
         android:weightSum="1">
 
         <TextView
@@ -45,10 +46,32 @@
             android:layout_weight="0.3"
             android:paddingLeft="@dimen/_2sdp"
             android:paddingTop="@dimen/_7sdp"
+            android:visibility="gone"
             android:text="@string/registrationno"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp" />
+
+        <ImageView
+            android:id="@+id/head_item_iv_phone"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_gravity="center"
+            android:layout_weight="0.2"
+            android:src="@drawable/ic_phone"
+            android:tint="@color/scheduleheadertextcolor"
+            android:visibility="gone" />
+
+
+        <ImageView
+            android:id="@+id/head_item_iv_sms"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_gravity="center"
+            android:layout_weight="0.1"
+            android:src="@drawable/ic_sms"
+            android:tint="@color/scheduleheadertextcolor"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/head_item_view_txt"
@@ -70,7 +93,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/white1"
         android:orientation="vertical"
         android:visibility="gone">

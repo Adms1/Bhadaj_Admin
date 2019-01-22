@@ -27,14 +27,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +48,6 @@ import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PermissionUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
-
 import anandniketan.com.bhadajadmin.databinding.FragmentAnnouncementBinding;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -108,7 +105,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        reqPermissionCallback = (PermissionUtils.ReqPermissionCallback)this;
+        reqPermissionCallback = this;
        // onUpdateRecordRef = (OnUpdateRecord)this;
 
     }
@@ -121,27 +118,27 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
         rootView = fragmentAnnouncementBinding.getRoot();
         mContext = getActivity().getApplicationContext();
-        radioGroupUploadType = (RadioGroup)rootView.findViewById(R.id.upload_type_group);
-        radioGroupStatus = (RadioGroup)rootView.findViewById(R.id.status_group);
-        radioGroupStandard = (RadioGroup)rootView.findViewById(R.id.standard_group);
-        etSubject = (EditText)rootView.findViewById(R.id.subject_edt);
-        etAnnsText = (EditText)rootView.findViewById(R.id.anns_edt);
-        gridViewStandard = (GridView)rootView.findViewById(R.id.standard_grid_view);
-        btnChooseFile  = (Button)rootView.findViewById(R.id.btn_uploadPDF);
-        btnAdd = (AppCompatButton)rootView.findViewById(R.id.upload_btn);
-        rbEnterAnnoucement = (RadioButton)rootView.findViewById(R.id.rb_enterAnns);
-        rbUploadPdf = (RadioButton)rootView.findViewById(R.id.rb_uploadPdf);
-        rbStatusActive =(RadioButton)rootView.findViewById(R.id.active_chk);
-        rbStatusInactive =(RadioButton)rootView.findViewById(R.id.inactive_chk);
-        rbAll = (RadioButton)rootView.findViewById(R.id.rb_all);
-        rbIndividual = (RadioButton)rootView.findViewById(R.id.rb_individual);
-        btnBack = (Button)rootView.findViewById(R.id.btnBack);
-        llAnnsView = (LinearLayout)rootView.findViewById(R.id.linear_announcment);
-        llPdfView = (LinearLayout)rootView.findViewById(R.id.linear_pdf);
-        btnDate = (Button)rootView.findViewById(R.id.date_btn);
-        cbScheduleDateTime = (AppCompatCheckBox)rootView.findViewById(R.id.cb_scheduledatetime);
-        llDateTimeView = (LinearLayout)rootView.findViewById(R.id.linear_date);
-        cbScheduledatetime = (AppCompatCheckBox)rootView.findViewById(R.id.cb_scheduledatetime);
+        radioGroupUploadType = rootView.findViewById(R.id.upload_type_group);
+        radioGroupStatus = rootView.findViewById(R.id.status_group);
+        radioGroupStandard = rootView.findViewById(R.id.standard_group);
+        etSubject = rootView.findViewById(R.id.subject_edt);
+        etAnnsText = rootView.findViewById(R.id.anns_edt);
+        gridViewStandard = rootView.findViewById(R.id.standard_grid_view);
+        btnChooseFile = rootView.findViewById(R.id.btn_uploadPDF);
+        btnAdd = rootView.findViewById(R.id.upload_btn);
+        rbEnterAnnoucement = rootView.findViewById(R.id.rb_enterAnns);
+        rbUploadPdf = rootView.findViewById(R.id.rb_uploadPdf);
+        rbStatusActive = rootView.findViewById(R.id.active_chk);
+        rbStatusInactive = rootView.findViewById(R.id.inactive_chk);
+        rbAll = rootView.findViewById(R.id.rb_all);
+        rbIndividual = rootView.findViewById(R.id.rb_individual);
+        btnBack = rootView.findViewById(R.id.btnBack);
+        llAnnsView = rootView.findViewById(R.id.linear_announcment);
+        llPdfView = rootView.findViewById(R.id.linear_pdf);
+        btnDate = rootView.findViewById(R.id.date_btn);
+        cbScheduleDateTime = rootView.findViewById(R.id.cb_scheduledatetime);
+        llDateTimeView = rootView.findViewById(R.id.linear_date);
+        cbScheduledatetime = rootView.findViewById(R.id.cb_scheduledatetime);
         llAnnsView.setVisibility(View.VISIBLE);
         llPdfView.setVisibility(View.GONE);
         setListners();
@@ -308,8 +305,9 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 AppConfiguration.position = 11;
-                fragment = new AnnoucementListFragment();
+                fragment = new StudentFragment();
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                 AppConfiguration.firsttimeback = true;

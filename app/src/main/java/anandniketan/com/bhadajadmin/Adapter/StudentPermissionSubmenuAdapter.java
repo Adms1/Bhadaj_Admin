@@ -28,10 +28,15 @@ public class StudentPermissionSubmenuAdapter extends BaseAdapter {
     };
     public String[] mThumbNames = {"ReportCard", "Online Payment", "Mark/Syllabus","Suggestion"};
     private Context mContext;
+    private String reportstatus, onlinepaystatus, markstatus, suggestionstatus;
 
     // Constructor
-    public StudentPermissionSubmenuAdapter(Context c) {
+    public StudentPermissionSubmenuAdapter(Context c, String reportstatus, String onlinepaystatus, String markstatus, String suggestionstatus) {
         mContext = c;
+        this.reportstatus = reportstatus;
+        this.onlinepaystatus = onlinepaystatus;
+        this.markstatus = markstatus;
+        this.suggestionstatus = suggestionstatus;
     }
 
     @Override
@@ -57,10 +62,16 @@ public class StudentPermissionSubmenuAdapter extends BaseAdapter {
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
-        imgGridOptions = (ImageView) convertView.findViewById(R.id.imgGridOptions);
-        txtGridOptionsName = (TextView) convertView.findViewById(R.id.txtGridOptionsName);
+        imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+        txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
+
+        if (reportstatus.equalsIgnoreCase("true")) {
+
+        }
+
         String url = mThumbIds[position];
 //        Log.d("url", url);
+
         Glide.with(mContext)
                 .load(url)
                 .fitCenter()

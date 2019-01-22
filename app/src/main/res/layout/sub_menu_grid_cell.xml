@@ -21,7 +21,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:singleLine="false"
-        android:text="In Out Summary Details"
+        android:text=""
         android:textColor="@color/scheduleheadertextcolor"
         android:textSize="@dimen/_9sdp"
         android:textStyle="bold" />

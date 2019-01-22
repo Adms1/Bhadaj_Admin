@@ -39,7 +39,6 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
     private ExpandableListAnnoucement expandableListAnnoucementAdapter;
     private ExpandableListView expandableListView;
     private FloatingActionButton fabAddAnnouncement;
-    private List<AnnouncementModel> finalArrayAnnouncement;
     private List<AnnouncementModel.FinalArray> finalArrayAnnouncementFinal;
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<AnnouncementModel.FinalArray>> listDataChild;
@@ -50,7 +49,7 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
     private onDeleteWithId onDeleteWithIdRef;
     private OnUpdateRecord onUpdateRecordRef;
     private Button backBtn;
-
+    private String status = "", updateStatus = "", deleteStatus = "";
 
     public AnnoucementListFragment() {
         mContext = getActivity();
@@ -59,8 +58,8 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        onDeleteWithIdRef = (onDeleteWithId)this;
-        onUpdateRecordRef = (OnUpdateRecord)this;
+        onDeleteWithIdRef = this;
+        onUpdateRecordRef = this;
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 11;
     }
@@ -71,18 +70,21 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
         mContext = getActivity();
         rootView = inflater.inflate(R.layout.fragment_annoucement_list,container,false);
 
-        fabAddAnnouncement = (FloatingActionButton)rootView.findViewById(R.id.fab_add_annoucement);
-        expandableListView = (ExpandableListView)rootView.findViewById(R.id.annoucement_list);
-        txtNoRecordsAnnouncement = (TextView)rootView.findViewById(R.id.txt_empty_view);
-        btnMenuLinear = (Button)rootView.findViewById(R.id.btnmenu);
-        backBtn = (Button)rootView.findViewById(R.id.btnBack);
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("status");
+        updateStatus = bundle.getString("updatestatus");
+        deleteStatus = bundle.getString("deletestatus");
+
+        fabAddAnnouncement = rootView.findViewById(R.id.fab_add_annoucement);
+        expandableListView = rootView.findViewById(R.id.annoucement_list);
+        txtNoRecordsAnnouncement = rootView.findViewById(R.id.txt_empty_view);
+        btnMenuLinear = rootView.findViewById(R.id.btnmenu);
+        backBtn = rootView.findViewById(R.id.btnBack);
         setListners();
         callAnnouncementListApi();
 
         return rootView;
     }
-
-
 
     public void setListners() {
         fabAddAnnouncement.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +150,7 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
                         txtNoRecordsAnnouncement.setVisibility(View.GONE);
                         expandableListView.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        expandableListAnnoucementAdapter = new ExpandableListAnnoucement(getActivity(),listDataHeader,listDataChild,onDeleteWithIdRef,onUpdateRecordRef);
+                        expandableListAnnoucementAdapter = new ExpandableListAnnoucement(getActivity(), listDataHeader, listDataChild, onDeleteWithIdRef, onUpdateRecordRef, status, updateStatus, deleteStatus);
                         expandableListView.setAdapter(expandableListAnnoucementAdapter);
                     } else {
                         txtNoRecordsAnnouncement.setVisibility(View.VISIBLE);
@@ -176,7 +178,7 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
 
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<AnnouncementModel.FinalArray>>();
+        listDataChild = new HashMap<>();
         for (int i = 0; i < finalArrayAnnouncementFinal.size(); i++) {
             listDataHeader.add(finalArrayAnnouncementFinal.get(i).getSubjectName()+"|"+finalArrayAnnouncementFinal.get(i).getCreateDate()+"|"+finalArrayAnnouncementFinal.get(i).getAnnStatus());
             Log.d("header", "" + listDataHeader);

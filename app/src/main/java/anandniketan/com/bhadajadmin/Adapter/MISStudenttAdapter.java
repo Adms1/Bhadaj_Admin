@@ -118,8 +118,7 @@ public class MISStudenttAdapter extends BaseExpandableListAdapter {
                         status_txt.setVisibility(View.VISIBLE);
 
 
-                    }
-                    if (requestType.equalsIgnoreCase("Present")) {
+                    } else if (requestType.equalsIgnoreCase("Present") || requestType.equalsIgnoreCase("Between alumini left")) {
 
                         status_txt.setVisibility(View.GONE);
 
@@ -389,7 +388,7 @@ public class MISStudenttAdapter extends BaseExpandableListAdapter {
                 headerList1.setVisibility(View.VISIBLE);
             } else if (requestType.equalsIgnoreCase("ConsistentAbsent")) {
                 headerList2.setVisibility(View.VISIBLE);
-            } else if (requestType.equalsIgnoreCase("Present")) {
+            } else if (requestType.equalsIgnoreCase("Present") || requestType.equalsIgnoreCase("Between alumini left")) {
                 headerList3.setVisibility(View.VISIBLE);
             } else if (requestType.equalsIgnoreCase("Total")) {
                 headerList4.setVisibility(View.VISIBLE);

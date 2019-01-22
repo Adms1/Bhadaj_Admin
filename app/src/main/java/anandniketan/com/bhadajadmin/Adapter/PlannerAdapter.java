@@ -10,26 +10,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
-import anandniketan.com.bhadajadmin.Interface.OnUpdateRecord;
 import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
 import anandniketan.com.bhadajadmin.Model.Student.PlannerModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.DialogUtils;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class PlannerAdapter extends RecyclerView.Adapter<PlannerAdapter.MyViewHolder> {
     private Context context;
     private PlannerModel plannerList;
     private OnEditRecordWithPosition onUpdateRecordRef;
     private onDeleteWithId onDeleteWithIdRef;
+    private String status, updatestatus, deletestatus;
 
-
-    public PlannerAdapter(Context mContext, PlannerModel plannerList,OnEditRecordWithPosition onUpdateRecordRef,onDeleteWithId onDeleteWithIdRef) {
+    public PlannerAdapter(Context mContext, PlannerModel plannerList, OnEditRecordWithPosition onUpdateRecordRef, onDeleteWithId onDeleteWithIdRef, String status, String updatestatus, String deletestatus) {
         this.context=mContext;
         this.plannerList=plannerList;
         this.onDeleteWithIdRef = onDeleteWithIdRef;
         this.onUpdateRecordRef = onUpdateRecordRef;
+        this.status = status;
+        this.deletestatus = deletestatus;
+        this.updatestatus = updatestatus;
     }
 
 
@@ -48,35 +49,41 @@ public class PlannerAdapter extends RecyclerView.Adapter<PlannerAdapter.MyViewHo
         holder.name_txt.setText(result.getName());
         holder.startdate_txt.setText(result.getStartDate());
         holder.endate_txt.setText(result.getEndDate());
-        holder.iv_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
         holder.iv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                DialogUtils.createConfirmDialog(context,R.string.app_name,R.string.delete_confirm_msg,new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                onDeleteWithIdRef.deleteRecordWithId(String.valueOf(result.getID()));
+                if (deletestatus.equalsIgnoreCase("true")) {
+
+                    DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.delete_confirm_msg, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    onDeleteWithIdRef.deleteRecordWithId(String.valueOf(result.getID()));
+                                }
+                            }, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
                             }
-                        },new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }
-                ).show();
+                    ).show();
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
 
         holder.iv_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onUpdateRecordRef.getEditpermission(position);
+
+                if (status.equalsIgnoreCase("true")) {
+
+                    onUpdateRecordRef.getEditpermission(position);
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
 
@@ -94,12 +101,12 @@ public class PlannerAdapter extends RecyclerView.Adapter<PlannerAdapter.MyViewHo
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            type_txt = (TextView) itemView.findViewById(R.id.type_txt);
-            name_txt = (TextView) itemView.findViewById(R.id.name_txt);
-            startdate_txt = (TextView) itemView.findViewById(R.id.startdate_txt);
-            endate_txt = (TextView) itemView.findViewById(R.id.endate_txt);
-            iv_edit = (ImageView) itemView.findViewById(R.id.iv_edit);
-            iv_delete = (ImageView) itemView.findViewById(R.id.iv_delete);
+            type_txt = itemView.findViewById(R.id.type_txt);
+            name_txt = itemView.findViewById(R.id.name_txt);
+            startdate_txt = itemView.findViewById(R.id.startdate_txt);
+            endate_txt = itemView.findViewById(R.id.endate_txt);
+            iv_edit = itemView.findViewById(R.id.iv_edit);
+            iv_delete = itemView.findViewById(R.id.iv_delete);
         }
     }
 }

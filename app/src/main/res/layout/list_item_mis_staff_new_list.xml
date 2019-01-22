@@ -25,36 +25,13 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp" />
+
         <TextView
             android:id="@+id/status_txt"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp" />
-
-        <TextView
-            android:id="@+id/leave_txt"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_12ssp" />
-
-        <TextView
-            android:id="@+id/reason_txt"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:text="Reason"
-            android:gravity="center"
-            android:visibility="gone"
             android:layout_gravity="center"
             android:textAlignment="center"
             android:textColor="@color/black"
@@ -74,6 +51,17 @@
             android:visibility="gone" />
 
         <TextView
+            android:id="@+id/leave_txt"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp" />
+
+        <TextView
             android:id="@+id/since_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -84,6 +72,19 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/reason_txt"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Reason"
+            android:layout_weight="2"
+            android:textSize="@dimen/_12ssp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
             android:visibility="gone" />
 
         <TextView

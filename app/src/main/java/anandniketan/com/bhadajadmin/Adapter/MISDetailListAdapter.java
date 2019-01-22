@@ -418,7 +418,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
                                 .replace(R.id.frame_container,fragment).commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 66;
+                        AppConfiguration.position = 67;
                     }
                 });
 
@@ -450,7 +450,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                             fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                                     .replace(R.id.frame_container,fragment).addToBackStack( "tag" ).commit();
                             AppConfiguration.firsttimeback = true;
-                            AppConfiguration.position = 66;
+                            AppConfiguration.position = 67;
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }
@@ -482,7 +482,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                             fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                             fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out).replace(R.id.frame_container,fragment).addToBackStack("tag").commit();
                             AppConfiguration.firsttimeback = true;
-                            AppConfiguration.position = 66;
+                            AppConfiguration.position = 67;
 
                         }catch (Exception ex){
                             ex.printStackTrace();
@@ -522,7 +522,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                         fragmentManager =((FragmentActivity)context).getSupportFragmentManager();
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out).replace(R.id.frame_container,fragment).addToBackStack("tag").commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 66;
+                        AppConfiguration.position = 67;
                     }
                 });
 
@@ -549,7 +549,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                             fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
                                     .replace(R.id.frame_container,fragment).addToBackStack( "tag" ).commit();
                             AppConfiguration.firsttimeback = true;
-                            AppConfiguration.position = 66;
+                            AppConfiguration.position = 67;
                         }catch (Exception ex){
                             ex.printStackTrace();
                         }
@@ -579,7 +579,7 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                             fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in,R.anim.zoom_out)
                                     .replace(R.id.frame_container,fragment).addToBackStack( "tag" ).commit();
                             AppConfiguration.firsttimeback = true;
-                            AppConfiguration.position = 66;
+                            AppConfiguration.position = 67;
 
                         }catch (Exception ex){
                             ex.printStackTrace();

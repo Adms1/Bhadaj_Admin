@@ -38,19 +38,23 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<AnnouncementModel.FinalArray>> listChildData;
-    private String standard = "",standardIDS = "";
+    private String standard = "", standardIDS = "";
     private int annousID;
     private onDeleteWithId onDeleteWithIdref;
     private OnUpdateRecord onUpdateRecordRef;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    private String status, updatestatus, deletestatus;
 
-    public ExpandableListAnnoucement(Context context, List<String> listDataHeader, HashMap<String, ArrayList<AnnouncementModel.FinalArray>> listDataChild,onDeleteWithId onDeleteWithIdref,OnUpdateRecord onUpdateRecordRef) {
+    public ExpandableListAnnoucement(Context context, List<String> listDataHeader, HashMap<String, ArrayList<AnnouncementModel.FinalArray>> listDataChild, onDeleteWithId onDeleteWithIdref, OnUpdateRecord onUpdateRecordRef, String status, String updatestatus, String deletestatus) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
         this.onDeleteWithIdref = onDeleteWithIdref;
         this.onUpdateRecordRef = onUpdateRecordRef;
+        this.status = status;
+        this.updatestatus = updatestatus;
+        this.deletestatus = deletestatus;
     }
 
     @Override
@@ -68,28 +72,27 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
 
         final List<AnnouncementModel.FinalArray> childData = getChild(groupPosition, 0);
 
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_child_annoucement, null);
         }
 
 
-        TextView txtGradelabel,txtGrade,txtPdfLink,txtAnnsLabel;
-        LinearLayout Ll_AnnsView,LL_PDFView;
-        txtGrade = (TextView) convertView.findViewById(R.id.txt_grade);
-        txtPdfLink = (TextView)convertView.findViewById(R.id.txt_pdf_link);
-        txtAnnsLabel = (TextView)convertView.findViewById(R.id.txt_annoucement);
-        LL_PDFView = (LinearLayout)convertView.findViewById(R.id.pdf_view);
-        Ll_AnnsView = (LinearLayout)convertView.findViewById(R.id.announcement_view);
-        Button btnDelete  = (Button)convertView.findViewById(R.id.btn_delete);
-        Button btnEdit = (Button)convertView.findViewById(R.id.btn_edit);
+        TextView txtGradelabel, txtGrade, txtPdfLink, txtAnnsLabel;
+        LinearLayout Ll_AnnsView, LL_PDFView;
+        txtGrade = convertView.findViewById(R.id.txt_grade);
+        txtPdfLink = convertView.findViewById(R.id.txt_pdf_link);
+        txtAnnsLabel = convertView.findViewById(R.id.txt_annoucement);
+        LL_PDFView = convertView.findViewById(R.id.pdf_view);
+        Ll_AnnsView = convertView.findViewById(R.id.announcement_view);
+        Button btnDelete = convertView.findViewById(R.id.btn_delete);
+        Button btnEdit = convertView.findViewById(R.id.btn_edit);
 
 
-        if(!TextUtils.isEmpty(childData.get(childPosition).getAnnoucementPDF()) || !childData.get(childPosition).getAnnoucementPDF().equalsIgnoreCase("")){
+        if (!TextUtils.isEmpty(childData.get(childPosition).getAnnoucementPDF()) || !childData.get(childPosition).getAnnoucementPDF().equalsIgnoreCase("")) {
             LL_PDFView.setVisibility(View.VISIBLE);
             Ll_AnnsView.setVisibility(View.GONE);
-        }else{
+        } else {
             LL_PDFView.setVisibility(View.GONE);
             Ll_AnnsView.setVisibility(View.VISIBLE);
 
@@ -105,13 +108,13 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
         txtPdfLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!TextUtils.isEmpty(childData.get(childPosition).getAnnoucementPDF())){
+                if (!TextUtils.isEmpty(childData.get(childPosition).getAnnoucementPDF())) {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW);
-                    browserIntent.setDataAndType(Uri.parse(AppConfiguration.LIVE_BASE_URL+childData.get(childPosition).getAnnoucementPDF()), "application/pdf");
-                    Intent chooser = Intent.createChooser(browserIntent,"Open Pdf");
+                    browserIntent.setDataAndType(Uri.parse(AppConfiguration.LIVE_BASE_URL + childData.get(childPosition).getAnnoucementPDF()), "application/pdf");
+                    Intent chooser = Intent.createChooser(browserIntent, "Open Pdf");
                     _context.startActivity(chooser);
-                }else{
-                    Utils.ping(_context,"No PDF File Found");
+                } else {
+                    Utils.ping(_context, "No PDF File Found");
                 }
             }
         });
@@ -120,35 +123,42 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
 
-                DialogUtils.createConfirmDialog(_context,R.string.app_name,R.string.delete_confirm_msg,new DialogInterface.OnClickListener() {
+                if (deletestatus.equalsIgnoreCase("true")) {
+                    DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.delete_confirm_msg, new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        onDeleteWithIdref.deleteRecordWithId(String.valueOf(childData.get(childPosition).getPKAnnouncmentID()));
-                    }
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            onDeleteWithIdref.deleteRecordWithId(String.valueOf(childData.get(childPosition).getPKAnnouncmentID()));
+                        }
 
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
-               }
-            });
-
+                    }, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+                } else {
+                    Utils.ping(_context, "Access Denied");
+                }
+            }
+        });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 11;
-                onUpdateRecordRef.onUpdateRecord(childData);
-                Bundle bundleData = new Bundle();
-                bundleData.putParcelableArrayList("data",(ArrayList<? extends Parcelable>) childData);
-                fragment = new AnnouncementFragment();
-                fragmentManager = ((FragmentActivity)_context).getSupportFragmentManager();
-                fragment.setArguments(bundleData);
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                if (updatestatus.equalsIgnoreCase("true")) {
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 11;
+                    onUpdateRecordRef.onUpdateRecord(childData);
+                    Bundle bundleData = new Bundle();
+                    bundleData.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) childData);
+                    fragment = new AnnouncementFragment();
+                    fragmentManager = ((FragmentActivity) _context).getSupportFragmentManager();
+                    fragment.setArguments(bundleData);
+                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                } else {
+                    Utils.ping(_context, "Access Denied");
+                }
 
 
             }
@@ -159,7 +169,12 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        if (status.equalsIgnoreCase("true")) {
+            return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override
@@ -190,13 +205,13 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_header_annoucement, null);
         }
-        TextView txt_subject,txt_date;
-        ImageView iv_status,iv_indicator;
+        TextView txt_subject, txt_date;
+        ImageView iv_status, iv_indicator;
 
-        txt_subject = (TextView) convertView.findViewById(R.id.subject_txt);
-        txt_date = (TextView) convertView.findViewById(R.id.createdate_txt);
-        iv_status = (ImageView)convertView.findViewById(R.id.iv_status);
-        iv_indicator = (ImageView)convertView.findViewById(R.id.iv_indicator);
+        txt_subject = convertView.findViewById(R.id.subject_txt);
+        txt_date = convertView.findViewById(R.id.createdate_txt);
+        iv_status = convertView.findViewById(R.id.iv_status);
+        iv_indicator = convertView.findViewById(R.id.iv_indicator);
 
         txt_subject.setText(headerTitle1);
         txt_date.setText(headerTitle2);
@@ -227,10 +242,6 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-
-
-
 
 
 }

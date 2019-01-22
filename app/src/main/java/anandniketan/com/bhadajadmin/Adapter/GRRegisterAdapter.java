@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import anandniketan.com.bhadajadmin.Interface.onViewClick;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 
 /**
@@ -24,11 +24,13 @@ public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.My
     private Context context;
     private StudentAttendanceModel filteredDataModel;
     private onViewClick onViewClick;
+    private String status;
 
-    public GRRegisterAdapter(Context mContext, StudentAttendanceModel studentFullDetailModel, onViewClick onViewClick) {
+    public GRRegisterAdapter(Context mContext, StudentAttendanceModel studentFullDetailModel, onViewClick onViewClick, String status) {
         this.context = mContext;
         this.filteredDataModel = studentFullDetailModel;
         this.onViewClick = onViewClick;
+        this.status = status;
     }
 
 
@@ -51,9 +53,13 @@ public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.My
         holder.view_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppConfiguration.CheckStudentId = String.valueOf(filter.getStudent_ID().toString());
-                Log.d("CheckStudentId",AppConfiguration.CheckStudentId);
-                onViewClick.getViewClick();
+                if (status.equalsIgnoreCase("true")) {
+                    AppConfiguration.CheckStudentId = String.valueOf(filter.getStudent_ID().toString());
+                    Log.d("CheckStudentId", AppConfiguration.CheckStudentId);
+                    onViewClick.getViewClick();
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
     }
@@ -68,12 +74,12 @@ public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.My
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            firstname_txt = (TextView) itemView.findViewById(R.id.firstname_txt);
-            lastname_txt = (TextView) itemView.findViewById(R.id.lastname_txt);
-            grnno_txt = (TextView) itemView.findViewById(R.id.grnno_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            view_txt = (TextView) itemView.findViewById(R.id.view_txt);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            firstname_txt = itemView.findViewById(R.id.firstname_txt);
+            lastname_txt = itemView.findViewById(R.id.lastname_txt);
+            grnno_txt = itemView.findViewById(R.id.grnno_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            view_txt = itemView.findViewById(R.id.view_txt);
 
         }
     }

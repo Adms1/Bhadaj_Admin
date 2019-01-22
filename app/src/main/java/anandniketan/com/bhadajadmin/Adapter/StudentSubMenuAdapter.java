@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.Map;
+
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 
@@ -20,8 +23,6 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
  */
 
 public class StudentSubMenuAdapter extends BaseAdapter {
-    private Context mContext;
-
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Search%20Student.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "View%20Inquiry.png",
@@ -35,13 +36,15 @@ public class StudentSubMenuAdapter extends BaseAdapter {
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Planner.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Gallery.png",
     };
-
-    public String[] mThumbNames = {"Search Student", "View Enquiry", "Student Transport",
-            "Permission", "Attendance", "Left/Active", "New Register","Announcement","Circular","Planner","Gallery"};
+    public String[] mThumbNames = {"Search Student", "View Inquiry", "Student Transport",
+            "Permission", "Attendance", "Left/Active", "New Register", "Announcement", "Circular", "Planner", "Gallery"};
+    private Context mContext;
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
 
     // Constructor
-    public StudentSubMenuAdapter(Context c) {
+    public StudentSubMenuAdapter(Context c, Map<String, PermissionDataModel.Detaill> permissionMap) {
         mContext = c;
+        this.permissionMap = permissionMap;
     }
 
     @Override
@@ -67,17 +70,20 @@ public class StudentSubMenuAdapter extends BaseAdapter {
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
-        imgGridOptions = (ImageView) convertView.findViewById(R.id.imgGridOptions);
-        txtGridOptionsName = (TextView) convertView.findViewById(R.id.txtGridOptionsName);
+        imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+        txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
         String url = mThumbIds[position];
 //        Log.d("url", url);
-        Glide.with(mContext)
-                .load(url)
-                .fitCenter()
-                .into(imgGridOptions);
+
+        if (permissionMap.containsKey(mThumbNames[position]) && permissionMap.get(mThumbNames[position]).getStatus().equalsIgnoreCase("true")) {
+            Glide.with(mContext)
+                    .load(url)
+                    .fitCenter()
+                    .into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
-        txtGridOptionsName.setText(mThumbNames[position]);
+            txtGridOptionsName.setText(mThumbNames[position]);
+        }
         return convertView;
     }
 

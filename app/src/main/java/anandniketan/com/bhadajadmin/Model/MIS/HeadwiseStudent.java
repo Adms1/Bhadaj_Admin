@@ -44,6 +44,12 @@ public class HeadwiseStudent {
         @SerializedName("Term2AmtRecieved")
         @Expose
         private String recievedFeesTerm2;
+        @SerializedName("Term1Due")
+        @Expose
+        private String term1due;
+        @SerializedName("Term2Due")
+        @Expose
+        private String term2due;
 
         public String getHead() {
             return head;
@@ -83,6 +89,22 @@ public class HeadwiseStudent {
 
         public void setRecievedFeesTerm2(String recievedFeesTerm2) {
             this.recievedFeesTerm2 = recievedFeesTerm2;
+        }
+
+        public String getTerm1due() {
+            return term1due;
+        }
+
+        public void setTerm1due(String term1due) {
+            this.term1due = term1due;
+        }
+
+        public String getTerm2due() {
+            return term2due;
+        }
+
+        public void setTerm2due(String term2due) {
+            this.term2due = term2due;
         }
     }
 

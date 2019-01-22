@@ -24,7 +24,6 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,11 +49,7 @@ public class Utils {
         ConnectivityManager cm = (ConnectivityManager) ctxt
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-            // There are no active networks.
-            return false;
-        } else
-            return true;
+        return ni != null;
     }
 
 
@@ -83,13 +78,13 @@ public class Utils {
 
         dialogBuilder.setView(dialogView);
 
-        TextView txt_message_dialog = (TextView) dialogView.findViewById(R.id.txt_message_dialog);
+        TextView txt_message_dialog = dialogView.findViewById(R.id.txt_message_dialog);
         txt_message_dialog.setText(str);
 
-        TextView txt_title_dialog = (TextView) dialogView.findViewById(R.id.txt_title_dialog);
+        TextView txt_title_dialog = dialogView.findViewById(R.id.txt_title_dialog);
         txt_title_dialog.setText(title);
 
-        TextView btn_ok = (TextView) dialogView.findViewById(R.id.btn_ok);
+        TextView btn_ok = dialogView.findViewById(R.id.btn_ok);
 
 
         final AlertDialog alertDialog = dialogBuilder.create();
@@ -154,16 +149,12 @@ public class Utils {
         return mDAY + "/" + mMONTH + "/" + mYEAR;
     }
 
-
-    public static String getCurrentDateTime(String whichFormat) throws ParseException {
+    public static String getCurrentDateTime(String whichFormat) {
         Date today = new Date();
         SimpleDateFormat format = new SimpleDateFormat(whichFormat);
         String dateToStr = format.format(today);
         return dateToStr;
     }
-
-
-
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String getFilePathFromUri(final Context context, final Uri uri) {

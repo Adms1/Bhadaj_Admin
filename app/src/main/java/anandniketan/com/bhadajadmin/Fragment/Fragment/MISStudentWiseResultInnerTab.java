@@ -1,30 +1,23 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
-
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import anandniketan.com.bhadajadmin.Adapter.MISStudentWiseTermWiseResultAdapter;
-import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.FragmentMisstudentWiseResultInnerTabBinding;
 
-
 public class MISStudentWiseResultInnerTab extends Fragment {
-
 
     private FragmentMisstudentWiseResultInnerTabBinding fragmentMISStudentWiseResultInnerTab;
 
@@ -37,7 +30,7 @@ public class MISStudentWiseResultInnerTab extends Fragment {
     public static MISStudentWiseResultInnerTab newInstance(List<MIStudentWiseResultModel.Datum> data) {
         MISStudentWiseResultInnerTab fragment = new MISStudentWiseResultInnerTab();
         Bundle args = new Bundle();
-        dataList = new ArrayList<MIStudentWiseResultModel.Datum>();
+        dataList = new ArrayList<>();
         dataList = data;
         args.putParcelableArrayList("dataList", (ArrayList<? extends Parcelable>) dataList);
         fragment.setArguments(args);

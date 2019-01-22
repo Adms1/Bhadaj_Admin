@@ -47,9 +47,6 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
     public void onBindViewHolder(final MISFinanceReportAdapter.MyViewHolder holder, final int position) {
         try {
 
-            holder.term1_due.setVisibility(View.VISIBLE);
-            holder.term2_due.setVisibility(View.VISIBLE);
-
             holder.term1_due.setText(dataValues.get(position).getDueterm1());
             holder.term2_due.setText(dataValues.get(position).getDueterm2());
 
@@ -99,7 +96,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                                 .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 65;
+                        AppConfiguration.position = 67;
                     }
                 });
 
@@ -120,7 +117,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                                 .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 65;
+                        AppConfiguration.position = 67;
                     }
                 });
 
@@ -141,7 +138,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                                 .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 65;
+                        AppConfiguration.position = 67;
                     }
                 });
 
@@ -162,7 +159,49 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                                 .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 65;
+                        AppConfiguration.position = 67;
+                    }
+                });
+
+                holder.term1_due.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragment = new HeadWiseFeeCollectionDetailFragment();
+                        bundle = new Bundle();
+                        bundle.putString("title", "Term 1 Total Due");
+                        bundle.putString("requestType", "DueTerm1");
+                        bundle.putString("StndrdID", "0");
+                        bundle.putString("TermID", termid);
+//                        bundle.putString("countdata",holder.total_txt.getText().toString());
+//                        bundle.putString("Date",AppConfiguration.staffDate);
+//                        bundle.putString("deptID",String.valueOf(dataValues.get(position).getDepartmentID()));
+                        fragment.setArguments(bundle);
+                        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                                .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                        AppConfiguration.firsttimeback = true;
+                        AppConfiguration.position = 67;
+                    }
+                });
+
+                holder.term2_due.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fragment = new HeadWiseFeeCollectionDetailFragment();
+                        bundle = new Bundle();
+                        bundle.putString("title", "Term 2 Total Due");
+                        bundle.putString("requestType", "DueTerm2");
+                        bundle.putString("StndrdID", "0");
+                        bundle.putString("TermID", termid);
+//                        bundle.putString("countdata",holder.total_txt.getText().toString());
+//                        bundle.putString("Date",AppConfiguration.staffDate);
+//                        bundle.putString("deptID",String.valueOf(dataValues.get(position).getDepartmentID()));
+                        fragment.setArguments(bundle);
+                        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                                .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                        AppConfiguration.firsttimeback = true;
+                        AppConfiguration.position = 67;
                     }
                 });
 
@@ -181,7 +220,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView head_txt, term1_credit_txt, term1_debit_txt, term2_credit_txt, term2_debit_txt, term1_due, term2_due;
 
-        public MyViewHolder(View itemView) {
+        public MyViewHolder(final View itemView) {
             super(itemView);
             head_txt = itemView.findViewById(R.id.head_txt);
             term1_credit_txt = itemView.findViewById(R.id.term1_credit_txt);
@@ -190,6 +229,7 @@ public class MISFinanceReportAdapter extends RecyclerView.Adapter<MISFinanceRepo
             term2_debit_txt = itemView.findViewById(R.id.term2_debit_txt);
             term1_due = itemView.findViewById(R.id.term1_due_txt);
             term2_due = itemView.findViewById(R.id.term2_due_txt);
+
         }
     }
 

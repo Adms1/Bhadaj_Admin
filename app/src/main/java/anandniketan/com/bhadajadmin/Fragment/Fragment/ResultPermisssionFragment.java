@@ -32,7 +32,6 @@ import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
@@ -47,11 +46,6 @@ import retrofit.client.Response;
 
 public class ResultPermisssionFragment extends Fragment {
 
-    private FragmentResultPermisssionBinding fragmentResultPermisssionBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
     //Use for fill TermSpinner
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
     HashMap<Integer, String> spinnerTermMap;
@@ -59,11 +53,17 @@ public class ResultPermisssionFragment extends Fragment {
     //Use for fill List
     List<StudentAttendanceFinalArray> finalArrayResultPermissionList;
     ResultPermissionAdapter resultPermissionAdapter;
-
     //Use for fill section
     List<FinalArrayStandard> finalArrayStandardsList;
     StandardAdapter standardAdapter;
-    String FinalTermIdStr, FinalGradeIsStr, FinalStatusStr = "1",FinalTermDetailIdStr;
+    String FinalTermIdStr, FinalGradeIsStr, FinalStatusStr = "1", FinalTermDetailIdStr;
+    private FragmentResultPermisssionBinding fragmentResultPermisssionBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private String status, updatestatus, deletestatus;
+
     public ResultPermisssionFragment() {
     }
 
@@ -71,6 +71,11 @@ public class ResultPermisssionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentResultPermisssionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_result_permisssion, container, false);
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("reportcardviewstatus");
+        updatestatus = bundle.getString("reportcardupdatestatus");
+        deletestatus = bundle.getString("reportcarddeletestatus");
 
         rootView = fragmentResultPermisssionBinding.getRoot();
         mContext = getActivity().getApplicationContext();
@@ -82,7 +87,6 @@ public class ResultPermisssionFragment extends Fragment {
         return rootView;
     }
 
-
     public void setListners() {
         fragmentResultPermisssionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,11 +97,16 @@ public class ResultPermisssionFragment extends Fragment {
         fragmentResultPermisssionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new StudentPermissionFragment();
+
+//                AppConfiguration.firsttimeback = true;
+//                AppConfiguration.position = 58;
+
+                fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                         .replace(R.id.frame_container, fragment).commit();
+//                getActivity().onBackPressed();
             }
         });
         fragmentResultPermisssionBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -116,21 +125,39 @@ public class ResultPermisssionFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
         fragmentResultPermisssionBinding.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFinalIdStr();
-                if (!FinalGradeIsStr.equalsIgnoreCase("")) {
-                    callInsertResultPermission();
+
+                if (fragmentResultPermisssionBinding.addBtn.getText().toString().equalsIgnoreCase("Update")) {
+
+                    if (updatestatus.equalsIgnoreCase("true")) {
+
+                        getFinalIdStr();
+                        if (!FinalGradeIsStr.equalsIgnoreCase("")) {
+                            callInsertResultPermission();
+                        } else {
+                            Utils.ping(mContext, "Please Select Grade.");
+                        }
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
                 } else {
-                    Utils.ping(mContext, "Please Select Grade.");
+                    getFinalIdStr();
+                    if (!FinalGradeIsStr.equalsIgnoreCase("")) {
+                        callInsertResultPermission();
+                    } else {
+                        Utils.ping(mContext, "Please Select Grade.");
+                    }
                 }
             }
         });
+
         fragmentResultPermisssionBinding.statusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                RadioButton rb = (RadioButton) radioGroup.findViewById(checkedId);
+                RadioButton rb = radioGroup.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
                     // checkedId is the RadioButton selected
                     switch (checkedId) {
@@ -144,6 +171,7 @@ public class ResultPermisssionFragment extends Fragment {
                 }
             }
         });
+
         fragmentResultPermisssionBinding.termDetailSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -281,6 +309,7 @@ public class ResultPermisssionFragment extends Fragment {
 
         FinalTermDetailIdStr = spinnerTermDetailIdMap.get(0);
     }
+
     // CALL ResultPermission API HERE
     private void callResultPermission() {
 
@@ -320,7 +349,7 @@ public class ResultPermisssionFragment extends Fragment {
                             public void getEditpermission() {
                                 UpdatePermission();
                             }
-                        });
+                        }, status);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentResultPermisssionBinding.studentResultPermissionList.setLayoutManager(mLayoutManager);
                         fragmentResultPermisssionBinding.studentResultPermissionList.setItemAnimator(new DefaultItemAnimator());
@@ -445,7 +474,7 @@ public class ResultPermisssionFragment extends Fragment {
         map.put("TermID", FinalTermIdStr);
         map.put("GradeID", FinalGradeIsStr);
         map.put("Status", FinalStatusStr);
-        map.put("TermDetailsID",FinalTermDetailIdStr);
+        map.put("TermDetailsID", FinalTermDetailIdStr);
         return map;
     }
 
@@ -467,8 +496,8 @@ public class ResultPermisssionFragment extends Fragment {
     public void UpdatePermission() {
         List<FinalArrayStandard> standardArray1 = standardAdapter.getDatas();
         for (int i = 0; i < standardArray1.size(); i++) {
-                standardArray1.get(i).setCheckedStatus("0");
-                standardAdapter.notifyDataSetChanged();
+            standardArray1.get(i).setCheckedStatus("0");
+            standardAdapter.notifyDataSetChanged();
         }
         fragmentResultPermisssionBinding.addBtn.setText("Update");
         ArrayList<String> academicYearArray = new ArrayList<String>();

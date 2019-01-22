@@ -11,10 +11,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import anandniketan.com.bhadajadmin.Interface.getEditpermission;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 
 /**
@@ -26,13 +26,14 @@ public class ResultPermissionAdapter extends RecyclerView.Adapter<ResultPermissi
     private StudentAttendanceModel resultPermissionModel;
     private ArrayList<String> rowvalue = new ArrayList<String>();
     getEditpermission listner;
+    private String status;
 
-    public ResultPermissionAdapter(Context mContext, StudentAttendanceModel resultPermissionModel, getEditpermission listner) {
+    public ResultPermissionAdapter(Context mContext, StudentAttendanceModel resultPermissionModel, getEditpermission listner, String status) {
         this.context = mContext;
         this.resultPermissionModel = resultPermissionModel;
         this.listner = listner;
+        this.status = status;
     }
-
 
     @Override
     public ResultPermissionAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,8 +53,12 @@ public class ResultPermissionAdapter extends RecyclerView.Adapter<ResultPermissi
         holder.edit_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rowvalue.add(resultPermissionModel.getYear() + "|" + result.getStandard() + "|" + result.getStatus());
-                listner.getEditpermission();
+                if (status.equalsIgnoreCase("true")) {
+                    rowvalue.add(resultPermissionModel.getYear() + "|" + result.getStandard() + "|" + result.getStatus());
+                    listner.getEditpermission();
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
 
@@ -70,11 +75,11 @@ public class ResultPermissionAdapter extends RecyclerView.Adapter<ResultPermissi
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            academicyear_txt = (TextView) itemView.findViewById(R.id.academicyear_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            resultstatus_txt = (TextView) itemView.findViewById(R.id.resultstatus_txt);
-            edit_img = (ImageView) itemView.findViewById(R.id.edit_img);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            academicyear_txt = itemView.findViewById(R.id.academicyear_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            resultstatus_txt = itemView.findViewById(R.id.resultstatus_txt);
+            edit_img = itemView.findViewById(R.id.edit_img);
 
         }
     }

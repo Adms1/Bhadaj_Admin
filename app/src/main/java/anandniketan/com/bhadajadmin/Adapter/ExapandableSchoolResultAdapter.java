@@ -167,7 +167,6 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
                     tabsTitles[count] = data1.get(count).getTerm();
                 }
 
-
                 ViewPagerAdapter adapter = new ViewPagerAdapter(((FragmentActivity) _context).getSupportFragmentManager(), data1.size(), data1);
                 viewPager.setAdapter(adapter);
                 viewPager.setCurrentItem(0);
@@ -261,12 +260,24 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
 
         @Override
         public Fragment getItem(int position) {
-            try {
-                for (int i = 0; i < mNumOfTabs; i++) {
-                    if (i == position) {
+//            try {
+
+            switch (position) {
+                case 0:
+                    return MISStudentWiseResultInnerTab.newInstance(datumList.get(position).getData());
+
+                case 1:
+                    return MISStudentWiseResultInnerTab.newInstance(datumList.get(position).getData());
+
+                default:
+                    return null;
+            }
+
+//                for (int i = 0; i < mNumOfTabs; i++) {
+//                    if (position == 0) {
 //                    if(fragment == null) {
 //                        if (fragment == null) {
-                        fragment = MISStudentWiseResultInnerTab.newInstance(datumList.get(position).getData());
+//                        fragment = MISStudentWiseResultInnerTab.newInstance(datumList.get(position).getData());
 //                            if(fragment.isAdded()){
 //                                String fragmentTag = getFragmentTag(R.id.viewPager,position);
 //                              //  fragment = ((FragmentActivity)_context).getSupportFragmentManager().findFragmentByTag(fragmentTag);
@@ -283,17 +294,16 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
 //                    }
 //                    }else{
 //                        }
-
 //                        String fragmentTag = getFragmentTag(R.id.viewPager,position);
 //                        fragment = ((FragmentActivity)_context).getSupportFragmentManager().findFragmentByTag(fragmentTag);
 //                    }
-                        break;
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return fragment;
+//                        break;
+//                    }
+//                }
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//            }
+//            return fragment;
 
         }
 
@@ -303,14 +313,13 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
 
         @Override
         public int getCount() {
-            return mNumOfTabs;
+            return datumList.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             return tabsTitles[position];
             //return "Blank";
-
         }
 
         @Override
@@ -321,7 +330,5 @@ public class ExapandableSchoolResultAdapter extends BaseExpandableListAdapter {
                 return false;
             }
         }
-
-
     }
 }

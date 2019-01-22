@@ -32,7 +32,6 @@ public class MISTaskReportGridAdapter extends RecyclerView.Adapter<MISTaskReport
         this.context = mContext;
         this.dataValues = dataValues;
 
-
     }
 
     @Override

@@ -1,6 +1,5 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,8 +29,7 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.HeadwiseFeeAdapter;
-import anandniketan.com.bhadajadmin.Adapter.MISFinanceReportAdapter;
-import anandniketan.com.bhadajadmin.Interface.headwiseCallback;
+import anandniketan.com.bhadajadmin.Interface.RecyclerItemClick;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISHeadwiseFee;
@@ -48,22 +46,20 @@ import retrofit.client.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-//import anandniketan.com.bhadajadmin.databinding.FragmentHeadwiseFeeBinding;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 
 //Created by Antra 7/1/2019
 
-public class HeadWiseFeeCollectionDetailFragment extends Fragment {
+public class HeadWiseFeeCollectionDetailFragment extends Fragment implements RecyclerItemClick {
 
     private RecyclerView rvList;
     private String title = "", requestType = "", termID = "", stndrdID = "";
     private Spinner spAcademic, spStndrd;
     private Context mContext;
     private ProgressBar progressBar;
-    private TextView tvTitle, tvNorecord;
+    private TextView tvTitle, tvNorecord, tvPhone, ivPhone, ivSMS;
     private View rootView;
     private String FinalStandardStr, StandardName, FinalStandardIdStr, FinalFinanaceTermId;
     private ArrayList<MISHeadwiseFee.FinalArray> finalArrayGetFeeModels;
@@ -71,27 +67,27 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
     private HashMap<Integer, String> spinnerTermMap2, spinnerStandardMap;
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
     private List<FinalArrayStandard> finalArrayStandardsList;
-    private MISFinanceReportAdapter misFinanceReportAdapter;
     private Button btnBack, btnMenu;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-
+    private LinearLayoutManager linearlayoutmanager;
     private LinearLayout llHeader;
     private int lastExpandedPosition = -1;
-    private headwiseCallback responseCallBack;
+    private RecyclerItemClick recyclerItemClick;
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<MISHeadwiseFee.TermDatum>> listDataChild;
     private List<MISHeadwiseFee.FinalArray> finalArrayAnnouncementFinal;
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        responseCallBack = (headwiseCallback)this;
-//    }
-
     public HeadWiseFeeCollectionDetailFragment() {
         // Required empty public constructor
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        recyclerItemClick = this;
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,8 +102,8 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_headwise_fee, container, false);
         mContext = getActivity();
 
-        AppConfiguration.position = 66;
-        AppConfiguration.firsttimeback = true;
+//        AppConfiguration.position = 5;
+//        AppConfiguration.firsttimeback = true;
 
 //        rootView = fragmentMisDataBinding.getRoot();
         progressBar = rootView.findViewById(R.id.headwisefee_loader);
@@ -141,9 +137,23 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
         btnMenu = view.findViewById(R.id.headwisefee_btnmenu);
         llHeader = view.findViewById(R.id.llHeader);
         tvNorecord = view.findViewById(R.id.headwisefee_txtNoRecords);
+        tvPhone = view.findViewById(R.id.head_frg_tvphone);
+        ivPhone = view.findViewById(R.id.head_frg_ivphone);
+        ivSMS = view.findViewById(R.id.head_frg_sms);
         tvTitle.setText(title);
 
-        rvList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        if (requestType.equalsIgnoreCase("DueTerm1") || requestType.equalsIgnoreCase("DueTerm2")) {
+            tvPhone.setVisibility(View.GONE);
+            ivPhone.setVisibility(View.VISIBLE);
+            ivSMS.setVisibility(View.VISIBLE);
+        } else {
+            tvPhone.setVisibility(View.VISIBLE);
+            ivPhone.setVisibility(View.GONE);
+            ivSMS.setVisibility(View.GONE);
+        }
+
+        linearlayoutmanager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvList.setLayoutManager(linearlayoutmanager);
 
 //        rvList.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
 //            @Override
@@ -175,7 +185,7 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppConfiguration.ReverseTermDetailId = "";
+//                AppConfiguration.ReverseTermDetailId = "";
                 fragment = new MISFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
@@ -222,6 +232,9 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
                     ex.printStackTrace();
                 }
 
+                progressBar.setVisibility(View.VISIBLE);
+                tvNorecord.setVisibility(View.GONE);
+
                 callTotalFeesTerm1(termID, requestType, stndrdID);
             }
 
@@ -248,6 +261,9 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
                 }
 //                Log.d("StandardName", FinalStandardStr);
 //                fillSection();
+                progressBar.setVisibility(View.VISIBLE);
+                tvNorecord.setVisibility(View.GONE);
+
                 callTotalFeesTerm1(termID, requestType, stndrdID);
                 //  Log.d("FinalTermDetailIdStr", FinalTermDetailIdStr);
 
@@ -265,6 +281,7 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
         callTotalFeesTerm1(termID, requestType, stndrdID);
 
     }
+
 
     private void callTermApi() {
 
@@ -358,7 +375,7 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
 
     }
 
-    private void callTotalFeesTerm1(final String term, String request, String stndrd) {
+    private void callTotalFeesTerm1(final String term, final String request, String stndrd) {
         WebServices apiService = ApiClient.getClient().create(WebServices.class);
 
         Call<MISHeadwiseFee> call = apiService.getHeadwiseFeeDetail(AppConfiguration.BASEURL + "HeadWiseFeesCollectionDetail?TermID=" + term + "&RequestType=" + request + "&StandardID=" + stndrd);
@@ -367,22 +384,27 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
             @Override
             public void onResponse(Call<MISHeadwiseFee> call, retrofit2.Response<MISHeadwiseFee> response) {
                 Utils.dismissDialog();
+                progressBar.setVisibility(View.GONE);
                 if (response.body() == null) {
-                    progressBar.setVisibility(View.GONE);
-                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+//                    progressBar.setVisibility(View.GONE);
+                    llHeader.setVisibility(View.GONE);
+                    tvNorecord.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (response.body().getSuccess().equalsIgnoreCase("false")) {
-                    progressBar.setVisibility(View.GONE);
-                    Utils.ping(getActivity(), getString(R.string.false_msg));
+//                    progressBar.setVisibility(View.GONE);
+                    llHeader.setVisibility(View.GONE);
+                    tvNorecord.setVisibility(View.VISIBLE);
+                    tvNorecord.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (response.body().getSuccess().equalsIgnoreCase("True")) {
 
                     if (response.body().getFinalArray().size() > 0) {
 
-                        progressBar.setVisibility(View.GONE);
+//                        progressBar.setVisibility(View.GONE);
+                        llHeader.setVisibility(View.VISIBLE);
 
 //                        finalArrayAnnouncementFinal = response.body().getFinalArray();
 
@@ -404,18 +426,11 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
 
                         finalArrayGetFeeModels = response.body().getFinalArray();
 
-                        if (response != null) {
-                            llHeader.setVisibility(View.GONE);
-                            tvNorecord.setVisibility(View.VISIBLE);
-                        } else if (response.body() != null) {
-                            llHeader.setVisibility(View.GONE);
-                            tvNorecord.setVisibility(View.VISIBLE);
-                        }
                         if (finalArrayGetFeeModels != null) {
 //                        fillExpLV();
                             llHeader.setVisibility(View.VISIBLE);
                             tvNorecord.setVisibility(View.GONE);
-                            headwiseFeeAdapter = new HeadwiseFeeAdapter(getActivity(), finalArrayGetFeeModels, term);
+                            headwiseFeeAdapter = new HeadwiseFeeAdapter(getActivity(), finalArrayGetFeeModels, term, request, linearlayoutmanager, recyclerItemClick);
 //                            headwiseFeeAdapter = new HeadwiseFeeAdapter(getActivity(), listDataHeader, listDataChild, responseCallBack);
                             rvList.setAdapter(headwiseFeeAdapter);
                         }
@@ -429,6 +444,7 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
             public void onFailure(Call<MISHeadwiseFee> call, Throwable t) {
                 // Log error here since request failed
                 Log.e("headfee", t.toString());
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -563,13 +579,9 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment {
 
     }
 
-//    @Override
-//    public void onResponse(List<HeadwiseStudent.Finalarray> data) {
-//        headwiseFeeAdapter.onResponse(data);
-//    }
-//
-//    @Override
-//    public void onFailure(String errorMessage) {
-//        headwiseFeeAdapter.onFailure(errorMessage);
-//    }
+    @Override
+    public void onItemClick(View view, int position) {
+        ((LinearLayoutManager) rvList.getLayoutManager()).scrollToPositionWithOffset(position, 0);
+
+    }
 }

@@ -72,7 +72,7 @@ public class MISStaffListAdapter extends RecyclerView.Adapter<MISStaffListAdapte
                         fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                                 .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                         AppConfiguration.firsttimeback = true;
-                        AppConfiguration.position = 65;
+                    AppConfiguration.position = 67;
 
                 }
             });
