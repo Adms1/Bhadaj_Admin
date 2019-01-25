@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +22,22 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.StaffSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStaffBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+//antra
+//1. set image on top
+//2. set permission
 
 public class StaffFragment extends Fragment {
 
@@ -41,6 +49,19 @@ public class StaffFragment extends Fragment {
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private String Datestr;
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Class%20Teacher.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Assign%20Subject.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Time%20Table.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Add%20Exam_Syllabus.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Home%20Work%20Not%20Done.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "My%20Leave.png",
+            AppConfiguration.BASEURL_IMAGES + "Staff/" + "View%20Marks.png",
+    };
+    public String[] mThumbNames = {"Class Teacher", "Assign Subject", "Time Table",
+            "Exam", "Home Work Not Done", "My Leave", "View Marks"};
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
+    private ArrayList<IconHeaderModel> newArr;
 
     public StaffFragment() {
     }
@@ -61,9 +82,23 @@ public class StaffFragment extends Fragment {
     public void initViews() {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 2;
-        fragmentStaffBinding.staffSubmenuGridView.setAdapter(new StaffSubMenuAdapter(mContext));
+
+        newArr = new ArrayList<>();
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Staff");
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
+
+        fragmentStaffBinding.staffSubmenuGridView.setAdapter(new StaffSubMenuAdapter(mContext, newArr));
         Glide.with(mContext)
-                .load(AppConfiguration.BASEURL_IMAGES + "Staff/" + "staff_inside.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "Staff.png")
                 .fitCenter()
                 .into(fragmentStaffBinding.circleImageView);
         calendar = Calendar.getInstance();
@@ -96,30 +131,49 @@ public class StaffFragment extends Fragment {
         fragmentStaffBinding.staffSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
+
+                if (position == 0 && permissionMap.get("Class Teacher").getStatus().equalsIgnoreCase("true")) {
                     fragment = new ClassTeacherFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Class Teacher").getIsuserview());
+                    bundle.putString("updatestatus", permissionMap.get("Class Teacher").getIsuserupdate());
+                    bundle.putString("deletestatus", permissionMap.get("Class Teacher").getIsuserdelete());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
-                } else if (position == 1) {
+
+                } else if (position == 1 && permissionMap.get("Assign Subject").getStatus().equalsIgnoreCase("true")) {
                     fragment = new AssignSubjectFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Assign Subject").getIsuserview());
+                    bundle.putString("updatestatus", permissionMap.get("Assign Subject").getIsuserupdate());
+                    bundle.putString("deletestatus", permissionMap.get("Assign Subject").getIsuserdelete());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
-                } else if (position == 2) {
+
+                } else if (position == 2 && permissionMap.get("Time Table").getStatus().equalsIgnoreCase("true")) {
                     fragment = new TimeTableFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Time Table").getIsuserview());
+                    bundle.putString("updatestatus", permissionMap.get("Time Table").getIsuserupdate());
+                    bundle.putString("deletestatus", permissionMap.get("Time Table").getIsuserdelete());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
+
                 } else if (position == 3) {
                     fragment = new ExamsFragment();
                     fragmentManager = getFragmentManager();
@@ -128,7 +182,8 @@ public class StaffFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
-                }/*else if (position == 4) {
+
+                }/*else if (position == 4 && permissionMap.get("Home Work Not Done").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HomeworkNotDoneFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -136,15 +191,33 @@ public class StaffFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                             AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
-                }*/ else if (position == 5) {
+                }*/ else if (position == 5 && permissionMap.get("My Leave").getStatus().equalsIgnoreCase("true")) {
                     fragment = new MyLeaveFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("My Leave").getIsuserview());
+                    bundle.putString("updatestatus", permissionMap.get("My Leave").getIsuserupdate());
+                    bundle.putString("deletestatus", permissionMap.get("My Leave").getIsuserdelete());
+
+                    bundle.putString("applyviewstatus", permissionMap.get("Apply Leave").getIsuserview());
+                    bundle.putString("applyupdatestatus", permissionMap.get("Apply Leave").getIsuserupdate());
+                    bundle.putString("applydeletestatus", permissionMap.get("Apply Leave").getIsuserdelete());
+
+                    bundle.putString("balanceviewstatus", permissionMap.get("Leave Balance").getIsuserview());
+                    bundle.putString("balanceupdatestatus", permissionMap.get("Leave Balance").getIsuserupdate());
+                    bundle.putString("balancedeletestatus", permissionMap.get("Leave Balance").getIsuserdelete());
+
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
-                } /*else if (position == 6) {
+
+                } else {
+                    Utils.ping(getActivity(), "Access Denied");
+                }
+                /*else if (position == 6 && permissionMap.get("View Marks").getStatus().equalsIgnoreCase("true")) {
                     fragment = new ViewMarksFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()

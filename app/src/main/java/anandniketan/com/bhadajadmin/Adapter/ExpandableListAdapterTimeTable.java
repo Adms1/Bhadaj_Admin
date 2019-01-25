@@ -54,10 +54,9 @@ public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_time_table, null);
             TextView txtLecture, txtSubject, txtclass;
 
-            txtLecture = (TextView) convertView.findViewById(R.id.txtLecture);
-            txtSubject = (TextView) convertView.findViewById(R.id.txtSubject);
-            txtclass = (TextView) convertView.findViewById(R.id.txtClass);
-
+            txtLecture = convertView.findViewById(R.id.txtLecture);
+            txtSubject = convertView.findViewById(R.id.txtSubject);
+            txtclass = convertView.findViewById(R.id.txtClass);
 
             txtLecture.setText(String.valueOf(detail.getLecture()));
 

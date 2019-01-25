@@ -21,46 +21,6 @@ public class StudentAttendanceFinalArray {
     @SerializedName("Name")
     @Expose
     private String Name;
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public String getTotalStudent() {
-        return totalStudent;
-    }
-
-    public void setTotalStudent(String totalStudent) {
-        this.totalStudent = totalStudent;
-    }
-
-    public String getStudentPresent() {
-        return studentPresent;
-    }
-
-    public void setStudentPresent(String studentPresent) {
-        this.studentPresent = studentPresent;
-    }
-
-    public String getStudentLeave() {
-        return studentLeave;
-    }
-
-    public void setStudentLeave(String studentLeave) {
-        this.studentLeave = studentLeave;
-    }
-
-    public String getStudentAbsent() {
-        return studentAbsent;
-    }
-
-    public void setStudentAbsent(String studentAbsent) {
-        this.studentAbsent = studentAbsent;
-    }
-
     //=================== FilterStudentData=================
     @SerializedName("Father Name")
     @Expose
@@ -77,54 +37,14 @@ public class StudentAttendanceFinalArray {
     @SerializedName("StudentID")
     @Expose
     private Integer studentID;
+    //==========student full detail=========
+    @SerializedName("Tag")
+    @Expose
+    private String tag;
 
-    public String getFatherName() {
-        return fatherName;
-    }
-
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public String getGradeSection() {
-        return gradeSection;
-    }
-
-    public void setGradeSection(String gradeSection) {
-        this.gradeSection = gradeSection;
-    }
-
-    public String getGRNO() {
-        return gRNO;
-    }
-
-    public void setGRNO(String gRNO) {
-        this.gRNO = gRNO;
-    }
-
-    public Integer getStudentID() {
-        return studentID;
-    }
-
-    public void setStudentID(Integer studentID) {
-        this.studentID = studentID;
-    }
-//==========student full detail=========
-@SerializedName("Tag")
-@Expose
-private String tag;
-    @SerializedName("StudentImage")
+    @SerializedName(value = "", alternate = {"StudentImage", "Student Image"})
     @Expose
     private String studentImage;
-
     @SerializedName("Date Of Birth")
     @Expose
     private String dateOfBirth;
@@ -140,7 +60,7 @@ private String tag;
     @SerializedName("Aadhaar Card No.")
     @Expose
     private String aadhaarCardNo;
-    @SerializedName("Acedamic Year")
+    @SerializedName(value = "AcademicYear", alternate = {"Acedamic Year", "Acedemic Year"})
     @Expose
     private String acedamicYear;
     @SerializedName("Grade")
@@ -173,7 +93,6 @@ private String tag;
     @SerializedName("Password")
     @Expose
     private String password;
-
     @SerializedName("Pickup Bus")
     @Expose
     private String pickupBus;
@@ -258,6 +177,208 @@ private String tag;
     @SerializedName("Student Type")
     @Expose
     private String studentType;
+    //  =====InquiryCount=====
+    @SerializedName("Total")
+    @Expose
+    private String total;
+    //=======Enquiry Data======
+    @SerializedName("Current Status")
+    @Expose
+    private String currentStatus;
+    @SerializedName("Staus Detail")
+    @Expose
+    private List<StandardWiseAttendanceModel> stausDetail = null;
+    //========Transport data ===========
+    @SerializedName("Term")
+    @Expose
+    private String term;
+    @SerializedName("Standard")
+    @Expose
+    private String standard;
+    @SerializedName("Class")
+    @Expose
+    private String _class;
+    @SerializedName("RouteName")
+    @Expose
+    private String routeName;
+    @SerializedName("PickupPointName")
+    @Expose
+    private String pickupPointName;
+    @SerializedName("KM")
+    @Expose
+    private String kM;
+    //======result permission=====
+    @SerializedName("Status")
+    @Expose
+    private String status;
+    @SerializedName("TermDetail")
+    @Expose
+    private String termDetail;
+    //=======Attendance detail==============
+    @SerializedName("StandardID")
+    @Expose
+    private Integer standardID;
+    @SerializedName("ClassID")
+    @Expose
+    private Integer classID;
+    @SerializedName("TotalPresent")
+    @Expose
+    private Integer totalPresent;
+    @SerializedName("TotalAbsent")
+    @Expose
+    private Integer totalAbsent;
+    @SerializedName("TotalLeave")
+    @Expose
+    private Integer totalLeave;
+    @SerializedName("TotalOnDuty")
+    @Expose
+    private Integer totalOnDuty;
+    @SerializedName("StudentDetail")
+    @Expose
+    private List<StandardWiseAttendanceModel> studentDetail = null;
+    //======Left student detail =======
+    @SerializedName("First Name")
+    @Expose
+    private String firstName;
+    @SerializedName("Last Name")
+    @Expose
+    private String lastName;
+    @SerializedName("Admission_In_Grade")
+    @Expose
+    private String admissionInGrade;
+    @SerializedName("Admission_In_Section")
+    @Expose
+    private String admissionInSection;
+    @SerializedName("Father First Name")
+    @Expose
+    private String fatherFirstName;
+    @SerializedName("Father Last Name")
+    @Expose
+    private String fatherLastName;
+    @SerializedName("Mother First Name")
+    @Expose
+    private String motherFirstName;
+    @SerializedName("Mother Last Name")
+    @Expose
+    private String motherLastName;
+    @SerializedName("Transport KMs")
+    @Expose
+    private String transportKMs;
+    @SerializedName("Nationality")
+    @Expose
+    private String nationality;
+    @SerializedName("Student ID")
+    @Expose
+    private Integer student_ID;
+    //============== suggestion permission employee ==========
+    @SerializedName("EmployeeName")
+    @Expose
+    private String employeeName;
+    @SerializedName("EmployeeID")
+    @Expose
+    private Integer employeeID;
+    @SerializedName("AssignPermissionID")
+    @Expose
+    private Integer assignPermissionID;
+    @SerializedName("Type")
+    @Expose
+    private String type;
+    // ======= sms message ======
+    @SerializedName("MobileNo")
+    @Expose
+    private String mobileNo;
+    @SerializedName("Message")
+    @Expose
+    private String message;
+    @SerializedName("Sendtime")
+    @Expose
+    private String sendtime;
+    @SerializedName("Rectime")
+    @Expose
+    private String rectime;
+    @SerializedName("Deliverstatus")
+    @Expose
+    private String deliverstatus;
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getTotalStudent() {
+        return totalStudent;
+    }
+
+    public void setTotalStudent(String totalStudent) {
+        this.totalStudent = totalStudent;
+    }
+
+    public String getStudentPresent() {
+        return studentPresent;
+    }
+
+    public void setStudentPresent(String studentPresent) {
+        this.studentPresent = studentPresent;
+    }
+
+    public String getStudentLeave() {
+        return studentLeave;
+    }
+
+    public void setStudentLeave(String studentLeave) {
+        this.studentLeave = studentLeave;
+    }
+
+    public String getStudentAbsent() {
+        return studentAbsent;
+    }
+
+    public void setStudentAbsent(String studentAbsent) {
+        this.studentAbsent = studentAbsent;
+    }
+
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getGradeSection() {
+        return gradeSection;
+    }
+
+    public void setGradeSection(String gradeSection) {
+        this.gradeSection = gradeSection;
+    }
+
+    public String getGRNO() {
+        return gRNO;
+    }
+
+    public void setGRNO(String gRNO) {
+        this.gRNO = gRNO;
+    }
+
+    public Integer getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(Integer studentID) {
+        this.studentID = studentID;
+    }
 
     public String getOldGRNO() {
         return oldGRNO;
@@ -298,7 +419,6 @@ private String tag;
     public void setStudentImage(String studentImage) {
         this.studentImage = studentImage;
     }
-
 
     public String getDateOfBirth() {
         return dateOfBirth;
@@ -428,8 +548,6 @@ private String tag;
         this.password = password;
     }
 
-
-
     public String getPickupBus() {
         return pickupBus;
     }
@@ -477,7 +595,6 @@ private String tag;
     public void setDropPointTime(String dropPointTime) {
         this.dropPointTime = dropPointTime;
     }
-
 
     public String getFatherPhoneNo() {
         return fatherPhoneNo;
@@ -631,11 +748,6 @@ private String tag;
         this.zipCode = zipCode;
     }
 
-//  =====InquiryCount=====
-@SerializedName("Total")
-@Expose
-private String total;
-
     public String getTotal() {
         return total;
     }
@@ -643,14 +755,6 @@ private String total;
     public void setTotal(String total) {
         this.total = total;
     }
-
-    //=======Enquiry Data======
-    @SerializedName("Current Status")
-    @Expose
-    private String currentStatus;
-    @SerializedName("Staus Detail")
-    @Expose
-    private List<StandardWiseAttendanceModel> stausDetail = null;
 
     public String getCurrentStatus() {
         return currentStatus;
@@ -668,27 +772,6 @@ private String total;
         this.stausDetail = stausDetail;
     }
 
-    //========Transport data ===========
-    @SerializedName("Term")
-    @Expose
-    private String term;
-
-    @SerializedName("Standard")
-    @Expose
-    private String standard;
-    @SerializedName("Class")
-    @Expose
-    private String _class;
-    @SerializedName("RouteName")
-    @Expose
-    private String routeName;
-    @SerializedName("PickupPointName")
-    @Expose
-    private String pickupPointName;
-    @SerializedName("KM")
-    @Expose
-    private String kM;
-
     public String getTerm() {
         return term;
     }
@@ -703,10 +786,6 @@ private String total;
 
     public void set_class(String _class) {
         this._class = _class;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getStandard() {
@@ -741,13 +820,6 @@ private String total;
         this.kM = kM;
     }
 
-    //======result permission=====
-    @SerializedName("Status")
-    @Expose
-    private String status;
-    @SerializedName("TermDetail")
-    @Expose
-    private String termDetail;
     public String getTermDetail() {
         return termDetail;
     }
@@ -760,28 +832,10 @@ private String total;
         return status;
     }
 
-    //=======Attendance detail==============
-    @SerializedName("StandardID")
-    @Expose
-    private Integer standardID;
-    @SerializedName("ClassID")
-    @Expose
-    private Integer classID;
-    @SerializedName("TotalPresent")
-    @Expose
-    private Integer totalPresent;
-    @SerializedName("TotalAbsent")
-    @Expose
-    private Integer totalAbsent;
-    @SerializedName("TotalLeave")
-    @Expose
-    private Integer totalLeave;
-    @SerializedName("TotalOnDuty")
-    @Expose
-    private Integer totalOnDuty;
-    @SerializedName("StudentDetail")
-    @Expose
-    private List<StandardWiseAttendanceModel> studentDetail = null;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Integer getStandardID() {
         return standardID;
     }
@@ -838,41 +892,6 @@ private String total;
         this.studentDetail = studentDetail;
     }
 
-    //======Left student detail =======
-    @SerializedName("First Name")
-    @Expose
-    private String firstName;
-    @SerializedName("Last Name")
-    @Expose
-    private String lastName;
-    @SerializedName("Admission_In_Grade")
-    @Expose
-    private String admissionInGrade;
-    @SerializedName("Admission_In_Section")
-    @Expose
-    private String admissionInSection;
-    @SerializedName("Father First Name")
-    @Expose
-    private String fatherFirstName;
-    @SerializedName("Father Last Name")
-    @Expose
-    private String fatherLastName;
-    @SerializedName("Mother First Name")
-    @Expose
-    private String motherFirstName;
-    @SerializedName("Mother Last Name")
-    @Expose
-    private String motherLastName;
-    @SerializedName("Transport KMs")
-    @Expose
-    private String transportKMs;
-    @SerializedName("Nationality")
-    @Expose
-    private String nationality;
-    @SerializedName("Student ID")
-    @Expose
-    private Integer student_ID;
-
     public Integer getStudent_ID() {
         return student_ID;
     }
@@ -892,6 +911,7 @@ private String total;
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -899,9 +919,11 @@ private String total;
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     public String getClass_() {
         return _class;
     }
@@ -909,27 +931,35 @@ private String total;
     public void setClass_(String _class) {
         this._class = _class;
     }
+
     public String getAdmissionInGrade() {
         return admissionInGrade;
     }
+
     public void setAdmissionInGrade(String admissionInGrade) {
         this.admissionInGrade = admissionInGrade;
     }
+
     public String getAdmissionInSection() {
         return admissionInSection;
     }
+
     public void setAdmissionInSection(String admissionInSection) {
         this.admissionInSection = admissionInSection;
     }
+
     public String getFatherFirstName() {
         return fatherFirstName;
     }
+
     public void setFatherFirstName(String fatherFirstName) {
         this.fatherFirstName = fatherFirstName;
     }
+
     public String getFatherLastName() {
         return fatherLastName;
     }
+
     public void setFatherLastName(String fatherLastName) {
         this.fatherLastName = fatherLastName;
     }
@@ -937,6 +967,7 @@ private String total;
     public String getMotherFirstName() {
         return motherFirstName;
     }
+
     public void setMotherFirstName(String motherFirstName) {
         this.motherFirstName = motherFirstName;
     }
@@ -944,6 +975,7 @@ private String total;
     public String getMotherLastName() {
         return motherLastName;
     }
+
     public void setMotherLastName(String motherLastName) {
         this.motherLastName = motherLastName;
     }
@@ -951,17 +983,10 @@ private String total;
     public String getTransportKMs() {
         return transportKMs;
     }
+
     public void setTransportKMs(String transportKMs) {
         this.transportKMs = transportKMs;
     }
-
-    //============== suggestion permission employee ==========
-    @SerializedName("EmployeeName")
-    @Expose
-    private String employeeName;
-    @SerializedName("EmployeeID")
-    @Expose
-    private Integer employeeID;
 
     public String getEmployeeName() {
         return employeeName;
@@ -978,13 +1003,6 @@ private String total;
     public void setEmployeeID(Integer employeeID) {
         this.employeeID = employeeID;
     }
-    @SerializedName("AssignPermissionID")
-    @Expose
-    private Integer assignPermissionID;
-    @SerializedName("Type")
-    @Expose
-    private String type;
-
 
     public Integer getAssignPermissionID() {
         return assignPermissionID;
@@ -1001,23 +1019,6 @@ private String total;
     public void setType(String type) {
         this.type = type;
     }
-
-    // ======= sms message ======
-    @SerializedName("MobileNo")
-    @Expose
-    private String mobileNo;
-    @SerializedName("Message")
-    @Expose
-    private String message;
-    @SerializedName("Sendtime")
-    @Expose
-    private String sendtime;
-    @SerializedName("Rectime")
-    @Expose
-    private String rectime;
-    @SerializedName("Deliverstatus")
-    @Expose
-    private String deliverstatus;
 
     public String getMobileNo() {
         return mobileNo;

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,11 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
-
-import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -31,19 +26,16 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.ProfilePermissionAdapter;
 import anandniketan.com.bhadajadmin.Adapter.SuggestionPermissionAdapter;
 import anandniketan.com.bhadajadmin.Interface.onDeleteButton;
-import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
-import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentSuggestionBinding;
-import okhttp3.internal.Util;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -69,6 +61,7 @@ public class SuggestionFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    private String status, updatestatus, deletestatus;
 
     public SuggestionFragment() {
     }
@@ -81,13 +74,25 @@ public class SuggestionFragment extends Fragment {
         rootView = fragmentsuggestionBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 13;
+
+        Bundle bundle = this.getArguments();
+        status = bundle.getString("suggestionviewstatus");
+        updatestatus = bundle.getString("suggestionupdatestatus");
+        deletestatus = bundle.getString("suggestiondeletestatus");
+
         setListners();
         fillType();
         callEmployeeApi();
+
+//        if(status.equalsIgnoreCase("true")) {
         callSuggestionPermissionApi();
+//        }else {
+//            Utils.ping(getActivity(), "Access Denied");
+//        }
         return rootView;
     }
-
 
     public void setListners() {
         fragmentsuggestionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
@@ -96,14 +101,19 @@ public class SuggestionFragment extends Fragment {
                 DashboardActivity.onLeft();
             }
         });
+
         fragmentsuggestionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new StudentPermissionFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 13;
+
+//                fragment = new StudentPermissionFragment();
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+//                        .replace(R.id.frame_container, fragment).commit();
+                getActivity().onBackPressed();
             }
         });
 
@@ -196,48 +206,54 @@ public class SuggestionFragment extends Fragment {
         fragmentsuggestionBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<String> employeeId = new ArrayList<>();
-                FinalEmployeeIdStr = "";
-                if (fragmentsuggestionBinding.assignSpinner.getText().toString().contains(",")) {
-                    String[] split = fragmentsuggestionBinding.assignSpinner.getText().toString().split("\\,");
-                    for (int i = 0; i < split.length; i++) {
+
+                if (updatestatus.equalsIgnoreCase("true")) {
+
+                    ArrayList<String> employeeId = new ArrayList<>();
+                    FinalEmployeeIdStr = "";
+                    if (fragmentsuggestionBinding.assignSpinner.getText().toString().contains(",")) {
+                        String[] split = fragmentsuggestionBinding.assignSpinner.getText().toString().split("\\,");
+                        for (int i = 0; i < split.length; i++) {
+                            for (int j = 0; j < finalArrayStandardsList.size(); j++) {
+                                if (finalArrayStandardsList.get(j).getEmployeeName().equalsIgnoreCase(split[i])) {
+                                    employeeId.add(String.valueOf(finalArrayStandardsList.get(j).getEmployeeID()));
+                                }
+                            }
+                        }
+                    } else {
                         for (int j = 0; j < finalArrayStandardsList.size(); j++) {
-                            if (finalArrayStandardsList.get(j).getEmployeeName().equalsIgnoreCase(split[i])) {
+                            if (finalArrayStandardsList.get(j).getEmployeeName().equalsIgnoreCase(fragmentsuggestionBinding.assignSpinner.getText().toString())) {
                                 employeeId.add(String.valueOf(finalArrayStandardsList.get(j).getEmployeeID()));
                             }
                         }
                     }
-                } else {
-                    for (int j = 0; j < finalArrayStandardsList.size(); j++) {
-                        if (finalArrayStandardsList.get(j).getEmployeeName().equalsIgnoreCase(fragmentsuggestionBinding.assignSpinner.getText().toString())) {
-                            employeeId.add(String.valueOf(finalArrayStandardsList.get(j).getEmployeeID()));
+                    StringBuilder stringBuilder1 = new StringBuilder();
+                    for (CharSequence empId : employeeId) {
+                        Log.i(TAG, "size = " + employeeId.size());
+                        if (employeeId.size() <= 1) {
+                            stringBuilder1.append(empId);
+                        } else {
+                            stringBuilder1.append(empId + ",");
                         }
                     }
-                }
-                StringBuilder stringBuilder1 = new StringBuilder();
-                for (CharSequence empId : employeeId) {
-                    Log.i(TAG, "size = " + employeeId.size());
                     if (employeeId.size() <= 1) {
-                        stringBuilder1.append(empId);
+                        FinalEmployeeIdStr = stringBuilder1.toString().trim();
                     } else {
-                        stringBuilder1.append(empId + ",");
+                        FinalEmployeeIdStr = stringBuilder1.toString().trim().substring(0, stringBuilder1.length() - 1);
                     }
-                }
-                if (employeeId.size() <= 1) {
-                    FinalEmployeeIdStr = stringBuilder1.toString().trim();
-                } else {
-                    FinalEmployeeIdStr = stringBuilder1.toString().trim().substring(0, stringBuilder1.length() - 1);
-                }
 
-                Log.d(" FinalEmployeeIdStr", FinalEmployeeIdStr);
-                if (!FinaltypeStr.equalsIgnoreCase("Please Select")) {
-                    if (!FinalEmployeeIdStr.equalsIgnoreCase("")) {
-                        callInsertSuggestionPermission();
+                    Log.d(" FinalEmployeeIdStr", FinalEmployeeIdStr);
+                    if (!FinaltypeStr.equalsIgnoreCase("Please Select")) {
+                        if (!FinalEmployeeIdStr.equalsIgnoreCase("")) {
+                            callInsertSuggestionPermission();
+                        } else {
+                            Utils.ping(mContext, "Please select assign to");
+                        }
                     } else {
-                        Utils.ping(mContext, "Please select assign to");
+                        Utils.ping(mContext, "Please select type");
                     }
                 } else {
-                    Utils.ping(mContext, "Please select type");
+                    Utils.ping(getActivity(), "Access Denied");
                 }
             }
         });
@@ -362,7 +378,7 @@ public class SuggestionFragment extends Fragment {
                                     callDeleteSuggestionPermission();
                                 }
                             }
-                        });
+                        }, deletestatus);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentsuggestionBinding.suggestionList.setLayoutManager(mLayoutManager);
                         fragmentsuggestionBinding.suggestionList.setItemAnimator(new DefaultItemAnimator());
@@ -414,7 +430,11 @@ public class SuggestionFragment extends Fragment {
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
 //                    Utils.ping(mContext, getString(R.string.true_msg));
-                    callSuggestionPermissionApi();
+                    if (status.equalsIgnoreCase("true")) {
+                        callSuggestionPermissionApi();
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
                 }
             }
 
@@ -463,7 +483,11 @@ public class SuggestionFragment extends Fragment {
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
 //                    Utils.ping(mContext, getString(R.string.true_msg));
-                    callSuggestionPermissionApi();
+                    if (status.equalsIgnoreCase("true")) {
+                        callSuggestionPermissionApi();
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
                 }
             }
 

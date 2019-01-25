@@ -11,19 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import anandniketan.com.bhadajadmin.Model.HR.DailyTransportationModel;
-import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutSummaryModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-import anandniketan.com.bhadajadmin.Utility.DateUtils;
-import anandniketan.com.bhadajadmin.calendarview.CalendarListener;
-import anandniketan.com.bhadajadmin.calendarview.CustomCalendarView;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class ExpandableDailyTransportationAdapter extends BaseExpandableListAdapter {
     private Context _context;
@@ -33,11 +26,13 @@ public class ExpandableDailyTransportationAdapter extends BaseExpandableListAdap
     private int annousID;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    private String viewstatus;
 
-    public ExpandableDailyTransportationAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<DailyTransportationModel.FinalArray>> listDataChild) {
+    public ExpandableDailyTransportationAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<DailyTransportationModel.FinalArray>> listDataChild, String viewstatus) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
+        this.viewstatus = viewstatus;
 
     }
 
@@ -61,14 +56,14 @@ public class ExpandableDailyTransportationAdapter extends BaseExpandableListAdap
             convertView = infalInflater.inflate(R.layout.list_item_child_daily_transportation_list, null);
         }
 
-        TextView route,drive,parents,vehicle,timing,other;
+        TextView route, drive, parents, vehicle, timing, other;
 
-        route = (TextView)convertView.findViewById(R.id.txt_route);
-        drive = (TextView)convertView.findViewById(R.id.txt_driver);
-        parents = (TextView)convertView.findViewById(R.id.txt_parents);
-        vehicle = (TextView)convertView.findViewById(R.id.txt_vehicle);
-        timing = (TextView)convertView.findViewById(R.id.txt_timing);
-        other = (TextView)convertView.findViewById(R.id.txt_other);
+        route = convertView.findViewById(R.id.txt_route);
+        drive = convertView.findViewById(R.id.txt_driver);
+        parents = convertView.findViewById(R.id.txt_parents);
+        vehicle = convertView.findViewById(R.id.txt_vehicle);
+        timing = convertView.findViewById(R.id.txt_timing);
+        other = convertView.findViewById(R.id.txt_other);
 
         route.setText(childData.get(childPosition).getRouteProblem());
         drive.setText(childData.get(childPosition).getDriverComplaint());
@@ -83,7 +78,12 @@ public class ExpandableDailyTransportationAdapter extends BaseExpandableListAdap
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        if (viewstatus.equalsIgnoreCase("true")) {
+            return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override
@@ -112,25 +112,26 @@ public class ExpandableDailyTransportationAdapter extends BaseExpandableListAdap
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_header_daily_transporation, null);
         }
-        TextView txt_index, txt_date,txt_createby;
+        TextView txt_index, txt_date, txt_createby;
         ImageView iv_indicator;
 
-        txt_index = (TextView) convertView.findViewById(R.id.index_txt);
-        txt_date = (TextView) convertView.findViewById(R.id.date_txt);
-        txt_createby = (TextView) convertView.findViewById(R.id.createby_txt);
-        iv_indicator = (ImageView)convertView.findViewById(R.id.iv_indicator);
+        txt_index = convertView.findViewById(R.id.index_txt);
+        txt_date = convertView.findViewById(R.id.date_txt);
+        txt_createby = convertView.findViewById(R.id.createby_txt);
+        iv_indicator = convertView.findViewById(R.id.iv_indicator);
 
-        String index  = String.valueOf(groupPosition + 1);
+        String index = String.valueOf(groupPosition + 1);
 
         txt_index.setText(index);
         txt_date.setText(headerTitle1);
         txt_createby.setText(headerTitle2);
 
-
-        if (isExpanded) {
-            iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
-        } else {
-            iv_indicator.setImageResource(R.drawable.arrow_1_42);
+        if (viewstatus.equalsIgnoreCase("true")) {
+            if (isExpanded) {
+                iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
+            } else {
+                iv_indicator.setImageResource(R.drawable.arrow_1_42);
+            }
         }
         return convertView;
     }

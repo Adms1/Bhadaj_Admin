@@ -14,13 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,15 +23,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemCommunicationDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemFatherDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemMotherDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemStudentFullDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudetnListItemTransportDetailBinding;
+
+import static anandniketan.com.bhadajadmin.Utility.AppConfiguration.LIVE_BASE_URL;
 
 
 /**
@@ -96,8 +90,8 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
 //                imageLoader.init(config.createDefault(_context));
 //                imageLoader.displayImage(childData.get(childPosition).getStudentImage(),binding.profileImage);
 
-                if(!TextUtils.isEmpty(childData.get(childPosition).getStudentImage())){
-                    Glide.with(_context).load(childData.get(childPosition).getStudentImage()).asBitmap().placeholder(R.drawable.person_placeholder).into(binding.profileImage);
+                if (!TextUtils.isEmpty(LIVE_BASE_URL + childData.get(childPosition).getStudentImage())) {
+                    Glide.with(_context).load(LIVE_BASE_URL + childData.get(childPosition).getStudentImage()).asBitmap().placeholder(R.drawable.person_placeholder).into(binding.profileImage);
                 }else{
                     Glide.with(_context).load(R.drawable.person_placeholder).asBitmap().into(binding.profileImage);
                 }
@@ -269,10 +263,10 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group_student_full_detail, null);
         }
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+        TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-        LinearLayout linear_group = (LinearLayout) convertView.findViewById(R.id.linear_group);
+        LinearLayout linear_group = convertView.findViewById(R.id.linear_group);
         if (headerTitle.equalsIgnoreCase("Student Details")) {
             linear_group.setBackgroundColor(Color.parseColor("#3597D3"));
         } else if (headerTitle.equalsIgnoreCase("Transport Details")) {

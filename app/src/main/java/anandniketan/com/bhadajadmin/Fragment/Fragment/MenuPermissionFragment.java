@@ -69,6 +69,7 @@ public class MenuPermissionFragment extends Fragment {
     private boolean temp2All = false;
 
     boolean check = false;
+    private String viewstatus;
 
     public MenuPermissionFragment() {
     }
@@ -81,6 +82,10 @@ public class MenuPermissionFragment extends Fragment {
         rootView = fragmentMenuPermissionBinding.getRoot();
         mContext = getActivity().getApplicationContext();
         Finalflag = "Teacher";
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("status");
+
         setListners();
         callTeacherApi();
 
@@ -125,7 +130,7 @@ public class MenuPermissionFragment extends Fragment {
         fragmentMenuPermissionBinding.usertypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                RadioButton rb = group.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
 
                     // checkedId is the RadioButton selected
@@ -159,7 +164,11 @@ public class MenuPermissionFragment extends Fragment {
             public void onClick(View v) {
 //                FatchInsertPermissionData();
 
-                callInsertMenuPermissionApi();
+                if (viewstatus.equalsIgnoreCase("true")) {
+                    callInsertMenuPermissionApi();
+                } else {
+                    Utils.ping(getActivity(), "Access Denied");
+                }
             }
         });
 

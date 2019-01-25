@@ -93,7 +93,11 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         AppConfiguration.position = 11;
 
         Bundle bundle = this.getArguments();
-        status = bundle.getString("status");
+        if (bundle != null) {
+            status = bundle.getString("status");
+        } else {
+            status = AppConfiguration.inquiryviewstatus;
+        }
 
         setListners();
         callTermApi();
@@ -111,6 +115,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             AppConfiguration.fromDate = Utils.getTodaysDate();
             AppConfiguration.toDate = Utils.getTodaysDate();
         }
+
         fragmentStudentViewInquiryBinding.startdateButton.setText(AppConfiguration.fromDate);
         fragmentStudentViewInquiryBinding.enddateButton.setText(AppConfiguration.toDate);
 
@@ -147,6 +152,9 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         fragmentStudentViewInquiryBinding.fabAddInquiry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                AppConfiguration.inquiryviewstatus = status;
+
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 58;
                 fragment = new FragmentAddUpdateInquiry();

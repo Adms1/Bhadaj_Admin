@@ -118,13 +118,12 @@
 
                     <ImageView
                         android:id="@+id/circleImageView"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_45sdp"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"/>
 
                 </RelativeLayout>
-
 
             </RelativeLayout>
 

@@ -2,7 +2,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,11 +15,9 @@ import com.bumptech.glide.Glide;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.MyLeaveSubMenuAdapter;
-import anandniketan.com.bhadajadmin.Adapter.StudentPermissionSubmenuAdapter;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.FragmentMyLeaveBinding;
-import anandniketan.com.bhadajadmin.databinding.FragmentStudentPermissionBinding;
 
 
 public class MyLeaveFragment extends Fragment {
@@ -30,7 +27,7 @@ public class MyLeaveFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-
+    private String viewstatus, updatestatus, deletestatus, applyviewstatus, applyupdatestatus, applydeletestatus, balanceviewstatus, balanceupdatestatus, balancedeletestatus;
 
     public MyLeaveFragment() {
     }
@@ -43,6 +40,19 @@ public class MyLeaveFragment extends Fragment {
         rootView = fragmentMyLeaveBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
+        updatestatus = bundle.getString("updatestatus");
+        deletestatus = bundle.getString("deletestatus");
+
+        applyviewstatus = bundle.getString("applyviewstatus");
+        applyupdatestatus = bundle.getString("applyupdatestatus");
+        applydeletestatus = bundle.getString("applydeletestatus");
+
+        balanceviewstatus = bundle.getString("balanceviewstatus");
+        balanceupdatestatus = bundle.getString("balanceupdatestatus");
+        balancedeletestatus = bundle.getString("balancedeletestatus");
+
         initViews();
         setListners();
 
@@ -53,7 +63,7 @@ public class MyLeaveFragment extends Fragment {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 21;
         Glide.with(mContext)
-                .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "permission_inside.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "Permission.png")
                 .fitCenter()
                 .into(fragmentMyLeaveBinding.circleImageView);
         fragmentMyLeaveBinding.staffMyLeaveSubmenuGridView.setAdapter(new MyLeaveSubMenuAdapter(mContext));

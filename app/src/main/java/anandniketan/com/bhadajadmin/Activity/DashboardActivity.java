@@ -139,7 +139,8 @@ public class DashboardActivity extends FragmentActivity {
         tvName = findViewById(R.id.teacher_name);
         tvDesignation = findViewById(R.id.teacher_designation);
         try {
-            tvName.setText(prefUtils.getStringValue("Emp_Name", ""));
+//            tvName.setText(prefUtils.getStringValue("Emp_Name", ""));
+            tvName.setText("Bhadaj");
             tvDesignation.setText(prefUtils.getStringValue("DesignationName", ""));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -207,6 +208,7 @@ public class DashboardActivity extends FragmentActivity {
             case 0:
                 fragment = new HomeFragment();
                 myid = fragment.getId();
+
 //                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
@@ -214,36 +216,36 @@ public class DashboardActivity extends FragmentActivity {
 
                 fragment = new StudentFragment();
                 myid = fragment.getId();
-
+//
 //                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 2:
-//                fragment = new StaffFragment();
-//                myid = fragment.getId();
-                Utils.ping(DashboardActivity.this, "Access Denied");
+                fragment = new StaffFragment();
+                myid = fragment.getId();
+//                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 3:
-//                fragment = new HRFragment();
-//                myid = fragment.getId();
-                Utils.ping(DashboardActivity.this, "Access Denied");
+                fragment = new HRFragment();
+                myid = fragment.getId();
+//                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
                 break;
             case 4:
-//                fragment = new AccountFragment();
-//                myid = fragment.getId();
-                Utils.ping(DashboardActivity.this, "Access Denied");
+                fragment = new AccountFragment();
+                myid = fragment.getId();
+//                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 //                fragment = new TransportFragment();
 //                myid = fragment.getId();
 //                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
             case 5:
-//                fragment = new SMSFragment();
-//                myid = fragment.getId();
-                Utils.ping(DashboardActivity.this, "Access Denied");
+                fragment = new SMSFragment();
+                myid = fragment.getId();
+//                Utils.ping(DashboardActivity.this, "Access Denied");
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 break;
 
@@ -515,6 +517,9 @@ public class DashboardActivity extends FragmentActivity {
                     AppConfiguration.position = 55;
                 } else if (AppConfiguration.position == 56) {
                     fragment = new StudentViewInquiryFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("status", PrefUtils.getInstance(DashboardActivity.this).loadMap(DashboardActivity.this, "Student").get("View Inquiry").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
@@ -591,12 +596,12 @@ public class DashboardActivity extends FragmentActivity {
 
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<String>>();
+        listDataChild = new HashMap<>();
         ArrayList<String> finalImageArray = new ArrayList<String>();
 
 
         ArrayList<String> finalheaderArray = new ArrayList<>();
-        finalheaderArray.add("HOME");
+        finalheaderArray.add("Dashboard");
         finalheaderArray.add("STUDENT");
         finalheaderArray.add("STAFF");
         finalheaderArray.add("HR");
@@ -675,6 +680,7 @@ public class DashboardActivity extends FragmentActivity {
         @Override
         public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
 //            Utils.ping(mContext,""+i);
+            Utils.callPermissionDetail(DashboardActivity.this, PrefUtils.getInstance(DashboardActivity.this).getStringValue("StaffID", "0"));
             displayView(i);
             return false;
         }

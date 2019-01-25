@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 
 import com.bumptech.glide.Glide;
 
@@ -22,6 +23,7 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
@@ -46,6 +48,24 @@ public class StudentFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private String Datestr;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Search%20Student.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "View%20Inquiry.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Student%20Transport.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Permission.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Attendance.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Left_Active.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "New%20Register.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Announcement.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Circular.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Circular1.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Planner.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "Gallery.png",
+    };
+    public String[] mThumbNames = {"Search Student", "View Inquiry", "Student Transport",
+            "Permission", "Attendance", "Left/Active", "New Register", "Announcement", "Circular", "circular1", "Planner", "Gallery"};
+    private GridView rvList;
+    private ArrayList<IconHeaderModel> newArr;
 
     public StudentFragment() {
     }
@@ -65,10 +85,31 @@ public class StudentFragment extends Fragment {
         rootView = fragmentStudentBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        newArr = new ArrayList<>();
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student");
+
+        rvList = view.findViewById(R.id.student_submenu_grid_view);
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
+
         initViews();
         setListners();
 
-        return rootView;
     }
 
     public void initViews() {
@@ -79,15 +120,13 @@ public class StudentFragment extends Fragment {
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student");
-
         Datestr = Utils.getTodaysDate();
         Log.d("TodayDate", Datestr);
         Glide.with(mContext)
-                .load(AppConfiguration.BASEURL_IMAGES + "Student/" + "student_inside.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "Student.png")
                 .fitCenter()
                 .into(fragmentStudentBinding.circleImageView);
-        fragmentStudentBinding.studentSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, permissionMap));
+        rvList.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
         callStudentApi();
     }
 
@@ -99,6 +138,7 @@ public class StudentFragment extends Fragment {
                 DashboardActivity.onLeft();
             }
         });
+
         fragmentStudentBinding.btnBackAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +149,7 @@ public class StudentFragment extends Fragment {
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
+
         fragmentStudentBinding.viewSummayTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +160,7 @@ public class StudentFragment extends Fragment {
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
+
         fragmentStudentBinding.studentSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -160,31 +202,6 @@ public class StudentFragment extends Fragment {
 
                 } else if (position == 3 && permissionMap.get("Permission").getStatus().equalsIgnoreCase("true")) {
                     fragment = new StudentPermissionFragment();
-                    Bundle bundle = new Bundle();
-
-                    bundle.putString("status", permissionMap.get("Permission").getIsuserview());
-
-                    bundle.putString("reportcardstatus", permissionMap.get("Report Card").getStatus());
-                    bundle.putString("reportcarddeletestatus", permissionMap.get("Report Card").getIsuserdelete());
-                    bundle.putString("reportcardupdatestatus", permissionMap.get("Report Card").getIsuserupdate());
-                    bundle.putString("reportcardviewstatus", permissionMap.get("Report Card").getIsuserview());
-
-                    bundle.putString("onlinepaystatus", permissionMap.get("Online Payment").getStatus());
-                    bundle.putString("onlinepaydeletestatus", permissionMap.get("Online Payment").getIsuserdelete());
-                    bundle.putString("onlinepayupdatestatus", permissionMap.get("Online Payment").getIsuserupdate());
-                    bundle.putString("onlinepayviewstatus", permissionMap.get("Online Payment").getIsuserview());
-
-                    bundle.putString("markstatus", permissionMap.get("Marks/Syllabus").getStatus());
-                    bundle.putString("markdeletestatus", permissionMap.get("Marks/Syllabus").getIsuserdelete());
-                    bundle.putString("markupdatestatus", permissionMap.get("Marks/Syllabus").getIsuserupdate());
-                    bundle.putString("markviewstatus", permissionMap.get("Marks/Syllabus").getIsuserview());
-
-                    bundle.putString("suggestionstatus", permissionMap.get("Suggestion").getStatus());
-                    bundle.putString("suggestiondeletestatus", permissionMap.get("Suggestion").getIsuserdelete());
-                    bundle.putString("suggestionupdatestatus", permissionMap.get("Suggestion").getIsuserupdate());
-                    bundle.putString("suggestionviewstatus", permissionMap.get("Suggestion").getIsuserview());
-
-                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
@@ -232,11 +249,6 @@ public class StudentFragment extends Fragment {
 
                 } else if (position == 7 && permissionMap.get("Announcement").getStatus().equalsIgnoreCase("true")) {
                     fragment = new AnnoucementListFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("status", permissionMap.get("Announcement").getIsuserview());
-                    bundle.putString("updatestatus", permissionMap.get("Announcement").getIsuserupdate());
-                    bundle.putString("deletestatus", permissionMap.get("Announcement").getIsuserdelete());
-                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
@@ -244,11 +256,6 @@ public class StudentFragment extends Fragment {
 
                 } else if (position == 8 && permissionMap.get("Circular").getStatus().equalsIgnoreCase("true")) {
                     fragment = new CircularListFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("status", permissionMap.get("Circular").getIsuserview());
-                    bundle.putString("updatestatus", permissionMap.get("Circular").getIsuserupdate());
-                    bundle.putString("deletestatus", permissionMap.get("Circular").getIsuserdelete());
-                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
@@ -329,7 +336,6 @@ public class StudentFragment extends Fragment {
         map.put("Date", Datestr);
         return map;
     }
-
 
 }
 

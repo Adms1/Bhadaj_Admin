@@ -47,9 +47,10 @@
                 android:layout_alignTop="@+id/header"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_38sdp"
-                android:text="@string/student"
+                android:text="@string/search_student"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"
+                android:textAllCaps="true"
                 android:textStyle="normal" />
 
             <Button

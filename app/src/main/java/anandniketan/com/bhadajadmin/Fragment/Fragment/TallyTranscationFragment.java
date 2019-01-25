@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.TallyTransactionAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
@@ -56,7 +57,7 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
     private HashMap<Integer, String> spinnerOrderMap;
     private List<TallyTranscationModel.FinalArray> dailyCollectionsList;
     private TallyTransactionAdapter tallyTransactionAdapter;
-
+    private String viewstatus;
 
     @Override
     public void onAttach(Context context){
@@ -73,6 +74,8 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
         rootView = fragmentTallyTranscationBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
 
         //Set Thread Policy
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().build());
@@ -217,7 +220,7 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
                         fragmentTallyTranscationBinding.lvExpstudentfeescollection.setVisibility(View.VISIBLE);
                         //fillExpLV();
                         fragmentTallyTranscationBinding.lvExpstudentfeescollection.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        tallyTransactionAdapter = new TallyTransactionAdapter(getActivity(),dailyCollectionsList);
+                        tallyTransactionAdapter = new TallyTransactionAdapter(getActivity(), dailyCollectionsList, viewstatus);
                         fragmentTallyTranscationBinding.lvExpstudentfeescollection.setAdapter(tallyTransactionAdapter);
                         Utils.dismissDialog();
                     } else {

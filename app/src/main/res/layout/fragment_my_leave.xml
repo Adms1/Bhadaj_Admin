@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -80,6 +81,7 @@
                     android:layout_marginTop="@dimen/_11sdp"
                     android:background="@drawable/grid_shape"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -95,14 +97,11 @@
                             android:layout_height="match_parent"
                             android:layout_margin="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/gray"
                             android:columnWidth="0dp"
                             android:gravity="center"
-                            android:horizontalSpacing="@dimen/_2sdp"
                             android:numColumns="auto_fit"
                             android:scrollbars="none"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="@dimen/_2sdp" />
+                            android:stretchMode="columnWidth" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -121,7 +120,7 @@
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true" />
 
                 </RelativeLayout>
 

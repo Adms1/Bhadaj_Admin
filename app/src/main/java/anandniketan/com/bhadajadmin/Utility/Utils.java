@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -31,7 +32,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 /**
@@ -324,5 +328,55 @@ public class Utils {
         }
         return  dataMap;
     }
+
+    public static void callPermissionDetail(final Context mcontext, String usrid) {
+        WebServices apiService = ApiClient.getClient().create(WebServices.class);
+//
+        Call<PermissionDataModel> call = apiService.getPermissionData(AppConfiguration.BASEURL + "GetPermissionData?UserID=" + usrid);
+        call.enqueue(new Callback<PermissionDataModel>() {
+            //
+            @Override
+            public void onResponse(Call<PermissionDataModel> call, retrofit2.Response<PermissionDataModel> response) {
+                Utils.dismissDialog();
+                if (response.body() == null) {
+
+                    return;
+                }
+//
+                if (response.body().getSuccess().equalsIgnoreCase("false")) {
+
+                    return;
+                }
+
+                if (response.body().getSuccess().equalsIgnoreCase("True")) {
+
+                    if (response.body().getFinalarray() != null) {
+                        for (int i = 0; i < response.body().getFinalarray().size(); i++) {
+
+                            HashMap<String, PermissionDataModel.Detaill> child = new HashMap<>();
+//                            ArrayList<HashMap<String, PermissionDataModel.Detaill>> arrayList = new ArrayList<>();
+                            for (int j = 0; j < response.body().getFinalarray().get(i).getDetail().size(); j++) {
+
+                                child.put(response.body().getFinalarray().get(i).getDetail().get(j).getPagename(), response.body().getFinalarray().get(i).getDetail().get(j));
+
+                            }
+//                            arrayList.add(child);
+
+                            PrefUtils.getInstance(mcontext).saveMap(mcontext, response.body().getFinalarray().get(i).getName(), child);
+//                            PrefUtils.getInstance(LoginActivity.this).saveArr(LoginActivity.this, response.body().getFinalarray().get(i).getName(), arrayList);
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PermissionDataModel> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("permissionnnnn", t.toString());
+            }
+        });
+    }
+
 
 }

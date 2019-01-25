@@ -3,7 +3,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,9 +21,7 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableDailyHrAccountAdapter;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableDailyTransportationAdapter;
 import anandniketan.com.bhadajadmin.Model.HR.DailyAccountModel;
-import anandniketan.com.bhadajadmin.Model.HR.DailyTransportationModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
@@ -55,12 +52,11 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
     private int mYear, mMonth, mDay;
     private static String dateFinal = "";
     private Calendar calendar;
+    private String viewstatus;
 
     public HrAccountFragment() {
         // Required empty public constructor
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,8 +73,6 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
         return fragmentHrAccountBinding.getRoot();
     }
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -90,6 +84,10 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
     }
 
     private void setListners() {
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
+
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -101,7 +99,6 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
 
         fragmentHrAccountBinding.fromdateBtn.setText(Utils.getTodaysDate());
         fragmentHrAccountBinding.todateBtn.setText(Utils.getTodaysDate());
-
 
         fragmentHrAccountBinding.fromdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,7 +189,7 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
                         fragmentHrAccountBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentHrAccountBinding.expHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        exapndableInOutSummaryAdapter = new ExpandableDailyHrAccountAdapter(getActivity(),listDataHeader,listDataChild);
+                        exapndableInOutSummaryAdapter = new ExpandableDailyHrAccountAdapter(getActivity(), listDataHeader, listDataChild, viewstatus);
                         fragmentHrAccountBinding.transportationList.setAdapter(exapndableInOutSummaryAdapter);
                     } else {
                         fragmentHrAccountBinding.txtNoRecords.setVisibility(View.VISIBLE);

@@ -2,13 +2,9 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,33 +12,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExapndableInOutSummaryAdapter;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableListAnnoucement;
-import anandniketan.com.bhadajadmin.Adapter.StudentFilteredDataAdapter;
-import anandniketan.com.bhadajadmin.Interface.onViewClick;
 import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutSummaryModel;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.DateUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
-import anandniketan.com.bhadajadmin.calendarview.CalendarListener;
-import anandniketan.com.bhadajadmin.calendarview.CustomCalendarView;
 import anandniketan.com.bhadajadmin.databinding.FragmentInOutSummaryBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -56,7 +40,7 @@ public class InOutSummaryFragment extends Fragment {
     private List<String> years;
     private HashMap<Integer, String> spinnerMonthMap;
     private HashMap<Integer, String> spinnerYearMap;
-    private String monthId = "",yearId = "";
+    private String monthId = "", yearId = "";
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private Context mContext;
@@ -64,6 +48,7 @@ public class InOutSummaryFragment extends Fragment {
     private ExapndableInOutSummaryAdapter exapndableInOutSummaryAdapter;
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<EmployeeInOutSummaryModel.FinalArray>> listDataChild;
+    private String viewstatus;
 
     public InOutSummaryFragment() {
         // Required empty public constructor
@@ -84,9 +69,12 @@ public class InOutSummaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentInOutSummaryBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_in_out_summary,container,false);
+        fragmentInOutSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_in_out_summary, container, false);
 
         mContext = getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("inoutstatus");
 
         fillMonthSpinner();
         fillYearSpinner();
@@ -96,7 +84,7 @@ public class InOutSummaryFragment extends Fragment {
         return fragmentInOutSummaryBinding.getRoot();
     }
 
-    private void setListners(){
+    private void setListners() {
         fragmentInOutSummaryBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +94,7 @@ public class InOutSummaryFragment extends Fragment {
         fragmentInOutSummaryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new AttendenceReportFragment();
+                fragment = new HRFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
@@ -163,10 +151,6 @@ public class InOutSummaryFragment extends Fragment {
     }
 
 
-
-
-
-
     private void callEmployeeInOutListApi() {
 
         if (!Utils.checkNetwork(mContext)) {
@@ -195,7 +179,6 @@ public class InOutSummaryFragment extends Fragment {
                     Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentInOutSummaryBinding.expHeader.setVisibility(View.GONE);
-
                     return;
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
@@ -204,7 +187,7 @@ public class InOutSummaryFragment extends Fragment {
                         fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentInOutSummaryBinding.expHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        exapndableInOutSummaryAdapter = new ExapndableInOutSummaryAdapter(getActivity(),listDataHeader,listDataChild);
+                        exapndableInOutSummaryAdapter = new ExapndableInOutSummaryAdapter(getActivity(), listDataHeader, listDataChild, viewstatus);
                         fragmentInOutSummaryBinding.inoutlistList.setAdapter(exapndableInOutSummaryAdapter);
                     } else {
                         fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -221,7 +204,7 @@ public class InOutSummaryFragment extends Fragment {
                 fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                 fragmentInOutSummaryBinding.expHeader.setVisibility(View.GONE);
                 fragmentInOutSummaryBinding.txtNoRecords.setText(error.getMessage());
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
@@ -232,18 +215,18 @@ public class InOutSummaryFragment extends Fragment {
         int monthIdInt;
         try {
 
-            monthIdInt  = Integer.parseInt(monthId);
+            monthIdInt = Integer.parseInt(monthId);
 
-            if(monthIdInt <= 9){
-                monthId =  "0"+ monthId;
+            if (monthIdInt <= 9) {
+                monthId = "0" + monthId;
             }
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        map.put("Month",monthId);
-        map.put("Year",yearId);
+        map.put("Month", monthId);
+        map.put("Year", yearId);
         return map;
     }
 
@@ -251,7 +234,7 @@ public class InOutSummaryFragment extends Fragment {
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<String, ArrayList<EmployeeInOutSummaryModel.FinalArray>>();
         for (int i = 0; i < finalArrayInOut.size(); i++) {
-            listDataHeader.add(finalArrayInOut.get(i).getName()+"|"+finalArrayInOut.get(i).getDepartment());
+            listDataHeader.add(finalArrayInOut.get(i).getName() + "|" + finalArrayInOut.get(i).getDepartment());
             Log.d("header", "" + listDataHeader);
             ArrayList<EmployeeInOutSummaryModel.FinalArray> row = new ArrayList<EmployeeInOutSummaryModel.FinalArray>();
             row.add(finalArrayInOut.get(i));
@@ -261,7 +244,6 @@ public class InOutSummaryFragment extends Fragment {
         }
 
     }
-
 
 
     public void fillMonthSpinner() {
@@ -295,17 +277,17 @@ public class InOutSummaryFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentInOutSummaryBinding.monthSpinner.setAdapter(adapterTerm);
 
         String currentMonthName = DateUtils.getCurrentMonthName();
 
-        for(int count = 0; count<monthNames.size();count++){
-            if(currentMonthName.equalsIgnoreCase(monthNames.get(count))){
+        for (int count = 0; count < monthNames.size(); count++) {
+            if (currentMonthName.equalsIgnoreCase(monthNames.get(count))) {
                 fragmentInOutSummaryBinding.monthSpinner.setSelection(count);
             }
         }
-        monthId =  spinnerMonthMap.get(fragmentInOutSummaryBinding.monthSpinner.getSelectedItemPosition());
+        monthId = spinnerMonthMap.get(fragmentInOutSummaryBinding.monthSpinner.getSelectedItemPosition());
     }
 
 
@@ -320,7 +302,7 @@ public class InOutSummaryFragment extends Fragment {
             TermId.add(Integer.parseInt(years.get(i)));
         }
         ArrayList<String> Term = new ArrayList<String>();
-        for (int j = 0; j <years.size(); j++) {
+        for (int j = 0; j < years.size(); j++) {
             Term.add(years.get(j));
         }
 
@@ -342,7 +324,7 @@ public class InOutSummaryFragment extends Fragment {
         } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
             // silently fail...
         }
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentInOutSummaryBinding.yearSpinner.setAdapter(adapterTerm);
         fragmentInOutSummaryBinding.yearSpinner.setSelection(1);
 

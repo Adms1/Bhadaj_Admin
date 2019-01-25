@@ -3,7 +3,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,15 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.ExapndableInOutSummaryAdapter;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableDailyTransportationAdapter;
 import anandniketan.com.bhadajadmin.Model.HR.DailyTransportationModel;
-import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutSummaryModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentHrTrasportationBinding;
-import anandniketan.com.bhadajadmin.databinding.FragmentInOutSummaryBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
@@ -55,6 +51,7 @@ public class HrTrasportationFragment extends Fragment implements DatePickerDialo
     private int Year, Month, Day,hour,minute,second;
     private int mYear, mMonth, mDay;
     private static String dateFinal = "";
+    private String viewstatus;
 
     private Calendar calendar;
     public HrTrasportationFragment() {
@@ -88,6 +85,9 @@ public class HrTrasportationFragment extends Fragment implements DatePickerDialo
 
     private void setListners() {
 
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
+
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -99,7 +99,6 @@ public class HrTrasportationFragment extends Fragment implements DatePickerDialo
 
         fragmentInOutSummaryBinding.fromdateBtn.setText(Utils.getTodaysDate());
         fragmentInOutSummaryBinding.todateBtn.setText(Utils.getTodaysDate());
-
 
         fragmentInOutSummaryBinding.fromdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +190,7 @@ public class HrTrasportationFragment extends Fragment implements DatePickerDialo
                         fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentInOutSummaryBinding.expHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        exapndableInOutSummaryAdapter = new ExpandableDailyTransportationAdapter(getActivity(),listDataHeader,listDataChild);
+                        exapndableInOutSummaryAdapter = new ExpandableDailyTransportationAdapter(getActivity(), listDataHeader, listDataChild, viewstatus);
                         fragmentInOutSummaryBinding.transportationList.setAdapter(exapndableInOutSummaryAdapter);
                     } else {
                         fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);

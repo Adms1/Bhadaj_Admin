@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -58,7 +59,6 @@
                 android:layout_marginTop="@dimen/_38sdp"
                 android:background="@drawable/menu" />
 
-
             <LinearLayout
                 android:id="@+id/mainstudent_linear"
                 android:layout_width="match_parent"
@@ -71,6 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,7 +97,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|center"
                             android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -113,21 +114,21 @@
                             android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
                             android:gravity="center|center_vertical"
+                            android:overlapAnchor="false"
                             android:paddingBottom="1dp"
                             android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
-
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <TextView
@@ -147,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|center"
                             android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -164,8 +165,8 @@
                             android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
                             android:gravity="center|center_vertical"
+                            android:overlapAnchor="false"
                             android:paddingBottom="1dp"
                             android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
@@ -177,9 +178,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
 
@@ -196,11 +197,11 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|center"
                             android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.13"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -217,8 +218,8 @@
                             android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
                             android:gravity="center|center_vertical"
+                            android:overlapAnchor="false"
                             android:paddingBottom="1dp"
                             android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
@@ -229,9 +230,9 @@
                         android:id="@+id/linear_subject"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <TextView
@@ -251,7 +252,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal|center"
                             android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -262,15 +263,13 @@
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_gravity="center_vertical"
-                            android:orientation="horizontal"
                             android:layout_marginBottom="@dimen/_3sdp"
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_weight="2.13"
                             android:gravity="left|center_vertical"
-                            android:layout_weight="2.2"
-                            android:paddingBottom="1dp"
+                            android:orientation="horizontal"
                             android:paddingLeft="@dimen/_1sdp"
-                            android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
@@ -282,7 +281,6 @@
                         android:layout_height="@dimen/_30sdp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="@dimen/_3sdp"
-                        android:layout_marginLeft="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_weight="0.22"
                         android:background="@drawable/round_button"
@@ -290,7 +288,6 @@
                         android:textAllCaps="true"
                         android:textColor="@color/app_bg"
                         android:textSize="@dimen/_11sdp" />
-
 
                     <TextView
                         android:id="@+id/txtNoRecords"

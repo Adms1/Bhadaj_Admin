@@ -14,6 +14,7 @@ import java.util.List;
 import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
 import anandniketan.com.bhadajadmin.Model.Student.MarkSyllabusModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyllabusPermissionAdapter.MyViewHolder> {
     private Context context;
@@ -21,13 +22,14 @@ public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyll
     private List<MarkSyllabusModel.FinalArray> mDataList = new ArrayList<MarkSyllabusModel.FinalArray>();
     private OnEditRecordWithPosition listner;
     private ArrayList<String> rowvalue = new ArrayList<String>();
+    private String status;
 
-
-    public MarkSyllabusPermissionAdapter(Context mContext, MarkSyllabusModel profilePermissionModel, OnEditRecordWithPosition listner) {
+    public MarkSyllabusPermissionAdapter(Context mContext, MarkSyllabusModel profilePermissionModel, OnEditRecordWithPosition listner, String status) {
         this.context= mContext;
         this.profilePermissionModel = profilePermissionModel;
         this.mDataList = profilePermissionModel.getFinalArray();
         this.listner = listner;
+        this.status = status;
     }
 
 
@@ -53,7 +55,12 @@ public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyll
         holder.mIvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listner.getEditpermission(position);
+
+                if (status.equalsIgnoreCase("true")) {
+                    listner.getEditpermission(position);
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
 
@@ -71,12 +78,12 @@ public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyll
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            term_txt = (TextView) itemView.findViewById(R.id.term_txt);
-            type_txt = (TextView) itemView.findViewById(R.id.type_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            testname_txt = (TextView) itemView.findViewById(R.id.testname_txt);
-            result_status_txt = (TextView) itemView.findViewById(R.id.result_status_txt);
-            mIvEdit = (ImageView) itemView.findViewById(R.id.iv_edt);
+            term_txt = itemView.findViewById(R.id.term_txt);
+            type_txt = itemView.findViewById(R.id.type_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            testname_txt = itemView.findViewById(R.id.testname_txt);
+            result_status_txt = itemView.findViewById(R.id.result_status_txt);
+            mIvEdit = itemView.findViewById(R.id.iv_edt);
         }
     }
 

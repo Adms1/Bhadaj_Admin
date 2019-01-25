@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:paddingBottom="1dp"
         android:visibility="visible"
-        android:weightSum="3"
+        android:weightSum="1"
         android:background="@drawable/box_blue">
 
         <TextView
@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:text="@string/index"
-            android:layout_weight=".8"
+            android:layout_weight="0.14"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
             android:paddingLeft="@dimen/_2sdp"
@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:text="@string/teacher"
-            android:layout_weight="1.2"
+            android:layout_weight="0.3"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
             android:paddingLeft="@dimen/_2sdp"
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:text="@string/subject"
-            android:layout_weight="1"
+            android:layout_weight="0.3"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
             android:paddingLeft="@dimen/_2sdp"

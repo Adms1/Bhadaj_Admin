@@ -3,7 +3,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,16 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -30,12 +23,8 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExapandableListAdapterSMSRepoetData;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterInquiryData;
-import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
-import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
-import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
@@ -62,6 +51,7 @@ public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDa
     private FragmentManager fragmentManager = null;
     private DatePickerDialog datePickerDialog;
     private int lastExpandedPosition = -1;
+    private String viewstatus;
 
     public SMSReportFragment() {
     }
@@ -81,6 +71,10 @@ public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDa
 
 
     public void setListners() {
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
+
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -194,7 +188,7 @@ public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDa
                         fragmentSmsreportBinding.listHeader.setVisibility(View.VISIBLE);
                         fragmentSmsreportBinding.linearCount.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        exapandableListAdapterSMSRepoetData = new ExapandableListAdapterSMSRepoetData(getActivity(), listDataHeader, listDataChild);
+                        exapandableListAdapterSMSRepoetData = new ExapandableListAdapterSMSRepoetData(getActivity(), listDataHeader, listDataChild, viewstatus);
                         fragmentSmsreportBinding.lvExpviewsmsreport.setAdapter(exapandableListAdapterSMSRepoetData);
                         Utils.dismissDialog();
                     } else {

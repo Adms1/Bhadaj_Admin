@@ -38,6 +38,7 @@ import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentOnlinePaymentBinding;
 import retrofit.RetrofitError;
@@ -90,8 +91,10 @@ public class OnlinePaymentFragment extends Fragment {
         return rootView;
     }
 
-
     public void setListners() {
+
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 13;
 
         fragmentOnlinePaymentBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,14 +102,19 @@ public class OnlinePaymentFragment extends Fragment {
                 DashboardActivity.onLeft();
             }
         });
+
         fragmentOnlinePaymentBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new StudentFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 13;
+
+//                fragment = new StudentPermissionFragment();
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+//                        .replace(R.id.frame_container, fragment).commit();
+                getActivity().onBackPressed();
             }
         });
 
@@ -126,6 +134,7 @@ public class OnlinePaymentFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
+
         });
 
         fragmentOnlinePaymentBinding.termDetailSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

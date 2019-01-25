@@ -104,6 +104,19 @@ public class FinalArrayStaffModel {
     @SerializedName("Day")
     @Expose
     private String day;
+
+    @SerializedName("EmployeeName")
+    @Expose
+    private String empName;
+
+    @SerializedName("Status")
+    @Expose
+    private String status;
+
+    @SerializedName("EmployeeID")
+    @Expose
+    private Integer empId;
+
     @SerializedName("Data")
     @Expose
     private List<Datum> data = new ArrayList<Datum>();
@@ -180,6 +193,14 @@ public class FinalArrayStaffModel {
         this.standard = standard;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getName() {
         return name;
     }
@@ -222,6 +243,22 @@ public class FinalArrayStaffModel {
 
     public String getEmployeeId() {
         return employeeId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
     }
 
     public void setEmployeeId(String employeeId) {

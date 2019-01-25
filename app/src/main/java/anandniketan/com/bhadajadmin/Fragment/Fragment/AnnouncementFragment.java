@@ -306,8 +306,8 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
             @Override
             public void onClick(View view) {
 
-                AppConfiguration.position = 11;
-                fragment = new StudentFragment();
+                AppConfiguration.position = 55;
+                fragment = new AnnoucementListFragment();
                 fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                 AppConfiguration.firsttimeback = true;
@@ -315,9 +315,6 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
             }
         });
     }
-
-
-
 
     private void callStandardApi() {
 

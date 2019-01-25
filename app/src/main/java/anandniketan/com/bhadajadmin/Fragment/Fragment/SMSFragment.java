@@ -2,38 +2,28 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 
-import java.text.DecimalFormat;
-import java.text.Format;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.AccountSubMenuAdapter;
-import anandniketan.com.bhadajadmin.Adapter.ExapandableListAdapterSMSRepoetData;
 import anandniketan.com.bhadajadmin.Adapter.SMSSubMenuAdapter;
-import anandniketan.com.bhadajadmin.Model.Account.AccountFeesCollectionModel;
-import anandniketan.com.bhadajadmin.Model.Account.AccountFeesStatusModel;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentSmBinding;
 import retrofit.RetrofitError;
@@ -47,7 +37,7 @@ public class SMSFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
 
     public SMSFragment() {
     }
@@ -69,6 +59,9 @@ public class SMSFragment extends Fragment {
     public void initViews() {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 3;
+
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "SMS");
+
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "SMS/" + "sms_inside.png")
                 .fitCenter()
@@ -97,7 +90,7 @@ public class SMSFragment extends Fragment {
         fragmentSmBinding.smsSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
+                if (position == 0 && permissionMap.get("Student Absent").getStatus().equalsIgnoreCase("true")) {
                     fragment = new StudentAbsentFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -105,7 +98,8 @@ public class SMSFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 31;
-                } else if (position == 1) {
+
+                } else if (position == 1 && permissionMap.get("Bulk SMS").getStatus().equalsIgnoreCase("true")) {
                     fragment = new BullkSmsFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -113,7 +107,8 @@ public class SMSFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 31;
-                } else if (position == 2) {
+
+                } else if (position == 2 && permissionMap.get("Single SMS").getStatus().equalsIgnoreCase("true")) {
                     fragment = new SingleSmsFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -121,7 +116,8 @@ public class SMSFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 31;
-                } else if (position == 3) {
+
+                } else if (position == 3 && permissionMap.get("Staff SMS").getStatus().equalsIgnoreCase("true")) {
                     fragment = new EmployeeSmsFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -129,7 +125,8 @@ public class SMSFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 31;
-                }else if (position == 4) {
+
+                } else if (position == 4 && permissionMap.get("App SMS").getStatus().equalsIgnoreCase("true")) {
                     fragment = new AppSMSFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -137,7 +134,7 @@ public class SMSFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 31;
-                }else if (position == 5) {
+                } else if (position == 5) {
                     fragment = new SMSStudentTransportFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -145,7 +142,8 @@ public class SMSFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 31;
-                }else if (position == 6) {
+
+                } else if (position == 6) {
                     fragment = new SMSStudentMarksFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -153,8 +151,12 @@ public class SMSFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 31;
-                }else if (position == 7) {
+
+                } else if (position == 7 && permissionMap.get("All SMS Report").getStatus().equalsIgnoreCase("true")) {
                     fragment = new SMSReportFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("All SMS Report").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
@@ -187,7 +189,7 @@ public class SMSFragment extends Fragment {
                     return;
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("false")) {
-                  //  Utils.ping(mContext, getString(R.string.false_msg));
+                    //  Utils.ping(mContext, getString(R.string.false_msg));
                     Utils.dismissDialog();
 
                     return;

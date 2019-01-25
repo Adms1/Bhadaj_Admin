@@ -15,6 +15,7 @@ import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Interface.onDeleteButton;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 
 /**
@@ -28,12 +29,15 @@ public class ClassTeacherDetailListAdapter extends RecyclerView.Adapter<ClassTea
     ArrayList<String> deleteId;
     ArrayList<String> editId;
     private Context context;
+    private String updatestatus, deletestatus;
 
-    public ClassTeacherDetailListAdapter(Context mContext, List<FinalArrayStaffModel> classTeacherDetail, onDeleteButton onDeleteButton, getEditpermission getEditpermission) {
+    public ClassTeacherDetailListAdapter(Context mContext, List<FinalArrayStaffModel> classTeacherDetail, onDeleteButton onDeleteButton, getEditpermission getEditpermission, String deletestatus, String updatestatus) {
         this.context = mContext;
         this.classTeacherDetail = classTeacherDetail;
         this.onDeleteButton = onDeleteButton;
         this.getEditpermission = getEditpermission;
+        this.updatestatus = updatestatus;
+        this.deletestatus = deletestatus;
 
     }
 
@@ -58,18 +62,28 @@ public class ClassTeacherDetailListAdapter extends RecyclerView.Adapter<ClassTea
         holder.edit_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editId = new ArrayList<>();
-                editId.add(String.valueOf(classTeacherDetail.get(position).getPkClsTeacherID()) + "|" +
-                        classTeacherDetail.get(position).getName() + "|" + holder.grade_txt.getText().toString() + "|" +
-                        holder.section_txt.getText().toString());
-                getEditpermission.getEditpermission();
+
+                if (updatestatus.equalsIgnoreCase("true")) {
+                    editId = new ArrayList<>();
+                    editId.add(String.valueOf(classTeacherDetail.get(position).getPkClsTeacherID()) + "|" +
+                            classTeacherDetail.get(position).getName() + "|" + holder.grade_txt.getText().toString() + "|" +
+                            holder.section_txt.getText().toString());
+                    getEditpermission.getEditpermission();
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
         holder.delete_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteId = new ArrayList<>();
-                deleteId.add(String.valueOf(classTeacherDetail.get(position).getPkClsTeacherID()));
+                if (deletestatus.equalsIgnoreCase("true")) {
+                    deleteId = new ArrayList<>();
+                    deleteId.add(String.valueOf(classTeacherDetail.get(position).getPkClsTeacherID()));
+                    onDeleteButton.deleteSentMessage();
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
     }
@@ -94,12 +108,12 @@ public class ClassTeacherDetailListAdapter extends RecyclerView.Adapter<ClassTea
         public MyViewHolder(View itemView) {
             super(itemView);
             //  index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            teachername_txt = (TextView) itemView.findViewById(R.id.classteachername_txt);
-            section_txt = (TextView) itemView.findViewById(R.id.section_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            teachername_txt = itemView.findViewById(R.id.classteachername_txt);
+            section_txt = itemView.findViewById(R.id.section_txt);
 
-            edit_img = (ImageView) itemView.findViewById(R.id.edit_img);
-            delete_img = (ImageView) itemView.findViewById(R.id.delete_img);
+            edit_img = itemView.findViewById(R.id.edit_img);
+            delete_img = itemView.findViewById(R.id.delete_img);
         }
     }
 

@@ -2,24 +2,20 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
 import android.widget.Spinner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +25,6 @@ import anandniketan.com.bhadajadmin.Adapter.StaffSearchListItemAdapter;
 import anandniketan.com.bhadajadmin.Model.HR.DepartmentModel;
 import anandniketan.com.bhadajadmin.Model.HR.DesignationModel;
 import anandniketan.com.bhadajadmin.Model.HR.SearchStaffModel;
-import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
@@ -61,6 +56,7 @@ public class SearchStaffFragment extends Fragment {
     private StaffSearchListItemAdapter staffSearchListItemAdapter;
     private List<SearchStaffModel.FinalArray> finalDatalist;
 
+    private String viewstatus;
 
     public SearchStaffFragment() {
         // Required empty public constructor
@@ -81,6 +77,10 @@ public class SearchStaffFragment extends Fragment {
         // Inflate the layout for this fragment
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 51;
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("status");
+
         fragmentStudentViewInquiryBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_staff,container,false);
         rootView =  fragmentStudentViewInquiryBinding.getRoot();
 
@@ -384,7 +384,7 @@ public class SearchStaffFragment extends Fragment {
                     fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.VISIBLE);
                     fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.GONE);
 
-                    staffSearchListItemAdapter = new StaffSearchListItemAdapter(getActivity(),finalDatalist);
+                    staffSearchListItemAdapter = new StaffSearchListItemAdapter(getActivity(), finalDatalist, viewstatus);
                     fragmentStudentViewInquiryBinding.staffList.setLayoutManager(new LinearLayoutManager(getActivity()));
                     fragmentStudentViewInquiryBinding.staffList.setAdapter(staffSearchListItemAdapter);
 

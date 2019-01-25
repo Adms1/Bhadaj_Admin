@@ -3,7 +3,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,14 +20,10 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.EmployeeInOutDetailsAdapter;
-import anandniketan.com.bhadajadmin.Adapter.EmployeePresentDetailAdapter;
 import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutDetailsModel;
-import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutSummaryModel;
-import anandniketan.com.bhadajadmin.Model.HR.EmployeePresentDetailsModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
-import anandniketan.com.bhadajadmin.databinding.FragmentEmployeePresentDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.FragmentInOutSummaryDetailsBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -48,7 +43,7 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
     private static String dateFinal = "";
     private List<EmployeeInOutDetailsModel.FinalArray> finalArrayEmlopyee;
     private EmployeeInOutDetailsAdapter employeePresentDetailAdapter;
-
+    private String viewstatus;
 
 
     @Override
@@ -56,6 +51,9 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
                              Bundle savedInstanceState) {
         mContext = getActivity();
         fragmentEmployeePresentDetailBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_in_out_summary_details, container, false);
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("");
 
         setListners();
         callEmployeePresentListApi();
@@ -83,7 +81,7 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
         fragmentEmployeePresentDetailBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new AttendenceReportFragment();
+                fragment = new HRFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }

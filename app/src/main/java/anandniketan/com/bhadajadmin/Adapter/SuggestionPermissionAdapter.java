@@ -1,7 +1,6 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +14,20 @@ import anandniketan.com.bhadajadmin.Interface.onDeleteButton;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class SuggestionPermissionAdapter extends RecyclerView.Adapter<SuggestionPermissionAdapter.MyViewHolder> {
     onDeleteButton onDeleteButton;
     ArrayList<String> deleteId;
     private Context context;
     private StudentAttendanceModel profilePermissionModel;
+    private String deletestatus;
 
-    public SuggestionPermissionAdapter(Context mContext, StudentAttendanceModel profilePermissionModel, onDeleteButton onDeleteButton) {
+    public SuggestionPermissionAdapter(Context mContext, StudentAttendanceModel profilePermissionModel, onDeleteButton onDeleteButton, String deletestatus) {
         this.context = mContext;
         this.profilePermissionModel = profilePermissionModel;
         this.onDeleteButton = onDeleteButton;
+        this.deletestatus = deletestatus;
     }
 
 
@@ -45,9 +47,15 @@ public class SuggestionPermissionAdapter extends RecyclerView.Adapter<Suggestion
         holder.delete_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteId = new ArrayList<>();
-                deleteId.add(String.valueOf(result.getAssignPermissionID()));
-                onDeleteButton.deleteSentMessage();
+
+                if (deletestatus.equalsIgnoreCase("true")) {
+
+                    deleteId = new ArrayList<>();
+                    deleteId.add(String.valueOf(result.getAssignPermissionID()));
+                    onDeleteButton.deleteSentMessage();
+                } else {
+                    Utils.ping(context, "Access Denied");
+                }
             }
         });
 
@@ -68,10 +76,10 @@ public class SuggestionPermissionAdapter extends RecyclerView.Adapter<Suggestion
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            type_txt = (TextView) itemView.findViewById(R.id.type_txt);
-            assign_txt = (TextView) itemView.findViewById(R.id.assign_txt);
-            delete_img = (ImageView) itemView.findViewById(R.id.delete_img);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            type_txt = itemView.findViewById(R.id.type_txt);
+            assign_txt = itemView.findViewById(R.id.assign_txt);
+            delete_img = itemView.findViewById(R.id.delete_img);
         }
     }
 }

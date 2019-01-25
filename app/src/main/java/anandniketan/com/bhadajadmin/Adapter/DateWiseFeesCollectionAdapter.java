@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,20 +16,21 @@ import android.widget.TextView;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class DateWiseFeesCollectionAdapter extends RecyclerView.Adapter<DateWiseFeesCollectionAdapter.MyViewHolder> {
 
-    private Context context;
-    private List<DateWiseFeesCollectionModel.FinalArray> announcmentModel;
     SpannableStringBuilder discriptionSpanned;
     String discriptionStr;
+    private Context context;
+    private List<DateWiseFeesCollectionModel.FinalArray> announcmentModel;
+    private String viewstatus;
 
-    public DateWiseFeesCollectionAdapter(Context mContext, List<DateWiseFeesCollectionModel.FinalArray> announcmentModel) {
+    public DateWiseFeesCollectionAdapter(Context mContext, List<DateWiseFeesCollectionModel.FinalArray> announcmentModel, String viewstatus) {
         this.context = mContext;
         this.announcmentModel = announcmentModel;
+        this.viewstatus = viewstatus;
     }
 
 
@@ -40,21 +40,22 @@ public class DateWiseFeesCollectionAdapter extends RecyclerView.Adapter<DateWise
         return new DateWiseFeesCollectionAdapter.MyViewHolder(itemView);
     }
 
-        @Override
-        public void onBindViewHolder(DateWiseFeesCollectionAdapter.MyViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(DateWiseFeesCollectionAdapter.MyViewHolder holder, int position) {
 
-            final DateWiseFeesCollectionModel.FinalArray result = announcmentModel.get(position);
+        final DateWiseFeesCollectionModel.FinalArray result = announcmentModel.get(position);
 
-            holder.studentname_txt.setText(result.getName());
-            holder.grnno_txt.setText(result.getGRNO());
-            holder.section_txt.setText(result.getStandard());
-            holder.totalPaid_txt.setText("₹"+String.valueOf(result.getAmount()));
+        holder.studentname_txt.setText(result.getName());
+        holder.grnno_txt.setText(result.getGRNO());
+        holder.section_txt.setText(result.getStandard());
+        holder.totalPaid_txt.setText("₹" + String.valueOf(result.getAmount()));
 
 
         holder.view_txt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
+                if (viewstatus.equalsIgnoreCase("true")) {
                     final Dialog dialog = new Dialog(context);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(R.layout.dialog_datewise_collection_list_child_item);
@@ -62,26 +63,26 @@ public class DateWiseFeesCollectionAdapter extends RecyclerView.Adapter<DateWise
                     dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
-                    TextView tvUserName = (TextView) dialog.findViewById(R.id.tv_name);
+                    TextView tvUserName = dialog.findViewById(R.id.tv_name);
 
-                    TextView tvOpeningBal = (TextView)dialog.findViewById(R.id.tv_opening_bal);
-                    TextView totalFees  = (TextView)dialog.findViewById(R.id.tv_totalfees_bal);
+                    TextView tvOpeningBal = dialog.findViewById(R.id.tv_opening_bal);
+                    TextView totalFees = dialog.findViewById(R.id.tv_totalfees_bal);
 
-                    tvOpeningBal.setText("₹"+result.getOpeningBalance());
-                    totalFees.setText("₹"+result.getTotalAmt());
+                    tvOpeningBal.setText("₹" + result.getOpeningBalance());
+                    totalFees.setText("₹" + result.getTotalAmt());
 
-                    tvUserName.setText(result.getName()+"("+result.getGRNO()+")");
+                    tvUserName.setText(result.getName() + "(" + result.getGRNO() + ")");
 
-                    RecyclerView recyclerView = (RecyclerView)dialog.findViewById(R.id.rv_datewisechildlist);
+                    RecyclerView recyclerView = dialog.findViewById(R.id.rv_datewisechildlist);
 
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-                    List<DateWiseFeesCollectionModel.FeeReceiptDetail> dataList = result.getFeeReceiptDetail() ;
+                    List<DateWiseFeesCollectionModel.FeeReceiptDetail> dataList = result.getFeeReceiptDetail();
 
-                    DatewiseFeesChildItemAdapter datewiseFeesChildItemAdapter  = new DatewiseFeesChildItemAdapter(context,dataList);
+                    DatewiseFeesChildItemAdapter datewiseFeesChildItemAdapter = new DatewiseFeesChildItemAdapter(context, dataList);
                     recyclerView.setAdapter(datewiseFeesChildItemAdapter);
 
-                    Button btnClose = (Button) dialog.findViewById(R.id.close_btn);
+                    Button btnClose = dialog.findViewById(R.id.close_btn);
                     btnClose.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -90,33 +91,35 @@ public class DateWiseFeesCollectionAdapter extends RecyclerView.Adapter<DateWise
                     });
 
                     dialog.show();
+                } else {
+                    Utils.ping(context, "Access Denied");
                 }
-            });
-        }
-
-
-        @Override
-        public int getItemCount() {
-            return announcmentModel.size();
-        }
-
-        public class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView studentname_txt,grnno_txt, section_txt,totalPaid_txt, view_txt;
-
-
-            public MyViewHolder(View itemView) {
-                super(itemView);
-                studentname_txt = (TextView) itemView.findViewById(R.id.studentname_txt);
-                grnno_txt = (TextView) itemView.findViewById(R.id.grnno_txt);
-                section_txt = (TextView) itemView.findViewById(R.id.section_txt);
-                totalPaid_txt = (TextView) itemView.findViewById(R.id.totalPaid_txt);
-                view_txt = (TextView) itemView.findViewById(R.id.view_txt);
-
-
             }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return announcmentModel.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView studentname_txt, grnno_txt, section_txt, totalPaid_txt, view_txt;
 
 
-            private SpannableStringBuilder trimSpannable(SpannableStringBuilder spannable) {
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            studentname_txt = itemView.findViewById(R.id.studentname_txt);
+            grnno_txt = itemView.findViewById(R.id.grnno_txt);
+            section_txt = itemView.findViewById(R.id.section_txt);
+            totalPaid_txt = itemView.findViewById(R.id.totalPaid_txt);
+            view_txt = itemView.findViewById(R.id.view_txt);
+
+
+        }
+
+
+        private SpannableStringBuilder trimSpannable(SpannableStringBuilder spannable) {
             int trimStart = 0;
             int trimEnd = 0;
             String text = spannable.toString();

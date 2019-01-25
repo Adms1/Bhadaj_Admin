@@ -22,12 +22,13 @@ public class TallyTransactionAdapter extends RecyclerView.Adapter<TallyTransacti
     private String stduentIdStr, mobilenoStr, FinalValue;
     private ArrayList<String> dataCheck = new ArrayList<String>();
     private getEmployeeCheck listner;
+    private String viewstatus;
 
-
-    public TallyTransactionAdapter(Context mContext, List<TallyTranscationModel.FinalArray> finalArrayBulkSMSModelList) {
+    public TallyTransactionAdapter(Context mContext, List<TallyTranscationModel.FinalArray> finalArrayBulkSMSModelList, String viewstatus) {
         this.context = mContext;
         this.finalArrayBulkSMSModelList = finalArrayBulkSMSModelList;
         this.listner = listner;
+        this.viewstatus = viewstatus;
     }
 
 

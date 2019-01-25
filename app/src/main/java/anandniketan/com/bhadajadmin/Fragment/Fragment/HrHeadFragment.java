@@ -3,7 +3,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,14 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableHrAdminAdapter;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableHrHeadAdapter;
-import anandniketan.com.bhadajadmin.Model.HR.DailyHrAdminModel;
 import anandniketan.com.bhadajadmin.Model.HR.HrHeadModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
-import anandniketan.com.bhadajadmin.databinding.FragmentHrAdminBinding;
 import anandniketan.com.bhadajadmin.databinding.FragmentHrHeadBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -55,11 +51,11 @@ public class HrHeadFragment extends Fragment implements DatePickerDialog.OnDateS
     private int mYear, mMonth, mDay;
     private static String dateFinal = "";
     private Calendar calendar;
+    private String viewstatus;
 
     public HrHeadFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,8 +73,6 @@ public class HrHeadFragment extends Fragment implements DatePickerDialog.OnDateS
         return fragmentHrAdminBinding.getRoot();
     }
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -91,6 +85,10 @@ public class HrHeadFragment extends Fragment implements DatePickerDialog.OnDateS
 
 
     private void setListners() {
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
+
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -193,7 +191,7 @@ public class HrHeadFragment extends Fragment implements DatePickerDialog.OnDateS
                         fragmentHrAdminBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentHrAdminBinding.expHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        exapndableInOutSummaryAdapter = new ExpandableHrHeadAdapter(getActivity(),listDataHeader,listDataChild);
+                        exapndableInOutSummaryAdapter = new ExpandableHrHeadAdapter(getActivity(), listDataHeader, listDataChild, viewstatus);
                         fragmentHrAdminBinding.adminList.setAdapter(exapndableInOutSummaryAdapter);
                     } else {
                         fragmentHrAdminBinding.txtNoRecords.setVisibility(View.VISIBLE);

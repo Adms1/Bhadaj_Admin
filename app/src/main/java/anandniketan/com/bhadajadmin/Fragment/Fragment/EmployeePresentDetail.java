@@ -3,7 +3,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,18 +11,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.EmployeePresentDetailAdapter;
-import anandniketan.com.bhadajadmin.Adapter.ExapndableInOutSummaryAdapter;
-import anandniketan.com.bhadajadmin.Interface.OnAdapterItemButtonClick;
-import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutSummaryModel;
 import anandniketan.com.bhadajadmin.Model.HR.EmployeePresentDetailsModel;
-import anandniketan.com.bhadajadmin.Model.HR.LeaveRequestModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.Utils;
@@ -87,7 +85,7 @@ public class EmployeePresentDetail extends Fragment implements DatePickerDialog.
         fragmentEmployeePresentDetailBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new AttendenceReportFragment();
+                fragment = new HRFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
 import android.widget.Spinner;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -30,9 +29,7 @@ import java.util.Map;
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.DateWiseFeesCollectionAdapter;
 import anandniketan.com.bhadajadmin.Adapter.ExpandbleListAdapterDailyCollection;
-import anandniketan.com.bhadajadmin.Model.Account.AccountFeesStatusModel;
 import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
-import anandniketan.com.bhadajadmin.Model.Account.FinalArrayAccountFeesModel;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
@@ -71,6 +68,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
     private DatePickerDialog datePickerDialog;
     private String fromDate = "",toDate = "";
     private int whichClick  = 1;
+    private String viewstatus;
 
     public DailyFeesCollectionFragment() {
     }
@@ -82,6 +80,9 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
 
         rootView = fragmentDailyFeesCollectionBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
 
         setListners();
         callTermApi();
@@ -378,7 +379,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                         fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setVisibility(View.VISIBLE);
                         //fillExpLV();
                         fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        dateWiseFeesCollectionAdapter = new DateWiseFeesCollectionAdapter(getActivity(),dailyCollectionsList);
+                        dateWiseFeesCollectionAdapter = new DateWiseFeesCollectionAdapter(getActivity(), dailyCollectionsList, viewstatus);
                         fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setAdapter(dateWiseFeesCollectionAdapter);
                         Utils.dismissDialog();
                     } else {
@@ -386,7 +387,6 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                         fragmentDailyFeesCollectionBinding.lvExpHeader.setVisibility(View.GONE);
                         fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setVisibility(View.GONE);
                     }
-
                 }
             }
 

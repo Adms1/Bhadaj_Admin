@@ -36,7 +36,6 @@
             android:layout_weight="1.2"
             android:gravity="center"
             android:text="Subject"
-            android:paddingLeft="@dimen/_5sdp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp" />
@@ -45,10 +44,9 @@
             android:id="@+id/txtClass"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:gravity="center"
             android:text="Class"
-            android:paddingLeft="1dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp" />

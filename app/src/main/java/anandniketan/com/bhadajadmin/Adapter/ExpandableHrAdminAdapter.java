@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.HR.DailyAccountModel;
 import anandniketan.com.bhadajadmin.Model.HR.DailyHrAdminModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class ExpandableHrAdminAdapter extends BaseExpandableListAdapter {
 
@@ -27,16 +27,19 @@ public class ExpandableHrAdminAdapter extends BaseExpandableListAdapter {
     private int annousID;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    private String viewstatus;
 
-    public ExpandableHrAdminAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<DailyHrAdminModel.FinalArray>> listDataChild) {
+    public ExpandableHrAdminAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<DailyHrAdminModel.FinalArray>> listDataChild, String viewstatus) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
+        this.viewstatus = viewstatus;
     }
 
     @Override
     public List<DailyHrAdminModel.FinalArray> getChild(int groupPosition, int childPosititon) {
         return this.listChildData.get(this._listDataHeader.get(groupPosition));
+
     }
 
     @Override
@@ -54,18 +57,18 @@ public class ExpandableHrAdminAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_child_daily_hr_admin, null);
         }
 
-        TextView txt_strength,txt_new_admission,txt_student_db_update,txt_overalladmin,txt_no_of_teacher,txt_no_of_visitor,txt_complain,txt_suggestion,txt_other;
+        TextView txt_strength, txt_new_admission, txt_student_db_update, txt_overalladmin, txt_no_of_teacher, txt_no_of_visitor, txt_complain, txt_suggestion, txt_other;
 
-        txt_strength = (TextView)convertView.findViewById(R.id.txt_strength);
-        txt_new_admission = (TextView)convertView.findViewById(R.id.txt_new_admission);
-        txt_student_db_update = (TextView)convertView.findViewById(R.id.txt_student_db_update);
-        txt_overalladmin = (TextView)convertView.findViewById(R.id.txt_overalladmin);
-        txt_no_of_teacher = (TextView)convertView.findViewById(R.id.txt_no_of_teacher);
-        txt_complain = (TextView)convertView.findViewById(R.id.txt_complain);
-        txt_suggestion = (TextView)convertView.findViewById(R.id.txt_suggestion);
-        txt_no_of_visitor = (TextView)convertView.findViewById(R.id.txt_no_of_visitor);
+        txt_strength = convertView.findViewById(R.id.txt_strength);
+        txt_new_admission = convertView.findViewById(R.id.txt_new_admission);
+        txt_student_db_update = convertView.findViewById(R.id.txt_student_db_update);
+        txt_overalladmin = convertView.findViewById(R.id.txt_overalladmin);
+        txt_no_of_teacher = convertView.findViewById(R.id.txt_no_of_teacher);
+        txt_complain = convertView.findViewById(R.id.txt_complain);
+        txt_suggestion = convertView.findViewById(R.id.txt_suggestion);
+        txt_no_of_visitor = convertView.findViewById(R.id.txt_no_of_visitor);
 
-        txt_other = (TextView)convertView.findViewById(R.id.txt_other);
+        txt_other = convertView.findViewById(R.id.txt_other);
 
         txt_strength.setText(String.valueOf(childData.get(childPosition).getTotalStrengthOfStudents()));
         txt_new_admission.setText(String.valueOf(childData.get(childPosition).getNewAdmission()));
@@ -82,7 +85,12 @@ public class ExpandableHrAdminAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        if (viewstatus.equalsIgnoreCase("true")) {
+            return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override
@@ -111,26 +119,28 @@ public class ExpandableHrAdminAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_header_daily_hr_admin, null);
         }
-        TextView txt_index, txt_date,txt_createby;
+        TextView txt_index, txt_date, txt_createby;
         ImageView iv_indicator;
 
-        txt_index = (TextView) convertView.findViewById(R.id.index_txt);
-        txt_date = (TextView) convertView.findViewById(R.id.date_txt);
-        txt_createby = (TextView) convertView.findViewById(R.id.createby_txt);
-        iv_indicator = (ImageView)convertView.findViewById(R.id.iv_indicator);
+        txt_index = convertView.findViewById(R.id.index_txt);
+        txt_date = convertView.findViewById(R.id.date_txt);
+        txt_createby = convertView.findViewById(R.id.createby_txt);
+        iv_indicator = convertView.findViewById(R.id.iv_indicator);
 
-        String index  = String.valueOf(groupPosition + 1);
+        String index = String.valueOf(groupPosition + 1);
 
         txt_index.setText(index);
         txt_date.setText(headerTitle1);
         txt_createby.setText(headerTitle2);
 
-
-        if (isExpanded) {
-            iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
-        } else {
-            iv_indicator.setImageResource(R.drawable.arrow_1_42);
+        if (viewstatus.equalsIgnoreCase("true")) {
+            if (isExpanded) {
+                iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
+            } else {
+                iv_indicator.setImageResource(R.drawable.arrow_1_42);
+            }
         }
+
         return convertView;
     }
 

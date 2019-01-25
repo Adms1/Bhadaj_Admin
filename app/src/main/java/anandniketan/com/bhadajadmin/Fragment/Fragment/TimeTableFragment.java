@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,9 +30,11 @@ import anandniketan.com.bhadajadmin.databinding.FragmentTimeTableBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
 public class TimeTableFragment extends Fragment {
 
+    List<String> listDataHeader;
+    HashMap<String, ArrayList<Datum>> listDataChild;
+    ExpandableListAdapterTimeTable expandableListAdapterTimeTable;
     private FragmentTimeTableBinding fragmentTimeTableBinding;
     private View rootView;
     private Context mContext;
@@ -39,9 +42,8 @@ public class TimeTableFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private int lastExpandedPosition = -1;
     private List<FinalArrayStaffModel> finalArrayTimeTableList;
-    List<String> listDataHeader;
-    HashMap<String, ArrayList<Datum>> listDataChild;
-    ExpandableListAdapterTimeTable expandableListAdapterTimeTable;
+    private String viewstatus, updatestatus, deletestatus;
+    private LinearLayout ll;
 
     public TimeTableFragment() {
     }
@@ -54,12 +56,24 @@ public class TimeTableFragment extends Fragment {
         rootView = fragmentTimeTableBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        ll = rootView.findViewById(R.id.timetable_ll);
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
+        updatestatus = bundle.getString("updatestatus");
+        deletestatus = bundle.getString("deletestatus");
+
         setListners();
-        callTimeTableApi();
+
+        if (viewstatus.equalsIgnoreCase("true")) {
+
+            callTimeTableApi();
+        } else {
+            Utils.ping(getActivity(), "Access Denied");
+        }
 
         return rootView;
     }
-
 
     public void setListners() {
         fragmentTimeTableBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +102,7 @@ public class TimeTableFragment extends Fragment {
                 lastExpandedPosition = groupPosition;
             }
         });
-
     }
-
 
     // CALL TimeTable API HERE
     private void callTimeTableApi() {
@@ -116,20 +128,20 @@ public class TimeTableFragment extends Fragment {
                 if (timeTableModel.getSuccess().equalsIgnoreCase("false")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentTimeTableBinding.txtNoRecordsTimetable.setVisibility(View.VISIBLE);
-                    fragmentTimeTableBinding.lvExpTimeTable.setVisibility(View.GONE);
+                    ll.setVisibility(View.GONE);
                     return;
                 }
                 if (timeTableModel.getSuccess().equalsIgnoreCase("True")) {
                     finalArrayTimeTableList = timeTableModel.getFinalArray();
                     if (finalArrayTimeTableList != null) {
                         fragmentTimeTableBinding.txtNoRecordsTimetable.setVisibility(View.GONE);
-                        fragmentTimeTableBinding.lvExpTimeTable.setVisibility(View.VISIBLE);
+                        ll.setVisibility(View.VISIBLE);
                         fillExpLV();
                         expandableListAdapterTimeTable = new ExpandableListAdapterTimeTable(getActivity(), listDataHeader, listDataChild);
                         fragmentTimeTableBinding.lvExpTimeTable.setAdapter(expandableListAdapterTimeTable);
                     } else {
                         fragmentTimeTableBinding.txtNoRecordsTimetable.setVisibility(View.VISIBLE);
-                        fragmentTimeTableBinding.lvExpTimeTable.setVisibility(View.GONE);
+                        ll.setVisibility(View.GONE);
                     }
                 }
             }
@@ -142,23 +154,23 @@ public class TimeTableFragment extends Fragment {
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
 
     private Map<String, String> getTimeTableDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("StaffID", "64");
+//        map.put("StaffID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", ""));
+        map.put("StaffID", "82");
         return map;
     }
 
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<Datum>>();
+        listDataChild = new HashMap<>();
 
         for (int i = 0; i < finalArrayTimeTableList.size(); i++) {
             listDataHeader.add(finalArrayTimeTableList.get(i).getDay());
             Log.d("header", "" + listDataHeader);
-            ArrayList<Datum> row = new ArrayList<Datum>();
+            ArrayList<Datum> row = new ArrayList<>();
 
             for (int j = 0; j < finalArrayTimeTableList.get(i).getData().size(); j++) {
                 row.add(finalArrayTimeTableList.get(i).getData().get(j));

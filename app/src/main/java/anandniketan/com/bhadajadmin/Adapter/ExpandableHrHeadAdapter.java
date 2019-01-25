@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.HR.DailyHrAdminModel;
 import anandniketan.com.bhadajadmin.Model.HR.HrHeadModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class ExpandableHrHeadAdapter extends BaseExpandableListAdapter {
 
@@ -27,11 +27,13 @@ public class ExpandableHrHeadAdapter extends BaseExpandableListAdapter {
     private int annousID;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    private String viewstatus;
 
-    public ExpandableHrHeadAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<HrHeadModel.FinalArray>> listDataChild) {
+    public ExpandableHrHeadAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<HrHeadModel.FinalArray>> listDataChild, String viewstatus) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
+        this.viewstatus = viewstatus;
     }
 
     @Override
@@ -56,12 +58,12 @@ public class ExpandableHrHeadAdapter extends BaseExpandableListAdapter {
 
         TextView txt_admission_inquiry,txt_new_admission,txt_event,txt_fb_update,txt_major_concern,txt_other;
 
-        txt_admission_inquiry = (TextView)convertView.findViewById(R.id.txt_admission_inquiry);
-        txt_new_admission = (TextView)convertView.findViewById(R.id.txt_new_admission);
-        txt_event = (TextView)convertView.findViewById(R.id.txt_event);
-        txt_fb_update = (TextView)convertView.findViewById(R.id.txt_fb_update);
-        txt_major_concern = (TextView)convertView.findViewById(R.id.txt_major_concern);
-        txt_other = (TextView)convertView.findViewById(R.id.txt_other);
+        txt_admission_inquiry = convertView.findViewById(R.id.txt_admission_inquiry);
+        txt_new_admission = convertView.findViewById(R.id.txt_new_admission);
+        txt_event = convertView.findViewById(R.id.txt_event);
+        txt_fb_update = convertView.findViewById(R.id.txt_fb_update);
+        txt_major_concern = convertView.findViewById(R.id.txt_major_concern);
+        txt_other = convertView.findViewById(R.id.txt_other);
 
 
         txt_admission_inquiry.setText(String.valueOf(childData.get(childPosition).getAdmissionInquiry()));
@@ -76,7 +78,12 @@ public class ExpandableHrHeadAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        if (viewstatus.equalsIgnoreCase("true")) {
+            return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override
@@ -108,10 +115,10 @@ public class ExpandableHrHeadAdapter extends BaseExpandableListAdapter {
         TextView txt_index, txt_date,txt_createby;
         ImageView iv_indicator;
 
-        txt_index = (TextView) convertView.findViewById(R.id.index_txt);
-        txt_date = (TextView) convertView.findViewById(R.id.date_txt);
-        txt_createby = (TextView) convertView.findViewById(R.id.createby_txt);
-        iv_indicator = (ImageView)convertView.findViewById(R.id.iv_indicator);
+        txt_index = convertView.findViewById(R.id.index_txt);
+        txt_date = convertView.findViewById(R.id.date_txt);
+        txt_createby = convertView.findViewById(R.id.createby_txt);
+        iv_indicator = convertView.findViewById(R.id.iv_indicator);
 
         String index  = String.valueOf(groupPosition + 1);
 
@@ -120,10 +127,12 @@ public class ExpandableHrHeadAdapter extends BaseExpandableListAdapter {
         txt_createby.setText(headerTitle2);
 
 
-        if (isExpanded) {
-            iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
-        } else {
-            iv_indicator.setImageResource(R.drawable.arrow_1_42);
+        if (viewstatus.equalsIgnoreCase("true")) {
+            if (isExpanded) {
+                iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
+            } else {
+                iv_indicator.setImageResource(R.drawable.arrow_1_42);
+            }
         }
         return convertView;
     }

@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 
 
 /**
@@ -21,33 +23,21 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 
 public class StaffSubMenuAdapter extends BaseAdapter {
     private Context mContext;
-
-    public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Class%20Teacher.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Assign%20Subject.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Time%20Table.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Add%20Exam_Syllabus.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "Home%20Work%20Not%20Done.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "My%20Leave.png",
-            AppConfiguration.BASEURL_IMAGES + "Staff/" + "View%20Marks.png",
-    };
-
-    public String[] mThumbNames = {"Class Teacher", "Assign Subject","Time Table",
-            "Exam","Home Work Not Done","My Leave","View Marks" };
-
+    private ArrayList<IconHeaderModel> newArr;
     // Constructor
-    public StaffSubMenuAdapter(Context c) {
+    public StaffSubMenuAdapter(Context c, ArrayList<IconHeaderModel> newArr) {
         mContext = c;
+        this.newArr = newArr;
     }
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return newArr.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds[position];
+        return newArr.get(position);
     }
 
     @Override
@@ -59,22 +49,34 @@ public class StaffSubMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgGridOptions = null;
         TextView txtGridOptionsName = null;
+        View line1 = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
-        imgGridOptions = (ImageView) convertView.findViewById(R.id.imgGridOptions);
-        txtGridOptionsName = (TextView) convertView.findViewById(R.id.txtGridOptionsName);
+        imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+        txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
+        line1 = convertView.findViewById(R.id.view_line1);
 
-        String url = mThumbIds[position];
+        String url = newArr.get(position).getUrl();
 //        Log.d("url", url);
+
+//        if (hashMap.containsKey(mThumbNames[position]) && hashMap.get(mThumbNames[position]).getStatus().equalsIgnoreCase("true")) {
+//
         Glide.with(mContext)
                 .load(url)
                 .fitCenter()
                 .into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
-        txtGridOptionsName.setText(mThumbNames[position]);
+        txtGridOptionsName.setText(newArr.get(position).getName());
+
+        if (position % 2 == 0) {
+            line1.setVisibility(View.VISIBLE);
+        } else {
+            line1.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 

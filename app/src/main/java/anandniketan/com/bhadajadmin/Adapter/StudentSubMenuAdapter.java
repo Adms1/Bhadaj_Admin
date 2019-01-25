@@ -2,6 +2,7 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,50 +12,24 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.Map;
+import java.util.ArrayList;
 
-import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-
 
 /**
  * Created by admsandroid on 11/17/2017.
  */
 
 public class StudentSubMenuAdapter extends BaseAdapter {
-    public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Search%20Student.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "View%20Inquiry.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Student%20Transport.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Permission.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Attendance.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Left_Active.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "New%20Register.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Announcement.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Circular.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Planner.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Gallery.png",
-    };
-    public String[] mThumbNames = {"Search Student", "View Inquiry", "Student Transport",
-            "Permission", "Attendance", "Left/Active", "New Register", "Announcement", "Circular", "Planner", "Gallery"};
+
     private Context mContext;
-    private Map<String, PermissionDataModel.Detaill> permissionMap;
+    private ArrayList<IconHeaderModel> newArr;
 
     // Constructor
-    public StudentSubMenuAdapter(Context c, Map<String, PermissionDataModel.Detaill> permissionMap) {
+    public StudentSubMenuAdapter(Context c, ArrayList<IconHeaderModel> newArr) {
         mContext = c;
-        this.permissionMap = permissionMap;
-    }
-
-    @Override
-    public int getCount() {
-        return mThumbNames.length;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mThumbNames[position];
+        this.newArr = newArr;
     }
 
     @Override
@@ -64,28 +39,66 @@ public class StudentSubMenuAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         ImageView imgGridOptions = null;
         TextView txtGridOptionsName = null;
+        View line1 = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
         imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
         txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
-        String url = mThumbIds[position];
-//        Log.d("url", url);
+        line1 = convertView.findViewById(R.id.view_line1);
 
-        if (permissionMap.containsKey(mThumbNames[position]) && permissionMap.get(mThumbNames[position]).getStatus().equalsIgnoreCase("true")) {
-            Glide.with(mContext)
-                    .load(url)
-                    .fitCenter()
-                    .into(imgGridOptions);
+        String url = newArr.get(position).getUrl();
+//        Log.d("url", url);
+        Glide.with(mContext)
+                .load(url)
+                .fitCenter()
+                .into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
-            txtGridOptionsName.setText(mThumbNames[position]);
+        txtGridOptionsName.setText(newArr.get(position).getName());
+
+        if (position % 2 == 0) {
+            line1.setVisibility(View.VISIBLE);
+        } else {
+            line1.setVisibility(View.GONE);
         }
+
+
         return convertView;
+
     }
 
+    @Override
+    public int getCount() {
+        return newArr.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return newArr.get(position);
+    }
+
+    class Viewholder extends RecyclerView.ViewHolder {
+        ImageView imgGridOptions = null;
+        TextView txtGridOptionsName = null;
+        View line, line1, line3;
+
+        public Viewholder(View convertView) {
+            super(convertView);
+            imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+            txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
+//        line = convertView.findViewById(R.id.left_view);
+            line1 = convertView.findViewById(R.id.view_line1);
+//        line3 = convertView.findViewById(R.id.left_view3);
+
+
+        }
+
+    }
 }
+
 

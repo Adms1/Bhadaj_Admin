@@ -7,19 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.ListGroupSmsReportBinding;
-import anandniketan.com.bhadajadmin.databinding.ListGroupStudentInquiryDataDetailBinding;
-import anandniketan.com.bhadajadmin.databinding.ListItemHeaderBinding;
-import anandniketan.com.bhadajadmin.databinding.ListItemInquiryDataBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemSmsReportBinding;
 
 public class ExapandableListAdapterSMSRepoetData extends BaseExpandableListAdapter {
@@ -29,12 +23,13 @@ public class ExapandableListAdapterSMSRepoetData extends BaseExpandableListAdapt
     // child data in format of header title, child title
     private HashMap<String, List<StudentAttendanceFinalArray>> listChildData;
     private HashMap<String, String> listfooterDate;
+    private String viewstatus;
 
-
-    public ExapandableListAdapterSMSRepoetData(Context context, List<String> listDataHeader, HashMap<String, List<StudentAttendanceFinalArray>> listDataChild) {
+    public ExapandableListAdapterSMSRepoetData(Context context, List<String> listDataHeader, HashMap<String, List<StudentAttendanceFinalArray>> listDataChild, String viewstatus) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
+        this.viewstatus = viewstatus;
     }
 
     @Override
@@ -52,10 +47,9 @@ public class ExapandableListAdapterSMSRepoetData extends BaseExpandableListAdapt
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         ListItemSmsReportBinding listItemSmsReportBinding;
-            StudentAttendanceFinalArray currentchild = getChild(groupPosition, childPosition);
+        StudentAttendanceFinalArray currentchild = getChild(groupPosition, childPosition);
         listItemSmsReportBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.list_item_sms_report, parent, false);
         convertView = listItemSmsReportBinding.getRoot();
-
 
 
         listItemSmsReportBinding.messageTxt.setText(currentchild.getMessage());
@@ -65,7 +59,12 @@ public class ExapandableListAdapterSMSRepoetData extends BaseExpandableListAdapt
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        if (viewstatus.equalsIgnoreCase("true")) {
+            return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            Utils.ping(_context, "Access Denied");
+            return 0;
+        }
     }
 
     @Override
@@ -108,12 +107,13 @@ public class ExapandableListAdapterSMSRepoetData extends BaseExpandableListAdapt
         groupBinding.receiveTimeTxt.setText(headerTitle3);
         groupBinding.statusTxt.setText(headerTitle4);
 
-        if (isExpanded) {
-            groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.present));
-        } else {
-            groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.absent));
+        if (viewstatus.endsWith("true")) {
+            if (isExpanded) {
+                groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.present));
+            } else {
+                groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.absent));
+            }
         }
-
 
         return convertView;
     }

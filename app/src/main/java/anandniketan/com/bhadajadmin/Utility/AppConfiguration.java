@@ -22,7 +22,7 @@ public class AppConfiguration {
 //    public static String GET_API_URL = "http://192.168.1.8:8086/";
 
     public static String BASE_API_CONTAINER ="MobileApp_Service.asmx/";
-    //    public static String LIVE_BASE_URL = PrefUtils.getInstance(BaseApp.mAppcontext).getStringValue("live_base_url","http://192.168.1.28:8086/");
+    //        public static String LIVE_BASE_URL = PrefUtils.getInstance(BaseApp.mAppcontext).getStringValue("live_base_url","http://192.168.1.28:8086/");
     public static String LIVE_BASE_URL = "http://192.168.1.26:8086/";
 
     //public static String LIVE_BASE_URL = "http://103.250.144.109:8085/";
@@ -54,7 +54,7 @@ public class AppConfiguration {
 
     public static boolean firsttimeback;
     public static int position;
-    public static String fromDate = "",toDate = "",month = "",year = "",staffDate = "",taskReportDate = "";
+    public static String fromDate = "", toDate = "", month = "", year = "", staffDate = "", taskReportDate = "", inquiryviewstatus = "";
 
 
 }

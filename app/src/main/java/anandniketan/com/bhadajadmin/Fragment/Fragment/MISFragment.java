@@ -852,7 +852,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
         };
 
-
         fragmentMisBinding.termSpinner.setAdapter(adapter);
         FinalTermIdStr = spinnerTermMap.get(1);
         AppConfiguration.TermId = FinalTermIdStr;

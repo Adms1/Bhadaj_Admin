@@ -32,7 +32,6 @@ import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
-import anandniketan.com.bhadajadmin.databinding.FragmentOnlinePaymentBinding;
 import anandniketan.com.bhadajadmin.databinding.FragmentOnlineTransactionBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -88,8 +87,6 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
-
-
 
         fragmentTallyTranscationBinding.fromDate1Edt.setText(Utils.getTodaysDate());
         fragmentTallyTranscationBinding.toDate2Edt.setText(Utils.getTodaysDate());
@@ -235,8 +232,6 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
 //        });
 
     }
-
-
 
     public void fillGradeSpinner() {
         ArrayList<String> firstValue = new ArrayList<>();

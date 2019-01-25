@@ -2,7 +2,6 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,12 +13,14 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.Map;
+
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.DailyReportSubMenuAdapter;
-import anandniketan.com.bhadajadmin.Adapter.StaffLeavesubmenuAdapter;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-import anandniketan.com.bhadajadmin.databinding.FragmentAttendenceReportBinding;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.databinding.FragmentDailyReportBinding;
 
 
@@ -30,7 +31,7 @@ public class DailyReportFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
 
     public DailyReportFragment() {
     }
@@ -42,6 +43,8 @@ public class DailyReportFragment extends Fragment {
 
         rootView = fragmentDailyReportBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "HR");
 
         initViews();
         setListners();
@@ -81,30 +84,42 @@ public class DailyReportFragment extends Fragment {
         fragmentDailyReportBinding.dailyReportSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
+                if (position == 0 && permissionMap.get("Transportation").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HrTrasportationFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Transportation").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
-                } else if (position == 1) {
+
+                } else if (position == 1 && permissionMap.get("Account").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HrAccountFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Account").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
-                }else if (position == 2) {
+
+                } else if (position == 2 && permissionMap.get("Admin").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HrAdminFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Admin").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
+
                 }else if (position == 3) {
                     fragment = new HrHouseKeepingFragment();
                     fragmentManager = getFragmentManager();
@@ -113,16 +128,24 @@ public class DailyReportFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
-                }else if (position == 4) {
+
+                } else if (position == 4 && permissionMap.get("Information Technology").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HrInformationtechnologyFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Information Technology").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
-                }else if (position == 5) {
+
+                } else if (position == 5 && permissionMap.get("HR Head").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HrHeadFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("HR Head").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)

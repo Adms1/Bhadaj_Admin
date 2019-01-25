@@ -1439,13 +1439,12 @@ public class MISDataListFragment extends Fragment {
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("True")) {
 
-
                     if (requestType != null) {
 
                         if (!TextUtils.isEmpty(requestType)) {
 
 
-                            finalArrayinquiryCountList = new ArrayList<StudentAttendanceFinalArray>();
+                            finalArrayinquiryCountList = new ArrayList<>();
 
                             for (int count = 0; count < inquiryDataModel.getFinalArray().size(); count++) {
 
@@ -1475,7 +1474,7 @@ public class MISDataListFragment extends Fragment {
                         }
                         fragmentMisDataBinding.listHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        exapandableListAdapterSMSRepoetData = new ExapandableListAdapterSMSRepoetData(getActivity(), listDataHeader, listDataChild);
+                        exapandableListAdapterSMSRepoetData = new ExapandableListAdapterSMSRepoetData(getActivity(), listDataHeader, listDataChild, "");
                         fragmentMisDataBinding.lvExpviewsmsreport.setAdapter(exapandableListAdapterSMSRepoetData);
                         Utils.dismissDialog();
                     } else {

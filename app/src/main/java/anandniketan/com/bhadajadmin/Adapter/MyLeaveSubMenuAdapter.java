@@ -16,8 +16,8 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 
 public class MyLeaveSubMenuAdapter extends BaseAdapter {
     public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "My Leave/" + "",
-            AppConfiguration.BASEURL_IMAGES + "My Leave/" + "",
+            AppConfiguration.BASEURL_IMAGES + "My Leave/" + "Apply%20Leave.png",
+            AppConfiguration.BASEURL_IMAGES + "My Leave/" + "Leave%20Balance.png",
 
     };
     public String[] mThumbNames = {"Apply Leave", "Leave Balance"};
@@ -47,12 +47,15 @@ public class MyLeaveSubMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgGridOptions = null;
         TextView txtGridOptionsName = null;
+        View line = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
-        imgGridOptions = (ImageView) convertView.findViewById(R.id.imgGridOptions);
-        txtGridOptionsName = (TextView) convertView.findViewById(R.id.txtGridOptionsName);
+        imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+        txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
+        line = convertView.findViewById(R.id.view_line1);
+
         String url = mThumbIds[position];
 //        Log.d("url", url);
         Glide.with(mContext)
@@ -62,6 +65,13 @@ public class MyLeaveSubMenuAdapter extends BaseAdapter {
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
         txtGridOptionsName.setText(mThumbNames[position]);
+
+        if (position % 2 == 0) {
+            line.setVisibility(View.VISIBLE);
+        } else {
+            line.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 

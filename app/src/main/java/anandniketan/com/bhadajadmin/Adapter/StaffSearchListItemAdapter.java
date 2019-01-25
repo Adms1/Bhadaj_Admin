@@ -6,25 +6,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Fragment.Fragment.StaffInquiryProfileFragment;
-import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentFragment;
 import anandniketan.com.bhadajadmin.Model.HR.SearchStaffModel;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearchListItemAdapter.MyViewHolder> {
     private Context context;
@@ -33,10 +28,12 @@ public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearch
     String discriptionStr;
     private Fragment fragment;
     private FragmentManager fragmentManager;
+    private String viewstatus;
 
-    public StaffSearchListItemAdapter(Context mContext, List<SearchStaffModel.FinalArray> announcmentModel) {
+    public StaffSearchListItemAdapter(Context mContext, List<SearchStaffModel.FinalArray> announcmentModel, String viewstatus) {
         this.context = mContext;
         this.announcmentModel = announcmentModel;
+        this.viewstatus = viewstatus;
     }
 
 
@@ -59,21 +56,26 @@ public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearch
             @Override
             public void onClick(View view) {
 
-                try {
-                    fragment = new StaffInquiryProfileFragment();
-                    fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
-                    Bundle bundle = new Bundle();
+                if (viewstatus.equalsIgnoreCase("true")) {
 
-                    ArrayList<SearchStaffModel.FinalArray> data = new ArrayList<>();
-                    data.add(announcmentModel.get(position));
-                    bundle.putParcelableArrayList("dataList",data);
-                    fragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).replace(R.id.frame_container,fragment).commit();
-                    AppConfiguration.firsttimeback = true;
-                    AppConfiguration.position = 61;
+                    try {
+                        fragment = new StaffInquiryProfileFragment();
+                        fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                        Bundle bundle = new Bundle();
 
-                }catch (Exception ex){
-                    ex.printStackTrace();
+                        ArrayList<SearchStaffModel.FinalArray> data = new ArrayList<>();
+                        data.add(announcmentModel.get(position));
+                        bundle.putParcelableArrayList("dataList", data);
+                        fragment.setArguments(bundle);
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                        AppConfiguration.firsttimeback = true;
+                        AppConfiguration.position = 61;
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    Utils.ping(context, "Access Denied");
                 }
 
 
@@ -92,11 +94,11 @@ public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearch
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            employee_txt = (TextView) itemView.findViewById(R.id.employee_txt);
-            fh_name_txt = (TextView) itemView.findViewById(R.id.fh_name_txt);
-            dob_txt = (TextView) itemView.findViewById(R.id.dob_txt);
-            department_txt = (TextView) itemView.findViewById(R.id.department_txt);
-            view_txt = (TextView) itemView.findViewById(R.id.view_txt);
+            employee_txt = itemView.findViewById(R.id.employee_txt);
+            fh_name_txt = itemView.findViewById(R.id.fh_name_txt);
+            dob_txt = itemView.findViewById(R.id.dob_txt);
+            department_txt = itemView.findViewById(R.id.department_txt);
+            view_txt = itemView.findViewById(R.id.view_txt);
 
         }
     }

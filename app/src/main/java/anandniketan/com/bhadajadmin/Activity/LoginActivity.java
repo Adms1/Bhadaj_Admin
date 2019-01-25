@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -22,20 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Model.MISModel;
-import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.login.LogInModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
-import anandniketan.com.bhadajadmin.Utility.WebServices;
 import anandniketan.com.bhadajadmin.asynctasks.VerifyLoginAsyncTask;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit2.Call;
-import retrofit2.Callback;
 
 public class LoginActivity extends Activity {
 
@@ -96,7 +89,30 @@ public class LoginActivity extends Activity {
                 if (Utils.isNetworkConnected(mContext)) {
                     if (!edtUserName.getText().toString().equalsIgnoreCase("")) {
                         if (!edtPassword.getText().toString().equalsIgnoreCase("")) {
+//                            if(edtUserName.getText().toString().equalsIgnoreCase("bhadaj") && edtPassword.getText().toString().equalsIgnoreCase("bhadaj@1234")){
                             login(edtUserName.getText().toString(), edtPassword.getText().toString());
+
+//                                callPermissionDetail("5");
+//
+//                                Intent intentDashboard = new Intent(LoginActivity.this, DashboardActivity.class);//SplashScreenActivity
+//                                PrefUtils.getInstance(LoginActivity.this).setValue("Loginwithother", "false");
+//
+//                                String pwd = edtPassword.getText().toString();
+//
+////                        saveDetails(staffId, empCode, empName, deptId, desgId, empDept, empDesg, deviceId, pwd);
+//                                saveDetails("5", "24", "Bhadaj", "1", "3", "Admin", "Admin", "", pwd);
+//
+//                                intentDashboard.putExtra("message", putExtrasData);
+//                                intentDashboard.putExtra("fromNotification", putExtras);
+//                                System.out.println("messageLogin: " + putExtrasData);
+//
+//                                startActivity(intentDashboard);
+//                                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+//                                finish();
+
+//                            }else{
+//                                Utils.ping(LoginActivity.this, "Username or Password Not Match");
+//                            }
                         } else {
                             Utils.ping(mContext, "Please Enter Password");
                             edtPassword.requestFocus();
@@ -125,7 +141,30 @@ public class LoginActivity extends Activity {
                     if (Utils.isNetworkConnected(mContext)) {
                         if (!edtUserName.getText().toString().equalsIgnoreCase("")) {
                             if (!edtPassword.getText().toString().equalsIgnoreCase("")) {
+//                                if(edtUserName.getText().toString().equalsIgnoreCase("bhadaj") && edtPassword.getText().toString().equalsIgnoreCase("bhadaj@1234")){
                                 login(edtUserName.getText().toString(), edtPassword.getText().toString());
+
+//                                    callPermissionDetail("5");
+//
+//                                    Intent intentDashboard = new Intent(LoginActivity.this, DashboardActivity.class);//SplashScreenActivity
+//                                    PrefUtils.getInstance(LoginActivity.this).setValue("Loginwithother", "false");
+//
+//                                    String pwd = edtPassword.getText().toString();
+//
+////                        saveDetails(staffId, empCode, empName, deptId, desgId, empDept, empDesg, deviceId, pwd);
+//                                    saveDetails("5", "24", "Bhadaj", "1", "3", "Admin", "Admin", "", pwd);
+//
+//                                    intentDashboard.putExtra("message", putExtrasData);
+//                                    intentDashboard.putExtra("fromNotification", putExtras);
+//                                    System.out.println("messageLogin: " + putExtrasData);
+//
+//                                    startActivity(intentDashboard);
+//                                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+//                                    finish();
+//
+//                                }else{
+//                                    Utils.ping(LoginActivity.this, "Username or Password Not Match");
+//                                }
                             } else {
                                 Utils.pong(mContext, "Please Enter Password");
                                 edtPassword.requestFocus();
@@ -171,7 +210,7 @@ public class LoginActivity extends Activity {
                     mData = termModel.getFinalArray();
                     if (mData != null) {
 
-                        callPermissionDetail(mData.get(0).getStaffID());
+                        Utils.callPermissionDetail(LoginActivity.this, mData.get(0).getStaffID());
 
                         Intent intentDashboard = new Intent(LoginActivity.this, DashboardActivity.class);//SplashScreenActivity
                         PrefUtils.getInstance(LoginActivity.this).setValue("Loginwithother", "false");
@@ -187,6 +226,7 @@ public class LoginActivity extends Activity {
                         String deviceId = mData.get(0).getDeviceId();
 
                         saveDetails(staffId, empCode, empName, deptId, desgId, empDept, empDesg, deviceId, pwd);
+//                        saveDetails("5", empCode, empName, deptId, desgId, empDept, empDesg, deviceId, pwd);
 
                         intentDashboard.putExtra("message", putExtrasData);
                         intentDashboard.putExtra("fromNotification", putExtras);
@@ -224,55 +264,6 @@ public class LoginActivity extends Activity {
         map.put("DeviceType", "");
 
         return map;
-    }
-
-    private void callPermissionDetail(String usrid) {
-        WebServices apiService = ApiClient.getClient().create(WebServices.class);
-//
-        Call<PermissionDataModel> call = apiService.getPermissionData(AppConfiguration.BASEURL + "GetPermissionData?UserID=" + usrid);
-        call.enqueue(new Callback<PermissionDataModel>() {
-            //
-            @Override
-            public void onResponse(Call<PermissionDataModel> call, retrofit2.Response<PermissionDataModel> response) {
-                Utils.dismissDialog();
-                if (response.body() == null) {
-
-                    return;
-                }
-//
-                if (response.body().getSuccess().equalsIgnoreCase("false")) {
-
-                    return;
-                }
-
-                if (response.body().getSuccess().equalsIgnoreCase("True")) {
-
-                    if (response.body().getFinalarray() != null) {
-                        for (int i = 0; i < response.body().getFinalarray().size(); i++) {
-
-                            HashMap<String, PermissionDataModel.Detaill> child = new HashMap<>();
-//                            ArrayList<HashMap<String, PermissionDataModel.Detaill>> arrayList = new ArrayList<>();
-                            for (int j = 0; j < response.body().getFinalarray().get(i).getDetail().size(); j++) {
-
-                                child.put(response.body().getFinalarray().get(i).getDetail().get(j).getPagename(), response.body().getFinalarray().get(i).getDetail().get(j));
-
-                            }
-//                            arrayList.add(child);
-
-                            PrefUtils.getInstance(LoginActivity.this).saveMap(LoginActivity.this, response.body().getFinalarray().get(i).getName(), child);
-//                            PrefUtils.getInstance(LoginActivity.this).saveArr(LoginActivity.this, response.body().getFinalarray().get(i).getName(), arrayList);
-                        }
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PermissionDataModel> call, Throwable t) {
-                // Log error here since request failed
-                Log.e("permissionnnnn", t.toString());
-            }
-        });
     }
 
     public void addDeviceDetail() {

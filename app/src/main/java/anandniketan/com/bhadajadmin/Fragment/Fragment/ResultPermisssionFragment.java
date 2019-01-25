@@ -38,6 +38,7 @@ import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentResultPermisssionBinding;
 import retrofit.RetrofitError;
@@ -88,6 +89,10 @@ public class ResultPermisssionFragment extends Fragment {
     }
 
     public void setListners() {
+
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 13;
+
         fragmentResultPermisssionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,15 +103,15 @@ public class ResultPermisssionFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                AppConfiguration.firsttimeback = true;
-//                AppConfiguration.position = 58;
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 13;
 
-                fragment = new StudentFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
-//                getActivity().onBackPressed();
+//                fragment = new StudentPermissionFragment();
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+//                        .replace(R.id.frame_container, fragment).commit();
+                getActivity().onBackPressed();
             }
         });
         fragmentResultPermisssionBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

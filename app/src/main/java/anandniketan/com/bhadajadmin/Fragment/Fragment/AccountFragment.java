@@ -27,9 +27,11 @@ import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AccountSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentAccountBinding;
 import retrofit.RetrofitError;
@@ -46,6 +48,7 @@ public class AccountFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
 
     public AccountFragment() {
     }
@@ -57,6 +60,8 @@ public class AccountFragment extends Fragment {
 
         rootView = fragmentAccountBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Account");
 
         initViews();
         setListners();
@@ -98,24 +103,35 @@ public class AccountFragment extends Fragment {
         fragmentAccountBinding.accountSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
+                if (position == 0 && permissionMap.get("Date wise Fees Collection").getStatus().equalsIgnoreCase("true")) {
                     fragment = new DailyFeesCollectionFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Date wise Fees Collection").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 41;
-                } else if (position == 1) {
+
+                } else if (position == 1 && permissionMap.get("Tally Transaction").getStatus().equalsIgnoreCase("true")) {
                     fragment = new TallyTranscationFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Tally Transaction").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 41;
-                } else if (position == 2) {
+
+                } else if (position == 2 && permissionMap.get("Online Transaction").getStatus().equalsIgnoreCase("true")) {
                     fragment = new OnlineTransactionFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Online Transaction").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)

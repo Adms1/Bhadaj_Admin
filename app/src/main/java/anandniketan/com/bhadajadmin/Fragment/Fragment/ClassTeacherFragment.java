@@ -19,8 +19,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import com.koushikdutta.ion.builder.Builders;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +42,7 @@ import anandniketan.com.bhadajadmin.databinding.FragmentClassTeacherBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+// change tearcher spinner add permission condition bt Antra 23/01/2019
 
 public class ClassTeacherFragment extends Fragment {
 
@@ -55,9 +54,11 @@ public class ClassTeacherFragment extends Fragment {
     List<FinalArrayStaffModel> finalArrayClassTeacherDetailModelList;
     List<FinalArrayStaffModel> finalArrayInsertClassTeachersModelList;
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
-    String finalStandardIdStr, finalTeacherIdStr, finalClassIdStr, standardName, finalTermIdStr, finalClassTeacherIdStr, editClassteacherStr="", editGradeStr="", editSectionStr="";
+    String finalStandardIdStr, finalTeacherIdStr, finalClassIdStr, standardName, finalTermIdStr, finalClassTeacherIdStr = "", editClassteacherStr = "", editGradeStr = "", editSectionStr = "";
     ClassTeacherDetailListAdapter classTeacherDetailListAdapter;
     ArrayList<String> getEditValuearray;
+    String[] spinnerteacherIdArray;
+    String[] spinnerstandardIdArray;
     private FragmentClassTeacherBinding fragmentClassTeacherBinding;
     private View rootView;
     private Context mContext;
@@ -65,16 +66,14 @@ public class ClassTeacherFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private RadioGroup radioGroup;
     private int selectedPosition = -1;
-
-    String[] spinnerteacherIdArray;
-    String[] spinnerstandardIdArray;
+    private String viewstatus, updatestatus, deletestatus;
     //Use for get the Final selected ClassID
     private RadioGroup.OnCheckedChangeListener mCheckedListner = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
 
             if (group.findViewById(checkedId) != null) {
-                RadioButton btn = (RadioButton) getActivity().findViewById(checkedId);
+                RadioButton btn = getActivity().findViewById(checkedId);
                 finalClassIdStr = btn.getTag().toString();
                 Log.d("Your selected ", finalClassIdStr);
             }
@@ -91,10 +90,14 @@ public class ClassTeacherFragment extends Fragment {
 
         rootView = fragmentClassTeacherBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
+        updatestatus = bundle.getString("updatestatus");
+        deletestatus = bundle.getString("deletestatus");
+
         callTermApi();
         setListners();
-        callTeacherApi();
-
 
         return rootView;
     }
@@ -126,7 +129,14 @@ public class ClassTeacherFragment extends Fragment {
                 finalTermIdStr = getid.toString();
                 Log.d("FinalTermIdStr", finalTermIdStr);
 
-                callClassTeacherApi();
+                if (viewstatus.equalsIgnoreCase("true")) {
+                    fragmentClassTeacherBinding.listHeader.setVisibility(View.VISIBLE);
+                    callClassTeacherApi();
+                    callTeacherApi(getid.toString());
+                } else {
+                    fragmentClassTeacherBinding.listHeader.setVisibility(View.GONE);
+                    Utils.ping(getActivity(), "Access Denied");
+                }
             }
 
             @Override
@@ -173,7 +183,11 @@ public class ClassTeacherFragment extends Fragment {
         fragmentClassTeacherBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callInsertClassTeacherApi();
+                if (updatestatus.equalsIgnoreCase("true")) {
+                    callInsertClassTeacherApi();
+                } else {
+                    Utils.ping(getActivity(), "Access Denied");
+                }
             }
         });
     }
@@ -278,7 +292,7 @@ public class ClassTeacherFragment extends Fragment {
     }
 
     // CALL Teacher API HERE
-    private void callTeacherApi() {
+    private void callTeacherApi(String id) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
@@ -286,20 +300,24 @@ public class ClassTeacherFragment extends Fragment {
         }
 
 //        Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getTeachers(getTeacherDetail(), new retrofit.Callback<StaffAttendaceModel>() {
+        ApiHandler.getApiService().getTeachersbyTerm(getTeacherDetail(id), new retrofit.Callback<StaffAttendaceModel>() {
             @Override
             public void success(StaffAttendaceModel teachersModel, Response response) {
                 Utils.dismissDialog();
                 if (teachersModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (teachersModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (teachersModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+
+                    finalArrayTeachersModelList = teachersModel.getFinalArray();
+                    fillTeacherSpinner();
+
+//                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (teachersModel.getSuccess().equalsIgnoreCase("True")) {
@@ -315,14 +333,15 @@ public class ClassTeacherFragment extends Fragment {
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
+//                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
     }
 
-    private Map<String, String> getTeacherDetail() {
+    private Map<String, String> getTeacherDetail(String id) {
         Map<String, String> map = new HashMap<>();
+        map.put("TermID", id);
         return map;
     }
 
@@ -415,8 +434,16 @@ public class ClassTeacherFragment extends Fragment {
                     Utils.ping(mContext, "Record Inserted Successfully...!!");
                     finalArrayInsertClassTeachersModelList = insertClassTeachersModel.getFinalArray();
                     if (finalArrayInsertClassTeachersModelList != null) {
-                        callClassTeacherApi();
-                        Utils.dismissDialog();
+
+                        if (viewstatus.equalsIgnoreCase("true")) {
+
+                            fragmentClassTeacherBinding.listHeader.setVisibility(View.VISIBLE);
+                            callClassTeacherApi();
+                            Utils.dismissDialog();
+                        } else {
+                            fragmentClassTeacherBinding.listHeader.setVisibility(View.GONE);
+                            Utils.ping(getActivity(), "Access Denied");
+                        }
                     } else {
                         fragmentClassTeacherBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     }
@@ -469,9 +496,8 @@ public class ClassTeacherFragment extends Fragment {
                 updateTeacher();
 
 
-
             }
-        });
+        }, deletestatus, updatestatus);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         fragmentClassTeacherBinding.classTeacherDetailList.setLayoutManager(mLayoutManager);
         fragmentClassTeacherBinding.classTeacherDetailList.setItemAnimator(new DefaultItemAnimator());
@@ -532,7 +558,7 @@ public class ClassTeacherFragment extends Fragment {
         for (int m = 0; m < firstValueId.size(); m++) {
             TeacherId.add(firstValueId.get(m));
             for (int i = 0; i < finalArrayTeachersModelList.size(); i++) {
-                TeacherId.add(finalArrayTeachersModelList.get(i).getPkEmployeeID());
+                TeacherId.add(finalArrayTeachersModelList.get(i).getEmpId());
             }
         }
 
@@ -543,7 +569,7 @@ public class ClassTeacherFragment extends Fragment {
         for (int z = 0; z < firstValue.size(); z++) {
             Teacher.add(firstValue.get(z));
             for (int j = 0; j < finalArrayTeachersModelList.size(); j++) {
-                Teacher.add(finalArrayTeachersModelList.get(j).getTeacher());
+                Teacher.add(finalArrayTeachersModelList.get(j).getEmpName());
             }
         }
         spinnerteacherIdArray = new String[TeacherId.size()];
@@ -594,7 +620,7 @@ public class ClassTeacherFragment extends Fragment {
         try {
             for (int i = 0; i < 1; i++) {
                 View convertView = LayoutInflater.from(mContext).inflate(R.layout.list_checkbox, null);
-                radioGroup = (RadioGroup) convertView.findViewById(R.id.radiogroup);
+                radioGroup = convertView.findViewById(R.id.radiogroup);
 
                 for (int k = 0; k < classname.size(); k++) {
                     RadioButton radioButton = new RadioButton(mContext);
@@ -652,9 +678,9 @@ public class ClassTeacherFragment extends Fragment {
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentClassTeacherBinding.termSpinner.setAdapter(adapterTerm);
+        fragmentClassTeacherBinding.termSpinner.setSelection(1);
         finalTermIdStr = spinnerTermMap.get(0);
     }
-
 
     // CALL DeleteClassTeacher API HERE
     private void callDeleteClassTeacherApi() {
@@ -686,8 +712,14 @@ public class ClassTeacherFragment extends Fragment {
                     Utils.ping(mContext, "Record Deleted Successfully...!!");
                     finalArrayInsertClassTeachersModelList = insertClassTeachersModel.getFinalArray();
                     if (finalArrayInsertClassTeachersModelList != null) {
-                        callClassTeacherApi();
-                        Utils.dismissDialog();
+                        if (viewstatus.equalsIgnoreCase("true")) {
+                            fragmentClassTeacherBinding.listHeader.setVisibility(View.VISIBLE);
+                            callClassTeacherApi();
+                            Utils.dismissDialog();
+                        } else {
+                            fragmentClassTeacherBinding.listHeader.setVisibility(View.GONE);
+                            Utils.ping(getActivity(), "Access Denied");
+                        }
                     } else {
                         fragmentClassTeacherBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     }
@@ -711,7 +743,7 @@ public class ClassTeacherFragment extends Fragment {
     }
 
 
-    public void updateTeacher(){
+    public void updateTeacher() {
 
         for (int i = 0; i < getEditValuearray.size(); i++) {
             String[] spiltValue = getEditValuearray.get(i).split("\\|");
@@ -721,21 +753,21 @@ public class ClassTeacherFragment extends Fragment {
             editSectionStr = spiltValue[3];
         }
 
-        if (!editClassteacherStr.equalsIgnoreCase("")){
-                for (int i = 0; i < spinnerteacherIdArray.length; i++) {
-                    if (spinnerteacherIdArray[i].trim().equalsIgnoreCase(editClassteacherStr.trim())) {
-                        fragmentClassTeacherBinding.teacherSpinner.setSelection(i);
-                    }
+        if (!editClassteacherStr.equalsIgnoreCase("")) {
+            for (int i = 0; i < spinnerteacherIdArray.length; i++) {
+                if (spinnerteacherIdArray[i].trim().equalsIgnoreCase(editClassteacherStr.trim())) {
+                    fragmentClassTeacherBinding.teacherSpinner.setSelection(i);
                 }
+            }
         }
-        if (!editGradeStr.equalsIgnoreCase("")){
+        if (!editGradeStr.equalsIgnoreCase("")) {
             for (int i = 0; i < spinnerstandardIdArray.length; i++) {
                 if (spinnerstandardIdArray[i].trim().equalsIgnoreCase(editGradeStr.trim())) {
                     fragmentClassTeacherBinding.gradeSpinner.setSelection(i);
                 }
             }
         }
-        if (!editSectionStr.equalsIgnoreCase("")){
+        if (!editSectionStr.equalsIgnoreCase("")) {
             fillSection();
         }
     }

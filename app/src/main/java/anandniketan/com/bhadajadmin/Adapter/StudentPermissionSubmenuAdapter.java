@@ -65,10 +65,6 @@ public class StudentPermissionSubmenuAdapter extends BaseAdapter {
         imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
         txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
 
-        if (reportstatus.equalsIgnoreCase("true")) {
-
-        }
-
         String url = mThumbIds[position];
 //        Log.d("url", url);
 

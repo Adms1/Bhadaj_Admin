@@ -44,7 +44,7 @@
             android:id="@+id/class_txt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:text="@string/classes"
             android:padding="@dimen/_5sdp"
             android:paddingLeft="@dimen/_5sdp"

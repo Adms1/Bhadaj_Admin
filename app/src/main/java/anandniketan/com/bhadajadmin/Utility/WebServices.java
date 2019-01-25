@@ -203,6 +203,10 @@ public interface WebServices {
     void getTeachers(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 
     @FormUrlEncoded
+    @POST("/GetTeacherbyTermID")
+    void getTeachersbyTerm(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
     @POST("/GetSubject")
     void getSubject(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 

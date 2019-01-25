@@ -6,34 +6,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.StaffLeavesubmenuAdapter;
-import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
-import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStaffLeaveBinding;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class StaffLeaveFragment extends Fragment {
@@ -46,6 +34,7 @@ public class StaffLeaveFragment extends Fragment {
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
     private HashMap<Integer, String> spinnerTermMap;
     private String FinalTermIdStr = "";
+//    private String viewstatus, updatestatus, deletestatus, requeststatus, requestupdatestatus, requestdeletestatus, balancestatus, balanceupdatestatus,balancedeletestatus;
 
     public StaffLeaveFragment() {
     }
@@ -57,10 +46,22 @@ public class StaffLeaveFragment extends Fragment {
 
         rootView = fragmentstaffleaveBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+//
+//        Bundle bundle = this.getArguments();
+//        viewstatus = bundle.getString("viewstatus");
+//        updatestatus = bundle.getString("updatestatus");
+//        deletestatus = bundle.getString("deletestatus");
+//
+//        requeststatus = bundle.getString("requeststatus");
+//        requestupdatestatus = bundle.getString("requestupdatestatus");
+//        requestdeletestatus = bundle.getString("requestdeletestatus");
+//
+//        balancestatus = bundle.getString("balancestatus");
+//        balanceupdatestatus = bundle.getString("balanceupdatestatus");
+//        balancedeletestatus = bundle.getString("balancedeletestatus");
 
         initViews();
         setListners();
-
 
         return rootView;
     }
@@ -96,14 +97,25 @@ public class StaffLeaveFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     fragment = new LeaveRequestFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("requeststatus", requeststatus);
+//                    bundle.putString("requestupdatestatus", requestupdatestatus);
+//                    bundle.putString("requestdeletestatus", requestdeletestatus);
+//                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 52;
+
                 } else if (position == 1) {
                     fragment = new LeaveBalanceFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("balancestatus", balancestatus);
+//                    bundle.putString("balanceupdatestatus", balanceupdatestatus);
+//                    bundle.putString("balancedeletestatus", balancedeletestatus);
+//                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)

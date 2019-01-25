@@ -28,6 +28,7 @@ import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -51,7 +52,6 @@ public class CircularListFragment extends Fragment implements onDeleteWithId,OnU
     private onDeleteWithId onDeleteWithIdRef;
     private OnUpdateRecord onUpdateRecordRef;
     private Button backBtn;
-    private String status, updateStatus, deleteStatus;
 
     public CircularListFragment() {
         mContext = getActivity();
@@ -64,12 +64,6 @@ public class CircularListFragment extends Fragment implements onDeleteWithId,OnU
         onUpdateRecordRef = this;
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 11;
-
-        Bundle bundle = this.getArguments();
-        status = bundle.getString("status");
-        updateStatus = bundle.getString("updatestatus");
-        deleteStatus = bundle.getString("deletestatus");
-
 
     }
 
@@ -160,7 +154,7 @@ public class CircularListFragment extends Fragment implements onDeleteWithId,OnU
                         txtNoRecordsAnnouncement.setVisibility(View.GONE);
                         expandableListView.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        expandableListCircular = new ExpandableListCircular(getActivity(), listDataHeader, listDataChild, onDeleteWithIdRef, onUpdateRecordRef, status, updateStatus, deleteStatus);
+                        expandableListCircular = new ExpandableListCircular(getActivity(), listDataHeader, listDataChild, onDeleteWithIdRef, onUpdateRecordRef, PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student").get("Circular").getIsuserview(), PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student").get("Circular").getIsuserupdate(), PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student").get("Circular").getIsuserdelete());
                         expandableListView.setAdapter(expandableListCircular);
                     } else {
                         txtNoRecordsAnnouncement.setVisibility(View.VISIBLE);

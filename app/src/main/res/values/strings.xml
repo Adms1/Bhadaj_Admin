@@ -40,6 +40,7 @@
     <string name="attendancesummary">ATTENDANCE SUMMARY</string>
     <string name="studentattendancesummary">STUDENT ATTENDANCE</string>
     <string name="internet_error">Internet Connection !</string>
+    <string name="search_student">Search Student</string>
     <string name="internet_connection_error">Admin requires an internet connection.Make sure Wi-Fi or mobile networks are turned on, then try again.</string>
     <string name="something_wrong">Something Wrong</string>
     <string name="blank">Blank Filed Not Allowed</string>
