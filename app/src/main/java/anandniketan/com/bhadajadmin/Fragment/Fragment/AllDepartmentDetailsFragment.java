@@ -19,7 +19,6 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterStudentFullDetail;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
@@ -32,18 +31,15 @@ import retrofit.client.Response;
 
 public class AllDepartmentDetailsFragment extends Fragment {
 
+    List<StudentAttendanceFinalArray> studentFullDetailArray;
+    List<String> listDataHeader;
+    HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild;
+    ExpandableListAdapterStudentFullDetail listAdapterStudentFullDetail;
     private FragmentAllDepartmentDetailsBinding fragmentAllDepartmentDetailsBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    List<StudentAttendanceFinalArray> studentFullDetailArray;
-    List<String> listDataHeader;
-
-    HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild;
-
-    ExpandableListAdapterStudentFullDetail listAdapterStudentFullDetail;
-
     private int lastExpandedPosition = -1;
 
     public AllDepartmentDetailsFragment() {

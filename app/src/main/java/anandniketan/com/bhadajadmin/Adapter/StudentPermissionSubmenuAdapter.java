@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 
 
 /**
@@ -20,33 +22,24 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
  */
 
 public class StudentPermissionSubmenuAdapter extends BaseAdapter {
-    public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Report%20Card.png",
-            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Online%20Payment.png",
-            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Marks_Syllabus.png",
-            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Suggestion.png",
-    };
-    public String[] mThumbNames = {"ReportCard", "Online Payment", "Mark/Syllabus","Suggestion"};
+
     private Context mContext;
-    private String reportstatus, onlinepaystatus, markstatus, suggestionstatus;
+    private ArrayList<IconHeaderModel> newArr;
 
     // Constructor
-    public StudentPermissionSubmenuAdapter(Context c, String reportstatus, String onlinepaystatus, String markstatus, String suggestionstatus) {
+    public StudentPermissionSubmenuAdapter(Context c, ArrayList<IconHeaderModel> newArr) {
         mContext = c;
-        this.reportstatus = reportstatus;
-        this.onlinepaystatus = onlinepaystatus;
-        this.markstatus = markstatus;
-        this.suggestionstatus = suggestionstatus;
+        this.newArr = newArr;
     }
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return newArr.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds[position];
+        return newArr.get(position);
     }
 
     @Override
@@ -58,14 +51,16 @@ public class StudentPermissionSubmenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgGridOptions = null;
         TextView txtGridOptionsName = null;
+        View line1 = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
         imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
         txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
+        line1 = convertView.findViewById(R.id.view_line1);
 
-        String url = mThumbIds[position];
+        String url = newArr.get(position).getUrl();
 //        Log.d("url", url);
 
         Glide.with(mContext)
@@ -74,7 +69,15 @@ public class StudentPermissionSubmenuAdapter extends BaseAdapter {
                 .into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
-        txtGridOptionsName.setText(mThumbNames[position]);
+        txtGridOptionsName.setText(newArr.get(position).getName());
+
+        if (position % 2 == 0) {
+            line1.setVisibility(View.VISIBLE);
+        } else {
+            line1.setVisibility(View.GONE);
+        }
+
+
         return convertView;
     }
 

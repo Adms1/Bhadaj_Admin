@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AccountSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
@@ -49,6 +51,17 @@ public class AccountFragment extends Fragment {
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Date%20Wise%20Fees%20Collection.png",
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Tally%20Transaction.png",
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Online%20Transaction.png",
+            //  AppConfiguration.BASEURL_IMAGES + "Account/" + "Head%20Wise%20Collection.png",
+    };
+
+    public String[] mThumbNames = {"Date wise Fees Collection", "Tally Transaction", "Online Transaction",/*"Head Wise Collection", "Fee Structure",
+            "Student Discount", "", "Imprest","Student Ledger", "Cheque Payment"*/};
+
+    private ArrayList<IconHeaderModel> newArr;
 
     public AccountFragment() {
     }
@@ -61,6 +74,7 @@ public class AccountFragment extends Fragment {
         rootView = fragmentAccountBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        newArr = new ArrayList<>();
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Account");
 
         initViews();
@@ -71,13 +85,24 @@ public class AccountFragment extends Fragment {
     }
 
     public void initViews() {
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
+
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 4;
         Glide.with(mContext)
-                .load(AppConfiguration.BASEURL_IMAGES + "Account/" + "account_inside.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Main/Account.png")
                 .fitCenter()
                 .into(fragmentAccountBinding.circleImageView);
-        fragmentAccountBinding.accountSubmenuGridView.setAdapter(new AccountSubMenuAdapter(mContext));
+        fragmentAccountBinding.accountSubmenuGridView.setAdapter(new AccountSubMenuAdapter(mContext, newArr));
         AppConfiguration.TermDetailName = "Term 1";
     }
 

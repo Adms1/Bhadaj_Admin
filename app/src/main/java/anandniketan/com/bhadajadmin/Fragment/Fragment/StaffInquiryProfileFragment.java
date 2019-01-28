@@ -15,19 +15,14 @@ import android.widget.ExpandableListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableStaffInquiryProfileAdapter;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableStudentInquiryProfileAdapter;
 import anandniketan.com.bhadajadmin.Model.HR.SearchStaffModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStaffProfileBinding;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class StaffInquiryProfileFragment extends Fragment {
 
@@ -42,6 +37,7 @@ public class StaffInquiryProfileFragment extends Fragment {
     HashMap<String, List<SearchStaffModel.FinalArray>> listDataChild;
     ExpandableStaffInquiryProfileAdapter  listAdapterStudentFullDetail;
     private int lastExpandedPosition = -1;
+    private String viewstatus;
 
     public StaffInquiryProfileFragment() {
     }
@@ -61,6 +57,7 @@ public class StaffInquiryProfileFragment extends Fragment {
         try {
            Bundle bundle = getArguments();
             staffFullDetailArray = bundle.getParcelableArrayList("dataList");
+            viewstatus = bundle.getString("status");
 
             if (staffFullDetailArray != null) {
                 ArrayList<String> arraystu = new ArrayList<String>();
@@ -94,6 +91,8 @@ public class StaffInquiryProfileFragment extends Fragment {
 
             ex.printStackTrace();
         }
+
+        setListners();
         //callStaffApi();
         return rootView;
     }
@@ -109,13 +108,17 @@ public class StaffInquiryProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 51;
+                AppConfiguration.position = 61;
                 fragment = new SearchStaffFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
-                getActivity().onBackPressed();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+//                fragment = new SearchStaffFragment();
+//
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+//                        .replace(R.id.frame_container, fragment).commit();
+//                getActivity().onBackPressed();
             }
         });
         fragmentStudentInquiryProfileBinding.lvExpStudentDetail.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {

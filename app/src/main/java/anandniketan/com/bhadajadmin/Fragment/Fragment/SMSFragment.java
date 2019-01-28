@@ -13,11 +13,13 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.SMSSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
@@ -38,6 +40,19 @@ public class SMSFragment extends Fragment {
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "Student%20Absent.png",
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "Student Bulk%20SMS.png",
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "Single%20SMS.png",
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "Staff%20SMS.png",
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "APP%20SMS.png",
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "Student%20Transport.png",
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "Student%20Marks.png",
+            AppConfiguration.BASEURL_IMAGES + "SMS/" + "All%20SMS%20Report.png",
+    };
+    public String[] mThumbNames = {"Student Absent", "Bulk SMS", "Single SMS",
+            "Staff SMS", "App SMS", "Student Transport", "Student Marks", "All SMS Report"};
+    private ArrayList<IconHeaderModel> newArr;
 
     public SMSFragment() {
     }
@@ -57,16 +72,28 @@ public class SMSFragment extends Fragment {
     }
 
     public void initViews() {
+
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 3;
 
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "SMS");
+        newArr = new ArrayList<>();
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
 
         Glide.with(mContext)
-                .load(AppConfiguration.BASEURL_IMAGES + "SMS/" + "sms_inside.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "SMS.png")
                 .fitCenter()
                 .into(fragmentSmBinding.circleImageView);
-        fragmentSmBinding.smsSubmenuGridView.setAdapter(new SMSSubMenuAdapter(mContext));
+        fragmentSmBinding.smsSubmenuGridView.setAdapter(new SMSSubMenuAdapter(mContext, newArr));
         callSMSReportDataApi();
     }
 
@@ -81,12 +108,14 @@ public class SMSFragment extends Fragment {
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
+
         fragmentSmBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
+
         fragmentSmBinding.smsSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

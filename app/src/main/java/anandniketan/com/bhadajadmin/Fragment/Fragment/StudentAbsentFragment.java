@@ -88,7 +88,6 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
         rootView = fragmentStudentAbsentBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -501,9 +500,9 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
         alertDialogAndroid.show();
 
 //        date_txt = (TextView) layout.findViewById(R.id.date_txt);
-        message_edt = (TextView) layout.findViewById(R.id.message_edt);
-        send_btn = (Button) layout.findViewById(R.id.send_btn);
-        close_btn = (Button) layout.findViewById(R.id.close_btn);
+        message_edt = layout.findViewById(R.id.message_edt);
+        send_btn = layout.findViewById(R.id.send_btn);
+        close_btn = layout.findViewById(R.id.close_btn);
 
 
         close_btn.setOnClickListener(new View.OnClickListener() {

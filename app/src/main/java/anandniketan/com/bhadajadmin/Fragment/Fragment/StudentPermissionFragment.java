@@ -13,10 +13,12 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.StudentPermissionSubmenuAdapter;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -32,8 +34,14 @@ public class StudentPermissionFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    private String status, reportcardstatus, reportcarddeletestatus, reportcardupdatestatus, reportcardviewstatus, onlinepaystatus, onlinepaydeletestatus, onlinepayupdatestatus, onlinepayviewstatus, markstatus, markdeletestatus, markupdatestatus, markviewstatus, suggestionstatus, suggestiondeletestatus, suggestionupdatestatus, suggestionviewstatus;
-
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Report%20Card.png",
+            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Online%20Payment.png",
+            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Marks_Syllabus.png",
+            AppConfiguration.BASEURL_IMAGES + "Permission/" + "Suggestion.png",
+    };
+    public String[] mThumbNames = {"Report Card", "Online Payment", "Marks/Syllabus", "Suggestion"};
+    private ArrayList<IconHeaderModel> newArr;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
 
     public StudentPermissionFragment() {
@@ -57,14 +65,25 @@ public class StudentPermissionFragment extends Fragment {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 11;
 
+        newArr = new ArrayList<>();
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student");
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
 
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Student/" + "Permission.png")
                 .fitCenter()
                 .into(fragmentStudentPermissionBinding.circleImageView);
 
-        fragmentStudentPermissionBinding.studentPermissionSubmenuGridView.setAdapter(new StudentPermissionSubmenuAdapter(mContext, reportcardstatus, onlinepaystatus, markstatus, suggestionstatus));
+        fragmentStudentPermissionBinding.studentPermissionSubmenuGridView.setAdapter(new StudentPermissionSubmenuAdapter(mContext, newArr));
 
     }
 
@@ -78,7 +97,7 @@ public class StudentPermissionFragment extends Fragment {
         fragmentStudentPermissionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new StudentPermissionFragment();
+                fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)

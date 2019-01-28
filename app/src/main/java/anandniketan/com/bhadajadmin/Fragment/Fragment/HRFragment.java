@@ -13,10 +13,12 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.HrSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -31,7 +33,16 @@ public class HRFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Search%20Staff.png",
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Staff%20Leave.png",
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Menu%20Permission.png",
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Attendance%20Report.png",
+            AppConfiguration.BASEURL_IMAGES + "HR/" + "Daily%20Report.png",
+    };
     private Map<String, PermissionDataModel.Detaill> permissionMap;
+    public String[] mThumbNames = {"Search Staff", "Staff Leave", "Menu Permission", "Attendance Report", "Daily Report"};
+    private ArrayList<IconHeaderModel> newArr;
 
     public HRFragment() {
     }
@@ -41,10 +52,21 @@ public class HRFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentHrBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_hr, container, false);
 
+        newArr = new ArrayList<>();
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "HR");
 
         rootView = fragmentHrBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
 
         initViews();
         setListners();
@@ -53,12 +75,12 @@ public class HRFragment extends Fragment {
 
     public void initViews() {
         AppConfiguration.firsttimeback = true;
-        AppConfiguration.position = 5;
+        AppConfiguration.position = 1;
         Glide.with(mContext)
-                .load( AppConfiguration.BASEURL_IMAGES + "HR/" + "hr_inside.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "HR.png")
                 .fitCenter()
                 .into(fragmentHrBinding.circleImageView);
-        fragmentHrBinding.hrSubmenuGridView.setAdapter(new HrSubMenuAdapter(mContext));
+        fragmentHrBinding.hrSubmenuGridView.setAdapter(new HrSubMenuAdapter(mContext, newArr));
 
     }
 
@@ -85,9 +107,10 @@ public class HRFragment extends Fragment {
                 if (position == 0 && permissionMap.get("Search Staff").getStatus().equalsIgnoreCase("true")) {
                     fragment = new SearchStaffFragment();
                     Bundle bundle = new Bundle();
-                    bundle.putString("status", permissionMap.get("Search Staff").getIsuserview());
-                    bundle.putString("updatestatus", permissionMap.get("Search Staff").getIsuserupdate());
-                    bundle.putString("deletestatus", permissionMap.get("Search Staff").getIsuserdelete());
+                    AppConfiguration.HRstaffseachviewstatus = permissionMap.get("Search Staff").getIsuserview();
+//                    bundle.putString("status", "true");
+//                    bundle.putString("updatestatus", permissionMap.get("Search Staff").getIsuserupdate());
+//                    bundle.putString("deletestatus", permissionMap.get("Search Staff").getIsuserdelete());
                     fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -132,28 +155,6 @@ public class HRFragment extends Fragment {
                     AppConfiguration.position = 51;
                 } else if (position == 3 && permissionMap.get("Attendance Report").getStatus().equalsIgnoreCase("true")) {
                     fragment = new AttendenceReportFragment();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("status", permissionMap.get("Attendance Report").getIsuserview());
-                    bundle.putString("updatestatus", permissionMap.get("Attendance Report").getIsuserupdate());
-                    bundle.putString("deletestatus", permissionMap.get("Attendance Report").getIsuserdelete());
-
-                    bundle.putString("inoutstatus", permissionMap.get("In Out Summary Details").getStatus());
-                    bundle.putString("inoutviewstatus", permissionMap.get("In Out Summary Details").getIsuserview());
-                    bundle.putString("inoutupdatestatus", permissionMap.get("In Out Summary Details").getIsuserupdate());
-                    bundle.putString("inoutdeletestatus", permissionMap.get("In Out Summary Details").getIsuserdelete());
-
-                    bundle.putString("employeestatus", permissionMap.get("In Out Summary Details").getStatus());
-                    bundle.putString("employeeviewstatus", permissionMap.get("Employee In Out Details").getIsuserview());
-                    bundle.putString("employeeupdatestatus", permissionMap.get("Employee In Out Details").getIsuserupdate());
-                    bundle.putString("employeedeletestatus", permissionMap.get("Employee In Out Details").getIsuserdelete());
-
-                    bundle.putString("emppresentstatus", permissionMap.get("In Out Summary Details").getStatus());
-                    bundle.putString("emppresentviewstatus", permissionMap.get("Employee Present Details").getIsuserview());
-                    bundle.putString("emppresentupdatestatus", permissionMap.get("Employee Present Details").getIsuserupdate());
-                    bundle.putString("emppresentdeletestatus", permissionMap.get("Employee Present Details").getIsuserdelete());
-
-                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)

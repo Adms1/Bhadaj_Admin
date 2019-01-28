@@ -65,8 +65,8 @@ public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
             } else {
                 txtSubject.setText("-");
             }
-            if (!detail.getStandardClass().equalsIgnoreCase("")) {
-                txtclass.setText(detail.getStandardClass());
+            if (!detail.getTeacherName().equalsIgnoreCase("")) {
+                txtclass.setText(detail.getTeacherName());
             } else {
                 txtclass.setText("-");
             }

@@ -135,6 +135,14 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
 
             }
         });
+
+        fragmentTallyTranscationBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     private void callStandardApi() {

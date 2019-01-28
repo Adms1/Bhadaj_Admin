@@ -42,20 +42,17 @@ import retrofit.client.Response;
 
 public class EmployeeSmsFragment extends Fragment {
 
+    List<FinalArraySMSDataModel> finalArraySMSDataModelList;
+    EmployeeSMSDeatilListAdapter employeeSMSDeatilListAdapter;
+    String finalEmployeeIdArray, finalmessageMessageLine, finalDateStr;
     private FragmentEmployeeSmsBinding fragmentEmployeeSmsBinding;
-
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private AlertDialog alertDialogAndroid = null;
-
-    List<FinalArraySMSDataModel> finalArraySMSDataModelList;
-    EmployeeSMSDeatilListAdapter employeeSMSDeatilListAdapter;
-
     private TextView date_txt, message_edt;
     private Button send_btn, close_btn;
-    String finalEmployeeIdArray, finalmessageMessageLine, finalDateStr;
     private boolean temp = false;
 
     public EmployeeSmsFragment() {
@@ -111,7 +108,7 @@ public class EmployeeSmsFragment extends Fragment {
                         finalArraySMSDataModelList.get(i).setCheck("1");
                     }
                     employeeSMSDeatilListAdapter.notifyDataSetChanged();
-                    temp=false;
+                    temp = false;
                 } else {
                     if (!temp) {
                         for (int i = 0; i < finalArraySMSDataModelList.size(); i++) {
@@ -246,10 +243,10 @@ public class EmployeeSmsFragment extends Fragment {
         window.setAttributes(wlp);
         alertDialogAndroid.show();
 
-        date_txt = (TextView) layout.findViewById(R.id.date_txt);
-        message_edt = (TextView) layout.findViewById(R.id.message_edt);
-        send_btn = (Button) layout.findViewById(R.id.send_btn);
-        close_btn = (Button) layout.findViewById(R.id.close_btn);
+        date_txt = layout.findViewById(R.id.insert_message_date_txt);
+        message_edt = layout.findViewById(R.id.insert_message_Message_txt);
+        send_btn = layout.findViewById(R.id.send_message_btn);
+        close_btn = layout.findViewById(R.id.close_btn);
 
         date_txt.setText(Utils.getTodaysDate());
         close_btn.setOnClickListener(new View.OnClickListener() {
@@ -286,7 +283,7 @@ public class EmployeeSmsFragment extends Fragment {
                     Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
                     return;
                 }
-                if (!finalEmployeeIdArray.equalsIgnoreCase("")&&!finalmessageMessageLine.equalsIgnoreCase("")&&!finalDateStr.equalsIgnoreCase("")){
+                if (!finalEmployeeIdArray.equalsIgnoreCase("") && !finalmessageMessageLine.equalsIgnoreCase("") && !finalDateStr.equalsIgnoreCase("")) {
                     Utils.showDialog(getActivity());
                     ApiHandler.getApiService().InsertStaffSMSData(InsertSingleSMSDetail(), new retrofit.Callback<InsertMenuPermissionModel>() {
                         @Override
@@ -319,7 +316,7 @@ public class EmployeeSmsFragment extends Fragment {
                             Utils.ping(mContext, getString(R.string.something_wrong));
                         }
                     });
-                }else{
+                } else {
                     Utils.ping(mContext, getString(R.string.blank));
                 }
             }

@@ -174,8 +174,11 @@ public class StaffFragment extends Fragment {
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
 
-                } else if (position == 3) {
+                } else if (position == 3 && permissionMap.get("Exam").getStatus().equalsIgnoreCase("true")) {
                     fragment = new ExamsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Exam").getIsuserview());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)

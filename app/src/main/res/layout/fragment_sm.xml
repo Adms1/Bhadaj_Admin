@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <android.support.constraint.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -61,14 +62,16 @@
                         android:background="@drawable/menu" />
 
                 </RelativeLayout>
+
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
                 android:layout_below="@+id/center"
-                android:layout_marginTop="-65dp">
+                android:layout_marginTop="@dimen/_65sdp">
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout3"
@@ -79,8 +82,10 @@
                     android:layout_marginRight="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_11sdp"
                     android:background="@drawable/grid_shape"
-                    android:orientation="vertical">
-                    
+                    android:elevation="@dimen/_4sdp"
+                    android:orientation="vertical"
+                    android:shadowColor="@color/gray">
+
                     <LinearLayout
                         android:id="@+id/liner1"
                         android:layout_width="match_parent"
@@ -96,10 +101,9 @@
                             android:layout_width="@dimen/_100sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@color/orange"
-                            android:gravity="center_vertical|center"
-                            android:text="0"
-                            android:textAlignment="textStart"
+                            android:gravity="center_vertical"
                             android:paddingLeft="@dimen/_5sdp"
+                            android:text="0"
                             android:textColor="@color/app_bg"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="bold" />
@@ -109,10 +113,9 @@
                             android:layout_width="@dimen/_110sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@color/gray"
-                            android:gravity="center_vertical|center"
-                            android:text="Today SMS"
-                            android:textAlignment="textStart"
+                            android:gravity="center_vertical"
                             android:paddingLeft="@dimen/_5sdp"
+                            android:text="Today SMS"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
@@ -134,9 +137,9 @@
                             android:layout_width="@dimen/_100sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@color/present"
-                            android:gravity="center_vertical|center"
-                            android:text="0" android:textAlignment="textStart"
+                            android:gravity="center_vertical"
                             android:paddingLeft="@dimen/_5sdp"
+                            android:text="0"
                             android:textColor="@color/app_bg"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="bold" />
@@ -146,10 +149,9 @@
                             android:layout_width="@dimen/_110sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@color/gray"
-                            android:gravity="center_vertical|center"
-                            android:text="Delivered"
-                            android:textAlignment="textStart"
+                            android:gravity="center_vertical"
                             android:paddingLeft="@dimen/_5sdp"
+                            android:text="Delivered"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
@@ -171,12 +173,11 @@
                             android:layout_width="@dimen/_100sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@color/leave"
-                            android:gravity="center_vertical|center"
-                            android:text="0"
-                            android:textAlignment="textStart"
+                            android:gravity="center_vertical"
                             android:paddingLeft="@dimen/_5sdp"
-                            android:textSize="@dimen/_9sdp"
+                            android:text="0"
                             android:textColor="@color/app_bg"
+                            android:textSize="@dimen/_9sdp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -184,10 +185,9 @@
                             android:layout_width="@dimen/_110sdp"
                             android:layout_height="@dimen/_25sdp"
                             android:background="@color/gray"
-                            android:gravity="center_vertical|center"
-                            android:text="Other"
-                            android:textAlignment="textStart"
+                            android:gravity="center_vertical"
                             android:paddingLeft="@dimen/_5sdp"
+                            android:text="Other"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
@@ -209,37 +209,39 @@
                             android:layout_height="match_parent"
                             android:layout_margin="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/gray"
                             android:columnWidth="0dp"
                             android:gravity="center"
-                            android:horizontalSpacing="@dimen/_2sdp"
-                            android:numColumns="auto_fit"
+                            android:numColumns="2"
                             android:scrollbars="none"
-                            android:stretchMode="columnWidth"
-                            android:verticalSpacing="@dimen/_2sdp" />
+                            android:stretchMode="columnWidth" />
                     </LinearLayout>
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/relativeLayout2"
-                    android:layout_width="@dimen/_75sdp"
-                    android:layout_height="@dimen/_75sdp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginLeft="@dimen/_3sdp"
-                    android:background="@drawable/ciclre_shape">
-
-                    <ImageView
-                        android:id="@+id/circleImageView"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true" />
-
-                </RelativeLayout>
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_75sdp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_65sdp"
+                android:background="@drawable/ciclre_shape">
+
+                <ImageView
+                    android:id="@+id/circleImageView"
+                    android:layout_width="@dimen/_55sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
+
     </android.support.constraint.ConstraintLayout>
+
 </layout>

@@ -13,10 +13,14 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.Map;
+
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AttendenceReportSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentAttendenceReportBinding;
 
@@ -28,7 +32,8 @@ public class AttendenceReportFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    private String status, updatestatus, deletestatus, inoutstatus, inoutviewstatus, inoutupdatestatus, inoutdeletestatus, employeestatus, employeeviewstatus, employeeupdatestatus, employeedeletestatus, emppresentstatus, emppresentviewstatus, emppresentupdatestatus, emppresentdeletestatus;
+
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
 
     public AttendenceReportFragment() {
     }
@@ -41,25 +46,7 @@ public class AttendenceReportFragment extends Fragment {
         rootView = fragmentAttendenceReportBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-        Bundle bundle = this.getArguments();
-        status = bundle.getString("status");
-        updatestatus = bundle.getString("updatestatus");
-        deletestatus = bundle.getString("deletestatus");
-
-        inoutstatus = bundle.getString("inoutstatus");
-        inoutviewstatus = bundle.getString("inoutviewstatus");
-        inoutupdatestatus = bundle.getString("inoutupdatestatus");
-        inoutdeletestatus = bundle.getString("inoutdeletestatus");
-
-        employeestatus = bundle.getString("employeestatus");
-        employeeviewstatus = bundle.getString("employeeviewstatus");
-        employeeupdatestatus = bundle.getString("employeeupdatestatus");
-        employeedeletestatus = bundle.getString("employeedeletestatus");
-
-        emppresentstatus = bundle.getString("emppresentstatus");
-        emppresentviewstatus = bundle.getString("emppresentviewstatus");
-        emppresentupdatestatus = bundle.getString("emppresentupdatestatus");
-        emppresentdeletestatus = bundle.getString("emppresentdeletestatus");
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "HR");
 
         initViews();
         setListners();
@@ -99,13 +86,15 @@ public class AttendenceReportFragment extends Fragment {
         fragmentAttendenceReportBinding.attendenceReportSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0 && inoutstatus.equalsIgnoreCase("true")) {
+                if (position == 0 && permissionMap.get("In Out Summary").getStatus().equalsIgnoreCase("true")) {
                     fragment = new InOutSummaryFragment();
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("inoutstatus", inoutviewstatus);
-                    bundle.putString("inoutupdatestatus", inoutupdatestatus);
-                    bundle.putString("inoutdeletestatus", inoutdeletestatus);
+                    bundle.putString("inoutstatus", permissionMap.get("In Out Summary").getStatus());
+                    bundle.putString("inoutviewstatus", permissionMap.get("In Out Summary").getIsuserview());
+                    bundle.putString("inoutupdatestatus", permissionMap.get("In Out Summary").getIsuserupdate());
+                    bundle.putString("inoutdeletestatus", permissionMap.get("In Out Summary").getIsuserdelete());
+
                     fragment.setArguments(bundle);
 
                     fragmentManager = getFragmentManager();
@@ -115,13 +104,15 @@ public class AttendenceReportFragment extends Fragment {
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 53;
 
-                } else if (position == 1 && employeestatus.equalsIgnoreCase("true")) {
+                } else if (position == 1 && permissionMap.get("Employee In Out Details").getStatus().equalsIgnoreCase("true")) {
                     fragment = new InOutSummaryDetailsFragment();
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("employeestatus", employeeviewstatus);
-                    bundle.putString("employeeupdatestatus", employeeupdatestatus);
-                    bundle.putString("employeedeletestatus", employeedeletestatus);
+                    bundle.putString("employeestatus", permissionMap.get("Employee In Out Details").getStatus());
+                    bundle.putString("employeeviewstatus", permissionMap.get("Employee In Out Details").getIsuserview());
+                    bundle.putString("employeeupdatestatus", permissionMap.get("Employee In Out Details").getIsuserupdate());
+                    bundle.putString("employeedeletestatus", permissionMap.get("Employee In Out Details").getIsuserdelete());
+
                     fragment.setArguments(bundle);
 
                     fragmentManager = getFragmentManager();
@@ -131,13 +122,14 @@ public class AttendenceReportFragment extends Fragment {
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 53;
 
-                } else if (position == 2 && emppresentstatus.equalsIgnoreCase("true")) {
+                } else if (position == 2 && permissionMap.get("Employee Present Details").getStatus().equalsIgnoreCase("true")) {
                     fragment = new EmployeePresentDetail();
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("emppresentstatus", emppresentviewstatus);
-                    bundle.putString("emppresentupdatestatus", emppresentupdatestatus);
-                    bundle.putString("emppresentdeletestatus", emppresentdeletestatus);
+                    bundle.putString("emppresentstatus", permissionMap.get("Employee Present Details").getStatus());
+                    bundle.putString("emppresentviewstatus", permissionMap.get("Employee Present Details").getIsuserview());
+                    bundle.putString("emppresentupdatestatus", permissionMap.get("Employee Present Details").getIsuserupdate());
+                    bundle.putString("emppresentdeletestatus", permissionMap.get("Employee Present Details").getIsuserdelete());
                     fragment.setArguments(bundle);
 
                     fragmentManager = getFragmentManager();

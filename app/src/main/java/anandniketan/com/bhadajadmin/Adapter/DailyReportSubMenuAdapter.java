@@ -11,35 +11,30 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 
 public class DailyReportSubMenuAdapter extends BaseAdapter {
-    public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Transportation.png",
-            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Account.png",
-            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Admin.png",
-            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "House%20Keeping.png",
-            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Information%20Technology.png",
-            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Hr%20Head.png",
 
-    };
-    public String[] mThumbNames = {"Trasportation", "Account","Admin","House Keeping","Information Technology","HR Head"};
     private Context mContext;
+    private ArrayList<IconHeaderModel> newArr;
 
     // Constructor
-    public DailyReportSubMenuAdapter(Context c) {
+    public DailyReportSubMenuAdapter(Context c, ArrayList<IconHeaderModel> newArr) {
         mContext = c;
+        this.newArr = newArr;
     }
 
     @Override
     public int getCount() {
-        return mThumbIds.length;
+        return newArr.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mThumbIds[position];
+        return newArr.get(position);
     }
 
     @Override
@@ -50,14 +45,17 @@ public class DailyReportSubMenuAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgGridOptions = null;
+        View line1 = null;
         TextView txtGridOptionsName = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
-        imgGridOptions = (ImageView) convertView.findViewById(R.id.imgGridOptions);
-        txtGridOptionsName = (TextView) convertView.findViewById(R.id.txtGridOptionsName);
-        String url = mThumbIds[position];
+        imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+        txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
+        line1 = convertView.findViewById(R.id.view_line1);
+
+        String url = newArr.get(position).getUrl();
 //        Log.d("url", url);
         Glide.with(mContext)
                 .load(url)
@@ -65,7 +63,15 @@ public class DailyReportSubMenuAdapter extends BaseAdapter {
                 .into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
-        txtGridOptionsName.setText(mThumbNames[position]);
+        txtGridOptionsName.setText(newArr.get(position).getName());
+
+        if (position % 2 == 0) {
+            line1.setVisibility(View.VISIBLE);
+        } else {
+            line1.setVisibility(View.GONE);
+        }
+
+
         return convertView;
     }
 

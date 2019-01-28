@@ -48,7 +48,7 @@ public class ExamsFragment extends Fragment implements DatePickerDialog.OnDateSe
     private DatePickerDialog datePickerDialog;
     ExamListAdapter examListAdapter;
     List<FinalArrayStaffModel> finalArrayExamsModel;
-
+    private String viewstatus;
 
     public ExamsFragment() {
     }
@@ -60,6 +60,9 @@ public class ExamsFragment extends Fragment implements DatePickerDialog.OnDateSe
 
         rootView = fragmentExamsBinding.getRoot();
         mContext = getActivity().getApplicationContext();
+
+        Bundle bundle = this.getArguments();
+        viewstatus = bundle.getString("viewstatus");
 
         setListners();
         callExamsApi();
@@ -122,7 +125,13 @@ public class ExamsFragment extends Fragment implements DatePickerDialog.OnDateSe
         fragmentExamsBinding.filterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callExamsApi();
+
+                if (viewstatus.equalsIgnoreCase("true")) {
+
+                    callExamsApi();
+                } else {
+                    Utils.ping(getActivity(), "Access Denied");
+                }
             }
         });
     }

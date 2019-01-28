@@ -182,8 +182,12 @@ public interface WebServices {
     @POST("/DailyFeeColleCtion")
     void getDailyFeeColleCtionDetail(@FieldMap Map<String, String> map, Callback<AccountFeesStatusModel> callback);
 
+//    @FormUrlEncoded
+//    @POST("/TeacherGetTimetable")
+//    void getTimeTable(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
     @FormUrlEncoded
-    @POST("/TeacherGetTimetable")
+    @POST("/AdminGetTimetable")
     void getTimeTable(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 
     @FormUrlEncoded

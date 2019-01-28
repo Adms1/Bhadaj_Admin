@@ -30,7 +30,6 @@ public class ImageAdapter extends BaseAdapter {
             AppConfiguration.BASEURL_IMAGES + "Main/" + "SMS.png",
             AppConfiguration.BASEURL_IMAGES + "Main/" + "Account.png",
 
-
            /* AppConfiguration.BASEURL_IMAGES + "Main/" + "Transport.png",
             AppConfiguration.BASEURL_IMAGES + "Main/" + "other.png",*/
     };
@@ -65,8 +64,8 @@ public class ImageAdapter extends BaseAdapter {
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.grid_cell, null);
 
-        imgGridOptions = (ImageView) convertView.findViewById(R.id.imgGridOptions);
-        txtGridOptionsName = (TextView) convertView.findViewById(R.id.txtGridOptionsName);
+        imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+        txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
 
         String url = mThumbIds[position];
 //        Log.d("url", url);

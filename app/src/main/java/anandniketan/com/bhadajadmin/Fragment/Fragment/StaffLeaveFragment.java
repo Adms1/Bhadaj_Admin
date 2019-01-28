@@ -13,14 +13,19 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.StaffLeavesubmenuAdapter;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStaffLeaveBinding;
 
 
@@ -36,6 +41,12 @@ public class StaffLeaveFragment extends Fragment {
     private String FinalTermIdStr = "";
 //    private String viewstatus, updatestatus, deletestatus, requeststatus, requestupdatestatus, requestdeletestatus, balancestatus, balanceupdatestatus,balancedeletestatus;
 
+    public String[] mThumbIds = {AppConfiguration.BASEURL_IMAGES + "Staff%20Leave/" + "Leave%20Balance.png", AppConfiguration.BASEURL_IMAGES + "Staff%20Leave/" + "Leave%20Request.png",};
+    public String[] mThumbNames = {"Leave Request", "Leave Balance"};
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
+    private ArrayList<IconHeaderModel> newArr;
+
+
     public StaffLeaveFragment() {
     }
 
@@ -47,6 +58,18 @@ public class StaffLeaveFragment extends Fragment {
         rootView = fragmentstaffleaveBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 //
+        newArr = new ArrayList<>();
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "HR");
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
+
 //        Bundle bundle = this.getArguments();
 //        viewstatus = bundle.getString("viewstatus");
 //        updatestatus = bundle.getString("updatestatus");
@@ -69,8 +92,8 @@ public class StaffLeaveFragment extends Fragment {
     public void initViews() {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 51;
-        Glide.with(mContext).load(AppConfiguration.BASEURL_IMAGES + "Main/" + "permission_inside.png").fitCenter().into(fragmentstaffleaveBinding.circleImageView);
-        fragmentstaffleaveBinding.staffLeaveSubmenuGridView.setAdapter(new StaffLeavesubmenuAdapter(mContext));
+        Glide.with(mContext).load(AppConfiguration.BASEURL_IMAGES + "HR/" + "Staff%20Leave.png").fitCenter().into(fragmentstaffleaveBinding.circleImageView);
+        fragmentstaffleaveBinding.staffLeaveSubmenuGridView.setAdapter(new StaffLeavesubmenuAdapter(mContext, newArr));
 
     }
 

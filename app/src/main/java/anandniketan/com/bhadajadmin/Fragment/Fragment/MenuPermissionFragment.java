@@ -92,7 +92,6 @@ public class MenuPermissionFragment extends Fragment {
         return rootView;
     }
 
-
     public void setListners() {
         fragmentMenuPermissionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +99,7 @@ public class MenuPermissionFragment extends Fragment {
                 DashboardActivity.onLeft();
             }
         });
+
         fragmentMenuPermissionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +110,7 @@ public class MenuPermissionFragment extends Fragment {
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
+
         fragmentMenuPermissionBinding.teacherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -127,6 +128,7 @@ public class MenuPermissionFragment extends Fragment {
 
             }
         });
+
         fragmentMenuPermissionBinding.usertypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -159,6 +161,7 @@ public class MenuPermissionFragment extends Fragment {
                 }
             }
         });
+
         fragmentMenuPermissionBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -26,9 +26,15 @@ public class Datum {
     @SerializedName("EmpName")
     @Expose
     private String empName;
+
+    @SerializedName("TeacherName")
+    @Expose
+    private String teacherName;
+
     @SerializedName("Days")
     @Expose
     private Integer days;
+
     public Integer getLecture() {
         return lecture;
     }
@@ -83,5 +89,13 @@ public class Datum {
 
     public void setDays(Integer days) {
         this.days = days;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 }

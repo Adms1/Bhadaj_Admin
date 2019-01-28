@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,10 +39,9 @@ import retrofit.client.Response;
 
 public class SearchStaffFragment extends Fragment {
 
-
+    private Context mcontext;
     private FragmentSearchStaffBinding fragmentStudentViewInquiryBinding;
     private View rootView;
-    private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private HashMap<Integer, String> spinnerTermMap;
@@ -64,7 +64,7 @@ public class SearchStaffFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mContext = context;
+        mcontext = context;
     }
 
     @Override
@@ -73,23 +73,39 @@ public class SearchStaffFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        AppConfiguration.firsttimeback = true;
-        AppConfiguration.position = 51;
+//        AppConfiguration.firsttimeback = true;
+//        AppConfiguration.position = 61;
 
-        Bundle bundle = this.getArguments();
-        viewstatus = bundle.getString("status");
+//        viewstatus = AppConfiguration.HRstaffseachviewstatus;
 
         fragmentStudentViewInquiryBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_staff,container,false);
         rootView =  fragmentStudentViewInquiryBinding.getRoot();
 
-        setListners();
-        callTermApi();
+//        setListners();
+//        callTermApi();
         return rootView;
 
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Inflate the layout for this fragment
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 61;
+
+        viewstatus = AppConfiguration.HRstaffseachviewstatus;
+
+//        fragmentStudentViewInquiryBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_staff,container,false);
+//        rootView =  fragmentStudentViewInquiryBinding.getRoot();
+
+        setListners();
+        callTermApi();
+
+    }
 
     public void setListners() {
 
@@ -193,26 +209,26 @@ public class SearchStaffFragment extends Fragment {
 
     private void callTermApi() {
 
-        if (!Utils.checkNetwork(mContext)) {
+        if (!Utils.checkNetwork(mcontext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-        Utils.showDialog(getActivity());
+        Utils.showDialog(mcontext);
         ApiHandler.getApiService().getTerm(getTermDetail(), new retrofit.Callback<TermModel>() {
             @Override
             public void success(TermModel termModel, Response response) {
                 Utils.dismissDialog();
                 if (termModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+                    Utils.ping(mcontext, getString(R.string.false_msg));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -230,7 +246,7 @@ public class SearchStaffFragment extends Fragment {
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
+                Utils.ping(mcontext, getString(R.string.something_wrong));
             }
         });
 
@@ -244,26 +260,26 @@ public class SearchStaffFragment extends Fragment {
 
     private void callDesignationApi() {
 
-        if (!Utils.checkNetwork(mContext)) {
+        if (!Utils.checkNetwork(mcontext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-        Utils.showDialog(getActivity());
+        Utils.showDialog(mcontext);
         ApiHandler.getApiService().getDesignation(getDesDetail(), new retrofit.Callback<DesignationModel>() {
             @Override
             public void success(DesignationModel termModel, Response response) {
                 Utils.dismissDialog();
                 if (termModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+                    Utils.ping(mcontext, getString(R.string.false_msg));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -280,7 +296,7 @@ public class SearchStaffFragment extends Fragment {
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
+                Utils.ping(mcontext, getString(R.string.something_wrong));
             }
         });
 
@@ -294,26 +310,26 @@ public class SearchStaffFragment extends Fragment {
 
     private void callDepartmentApi() {
 
-        if (!Utils.checkNetwork(mContext)) {
+        if (!Utils.checkNetwork(mcontext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-        Utils.showDialog(getActivity());
+        Utils.showDialog(mcontext);
         ApiHandler.getApiService().getDepartment(getDeptDetail(), new retrofit.Callback<DepartmentModel>() {
             @Override
             public void success(DepartmentModel termModel, Response response) {
                 Utils.dismissDialog();
                 if (termModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+                    Utils.ping(mcontext, getString(R.string.false_msg));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -331,7 +347,7 @@ public class SearchStaffFragment extends Fragment {
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
+                Utils.ping(mcontext, getString(R.string.something_wrong));
             }
         });
 
@@ -342,50 +358,48 @@ public class SearchStaffFragment extends Fragment {
         return map;
     }
 
-
-
     private void callStaffListApi() {
 
-        if (!Utils.checkNetwork(mContext)) {
+        if (!Utils.checkNetwork(mcontext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-        Utils.showDialog(getActivity());
+//        Utils.showDialog(mcontext);
         ApiHandler.getApiService().getAdmin_SearchStaff(getStaffParams(), new retrofit.Callback<SearchStaffModel>() {
             @Override
             public void success(SearchStaffModel termModel, Response response) {
                 Utils.dismissDialog();
                 if (termModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     fragmentStudentViewInquiryBinding.recyclerLinear.setVisibility(View.GONE);
                     fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.GONE);
                     fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (termModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    Utils.ping(mcontext, getString(R.string.something_wrong));
                     fragmentStudentViewInquiryBinding.recyclerLinear.setVisibility(View.GONE);
                     fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.GONE);
                     fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    Utils.ping(getActivity(), getString(R.string.false_msg));
                     fragmentStudentViewInquiryBinding.recyclerLinear.setVisibility(View.GONE);
                     fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.GONE);
                     fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
-                    finalDatalist = new ArrayList<SearchStaffModel.FinalArray>();
+                    finalDatalist = new ArrayList<>();
                     finalDatalist = termModel.getFinalArray();
                     fragmentStudentViewInquiryBinding.recyclerLinear.setVisibility(View.VISIBLE);
                     fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.VISIBLE);
                     fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.GONE);
 
-                    staffSearchListItemAdapter = new StaffSearchListItemAdapter(getActivity(), finalDatalist, viewstatus);
-                    fragmentStudentViewInquiryBinding.staffList.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    staffSearchListItemAdapter = new StaffSearchListItemAdapter(mcontext, finalDatalist, viewstatus);
+                    fragmentStudentViewInquiryBinding.staffList.setLayoutManager(new LinearLayoutManager(mcontext));
                     fragmentStudentViewInquiryBinding.staffList.setAdapter(staffSearchListItemAdapter);
 
                 }
@@ -396,7 +410,7 @@ public class SearchStaffFragment extends Fragment {
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mcontext, getString(R.string.something_wrong));
                 fragmentStudentViewInquiryBinding.recyclerLinear.setVisibility(View.GONE);
                 fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.GONE);
                 fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -446,7 +460,7 @@ public class SearchStaffFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstatusIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mcontext, R.layout.spinner_layout, spinnerstatusIdArray);
         fragmentStudentViewInquiryBinding.statusSpinner.setAdapter(adapterTerm);
 
         FinalStatus = spinnerOrderMap.get(0);
@@ -486,11 +500,12 @@ public class SearchStaffFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mcontext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentStudentViewInquiryBinding.termSpinner.setAdapter(adapterTerm);
 
         FinalTermIdStr = spinnerTermMap.get(0);
         AppConfiguration.TermId = FinalTermIdStr;
+        fragmentStudentViewInquiryBinding.termSpinner.setSelection(1);
 
     }
 
@@ -526,7 +541,7 @@ public class SearchStaffFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout,spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mcontext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentStudentViewInquiryBinding.desgSpinner.setAdapter(adapterTerm);
 
         FinalDesgId = spinnerDesgmMap.get(0);
@@ -568,7 +583,7 @@ public class SearchStaffFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mcontext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentStudentViewInquiryBinding.deptSpinner.setAdapter(adapterTerm);
 
         FinalDeptId = spinnerDeptmMap.get(0);

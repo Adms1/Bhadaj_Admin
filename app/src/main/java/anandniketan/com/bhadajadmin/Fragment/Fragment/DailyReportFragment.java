@@ -13,10 +13,12 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.DailyReportSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -26,12 +28,24 @@ import anandniketan.com.bhadajadmin.databinding.FragmentDailyReportBinding;
 
 public class DailyReportFragment extends Fragment {
 
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Transportation.png",
+            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Account.png",
+            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Admin.png",
+            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "House%20Keeping.png",
+            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Information%20Technology.png",
+            AppConfiguration.BASEURL_IMAGES + "Daily%20Report/" + "Hr%20Head.png",
+
+    };
+    public String[] mThumbNames = {"Transportation", "Account", "Admin", "House Keeping", "Information Technology", "HR Head"};
+
     private FragmentDailyReportBinding fragmentDailyReportBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
+    private ArrayList<IconHeaderModel> newArr;
 
     public DailyReportFragment() {
     }
@@ -44,7 +58,17 @@ public class DailyReportFragment extends Fragment {
         rootView = fragmentDailyReportBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        newArr = new ArrayList<>();
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "HR");
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
 
         initViews();
         setListners();
@@ -56,10 +80,10 @@ public class DailyReportFragment extends Fragment {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 51;
         Glide.with(mContext)
-                .load(AppConfiguration.BASEURL_IMAGES +"HR/"+"Daily%20Report.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "HR/" + "Daily%20Report.png")
                 .fitCenter()
                 .into(fragmentDailyReportBinding.circleImageView);
-        fragmentDailyReportBinding.dailyReportSubmenuGridView.setAdapter(new DailyReportSubMenuAdapter(mContext));
+        fragmentDailyReportBinding.dailyReportSubmenuGridView.setAdapter(new DailyReportSubMenuAdapter(mContext, newArr));
 
     }
 
@@ -120,16 +144,21 @@ public class DailyReportFragment extends Fragment {
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
 
-                }else if (position == 3) {
-                    fragment = new HrHouseKeepingFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
-                    AppConfiguration.firsttimeback = true;
-                    AppConfiguration.position = 54;
-
-                } else if (position == 4 && permissionMap.get("Information Technology").getStatus().equalsIgnoreCase("true")) {
+                }
+//                else if (position == 3 && permissionMap.get("House Keeping").getStatus().equalsIgnoreCase("true")) {
+//                    fragment = new HrHouseKeepingFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("viewstatus", permissionMap.get("House Keeping").getIsuserview());
+//                    fragment.setArguments(bundle);
+//                    fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction()
+//                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+//                            .replace(R.id.frame_container, fragment).commit();
+//                    AppConfiguration.firsttimeback = true;
+//                    AppConfiguration.position = 54;
+//
+//                }
+                else if (position == 4 && permissionMap.get("Information Technology").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HrInformationtechnologyFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("viewstatus", permissionMap.get("Information Technology").getIsuserview());

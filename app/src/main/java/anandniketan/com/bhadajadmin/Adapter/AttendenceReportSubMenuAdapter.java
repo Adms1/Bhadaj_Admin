@@ -50,12 +50,15 @@ public class AttendenceReportSubMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgGridOptions = null;
         TextView txtGridOptionsName = null;
+        View line1 = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
 
-        imgGridOptions = (ImageView) convertView.findViewById(R.id.imgGridOptions);
-        txtGridOptionsName = (TextView) convertView.findViewById(R.id.txtGridOptionsName);
+        imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
+        txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
+        line1 = convertView.findViewById(R.id.view_line1);
+
         String url = mThumbIds[position];
 //        Log.d("url", url);
         Glide.with(mContext)
@@ -65,6 +68,13 @@ public class AttendenceReportSubMenuAdapter extends BaseAdapter {
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
         txtGridOptionsName.setText(mThumbNames[position]);
+
+        if (position % 2 == 0) {
+            line1.setVisibility(View.VISIBLE);
+        } else {
+            line1.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 

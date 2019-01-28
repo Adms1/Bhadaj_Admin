@@ -74,7 +74,7 @@ public class InOutSummaryFragment extends Fragment {
         mContext = getActivity().getApplicationContext();
 
         Bundle bundle = this.getArguments();
-        viewstatus = bundle.getString("inoutstatus");
+        viewstatus = bundle.getString("inoutviewstatus");
 
         fillMonthSpinner();
         fillYearSpinner();
@@ -94,7 +94,7 @@ public class InOutSummaryFragment extends Fragment {
         fragmentInOutSummaryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new HRFragment();
+                fragment = new AttendenceReportFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
@@ -111,7 +111,6 @@ public class InOutSummaryFragment extends Fragment {
                 Log.d("monthId", monthId);
 
                 AppConfiguration.month = monthId;
-
 
 //                callParentNameApi();
 //                callStudentNameApi();
