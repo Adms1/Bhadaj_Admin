@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -98,8 +97,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             transportDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.studetn_list_item_transport_detail, parent, false);
             convertView = transportDetailBinding.getRoot();
 
-            transportDetailBinding.linerKms.setVisibility(View.VISIBLE);
-            transportDetailBinding.kmsTxt.setText(childData.get(childPosition).getTransportKMs());
+            transportDetailBinding.kmsTxt.setText(childData.get(childPosition).getRouteName());
             transportDetailBinding.pickupTxt.setText(childData.get(childPosition).getPickupBus());
             transportDetailBinding.pickuppointTxt.setText(childData.get(childPosition).getPickupPoint());
             transportDetailBinding.pickuptimeTxt.setText(childData.get(childPosition).getPickupPointTime());
@@ -120,6 +118,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             fatherDetailBinding.foccupationTxt.setText(childData.get(childPosition).getFatherOccupation());
             fatherDetailBinding.forganisationTxt.setText(childData.get(childPosition).getFatherOrganization());
             fatherDetailBinding.fdesignationTxt.setText(childData.get(childPosition).getFatherDesignation());
+            fatherDetailBinding.officeTxt.setText(childData.get(childPosition).getFatherofficeaddress());
 
         } else if (headerTitle.equalsIgnoreCase("Mother Details")) {
             StudentListItemMotherDetailBinding motherDetailBinding;
@@ -135,6 +134,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             motherDetailBinding.moccupationTxt.setText(childData.get(childPosition).getMotherOccupation());
             motherDetailBinding.morganisationTxt.setText(childData.get(childPosition).getMotherOrganization());
             motherDetailBinding.mdesignationTxt.setText(childData.get(childPosition).getMotherDesignation());
+            motherDetailBinding.officeTxt.setText(childData.get(childPosition).getMotherofficeaddress());
 
         } else if (headerTitle.equalsIgnoreCase("Communication Details")) {
             StudentListItemCommunicationDetailBinding communicationDetailBinding;
@@ -145,6 +145,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             communicationDetailBinding.cityTxt.setText(childData.get(childPosition).getCity());
             communicationDetailBinding.addressTxt.setText(childData.get(childPosition).getAddress());
             communicationDetailBinding.zipTxt.setText(childData.get(childPosition).getZipCode());
+            communicationDetailBinding.smsEmailTxt.setText(childData.get(childPosition).getsMSCommunicationemail());
         }
 
 
@@ -186,10 +187,10 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group_student_full_detail, null);
         }
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+        TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-        LinearLayout linear_group = (LinearLayout) convertView.findViewById(R.id.linear_group);
+        LinearLayout linear_group = convertView.findViewById(R.id.linear_group);
         if (headerTitle.equalsIgnoreCase("Student Details")) {
             linear_group.setBackgroundColor(Color.parseColor("#3597D3"));
         } else if (headerTitle.equalsIgnoreCase("Transport Details")) {

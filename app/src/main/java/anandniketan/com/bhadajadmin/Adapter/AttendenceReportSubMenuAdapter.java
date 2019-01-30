@@ -63,7 +63,6 @@ public class AttendenceReportSubMenuAdapter extends BaseAdapter {
 //        Log.d("url", url);
         Glide.with(mContext)
                 .load(url)
-                .fitCenter()
                 .into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);

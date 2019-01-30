@@ -58,7 +58,7 @@ public class StaffLeavesubmenuAdapter extends BaseAdapter {
 
         String url = newArr.get(position).getUrl();
 //        Log.d("url", url);
-        Glide.with(mContext).load(url).fitCenter().into(imgGridOptions);
+        Glide.with(mContext).load(url).into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);
         txtGridOptionsName.setText(newArr.get(position).getName());

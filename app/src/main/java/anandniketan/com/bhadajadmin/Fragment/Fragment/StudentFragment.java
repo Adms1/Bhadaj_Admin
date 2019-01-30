@@ -38,16 +38,6 @@ import retrofit.client.Response;
 
 public class StudentFragment extends Fragment {
 
-    int Year, Month, Day;
-    Calendar calendar;
-    ArrayList<PermissionDataModel.Detaill> permission = new ArrayList<>();
-    private FragmentStudentBinding fragmentStudentBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
-    private String Datestr;
-    private Map<String, PermissionDataModel.Detaill> permissionMap;
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Search%20Student.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "View%20Inquiry.png",
@@ -64,6 +54,16 @@ public class StudentFragment extends Fragment {
     };
     public String[] mThumbNames = {"Search Student", "View Inquiry", "Student Transport",
             "Permission", "Attendance", "Left/Active", "New Register", "Announcement", "Circular", "circular1", "Planner", "Gallery"};
+    int Year, Month, Day;
+    Calendar calendar;
+    ArrayList<PermissionDataModel.Detaill> permission = new ArrayList<>();
+    private FragmentStudentBinding fragmentStudentBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private String Datestr;
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
     private GridView rvList;
     private ArrayList<IconHeaderModel> newArr;
 
@@ -124,7 +124,6 @@ public class StudentFragment extends Fragment {
         Log.d("TodayDate", Datestr);
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "Student.png")
-                .fitCenter()
                 .into(fragmentStudentBinding.circleImageView);
         rvList.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
         callStudentApi();
@@ -273,6 +272,18 @@ public class StudentFragment extends Fragment {
                     fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
+//                } else if(position == 10 && permissionMap.get("Gallery").getStatus().equalsIgnoreCase("true")){
+//                    fragment = new GalleryFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("status", permissionMap.get("Gallery").getIsuserview());
+//                    bundle.putString("updatestatus", permissionMap.get("Gallery").getIsuserupdate());
+//                    bundle.putString("deletestatus", permissionMap.get("Gallery").getIsuserdelete());
+//
+//                    fragment.setArguments(bundle);
+//                    fragmentManager = getFragmentManager();
+//                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+//                    AppConfiguration.firsttimeback = true;
+//                    AppConfiguration.position = 11;
                 } else {
                     Utils.ping(getActivity(), "Access Denied");
                 }

@@ -1,5 +1,6 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +13,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
@@ -70,7 +66,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
 //            imageLoader.displayImage(detail.getStudentImage(), holder.profile_image);
 
             if(!TextUtils.isEmpty(detail.getStudentImage())){
-                Glide.with(context).load(detail.getStudentImage()).asBitmap().placeholder(R.drawable.person_placeholder).into(holder.profile_image);
+                Glide.with(context).load(detail.getStudentImage()).apply(new RequestOptions().placeholder(R.drawable.person_placeholder).error(R.drawable.person_placeholder)).into(holder.profile_image);
             }else{
                 Glide.with(context).load(R.drawable.person_placeholder).into(holder.profile_image);
             }
@@ -80,9 +76,10 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
         }
         holder.student_name_txt.setText(detail.getStudentName());
         holder.attendance_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                RadioButton rb = group.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
 
                     // checkedId is the RadioButton selected
@@ -140,12 +137,12 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.My
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            profile_image = (CircleImageView) itemView.findViewById(R.id.profile_image);
-            student_name_txt = (TextView) itemView.findViewById(R.id.student_name_txt);
-            attendance_group = (RadioGroup) itemView.findViewById(R.id.attendance_group);
-            present_chk = (RadioButton) itemView.findViewById(R.id.present_chk);
-            absent_chk = (RadioButton) itemView.findViewById(R.id.absent_chk);
-            leave_chk = (RadioButton) itemView.findViewById(R.id.leave_chk);
+            profile_image = itemView.findViewById(R.id.profile_image);
+            student_name_txt = itemView.findViewById(R.id.student_name_txt);
+            attendance_group = itemView.findViewById(R.id.attendance_group);
+            present_chk = itemView.findViewById(R.id.present_chk);
+            absent_chk = itemView.findViewById(R.id.absent_chk);
+            leave_chk = itemView.findViewById(R.id.leave_chk);
             //onduty_chk = (RadioButton) itemView.findViewById(R.id.onduty_chk);
 
         }

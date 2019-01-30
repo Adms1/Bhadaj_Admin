@@ -5,7 +5,6 @@ import android.content.Context;
 
 public class BaseApp extends Application {
 
-
     public static Context mAppcontext;
 
     @Override
@@ -13,7 +12,6 @@ public class BaseApp extends Application {
         super.onCreate();
        // FontsOverride.setDefaultFont(this, "DEFAULT", "Fonts/opensans_regular.ttf");
         mAppcontext = getApplicationContext();
-
 
 //        FontsOverride.setDefaultFont(this, "MONOSPACE", "font/TitilliumWeb-Regular.ttf");
 //        FontsOverride.setDefaultFont(this, "SERIF", "font/TitilliumWeb-Regular.ttf");

@@ -28,7 +28,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.File;
@@ -811,10 +810,10 @@ public class CircularFragment extends Fragment implements PermissionUtils.ReqPer
 
     }
 
-    @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        populateSetTime(hourOfDay,minute,second);
-    }
+//    @Override
+//    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+//        populateSetTime(hourOfDay,minute,second);
+//    }
 
     public void populateSetTime(int hour, int min, int sec) {
         String d, m, y;
@@ -937,4 +936,8 @@ public class CircularFragment extends Fragment implements PermissionUtils.ReqPer
         }
     }
 
+    @Override
+    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+        populateSetTime(hourOfDay, minute, second);
+    }
 }

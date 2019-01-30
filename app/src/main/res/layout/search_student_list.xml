@@ -9,63 +9,63 @@
         android:id="@+id/llHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="1dp"
         android:background="@drawable/divider"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/parentsname_txt"
-            android:layout_width="@dimen/_77sdp"
-            android:layout_height="@dimen/_34sdp"
-            android:text="@string/searchparents"
-            android:paddingTop="@dimen/_7sdp"
-            android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/_8sdp"
+        android:paddingEnd="@dimen/_2sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:visibility="visible"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/studentname_txt"
-            android:layout_width="@dimen/_77sdp"
-            android:layout_height="@dimen/_34sdp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:gravity="center"
             android:text="@string/searchstudent"
-            android:paddingTop="@dimen/_7sdp"
-            android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp" />
+            android:textSize="@dimen/_11sdp" />
+
+        <TextView
+            android:id="@+id/parentsname_txt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:gravity="center"
+            android:text="@string/searchparents"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp" />
+
         <TextView
             android:id="@+id/grnno_txt"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_34sdp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.15"
+            android:gravity="center"
             android:text="@string/grno"
-            android:paddingTop="@dimen/_7sdp"
-            android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp"/>
+            android:textSize="@dimen/_11sdp" />
+
         <TextView
             android:id="@+id/grade_txt"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_34sdp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:gravity="center"
             android:text="@string/grade"
-            android:paddingTop="@dimen/_7sdp"
-            android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/black"
-            android:textSize="@dimen/_9sdp"/>
+            android:textSize="@dimen/_11sdp" />
+
         <TextView
             android:id="@+id/view_txt"
-            android:layout_width="@dimen/_55sdp"
-            android:layout_height="@dimen/_34sdp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:gravity="center"
             android:text="@string/view"
-            android:paddingTop="@dimen/_7sdp"
-            android:textAlignment="textStart"
-            android:paddingRight="@dimen/_4sdp"
-            android:textStyle="normal"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/absent"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_11sdp" />
     </LinearLayout>
 </LinearLayout>

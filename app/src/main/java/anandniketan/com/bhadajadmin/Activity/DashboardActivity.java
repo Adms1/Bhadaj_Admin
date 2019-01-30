@@ -139,8 +139,8 @@ public class DashboardActivity extends FragmentActivity {
         tvName = findViewById(R.id.teacher_name);
         tvDesignation = findViewById(R.id.teacher_designation);
         try {
-//            tvName.setText(prefUtils.getStringValue("Emp_Name", ""));
-            tvName.setText("Bhadaj");
+            tvName.setText(prefUtils.getStringValue("Emp_Name", ""));
+//            tvName.setText("Bhadaj");
             tvDesignation.setText(prefUtils.getStringValue("DesignationName", ""));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -601,7 +601,7 @@ public class DashboardActivity extends FragmentActivity {
 
 
         ArrayList<String> finalheaderArray = new ArrayList<>();
-        finalheaderArray.add("Dashboard");
+        finalheaderArray.add("DASHBOARD");
         finalheaderArray.add("STUDENT");
         finalheaderArray.add("STAFF");
         finalheaderArray.add("HR");

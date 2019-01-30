@@ -138,11 +138,9 @@ public class ExpandableListAdapterLessonPlan extends BaseExpandableListAdapter {
 
         Glide.with(_context)
                 .load(AppConfiguration.BASEURL_ICONS + "pdf.png")
-                .fitCenter()
                 .into(groupbinding.pdfImg);
         Glide.with(_context)
                 .load(AppConfiguration.BASEURL_ICONS + "Word.png")
-                .fitCenter()
                 .into(groupbinding.wordImg);
         groupbinding.pdfImg.setOnClickListener(new View.OnClickListener() {
             @Override

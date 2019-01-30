@@ -54,7 +54,7 @@ public class ExpandableListAdapterMenu extends BaseExpandableListAdapter {
 
             convertView = infalInflater.inflate(R.layout.list_item_menu, null);
             TextView txtLecture;
-            txtLecture = (TextView) convertView.findViewById(R.id.txtLecture);
+            txtLecture = convertView.findViewById(R.id.txtLecture);
             txtLecture.setText(getChild(groupPosition, childPosition));
 
         }
@@ -104,15 +104,14 @@ public class ExpandableListAdapterMenu extends BaseExpandableListAdapter {
 
         convertView = infalInflater.inflate(R.layout.list_group_menu, null);
 
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.title);
-        ImageView image_menu = (ImageView) convertView.findViewById(R.id.image_menu);
-        ImageView image_arrow = (ImageView) convertView.findViewById(R.id.image_arrow);
+        TextView lblListHeader = convertView.findViewById(R.id.title);
+        ImageView image_menu = convertView.findViewById(R.id.image_menu);
+        ImageView image_arrow = convertView.findViewById(R.id.image_arrow);
 
             lblListHeader.setText(spiltValue[0]);
 
         Glide.with(_context)
                 .load(spiltValue[1])
-                .fitCenter()
                 .into(image_menu);
 
         if (spiltValue[0].equalsIgnoreCase("OTHER")) {

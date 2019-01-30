@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
@@ -72,6 +73,11 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
 
                 binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),R.layout.student_list_item_student_full_detail,parent, false);
                 convertView = binding.getRoot();
+
+                TextView nationality = convertView.findViewById(R.id.nationality_txt);
+                TextView location = convertView.findViewById(R.id.location_txt);
+                TextView uniqueno = convertView.findViewById(R.id.unq_txt);
+
 //                imageLoader = ImageLoader.getInstance();
 //                DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
 //                        .cacheInMemory(true)
@@ -91,9 +97,9 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
 //                imageLoader.displayImage(childData.get(childPosition).getStudentImage(),binding.profileImage);
 
                 if (!TextUtils.isEmpty(LIVE_BASE_URL + childData.get(childPosition).getStudentImage())) {
-                    Glide.with(_context).load(LIVE_BASE_URL + childData.get(childPosition).getStudentImage()).asBitmap().placeholder(R.drawable.person_placeholder).into(binding.profileImage);
+                    Glide.with(_context).load(LIVE_BASE_URL + childData.get(childPosition).getStudentImage()).apply(new RequestOptions().placeholder(R.drawable.person_placeholder).error(R.drawable.person_placeholder)).into(binding.profileImage);
                 }else{
-                    Glide.with(_context).load(R.drawable.person_placeholder).asBitmap().into(binding.profileImage);
+                    Glide.with(_context).load(R.drawable.person_placeholder).into(binding.profileImage);
                 }
 
                 String[] name = childData.get(childPosition).getName().split("\\ ");
@@ -106,7 +112,10 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                 binding.ageTxt.setText(childData.get(childPosition).getAge());
                 binding.genderTxt.setText(childData.get(childPosition).getGender());
                 binding.aadharTxt.setText(childData.get(childPosition).getAadhaarCardNo());
-                binding.studentTypeTxt.setText(childData.get(childPosition).getStudentType());
+                uniqueno.setText(childData.get(childPosition).getUnique_no());
+//                binding.studentTypeTxt.setText(childData.get(childPosition).getStudentType());
+                nationality.setText(childData.get(childPosition).getNationality());
+                location.setText(childData.get(childPosition).getLocation());
                 binding.acedamicTxt.setText(childData.get(childPosition).getAcedamicYear());
                 binding.gradeTxt.setText(childData.get(childPosition).getGrade());
                 binding.sectionTxt.setText(childData.get(childPosition).getSection());
@@ -174,6 +183,7 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                 transportDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.studetn_list_item_transport_detail, parent, false);
                 convertView = transportDetailBinding.getRoot();
 
+                transportDetailBinding.kmsTxt.setVisibility(View.GONE);
                 transportDetailBinding.pickupTxt.setText(childData.get(childPosition).getPickupBus());
                 transportDetailBinding.pickuppointTxt.setText(childData.get(childPosition).getPickupPoint());
                 transportDetailBinding.pickuptimeTxt.setText(childData.get(childPosition).getPickupPointTime());

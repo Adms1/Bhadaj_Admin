@@ -3,6 +3,8 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,13 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.StudentFilteredDataAdapter;
@@ -38,14 +43,13 @@ import anandniketan.com.bhadajadmin.databinding.FragmentSearchStudentBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
 public class SearchStudentFragment extends Fragment {
 
+    List<FinalArrayGetTermModel> finalArrayGetTermModels;
+    HashMap<Integer, String> spinnerTermMap;
+    List<FinalArrayStandard> finalArrayStandardsList;
+    HashMap<Integer, String> spinnerStandardMap;
     private String status;
-
-    public SearchStudentFragment() {
-    }
-
     private FragmentSearchStudentBinding fragmentSearchStudentBinding;
     private View rootView;
     private Context mContext;
@@ -53,26 +57,38 @@ public class SearchStudentFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private ArrayList parentName = new ArrayList();
     private ArrayList studentName = new ArrayList();
-    private String searchtypeStr="Current Student", studentNameStr = "", parentNameStr = "", grnoStr = "",FinalTermIdStr,FinalClassIdStr;
+    private String searchtypeStr = "Current Student", studentNameStr = "", parentNameStr = "", grnoStr = "", FinalTermIdStr, FinalClassIdStr;
     private StudentFilteredDataAdapter studentFilteredDataAdapter;
-    List<FinalArrayGetTermModel> finalArrayGetTermModels;
-    HashMap<Integer, String> spinnerTermMap;
-    List<FinalArrayStandard> finalArrayStandardsList;
-    HashMap<Integer, String> spinnerStandardMap;
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
+    public SearchStudentFragment() {
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        fragmentSearchStudentBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_student, container, false);
+        fragmentSearchStudentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_student, container, false);
 
         rootView = fragmentSearchStudentBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
-        initViews();
-        callTermApi();
-        setListner();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
 
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+        setListner();
+        initViews();
+        callTermApi();
     }
 
     public void initViews() {
@@ -80,25 +96,32 @@ public class SearchStudentFragment extends Fragment {
         AppConfiguration.position = 11;
 
         Bundle bundle = this.getArguments();
-        status = bundle.getString("status");
+        if (bundle != null) {
+            status = bundle.getString("status");
+        }
 
     }
 
     public void setListner() {
-        fragmentSearchStudentBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+
+        tvHeader.setText(R.string.search_student);
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentSearchStudentBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                }
             }
         });
         fragmentSearchStudentBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +137,7 @@ public class SearchStudentFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentSearchStudentBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callParentNameApi();
                 callStudentNameApi();
@@ -132,7 +155,7 @@ public class SearchStudentFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentSearchStudentBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalClassIdStr);
             }
 
@@ -142,6 +165,7 @@ public class SearchStudentFragment extends Fragment {
             }
         });
     }
+
     // CALL Term API HERE
     private void callTermApi() {
 
@@ -189,8 +213,7 @@ public class SearchStudentFragment extends Fragment {
     }
 
     private Map<String, String> getTermDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     // CALL Standard API HERE
@@ -240,8 +263,7 @@ public class SearchStudentFragment extends Fragment {
     }
 
     private Map<String, String> getStandardDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
 
@@ -306,18 +328,18 @@ public class SearchStudentFragment extends Fragment {
     }
 
     public void fillTermSpinner() {
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap = new HashMap<Integer, String>();
+        spinnerTermMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -334,34 +356,36 @@ public class SearchStudentFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentSearchStudentBinding.termSpinner.setAdapter(adapterTerm);
+        fragmentSearchStudentBinding.termSpinner.setSelection(1);
 
     }
 
     public void fillGradeSpinner() {
         ArrayList<String> firstValue = new ArrayList<>();
-        firstValue.add("--Select--");
+        firstValue.add("All");
 //
+//        ArrayList<String> standardname = new ArrayList<>();
         ArrayList<String> standardname = new ArrayList<>();
         for (int z = 0; z < firstValue.size(); z++) {
             standardname.add(firstValue.get(z));
-        for (int i = 0; i < finalArrayStandardsList.size(); i++) {
-            standardname.add(finalArrayStandardsList.get(i).getStandardClass());
-        }
+            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+                standardname.add(finalArrayStandardsList.get(i).getStandardClass());
+            }
         }
         ArrayList<Integer> firstValueId = new ArrayList<>();
         firstValueId.add(0);
         ArrayList<Integer> standardId = new ArrayList<>();
         for (int m = 0; m < firstValueId.size(); m++) {
             standardId.add(firstValueId.get(m));
-        for (int j = 0; j < finalArrayStandardsList.size(); j++) {
-            standardId.add(finalArrayStandardsList.get(j).getClassID());
-        }
+            for (int j = 0; j < finalArrayStandardsList.size(); j++) {
+                standardId.add(finalArrayStandardsList.get(j).getClassID());
+            }
         }
         String[] spinnerstandardIdArray = new String[standardId.size()];
 
-        spinnerStandardMap = new HashMap<Integer, String>();
+        spinnerStandardMap = new HashMap<>();
         for (int i = 0; i < standardId.size(); i++) {
             spinnerStandardMap.put(i, String.valueOf(standardId.get(i)));
             spinnerstandardIdArray[i] = standardname.get(i).trim();
@@ -379,7 +403,7 @@ public class SearchStudentFragment extends Fragment {
         } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
             // silently fail...
         }
-        ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
+        ArrayAdapter<String> adapterstandard = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
         fragmentSearchStudentBinding.gradeSpinner.setAdapter(adapterstandard);
 
         FinalClassIdStr = spinnerStandardMap.get(0);
@@ -389,7 +413,7 @@ public class SearchStudentFragment extends Fragment {
     private void callStudentNameApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
@@ -491,7 +515,9 @@ public class SearchStudentFragment extends Fragment {
                                 AppConfiguration.position = 58;
                                 fragment = new AllDepartmentDetailsFragment();
                                 fragmentManager = getFragmentManager();
-                                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container,fragment).addToBackStack(null).commit();
+                                if (fragmentManager != null) {
+                                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                                }
                             }
                         }, status);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -521,7 +547,7 @@ public class SearchStudentFragment extends Fragment {
         map.put("ParentName", parentNameStr);
         map.put("StudentName", studentNameStr);
         map.put("GRNO", grnoStr);
-        map.put("ClassID",FinalClassIdStr);
+        map.put("ClassID", FinalClassIdStr);
         return map;
     }
 

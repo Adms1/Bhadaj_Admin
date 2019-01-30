@@ -4,11 +4,10 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.ImageAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
@@ -66,6 +66,8 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
     HashMap<Integer, String> spinnerSectionMap;
     private PrefUtils prefUtils;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public FragmentAddUpdateInquiry() {
     }
@@ -79,12 +81,23 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
         mContext = getActivity().getApplicationContext();
 
         prefUtils = PrefUtils.getInstance(getActivity());
-        setListener();
-        callTermApi();
-        callGradeApi();
+
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        setListener();
+        callTermApi();
+        callGradeApi();
+    }
 
     private void setListener(){
         calendar = Calendar.getInstance();
@@ -92,11 +105,11 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        tvHeader.setText(R.string.addinquiry);
+
 //        fragmentAddInquiryBinding.firstnameTxt.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 //        fragmentAddInquiryBinding.lastnameTxt.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 //        fragmentAddInquiryBinding.middleTxt.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
-
-
 
 //        fragmentAddInquiryBinding.firstnameTxt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 //        fragmentAddInquiryBinding.lastnameTxt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -218,7 +231,8 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
                 String getid = spinnerSectionMap.get(fragmentAddInquiryBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
+
                 if (selectedsectionstr.equalsIgnoreCase("All") || selectedsectionstr.equalsIgnoreCase("Select")){
                     FinalSectionStr = "0";
 
@@ -236,13 +250,14 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
             }
         });
 
-        fragmentAddInquiryBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentAddInquiryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppConfiguration.firsttimeback = true;
@@ -502,7 +517,7 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
         ArrayList<String> sectionname = new ArrayList<>();
         ArrayList<Integer> sectionId = new ArrayList<>();
         ArrayList<String> firstSectionValue = new ArrayList<String>();
-        firstSectionValue.add("Select");
+        firstSectionValue.add("--Select--");
         ArrayList<Integer> firstSectionId = new ArrayList<>();
         firstSectionId.add(0);
 

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.SMSSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
@@ -31,15 +31,11 @@ import anandniketan.com.bhadajadmin.databinding.FragmentSmBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+// Antra 29/01/2019
+// Change main menu adapter & set Layouts
 
 public class SMSFragment extends Fragment {
 
-    private FragmentSmBinding fragmentSmBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
-    private Map<String, PermissionDataModel.Detaill> permissionMap;
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "SMS/" + "Student%20Absent.png",
             AppConfiguration.BASEURL_IMAGES + "SMS/" + "Student Bulk%20SMS.png",
@@ -52,6 +48,12 @@ public class SMSFragment extends Fragment {
     };
     public String[] mThumbNames = {"Student Absent", "Bulk SMS", "Single SMS",
             "Staff SMS", "App SMS", "Student Transport", "Student Marks", "All SMS Report"};
+    private FragmentSmBinding fragmentSmBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
     public SMSFragment() {
@@ -91,9 +93,8 @@ public class SMSFragment extends Fragment {
 
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "SMS.png")
-                .fitCenter()
                 .into(fragmentSmBinding.circleImageView);
-        fragmentSmBinding.smsSubmenuGridView.setAdapter(new SMSSubMenuAdapter(mContext, newArr));
+        fragmentSmBinding.smsSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
         callSMSReportDataApi();
     }
 

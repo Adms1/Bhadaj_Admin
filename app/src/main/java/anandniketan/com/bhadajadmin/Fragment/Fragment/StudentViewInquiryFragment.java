@@ -5,6 +5,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,10 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -48,16 +51,15 @@ import retrofit.client.Response;
 
 public class StudentViewInquiryFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
+    private static String dateFinal;
+    private static boolean isFromDate = false;
     private FragmentStudentViewInquiryBinding fragmentStudentViewInquiryBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-
     private int Year, Month, Day;
     private Calendar calendar;
-    private static String dateFinal;
-    private static boolean isFromDate = false;
     private DatePickerDialog datePickerDialog;
     private HashMap<Integer, String> spinnerOrderMap;
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
@@ -69,14 +71,16 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private String FinalStartDateStr, FinalEndDateStr, FinalStatusStr, FinalStatusIdStr, FinalTermIdStr, FinalTermStr, FinalOnlineStatusStr = "All";
     private ExpandableListAdapterInquiryData expandableListAdapterInquiryData;
     private List<StudentInquiryModel.FinalArray> listDataHeader;
-    private HashMap<String,List<StudentInquiryModel.StausDetail>> listDataChild;
+    private HashMap<String, List<StudentInquiryModel.StausDetail>> listDataChild;
     private String status;
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public StudentViewInquiryFragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstance){
+    public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         setRetainInstance(true);
     }
@@ -99,11 +103,21 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             status = AppConfiguration.inquiryviewstatus;
         }
 
-        setListners();
-        callTermApi();
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        setListners();
+        callTermApi();
+    }
 
     public void setListners() {
         calendar = Calendar.getInstance();
@@ -111,7 +125,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        if(TextUtils.isEmpty(AppConfiguration.fromDate) && TextUtils.isEmpty(AppConfiguration.toDate)) {
+        if (TextUtils.isEmpty(AppConfiguration.fromDate) && TextUtils.isEmpty(AppConfiguration.toDate)) {
             AppConfiguration.fromDate = Utils.getTodaysDate();
             AppConfiguration.toDate = Utils.getTodaysDate();
         }
@@ -119,21 +133,22 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         fragmentStudentViewInquiryBinding.startdateButton.setText(AppConfiguration.fromDate);
         fragmentStudentViewInquiryBinding.enddateButton.setText(AppConfiguration.toDate);
 
+        tvHeader.setText(R.string.viewinquiry);
 
-        fragmentStudentViewInquiryBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStudentViewInquiryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                getActivity().getSupportFragmentManager().popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container,fragment).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 
@@ -159,7 +174,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                 AppConfiguration.position = 58;
                 fragment = new FragmentAddUpdateInquiry();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
             }
         });
 
@@ -256,7 +271,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private void callTermApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
@@ -316,15 +331,15 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             public void success(StudentAttendanceModel inquiryCountModel, Response response) {
                 Utils.dismissDialog();
                 if (inquiryCountModel == null) {
-                    Utils.ping(mContext,getString(R.string.something_wrong));
+                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (inquiryCountModel.getSuccess() == null) {
-                    Utils.ping(mContext,getString(R.string.something_wrong));
+                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (inquiryCountModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     Utils.dismissDialog();
                     return;
                 }
@@ -341,7 +356,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
@@ -355,7 +370,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
 
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 11;
@@ -365,7 +380,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private void callInquiryDataApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
@@ -405,12 +420,12 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                                 fragment = new StudentInquiryProfileFragment();
                                 fragmentManager = getFragmentManager();
                                 fragmentManager.beginTransaction()
-                                        .setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
                             }
                         }, status);
                         fragmentStudentViewInquiryBinding.lvExpviewinquiry.setAdapter(expandableListAdapterInquiryData);
                         Utils.dismissDialog();
-                    }else{
+                    } else {
                         fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                         fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.GONE);
                         fragmentStudentViewInquiryBinding.listHeader.setVisibility(View.GONE);
@@ -434,7 +449,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         Map<String, String> map = new HashMap<>();
         map.put("stdt", FinalStartDateStr);
         map.put("enddt", FinalEndDateStr);
-       // map.put("onlineStatus",FinalOnlineStatusStr);
+        // map.put("onlineStatus",FinalOnlineStatusStr);
         map.put("status", FinalStatusIdStr);
         map.put("TermID", FinalTermIdStr);
         return map;
@@ -512,9 +527,9 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         statusIdArray.add("Generated");
         statusIdArray.add("Admission Form Issued");
         statusIdArray.add("Interaction Call");
-      //  statusIdArray.add("Interaction Call");
+        //  statusIdArray.add("Interaction Call");
         statusIdArray.add("Interview Done");
-       // statusIdArray.add("Generate Circular");
+        // statusIdArray.add("Generate Circular");
         statusIdArray.add("Fees Paid");
 
 
@@ -523,9 +538,9 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         statusdetail.add("Enquiry Generated");
         statusdetail.add("Generated Admission Form");
         statusdetail.add("Received Admission Form/Interaction Call");
-       // statusdetail.add("Interaction Call");
+        // statusdetail.add("Interaction Call");
         statusdetail.add("Come for Interview");
-       // statusdetail.add("Generate Circular");
+        // statusdetail.add("Generate Circular");
         statusdetail.add("Fees Paid");
 
 
@@ -579,14 +594,14 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             Log.d("header", "" + listDataHeader);
             List<StudentInquiryModel.StausDetail> row = new ArrayList<StudentInquiryModel.StausDetail>();
 
-            String studentId  = String.valueOf(listDataHeader.get(i).getStudentID());
+            String studentId = String.valueOf(listDataHeader.get(i).getStudentID());
 
-            for(int innerCount = 0;innerCount <finalArrayinquiryCountList1.get(i).getStausDetail().size();innerCount++){
+            for (int innerCount = 0; innerCount < finalArrayinquiryCountList1.get(i).getStausDetail().size(); innerCount++) {
                 finalArrayinquiryCountList1.get(i).getStausDetail().get(innerCount).setStudentId(studentId);
             }
 
             Log.d("row", "" + row);
-            listDataChild.put(String.valueOf(listDataHeader.get(i).getStudentID()),finalArrayinquiryCountList1.get(i).getStausDetail());
+            listDataChild.put(String.valueOf(listDataHeader.get(i).getStudentID()), finalArrayinquiryCountList1.get(i).getStausDetail());
             Log.d("child", "" + listDataChild);
         }
     }

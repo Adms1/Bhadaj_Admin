@@ -6,12 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Staff.Datum;
-import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.Model.Student.ConsistentAbsentStudentModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.ConsistentAbsentTeacherListBinding;
@@ -23,15 +20,13 @@ import anandniketan.com.bhadajadmin.databinding.ConsistentAbsentTeacherListBindi
 
 public class ConsistentAbsentTeacherAdapter extends RecyclerView.Adapter<ConsistentAbsentTeacherAdapter.ViewHolder> {
     List<ConsistentAbsentStudentModel> consistentAbsentStudentModelList;
-ConsistentAbsentTeacherListBinding consistentAbsentTeacherListBinding;
+    ConsistentAbsentTeacherListBinding consistentAbsentTeacherListBinding;
     private Context context;
-
 
     public ConsistentAbsentTeacherAdapter(Context context, List<ConsistentAbsentStudentModel> consistentAbsentStudentModelList) {
         this.context = context;
         this.consistentAbsentStudentModelList = consistentAbsentStudentModelList;
     }
-
 
     @Override
     public ConsistentAbsentTeacherAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -45,8 +40,8 @@ ConsistentAbsentTeacherListBinding consistentAbsentTeacherListBinding;
     @Override
     public void onBindViewHolder(ConsistentAbsentTeacherAdapter.ViewHolder holder, int position) {
         consistentAbsentTeacherListBinding.studentnameTxt.setText(consistentAbsentStudentModelList.get(position).getStudentName());
-        consistentAbsentTeacherListBinding.standardTxt.setText(consistentAbsentStudentModelList.get(position).getStandard());
-        consistentAbsentTeacherListBinding.sectionTxt.setText(consistentAbsentStudentModelList.get(position).getClass_());
+        consistentAbsentTeacherListBinding.standardTxt.setText(consistentAbsentStudentModelList.get(position).getStandard() + " - " + consistentAbsentStudentModelList.get(position).getClass_());
+//        consistentAbsentTeacherListBinding.sectionTxt.setText(consistentAbsentStudentModelList.get(position).getClass_());
         consistentAbsentTeacherListBinding.daysTxt.setText(String.valueOf(consistentAbsentStudentModelList.get(position).getDays()));
     }
 
@@ -57,11 +52,9 @@ ConsistentAbsentTeacherListBinding consistentAbsentTeacherListBinding;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-
         public ViewHolder(View itemView) {
             super(itemView);
 
         }
     }
-
 }

@@ -19,7 +19,6 @@ import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.FragmentTransportBinding;
 
-
 public class TransportFragment extends Fragment {
 
     private FragmentTransportBinding fragmentTransportBinding;
@@ -47,18 +46,19 @@ public class TransportFragment extends Fragment {
     public void initViews() {
         Glide.with(mContext)
                 .load( AppConfiguration.BASEURL_IMAGES + "Transport/" + "transport_inside.png")
-                .fitCenter()
                 .into(fragmentTransportBinding.circleImageView);
         fragmentTransportBinding.transportSubmenuGridView.setAdapter(new TransportSubMenuAdapter(mContext));
     }
 
     public void setListners() {
+
         fragmentTransportBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
+
         fragmentTransportBinding.btnBackTransport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

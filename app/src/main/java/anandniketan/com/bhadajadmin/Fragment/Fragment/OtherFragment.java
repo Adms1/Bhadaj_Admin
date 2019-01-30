@@ -47,7 +47,6 @@ public class OtherFragment extends Fragment {
     public void initViews() {
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Other/" + "other_inside.png")
-                .fitCenter()
                 .into(fragmentOtherBinding.circleImageView);
         fragmentOtherBinding.otherSubmenuGridView.setAdapter(new OtherSubMenuAdapter(mContext));
 

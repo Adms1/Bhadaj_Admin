@@ -59,7 +59,6 @@ public class AttendenceReportFragment extends Fragment {
         AppConfiguration.position = 51;
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "HR/" + "Attendance%20Report.png")
-                .fitCenter()
                 .into(fragmentAttendenceReportBinding.circleImageView);
         fragmentAttendenceReportBinding.attendenceReportSubmenuGridView.setAdapter(new AttendenceReportSubMenuAdapter(mContext));
 

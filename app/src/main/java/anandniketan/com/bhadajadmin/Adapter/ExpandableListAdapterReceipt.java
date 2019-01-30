@@ -56,7 +56,6 @@ public class ExpandableListAdapterReceipt extends BaseExpandableListAdapter {
 
         Glide.with(_context)
                 .load(AppConfiguration.BASEURL_ICONS+"CanteenIcon.png")
-                .fitCenter()
                 .into(itembinding.imgBulletPayment);
         itembinding.receipeNoValueTxt.setText("₹" + " " +detail.get(childPosition).getReceiptNo());
         itembinding.modeOfPaymentValueTxt.setText("₹" + " " +detail.get(childPosition).getPayMode());

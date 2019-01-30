@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.StaffLeavesubmenuAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
@@ -28,21 +28,22 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStaffLeaveBinding;
 
+// Antra 29/01/2019
+// Change main menu adpater
 
 public class StaffLeaveFragment extends Fragment {
 
+    public String[] mThumbIds = {AppConfiguration.BASEURL_IMAGES + "Staff%20Leave/" + "Leave%20Balance.png", AppConfiguration.BASEURL_IMAGES + "Staff%20Leave/" + "Leave%20Request.png",};
+    public String[] mThumbNames = {"Leave Request", "Leave Balance"};
     private FragmentStaffLeaveBinding fragmentstaffleaveBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
+    //    private String viewstatus, updatestatus, deletestatus, requeststatus, requestupdatestatus, requestdeletestatus, balancestatus, balanceupdatestatus,balancedeletestatus;
     private HashMap<Integer, String> spinnerTermMap;
     private String FinalTermIdStr = "";
-//    private String viewstatus, updatestatus, deletestatus, requeststatus, requestupdatestatus, requestdeletestatus, balancestatus, balanceupdatestatus,balancedeletestatus;
-
-    public String[] mThumbIds = {AppConfiguration.BASEURL_IMAGES + "Staff%20Leave/" + "Leave%20Balance.png", AppConfiguration.BASEURL_IMAGES + "Staff%20Leave/" + "Leave%20Request.png",};
-    public String[] mThumbNames = {"Leave Request", "Leave Balance"};
     private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
@@ -92,8 +93,8 @@ public class StaffLeaveFragment extends Fragment {
     public void initViews() {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 51;
-        Glide.with(mContext).load(AppConfiguration.BASEURL_IMAGES + "HR/" + "Staff%20Leave.png").fitCenter().into(fragmentstaffleaveBinding.circleImageView);
-        fragmentstaffleaveBinding.staffLeaveSubmenuGridView.setAdapter(new StaffLeavesubmenuAdapter(mContext, newArr));
+        Glide.with(mContext).load(AppConfiguration.BASEURL_IMAGES + "HR/" + "Staff%20Leave.png").into(fragmentstaffleaveBinding.circleImageView);
+        fragmentstaffleaveBinding.staffLeaveSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
 
     }
 

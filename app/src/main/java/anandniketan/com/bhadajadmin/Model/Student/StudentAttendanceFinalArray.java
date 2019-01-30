@@ -84,6 +84,9 @@ public class StudentAttendanceFinalArray {
     @SerializedName("House")
     @Expose
     private String house;
+    @SerializedName("Student UniqueId No.")
+    @Expose
+    private String unique_no;
     @SerializedName("Religion")
     @Expose
     private String religion;
@@ -132,6 +135,9 @@ public class StudentAttendanceFinalArray {
     @SerializedName("Father Designation")
     @Expose
     private String fatherDesignation;
+    @SerializedName("Father Office Address")
+    @Expose
+    private String fatherofficeaddress;
     @SerializedName("Mother Name")
     @Expose
     private String motherName;
@@ -156,9 +162,15 @@ public class StudentAttendanceFinalArray {
     @SerializedName("Mother Designation")
     @Expose
     private String motherDesignation;
+    @SerializedName("Mother Office Address")
+    @Expose
+    private String motherofficeaddress;
     @SerializedName("SMS Communication No.")
     @Expose
     private String sMSCommunicationNo;
+    @SerializedName("Comm. Email ID.")
+    @Expose
+    private String sMSCommunicationemail;
     @SerializedName("City")
     @Expose
     private String city;
@@ -198,7 +210,7 @@ public class StudentAttendanceFinalArray {
     @SerializedName("Class")
     @Expose
     private String _class;
-    @SerializedName("RouteName")
+    @SerializedName(value = "RouteNm", alternate = {"RouteName", "Route"})
     @Expose
     private String routeName;
     @SerializedName("PickupPointName")
@@ -207,6 +219,9 @@ public class StudentAttendanceFinalArray {
     @SerializedName("KM")
     @Expose
     private String kM;
+    @SerializedName("SMSNo")
+    @Expose
+    private String smsno;
     //======result permission=====
     @SerializedName("Status")
     @Expose
@@ -299,6 +314,9 @@ public class StudentAttendanceFinalArray {
     @SerializedName("Deliverstatus")
     @Expose
     private String deliverstatus;
+    @SerializedName("Location")
+    @Expose
+    private String location;
 
     public String getName() {
         return Name;
@@ -310,6 +328,70 @@ public class StudentAttendanceFinalArray {
 
     public String getTotalStudent() {
         return totalStudent;
+    }
+
+    public String getgRNO() {
+        return gRNO;
+    }
+
+    public void setgRNO(String gRNO) {
+        this.gRNO = gRNO;
+    }
+
+    public String getsMSCommunicationNo() {
+        return sMSCommunicationNo;
+    }
+
+    public void setsMSCommunicationNo(String sMSCommunicationNo) {
+        this.sMSCommunicationNo = sMSCommunicationNo;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getsMSCommunicationemail() {
+        return sMSCommunicationemail;
+    }
+
+    public void setsMSCommunicationemail(String sMSCommunicationemail) {
+        this.sMSCommunicationemail = sMSCommunicationemail;
+    }
+
+    public String getFatherofficeaddress() {
+        return fatherofficeaddress;
+    }
+
+    public void setFatherofficeaddress(String fatherofficeaddress) {
+        this.fatherofficeaddress = fatherofficeaddress;
+    }
+
+    public String getMotherofficeaddress() {
+        return motherofficeaddress;
+    }
+
+    public void setMotherofficeaddress(String motherofficeaddress) {
+        this.motherofficeaddress = motherofficeaddress;
+    }
+
+    public String getkM() {
+        return kM;
+    }
+
+    public void setkM(String kM) {
+        this.kM = kM;
+    }
+
+    public String getSmsno() {
+        return smsno;
+    }
+
+    public void setSmsno(String smsno) {
+        this.smsno = smsno;
     }
 
     public void setTotalStudent(String totalStudent) {
@@ -722,6 +804,14 @@ public class StudentAttendanceFinalArray {
 
     public void setSMSCommunicationNo(String sMSCommunicationNo) {
         this.sMSCommunicationNo = sMSCommunicationNo;
+    }
+
+    public String getUnique_no() {
+        return unique_no;
+    }
+
+    public void setUnique_no(String unique_no) {
+        this.unique_no = unique_no;
     }
 
     public String getCity() {

@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.AccountSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
@@ -41,6 +41,14 @@ import retrofit.client.Response;
 
 public class AccountFragment extends Fragment {
 
+    public String[] mThumbIds = {
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Date%20Wise%20Fees%20Collection.png",
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Tally%20Transaction.png",
+            AppConfiguration.BASEURL_IMAGES + "Account/" + "Online%20Transaction.png",
+            //  AppConfiguration.BASEURL_IMAGES + "Account/" + "Head%20Wise%20Collection.png",
+    };
+    public String[] mThumbNames = {"Date wise Fees Collection", "Tally Transaction", "Online Transaction",/*"Head Wise Collection", "Fee Structure",
+            "Student Discount", "", "Imprest","Student Ledger", "Cheque Payment"*/};
     //Use for Store Resopnse
     List<AccountFeesCollectionModel> collectionModelList;
     AccountFeesModel feesModelList;
@@ -51,16 +59,6 @@ public class AccountFragment extends Fragment {
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
-    public String[] mThumbIds = {
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Date%20Wise%20Fees%20Collection.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Tally%20Transaction.png",
-            AppConfiguration.BASEURL_IMAGES + "Account/" + "Online%20Transaction.png",
-            //  AppConfiguration.BASEURL_IMAGES + "Account/" + "Head%20Wise%20Collection.png",
-    };
-
-    public String[] mThumbNames = {"Date wise Fees Collection", "Tally Transaction", "Online Transaction",/*"Head Wise Collection", "Fee Structure",
-            "Student Discount", "", "Imprest","Student Ledger", "Cheque Payment"*/};
-
     private ArrayList<IconHeaderModel> newArr;
 
     public AccountFragment() {
@@ -100,9 +98,8 @@ public class AccountFragment extends Fragment {
         AppConfiguration.position = 4;
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Main/Account.png")
-                .fitCenter()
                 .into(fragmentAccountBinding.circleImageView);
-        fragmentAccountBinding.accountSubmenuGridView.setAdapter(new AccountSubMenuAdapter(mContext, newArr));
+        fragmentAccountBinding.accountSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
         AppConfiguration.TermDetailName = "Term 1";
     }
 

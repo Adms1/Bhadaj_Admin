@@ -63,15 +63,14 @@ public class MenuoptionItemAdapter extends BaseAdapter {
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.menu_drawer_item, null);
         }
-        ImageView img = (ImageView) convertView.findViewById(R.id.image_menu);
+        ImageView img = convertView.findViewById(R.id.image_menu);
 //        img.setImageResource(mThumbIds[position]);
         String url = mThumbIds[position];
 //        Log.d("url", url);
         Glide.with(context)
                 .load(url)
-                .fitCenter()
                 .into(img);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
+        TextView txtTitle = convertView.findViewById(R.id.title);
         txtTitle.setText(mThumbNames[position]);
         return convertView;
     }

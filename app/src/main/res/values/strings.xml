@@ -34,7 +34,7 @@
     <string name="dailyreport">DAILY REPORT</string>
     <string name="standardwiseattendace">Standard Wise Attendace</string>
     <string name="consistent_absent">Consistence Absent Teacher</string>
-    <string name="consistent_absent_student">Consistence Absent</string>
+    <string name="consistent_absent_student">Consistence Absent Student</string>
     <string name="alert_msg">Alert Msg</string>
     <string name="ok">OK</string>
     <string name="attendancesummary">ATTENDANCE SUMMARY</string>
@@ -201,7 +201,7 @@
     <string name="communication">Communication Detail</string>
     <string name="viewsummary"><u>View Summar</u>y<u> Details >></u></string>
     <string name="select_term_label">Select Term</string>
-
+    <string name="unique_no">Student UniqueId No.</string>
     <string name="class_wise"><u>View Class Wise</u></string>
 
 
@@ -297,7 +297,7 @@
 
     <string name="announcment1">Announcment</string>
 
-    <string name="viewinquiry">VIEW ENQUIRY</string>
+    <string name="viewinquiry">VIEW INQUIRY</string>
     <string name="addinquiry">ADD ENQUIRY</string>
 
     <string name="SMS_report">SMS REPORT</string>
@@ -412,6 +412,7 @@
     <string name="approve_confirm_msg">Are you sure want to approve leave?</string>
     <string name="reject_confirm_msg">Are you sure want to reject leave?</string>
     <string name="msg_confirm_msg">Are you sure want to send sms on mobile no?</string>
+    <string name="confirmed">Confirmed</string>
 
     <string-array name="SearchStudent">
         <item>Current Student</item>
@@ -448,7 +449,7 @@
 
     <string name="application_date">Application Date</string>
 
-    <string name="view_inquiry_detail"><b><u>View Profile >></u></b></string>
+    <string name="view_inquiry_detail"><u>View Profile >></u></string>
     <string name="student_profile">STUDENT PROFILE</string>
     <string name="state">State</string>
     <string name="status1">Status</string>
@@ -509,5 +510,8 @@
 
     <string name="personal">Personal</string>
     <string name="transport1">Transport</string>
+    <string name="todo">TODO</string>
+    <string name="location">Location</string>
+    <string name="search">Search</string>
 
 </resources>

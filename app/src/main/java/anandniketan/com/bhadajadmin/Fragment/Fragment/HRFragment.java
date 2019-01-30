@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.HrSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
@@ -25,14 +25,11 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.databinding.FragmentHrBinding;
 
+// Antra 29/01/2019
+// change main menu adapter & set layouts
 
 public class HRFragment extends Fragment {
 
-    private FragmentHrBinding fragmentHrBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "HR/" + "Search%20Staff.png",
             AppConfiguration.BASEURL_IMAGES + "HR/" + "Staff%20Leave.png",
@@ -40,8 +37,13 @@ public class HRFragment extends Fragment {
             AppConfiguration.BASEURL_IMAGES + "HR/" + "Attendance%20Report.png",
             AppConfiguration.BASEURL_IMAGES + "HR/" + "Daily%20Report.png",
     };
-    private Map<String, PermissionDataModel.Detaill> permissionMap;
     public String[] mThumbNames = {"Search Staff", "Staff Leave", "Menu Permission", "Attendance Report", "Daily Report"};
+    private FragmentHrBinding fragmentHrBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
     public HRFragment() {
@@ -78,9 +80,8 @@ public class HRFragment extends Fragment {
         AppConfiguration.position = 1;
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "HR.png")
-                .fitCenter()
                 .into(fragmentHrBinding.circleImageView);
-        fragmentHrBinding.hrSubmenuGridView.setAdapter(new HrSubMenuAdapter(mContext, newArr));
+        fragmentHrBinding.hrSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
 
     }
 
@@ -116,8 +117,8 @@ public class HRFragment extends Fragment {
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
-                             AppConfiguration.firsttimeback = true;
-                 AppConfiguration.position = 51;
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 51;
                 } else if (position == 1 && permissionMap.get("Staff Leave").getStatus().equalsIgnoreCase("true")) {
                     fragment = new StaffLeaveFragment();
 //                    Bundle bundle = new Bundle();

@@ -65,7 +65,6 @@ public class StaffSubMenuAdapter extends BaseAdapter {
 //
         Glide.with(mContext)
                 .load(url)
-                .fitCenter()
                 .into(imgGridOptions);
 
 //        imgGridOptions.setImageResource(mThumbIds[position]);

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.StudentPermissionSubmenuAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
@@ -26,14 +26,11 @@ import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentStudentPermissionBinding;
 
+// Antra 29/01/2019
+// Change main menu adapter
 
 public class StudentPermissionFragment extends Fragment {
 
-    private FragmentStudentPermissionBinding fragmentStudentPermissionBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "Permission/" + "Report%20Card.png",
             AppConfiguration.BASEURL_IMAGES + "Permission/" + "Online%20Payment.png",
@@ -41,6 +38,11 @@ public class StudentPermissionFragment extends Fragment {
             AppConfiguration.BASEURL_IMAGES + "Permission/" + "Suggestion.png",
     };
     public String[] mThumbNames = {"Report Card", "Online Payment", "Marks/Syllabus", "Suggestion"};
+    private FragmentStudentPermissionBinding fragmentStudentPermissionBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
     private ArrayList<IconHeaderModel> newArr;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
 
@@ -80,11 +82,9 @@ public class StudentPermissionFragment extends Fragment {
 
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Student/" + "Permission.png")
-                .fitCenter()
                 .into(fragmentStudentPermissionBinding.circleImageView);
 
-        fragmentStudentPermissionBinding.studentPermissionSubmenuGridView.setAdapter(new StudentPermissionSubmenuAdapter(mContext, newArr));
-
+        fragmentStudentPermissionBinding.studentPermissionSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
     }
 
     public void setListners() {

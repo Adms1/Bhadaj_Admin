@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.StaffSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
@@ -38,17 +38,10 @@ import retrofit.client.Response;
 //antra
 //1. set image on top
 //2. set permission
+//3. Change main menu adapter
 
 public class StaffFragment extends Fragment {
 
-    int Year, Month, Day;
-    Calendar calendar;
-    private FragmentStaffBinding fragmentStaffBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
-    private String Datestr;
     public String[] mThumbIds = {
             AppConfiguration.BASEURL_IMAGES + "Staff/" + "Class%20Teacher.png",
             AppConfiguration.BASEURL_IMAGES + "Staff/" + "Assign%20Subject.png",
@@ -60,6 +53,14 @@ public class StaffFragment extends Fragment {
     };
     public String[] mThumbNames = {"Class Teacher", "Assign Subject", "Time Table",
             "Exam", "Home Work Not Done", "My Leave", "View Marks"};
+    int Year, Month, Day;
+    Calendar calendar;
+    private FragmentStaffBinding fragmentStaffBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private String Datestr;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
@@ -96,10 +97,9 @@ public class StaffFragment extends Fragment {
             }
         }
 
-        fragmentStaffBinding.staffSubmenuGridView.setAdapter(new StaffSubMenuAdapter(mContext, newArr));
+        fragmentStaffBinding.staffSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "Staff.png")
-                .fitCenter()
                 .into(fragmentStaffBinding.circleImageView);
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);

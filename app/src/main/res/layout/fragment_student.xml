@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@color/white">
+            android:background="@color/white1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
             <LinearLayout
                 android:id="@+id/center"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_123sdp"
+                android:layout_height="@dimen/_115sdp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:background="@drawable/curv_logo1_white"
                 android:orientation="horizontal">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_45sdp"
                     android:orientation="vertical">
 
                     <Button
                         android:id="@+id/btnBackAttendance"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_46sdp"
+                        android:layout_marginStart="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
                         android:background="@drawable/back_btn"
                         android:textColor="@color/app_bg"
                         android:textSize="@dimen/_12sdp"
@@ -41,8 +44,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginLeft="@dimen/_50sdp"
-                        android:layout_marginTop="@dimen/_46sdp"
                         android:text="@string/student"
                         android:textColor="@color/app_bg"
                         android:textSize="@dimen/_12sdp"
@@ -52,13 +53,12 @@
                         android:id="@+id/btnmenu"
                         android:layout_width="@dimen/_22sdp"
                         android:layout_height="@dimen/_22sdp"
-                        android:layout_marginBottom="@dimen/_3sdp"
-                        android:layout_marginLeft="@dimen/_260sdp"
-                        android:layout_marginRight="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_46sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:background="@drawable/menu" />
 
                 </RelativeLayout>
+
             </LinearLayout>
 
             <RelativeLayout
@@ -67,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_below="@+id/center"
-                android:layout_marginTop="@dimen/_65sdp">
+                android:layout_marginTop="@dimen/_70sdp">
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout3"
@@ -86,15 +86,18 @@
                         android:id="@+id/liner1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_78sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_78sdp"
                         android:layout_marginTop="@dimen/_15sdp"
+                        android:weightSum="1"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/total_student_count"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_27sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/orange"
                             android:gravity="center_vertical|center"
                             android:text="0"
@@ -104,20 +107,23 @@
 
                         <TextView
                             android:id="@+id/total_student_txt"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_27sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/gray"
-                            android:gravity="center_vertical|center"
-                            android:text="Total"
+                            android:text="@string/total"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
 
                         <TextView
                             android:id="@+id/total_presentstudent_count"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_27sdp"
-                            android:layout_marginLeft="@dimen/_9sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_9sdp"
+                            android:layout_weight="0.2"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/present"
                             android:gravity="center_vertical|center"
                             android:text="0"
@@ -127,11 +133,12 @@
 
                         <TextView
                             android:id="@+id/total_presentstudent_txt"
-                            android:layout_width="@dimen/_55sdp"
-                            android:layout_height="@dimen/_27sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/gray"
-                            android:gravity="center_vertical|center"
-                            android:text="Present"
+                            android:text="@string/present"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
@@ -143,15 +150,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/liner1"
-                        android:layout_marginLeft="@dimen/_78sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_78sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/total_absentstudent_count"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_27sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.2"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/absent"
                             android:gravity="center_vertical|center"
                             android:text="0"
@@ -161,20 +170,23 @@
 
                         <TextView
                             android:id="@+id/total_absentstudent_txt"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_27sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/gray"
-                            android:gravity="center_vertical|center"
-                            android:text="Absent"
+                            android:text="@string/absent"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
 
                         <TextView
                             android:id="@+id/total_leavestudent_count"
-                            android:layout_width="@dimen/_30sdp"
-                            android:layout_height="@dimen/_27sdp"
-                            android:layout_marginLeft="@dimen/_9sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_9sdp"
+                            android:layout_weight="0.2"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/leave"
                             android:gravity="center_vertical|center"
                             android:text="0"
@@ -184,11 +196,12 @@
 
                         <TextView
                             android:id="@+id/total_leavestudent_txt"
-                            android:layout_width="@dimen/_55sdp"
-                            android:layout_height="@dimen/_27sdp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:padding="@dimen/_7sdp"
                             android:background="@color/gray"
-                            android:gravity="center_vertical|center"
-                            android:text="Leave"
+                            android:text="@string/leave"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_9sdp"
                             android:textStyle="normal" />
@@ -209,10 +222,11 @@
                             android:id="@+id/viewSummay_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginStart="@dimen/_15sdp"
                             android:text="@string/viewsummary"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -249,8 +263,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="@dimen/_3sdp"
-                android:layout_marginTop="@dimen/_65sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_70sdp"
                 android:background="@drawable/ciclre_shape">
 
                 <ImageView
@@ -258,10 +272,13 @@
                     android:layout_width="@dimen/_55sdp"
                     android:layout_height="@dimen/_55sdp"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/todo" />
 
             </RelativeLayout>
 
         </RelativeLayout>
+
     </android.support.constraint.ConstraintLayout>
+
 </layout>

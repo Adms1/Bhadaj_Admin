@@ -96,7 +96,6 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
     public void initViews() {
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_ICONS+"Done.png")
-                .fitCenter()
                 .into(fragmentCreateBinding.insertMessageImg);
         setUserVisibleHint(true);
     }
@@ -298,11 +297,11 @@ public class CreateFragment extends Fragment implements DatePickerDialog.OnDateS
         window.setAttributes(wlp);
         alertDialogAndroid.show();
 
-        insert_message_date_txt = (TextView) layout.findViewById(R.id.insert_message_date_txt);
-        insert_message_subject_txt = (EditText) layout.findViewById(R.id.insert_message_subject_txt);
-        insert_message_Message_txt = (EditText) layout.findViewById(R.id.insert_message_Message_txt);
-        send_btn = (Button) layout.findViewById(R.id.send_message_btn);
-        close_btn = (Button) layout.findViewById(R.id.close_btn);
+        insert_message_date_txt = layout.findViewById(R.id.insert_message_date_txt);
+        insert_message_subject_txt = layout.findViewById(R.id.insert_message_subject_txt);
+        insert_message_Message_txt = layout.findViewById(R.id.insert_message_Message_txt);
+        send_btn = layout.findViewById(R.id.send_message_btn);
+        close_btn = layout.findViewById(R.id.close_btn);
 
         final Calendar c = Calendar.getInstance();
         c.setTimeInMillis(System.currentTimeMillis() - 1000);

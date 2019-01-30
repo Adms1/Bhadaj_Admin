@@ -110,7 +110,7 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
         convertView = groupStudentRouteTransportDetailBinding.getRoot();
 
         String sr = String.valueOf(groupPosition + 1);
-        groupStudentRouteTransportDetailBinding.indexTxt.setText(sr);
+//        groupStudentRouteTransportDetailBinding.indexTxt.setText(sr);
         groupStudentRouteTransportDetailBinding.studentnameTxt.setText(spiltValue[0]);
         groupStudentRouteTransportDetailBinding.grnnoTxt.setText(spiltValue[1]);
         groupStudentRouteTransportDetailBinding.gradeTxt.setText(spiltValue[2]);

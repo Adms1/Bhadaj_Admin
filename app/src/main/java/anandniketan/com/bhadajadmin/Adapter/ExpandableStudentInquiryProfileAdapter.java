@@ -15,18 +15,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
 import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryProfileModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -34,8 +29,6 @@ import anandniketan.com.bhadajadmin.databinding.LayoutInquiryProfileFatherListIt
 import anandniketan.com.bhadajadmin.databinding.LayoutInquiryProfileMotherListItemBinding;
 import anandniketan.com.bhadajadmin.databinding.OfficeListItemDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemCommunicationDetailBinding;
-import anandniketan.com.bhadajadmin.databinding.StudentListItemFatherDetailBinding;
-import anandniketan.com.bhadajadmin.databinding.StudentListItemMotherDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemInquiryProfileBinding;
 
 
@@ -77,7 +70,7 @@ public class ExpandableStudentInquiryProfileAdapter extends BaseExpandableListAd
                     convertView = binding.getRoot();
 
                     if(!TextUtils.isEmpty(childData.get(childPosition).getStudentImage())){
-                        Glide.with(_context).load(AppConfiguration.LIVE_BASE_URL+childData.get(childPosition).getStudentImage()).asBitmap().into(binding.studentProfileImage);
+                        Glide.with(_context).load(AppConfiguration.LIVE_BASE_URL + childData.get(childPosition).getStudentImage()).into(binding.studentProfileImage);
                     }
 
                     binding.tagTxt.setVisibility(View.GONE);
@@ -201,7 +194,7 @@ public class ExpandableStudentInquiryProfileAdapter extends BaseExpandableListAd
 
 
                     if(!TextUtils.isEmpty(childData.get(childPosition).getFatherImage())) {
-                        Glide.with(_context).load(AppConfiguration.LIVE_BASE_URL+childData.get(childPosition).getFatherImage()).asBitmap().placeholder(R.drawable.person_placeholder).into(fatherDetailBinding.fatherProfileImage);
+                        Glide.with(_context).load(AppConfiguration.LIVE_BASE_URL + childData.get(childPosition).getFatherImage()).apply(new RequestOptions().placeholder(R.drawable.person_placeholder).error(R.drawable.person_placeholder)).into(fatherDetailBinding.fatherProfileImage);
                     }else{
                         Glide.with(_context).load((R.drawable.person_placeholder)).into(fatherDetailBinding.fatherProfileImage);
                     }
@@ -236,7 +229,7 @@ public class ExpandableStudentInquiryProfileAdapter extends BaseExpandableListAd
 
 
                     if(!TextUtils.isEmpty(childData.get(childPosition).getMotherImage())) {
-                        Glide.with(_context).load(AppConfiguration.LIVE_BASE_URL+childData.get(childPosition).getMotherImage()).asBitmap().placeholder(R.drawable.person_placeholder).into(motherDetailBinding.motherProfileImage);
+                        Glide.with(_context).load(AppConfiguration.LIVE_BASE_URL + childData.get(childPosition).getMotherImage()).apply(new RequestOptions().placeholder(R.drawable.person_placeholder).error(R.drawable.person_placeholder)).into(motherDetailBinding.motherProfileImage);
                     }else{
                         Glide.with(_context).load((R.drawable.person_placeholder)).into(motherDetailBinding.motherProfileImage);
 
@@ -350,10 +343,10 @@ public class ExpandableStudentInquiryProfileAdapter extends BaseExpandableListAd
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = infalInflater.inflate(R.layout.list_group_student_full_detail, null);
             }
-            TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+            TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
             lblListHeader.setTypeface(null, Typeface.BOLD);
             lblListHeader.setText(headerTitle);
-            LinearLayout linear_group = (LinearLayout) convertView.findViewById(R.id.linear_group);
+            LinearLayout linear_group = convertView.findViewById(R.id.linear_group);
             if (headerTitle.equalsIgnoreCase("Student Details")) {
                 linear_group.setBackgroundColor(Color.parseColor("#3597D3"));
             } else if (headerTitle.equalsIgnoreCase("Transport Details")) {

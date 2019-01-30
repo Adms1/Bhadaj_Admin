@@ -64,7 +64,6 @@ public class MyLeaveFragment extends Fragment {
         AppConfiguration.position = 21;
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "Permission.png")
-                .fitCenter()
                 .into(fragmentMyLeaveBinding.circleImageView);
         fragmentMyLeaveBinding.staffMyLeaveSubmenuGridView.setAdapter(new MyLeaveSubMenuAdapter(mContext));
 

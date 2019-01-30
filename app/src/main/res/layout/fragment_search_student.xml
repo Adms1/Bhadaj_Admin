@@ -2,66 +2,21 @@
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
-
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="0dp"
-            android:background="@color/app_bg"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            android:background="@color/app_bg">
 
-            <LinearLayout
+            <include
                 android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_57sdp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:background="@drawable/header_blue"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/btnBack"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_38sdp"
-                    android:background="@drawable/back_btn" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_23sdp"
-                android:layout_alignTop="@+id/header"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_38sdp"
-                android:text="@string/search_student"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_12sdp"
-                android:textAllCaps="true"
-                android:textStyle="normal" />
-
-            <Button
-                android:id="@+id/btnmenu"
-                android:layout_width="@dimen/_17sdp"
-                android:layout_height="@dimen/_17sdp"
-                android:layout_marginLeft="@dimen/_270sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_39sdp"
-                android:background="@drawable/menu" />
-
+                layout="@layout/main_header"
+                android:layout_height="@dimen/_65sdp" />
 
             <LinearLayout
                 android:id="@+id/mainstudent_linear"
@@ -79,6 +34,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -87,20 +44,17 @@
                             android:id="@+id/term_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/term"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -109,27 +63,23 @@
                         <Spinner
                             android:id="@+id/term_spinner"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="center"
                             android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
-                            android:gravity="center|center_vertical"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
+                            android:gravity="center"
+                            android:overlapAnchor="false" />
 
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
@@ -137,20 +87,17 @@
                             android:id="@+id/grade_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/grade"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -159,49 +106,41 @@
                         <Spinner
                             android:id="@+id/grade_spinner"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
                             android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:gravity="center|center_vertical"
-                            android:overlapAnchor="false"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
+                            android:gravity="center"
+                            android:overlapAnchor="false" />
 
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
-
 
                         <TextView
                             android:id="@+id/parents_txt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/searchtype"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -210,19 +149,13 @@
                         <AutoCompleteTextView
                             android:id="@+id/parentsname_txt"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
                             android:layout_weight="1.8"
-                            android:hint="@string/searchparents"
-                            android:background="@drawable/box_border"
+                            android:background="@drawable/linear_border"
                             android:enabled="true"
-                            android:gravity="left|center_vertical"
-                            android:paddingBottom="1dp"
-                            android:paddingLeft="@dimen/_5sdp"
-                            android:paddingTop="@dimen/_5sdp"
+                            android:hint="@string/searchparents"
+                            android:padding="@dimen/_7sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
@@ -231,7 +164,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
@@ -239,20 +174,17 @@
                             android:id="@+id/test_txt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/searchstudent"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -261,19 +193,15 @@
                         <AutoCompleteTextView
                             android:id="@+id/studentname_txt"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
                             android:layout_weight="1.8"
-                            android:background="@drawable/box_border"
+                            android:background="@drawable/linear_border"
                             android:enabled="true"
                             android:hint="@string/searchstudent"
-                            android:gravity="left|center_vertical"
-                            android:paddingBottom="1dp"
-                            android:paddingLeft="@dimen/_5sdp"
-                            android:paddingTop="@dimen/_5sdp"
+                            android:padding="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_5sdp"
+                            android:paddingStart="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
@@ -283,28 +211,27 @@
                         android:id="@+id/linear_gr"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
                         android:orientation="horizontal"
-                        android:weightSum="4">
+                        android:weightSum="3">
 
                         <TextView
                             android:id="@+id/grno_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="1.4"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.82"
                             android:text="@string/grno"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.24"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -313,42 +240,36 @@
                         <EditText
                             android:id="@+id/grno_txt"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.77"
-                            android:background="@drawable/box_border"
-                            android:gravity="left|center_vertical"
-                            android:paddingBottom="1dp"
-                            android:paddingLeft="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/linear_border"
                             android:hint="@string/grno"
-                            android:paddingTop="@dimen/_5sdp"
+                            android:padding="@dimen/_7sdp"
+                            android:paddingEnd="@dimen/_5sdp"
+                            android:paddingStart="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
                         <Button
                             android:id="@+id/search_btn"
-                            android:layout_width="@dimen/_70sdp"
+                            android:layout_width="0dp"
                             android:layout_height="@dimen/_30sdp"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_7sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="0.22"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_weight="0.78"
                             android:background="@drawable/round_button"
-                            android:text="Search"
-                            android:textStyle="normal"
+                            android:text="@string/search"
                             android:textAllCaps="true"
                             android:textColor="@color/app_bg"
-                            android:textSize="@dimen/_11sdp" />
+                            android:textSize="@dimen/_11sdp"
+                            android:textStyle="normal" />
                     </LinearLayout>
+
                     <TextView
                         android:id="@+id/txtNoRecords"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/linear_gr"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:gravity="center"
                         android:text="No Records Found..."
@@ -369,6 +290,7 @@
                     android:visibility="gone">
 
                     <include layout="@layout/search_student_header" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -386,11 +308,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scrollbars="none" />
-                </LinearLayout>
-            </LinearLayout>
 
+                </LinearLayout>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
     </LinearLayout>
+
 </layout>

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.DailyReportSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
@@ -81,9 +81,8 @@ public class DailyReportFragment extends Fragment {
         AppConfiguration.position = 51;
         Glide.with(mContext)
                 .load(AppConfiguration.BASEURL_IMAGES + "HR/" + "Daily%20Report.png")
-                .fitCenter()
                 .into(fragmentDailyReportBinding.circleImageView);
-        fragmentDailyReportBinding.dailyReportSubmenuGridView.setAdapter(new DailyReportSubMenuAdapter(mContext, newArr));
+        fragmentDailyReportBinding.dailyReportSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
 
     }
 

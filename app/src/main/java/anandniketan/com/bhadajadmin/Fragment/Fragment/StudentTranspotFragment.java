@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -59,6 +62,9 @@ public class StudentTranspotFragment extends Fragment {
     ExpandableListAdapterStudentTransportDetail expandableListAdapterStudentTransportDetail;
     private String status;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public StudentTranspotFragment() {
     }
 
@@ -73,22 +79,36 @@ public class StudentTranspotFragment extends Fragment {
         Bundle bundle = this.getArguments();
         status = bundle.getString("status");
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.studenttransport);
+
         setListners();
         callTermApi();
         callRouteDetailApi();
 
-        return rootView;
     }
 
-
     public void setListners() {
-        fragmentStudentTranspotBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStudentTranspotBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StudentFragment();
@@ -385,6 +405,7 @@ public class StudentTranspotFragment extends Fragment {
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentStudentTranspotBinding.termSpinner.setAdapter(adapterTerm);
+        fragmentStudentTranspotBinding.termSpinner.setSelection(1);
 
     }
 
