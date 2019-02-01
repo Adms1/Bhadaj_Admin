@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -17,54 +17,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-            <LinearLayout
+            <include
                 android:id="@+id/header"
+                layout="@layout/main_header"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_57sdp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:background="@drawable/header_blue"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/btnBack"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_39sdp"
-                    android:background="@drawable/back_btn" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_23sdp"
-                android:layout_alignTop="@+id/header"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_38sdp"
-                android:text="@string/attendace"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="normal" />
-
-            <Button
-                android:id="@+id/btnmenu"
-                android:layout_width="@dimen/_17sdp"
-                android:layout_height="@dimen/_17sdp"
-                android:layout_marginLeft="@dimen/_270sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_39sdp"
-                android:background="@drawable/menu" />
-
-            <!--<ScrollView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_below="@+id/header"-->
-            <!--android:scrollbars="none">-->
+                android:layout_height="@dimen/_65sdp" />
 
             <LinearLayout
                 android:id="@+id/mainstudent_linear"
@@ -82,7 +39,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -91,20 +49,17 @@
                             android:id="@+id/date_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/date"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -113,19 +68,13 @@
                         <Button
                             android:id="@+id/date_button"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.8"
-                            android:background="@drawable/calendar_line"
-                            android:gravity="left"
-                            android:paddingBottom="1dp"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:text="dhdshdsd"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.5"
+                            android:background="@drawable/linear_border"
+                            android:forceHasOverlappingRendering="false"
+                            android:gravity="center"
+                            android:overlapAnchor="false"
                             android:textSize="@dimen/_11sdp" />
 
                     </LinearLayout>
@@ -133,7 +82,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
@@ -142,20 +92,17 @@
                             android:id="@+id/grade_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/grade"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -164,86 +111,70 @@
                         <Spinner
                             android:id="@+id/grade_spinner"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.8"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.5"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:gravity="center|center_vertical"
-                            android:overlapAnchor="false"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
-
+                            android:gravity="center"
+                            android:overlapAnchor="false" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
-
 
                         <TextView
                             android:id="@+id/section_txt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/section"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.13"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
+
                         <Spinner
                             android:id="@+id/section_spinner"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.8"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.5"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:gravity="center|center_vertical"
-                            android:overlapAnchor="false"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
+                            android:gravity="center"
+                            android:overlapAnchor="false" />
+
                     </LinearLayout>
 
                     <Button
                         android:id="@+id/search_btn"
                         android:layout_width="@dimen/_70sdp"
-                        android:layout_height="@dimen/_30sdp"
+                        android:layout_height="@dimen/_25sdp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/_3sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_weight="0.22"
                         android:background="@drawable/round_button"
-                        android:text="Search"
+                        android:text="@string/search"
                         android:textAllCaps="true"
                         android:textColor="@color/app_bg"
                         android:textSize="@dimen/_11sdp" />
@@ -257,27 +188,27 @@
                         android:weightSum="3">
 
                         <!--<TextView-->
-                            <!--android:id="@+id/total_view_txt"-->
-                            <!--android:layout_width="0dp"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center_horizontal|center"-->
-                            <!--android:layout_marginLeft="@dimen/_5sdp"-->
-                            <!--android:layout_weight="0.77"-->
-                            <!--android:text="@string/total"-->
-                            <!--android:textColor="@color/scheduleheadertextcolor"-->
-                            <!--android:textSize="@dimen/_11sdp"-->
-                            <!--android:textStyle="bold" />-->
+                        <!--android:id="@+id/total_view_txt"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center_horizontal|center"-->
+                        <!--android:layout_marginLeft="@dimen/_5sdp"-->
+                        <!--android:layout_weight="0.77"-->
+                        <!--android:text="@string/total"-->
+                        <!--android:textColor="@color/scheduleheadertextcolor"-->
+                        <!--android:textSize="@dimen/_11sdp"-->
+                        <!--android:textStyle="bold" />-->
 
                         <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_gravity="center_horizontal|center"-->
-                            <!--android:layout_marginLeft="@dimen/_5sdp"-->
-                            <!--android:layout_weight="0.13"-->
-                            <!--android:text=":"-->
-                            <!--android:textColor="@color/scheduleheadertextcolor"-->
-                            <!--android:textSize="@dimen/_11sdp"-->
-                            <!--android:textStyle="bold" />-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center_horizontal|center"-->
+                        <!--android:layout_marginLeft="@dimen/_5sdp"-->
+                        <!--android:layout_weight="0.13"-->
+                        <!--android:text=":"-->
+                        <!--android:textColor="@color/scheduleheadertextcolor"-->
+                        <!--android:textSize="@dimen/_11sdp"-->
+                        <!--android:textStyle="bold" />-->
 
 
                         <LinearLayout
@@ -286,29 +217,20 @@
                             android:orientation="horizontal"
                             android:weightSum="1">
 
-
                             <TextView
                                 android:id="@+id/total_txt"
                                 android:layout_width="match_parent"
-                                android:layout_height="@dimen/_30sdp"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_margin="@dimen/_2sdp"
-                                android:layout_weight="1.8"
                                 android:forceHasOverlappingRendering="false"
-                                android:gravity="left"
-                                android:paddingStart="@dimen/_5sdp"
-
+                                android:gravity="center_vertical"
+                                android:text="dvdvrvrbr"
                                 android:overlapAnchor="false"
-                                android:paddingTop="@dimen/_5sdp"
-                                android:paddingBottom="1dp"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11sdp" />
 
                         </LinearLayout>
-
-
-
-
 
                     </LinearLayout>
 
@@ -317,123 +239,124 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_3sdp"
                         android:layout_weight="0.04"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:weightSum="3"
-                        android:padding="@dimen/_5sdp">
+                        android:weightSum="3">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_marginLeft="@dimen/_2sdp"
-                            android:orientation="horizontal"
-                            android:layout_height="@dimen/_25sdp">
-
-                        <TextView
-                            android:layout_width="@dimen/_45sdp"
-                            android:layout_height="match_parent"
-                            android:text="@string/present"
-                            android:padding="@dimen/_5sdp"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_10sdp" />
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="@dimen/_5sdp"
-                                android:layout_height="match_parent"
-                                android:text=":"
-                                android:textColor="@color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/_10sdp" />
+                                android:text="@string/present"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text=" : "
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_11sdp" />
 
                             <TextView
                                 android:id="@+id/present_txt"
-                                android:layout_width="@dimen/_40sdp"
-                                android:layout_height="match_parent"
-                                android:singleLine="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:ellipsize="end"
-                                android:textStyle="bold"
-                                android:layout_gravity="center"
                                 android:gravity="center"
-                                android:padding="@dimen/_5sdp"
+                                android:singleLine="true"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_11sdp" />
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_marginLeft="@dimen/_2sdp"
-                            android:orientation="horizontal"
-                            android:layout_height="@dimen/_25sdp">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
                             <TextView
-                                android:layout_width="@dimen/_45sdp"
-                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
                                 android:text="@string/absent"
-                                android:layout_gravity="center"
-                                android:gravity="center"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_11sdp" />
+
                             <TextView
-                                android:layout_width="@dimen/_5sdp"
-                                android:layout_height="match_parent"
-                                android:text=":"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
+                                android:text=" : "
                                 android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_11sdp" />
+
                             <TextView
                                 android:id="@+id/absent_txt"
-                                android:layout_width="@dimen/_40sdp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:gravity="center"
-                                android:layout_height="match_parent"
-                                android:textStyle="bold"
-                                android:singleLine="true"
                                 android:ellipsize="end"
-                                android:layout_weight="0.1"
-                                android:padding="@dimen/_5sdp"
+                                android:gravity="center"
+                                android:singleLine="true"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_11sdp" />
 
                         </LinearLayout>
+
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_marginLeft="@dimen/_2sdp"
-                            android:orientation="horizontal"
-                            android:layout_height="@dimen/_25sdp">
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:orientation="horizontal">
+
                             <TextView
-                                android:layout_width="@dimen/_45sdp"
-                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
                                 android:text="@string/leave"
-                                android:layout_gravity="center"
-                                android:gravity="center"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_11sdp" />
+
                             <TextView
-                                android:layout_width="@dimen/_5sdp"
-                                android:layout_height="match_parent"
-                                android:text=":"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:gravity="center"
+                                android:text=" : "
                                 android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_11sdp" />
+
                             <TextView
                                 android:id="@+id/leave_txt"
-                                android:layout_width="@dimen/_40sdp"
-                                android:layout_height="match_parent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:ellipsize="end"
                                 android:gravity="center"
                                 android:singleLine="true"
-                                android:ellipsize="end"
-                                android:padding="@dimen/_5sdp"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_11sdp" />
                         </LinearLayout>
                     </LinearLayout>
-
 
 
                     <TextView
@@ -467,11 +390,11 @@
                     android:id="@+id/recycler_linear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:background="@drawable/linear_border"
                     android:orientation="vertical"
-                    android:layout_marginBottom="@dimen/_5sdp"
                     android:visibility="gone">
 
                     <android.support.v7.widget.RecyclerView
@@ -482,14 +405,14 @@
                 </LinearLayout>
             </LinearLayout>
             <!--</ScrollView>-->
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/iv_add_update_attendance"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_margin="@dimen/_15sdp"
-            android:src="@drawable/submit"/>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/iv_add_update_attendance"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/_15sdp"
+                android:src="@drawable/submit" />
 
 
         </RelativeLayout>

@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,7 +14,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -22,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.PlannerAdapter;
 import anandniketan.com.bhadajadmin.Adapter.StandardAdapter;
 import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
@@ -59,6 +63,10 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     private boolean isRecordInUpdate = false;
     private String status, updateStatus, deletestatus;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
+
     public FragmentPlanner() {
 
     }
@@ -90,13 +98,34 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().build());
 
-        setListner();
-        callStandardApi();
-
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.planner);
+
+        setListner();
+        callStandardApi();
+
+    }
+
     private void setListner() {
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DashboardActivity.onLeft();
+            }
+        });
+
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -119,7 +148,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
             }
         });
 
-        fragmentPlannerBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragment = new StudentFragment();

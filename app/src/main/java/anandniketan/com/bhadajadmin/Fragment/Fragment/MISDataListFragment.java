@@ -93,7 +93,7 @@ public class MISDataListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentMisDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_mis_data2, container, false);
 
-        AppConfiguration.position = 67;
+        AppConfiguration.position = 66;
         AppConfiguration.firsttimeback = true;
 
         rootView = fragmentMisDataBinding.getRoot();
@@ -685,7 +685,7 @@ public class MISDataListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        AppConfiguration.position = 67;
+        AppConfiguration.position = 66;
         AppConfiguration.firsttimeback = true;
     }
 

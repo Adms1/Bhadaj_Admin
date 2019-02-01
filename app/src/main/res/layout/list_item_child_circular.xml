@@ -8,8 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/body"
         android:orientation="vertical"
-        android:background="@color/body">
+        android:padding="@dimen/_5sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,15 +22,14 @@
                 android:id="@+id/txt_grade_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="@string/grade"
                 android:textAlignment="textStart"
-                android:layout_gravity="left"
                 android:textColor="@color/txt_blue"
                 android:textSize="@dimen/_11sdp"
-                android:textStyle="bold"
                 tools:ignore="RtlCompat" />
 
             <TextView
@@ -54,28 +54,29 @@
                 android:textSize="@dimen/_11sdp"
                 android:textStyle="normal"
                 tools:ignore="RtlCompat" />
+
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/announcement_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
                 android:id="@+id/txt_annoucement_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="@string/description"
                 android:textAlignment="textStart"
-                android:layout_gravity="left"
                 android:textColor="@color/txt_blue"
                 android:textSize="@dimen/_11sdp"
-                android:textStyle="bold"
                 tools:ignore="RtlCompat" />
 
             <TextView
@@ -93,10 +94,10 @@
                 android:id="@+id/txt_annoucement"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_weight="1.8"
                 android:gravity="center"
                 android:textAlignment="textStart"
-                android:layout_gravity="left"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp"
                 android:textStyle="normal"
@@ -106,23 +107,22 @@
             android:id="@+id/pdf_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/_5sdp"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
                 android:id="@+id/txt_pdf_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:text="@string/pdfheader"
                 android:textAlignment="textStart"
-                android:layout_gravity="left"
                 android:textColor="@color/txt_blue"
                 android:textSize="@dimen/_11sdp"
-                android:textStyle="bold"
                 tools:ignore="RtlCompat" />
 
             <TextView
@@ -135,16 +135,15 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp"
                 android:textStyle="normal" />
-
             <TextView
                 android:id="@+id/txt_pdf_link"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:layout_weight="1.8"
                 android:gravity="center"
                 android:text="@string/pdf_link_txt"
                 android:textAlignment="textStart"
-                android:layout_gravity="left"
                 android:textColor="@color/txt_blue"
                 android:textSize="@dimen/_11sdp"
                 tools:ignore="RtlCompat" />
@@ -158,7 +157,7 @@
             <Button
                 android:id="@+id/btn_edit"
                 android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="@dimen/_28sdp"
                 android:layout_gravity="center"
 
                 android:layout_marginBottom="@dimen/_3sdp"
@@ -169,13 +168,12 @@
                 android:text="EDIT"
                 android:textAllCaps="true"
                 android:textColor="@color/app_bg"
-                android:textSize="@dimen/_12ssp" />
-
+                android:textSize="@dimen/_11ssp" />
 
             <Button
                 android:id="@+id/btn_delete"
                 android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="@dimen/_28sdp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_3sdp"
@@ -186,9 +184,10 @@
                 android:text="DELETE"
                 android:textAllCaps="true"
                 android:textColor="@color/app_bg"
-                android:textSize="@dimen/_12ssp" />
-
+                android:textSize="@dimen/_11ssp" />
 
         </RelativeLayout>
+
     </LinearLayout>
+
 </RelativeLayout>

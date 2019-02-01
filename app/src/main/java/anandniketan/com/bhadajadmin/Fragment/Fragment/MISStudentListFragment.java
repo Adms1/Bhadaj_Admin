@@ -5,6 +5,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +28,7 @@ import anandniketan.com.bhadajadmin.Adapter.MISStudenttAdapter;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStudentModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentMisstudentListBinding;
 import retrofit.RetrofitError;
@@ -67,6 +69,9 @@ public class MISStudentListFragment extends Fragment {
                              Bundle savedInstanceState) {
         fragmentMisDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_misstudent_list, container, false);
 
+        AppConfiguration.position = 66;
+        AppConfiguration.firsttimeback = true;
+
         rootView = fragmentMisDataBinding.getRoot();
         progressBar = rootView.findViewById(R.id.loader);
         rvMisdataList1 = rootView.findViewById(R.id.rv_misdata_list1);
@@ -78,7 +83,7 @@ public class MISStudentListFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         Bundle bundle = this.getArguments();
@@ -315,9 +320,13 @@ public class MISStudentListFragment extends Fragment {
         fragmentMisDataBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragment = new MISFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+
+//                fragment = new MISFragment();
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
 //
 //                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }

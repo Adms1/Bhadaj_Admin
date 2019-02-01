@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AssignSubjectDetailListAdapter;
@@ -50,7 +54,7 @@ public class AssignSubjectFragment extends Fragment {
     HashMap<Integer, String> spinnerSubjectMap;
     List<FinalArrayStaffModel> finalArrayAssignSubjectModelList;
     List<FinalArrayStaffModel> finalArrayInsertAssignSubjectModelList;
-    String FinalTermIdStr, FinalTeacherIdStr, FinalSubjectIdStr, finalClassIdStr;
+    String FinalTermIdStr, FinalTeacherIdStr, FinalSubjectIdStr;
     String[] spinnerteacherIdArray;
     AssignSubjectDetailListAdapter assignSubjectDetailListAdapter;
     private FragmentAssignSubjectBinding fragmentAssignSubjectBinding;
@@ -58,7 +62,6 @@ public class AssignSubjectFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    private RadioGroup radioGroup;
     private ArrayList<String> getEditValuearray;
     private String[] spinnersubjectIdArray;
     private RadioButton rbActive, rbInactive;
@@ -66,35 +69,54 @@ public class AssignSubjectFragment extends Fragment {
 
     private String editClassteacherStr, editGradeStr;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public AssignSubjectFragment() {
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentAssignSubjectBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_assign_subject, container, false);
 
         rootView = fragmentAssignSubjectBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
 
         rbActive = rootView.findViewById(R.id.radio_active);
         rbInactive = rootView.findViewById(R.id.radio_inactive);
 
         Bundle bundle = this.getArguments();
-        viewstatus = bundle.getString("viewstatus");
-        updatestatus = bundle.getString("updatestatus");
-        deletestatus = bundle.getString("deletestatus");
+        if (bundle != null) {
+            viewstatus = bundle.getString("viewstatus");
+            updatestatus = bundle.getString("updatestatus");
+            deletestatus = bundle.getString("deletestatus");
+
+        }
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.assignsubject);
 
         setListners();
         callTermApi();
         callSubjectApi();
 
-        return rootView;
     }
 
     public void setListners() {
 
-        fragmentAssignSubjectBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
@@ -111,14 +133,16 @@ public class AssignSubjectFragment extends Fragment {
             }
         });
 
-        fragmentAssignSubjectBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StaffFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                }
             }
         });
 
@@ -129,12 +153,12 @@ public class AssignSubjectFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentAssignSubjectBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
 
                 if (viewstatus.equalsIgnoreCase("true")) {
                     callAssignSubjectApi();
-                    callTeacherApi(getid.toString());
+                    callTeacherApi(getid);
                 } else {
                     Utils.ping(getActivity(), "Access Denied");
                 }
@@ -153,7 +177,7 @@ public class AssignSubjectFragment extends Fragment {
                 String getid = spinnerTeacherMap.get(fragmentAssignSubjectBinding.teacherSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTeacherIdStr = getid.toString();
+                FinalTeacherIdStr = getid;
                 Log.d("FinalTeacherIdStr", FinalTeacherIdStr);
             }
 
@@ -169,7 +193,7 @@ public class AssignSubjectFragment extends Fragment {
                 String getid = spinnerSubjectMap.get(fragmentAssignSubjectBinding.subjectSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalSubjectIdStr = getid.toString();
+                FinalSubjectIdStr = getid;
                 Log.d("FinalSubjectIdStr", FinalSubjectIdStr);
             }
 
@@ -236,8 +260,7 @@ public class AssignSubjectFragment extends Fragment {
     }
 
     private Map<String, String> getTermDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     // CALL Teacher API HERE
@@ -336,8 +359,7 @@ public class AssignSubjectFragment extends Fragment {
     }
 
     private Map<String, String> getSubjectDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     // CALL AssignSubject API HERE
@@ -474,12 +496,12 @@ public class AssignSubjectFragment extends Fragment {
 
     //Use for fill the Term Spinner
     public void fillTermSpinner() {
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
 
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
@@ -503,7 +525,7 @@ public class AssignSubjectFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentAssignSubjectBinding.termSpinner.setAdapter(adapterTerm);
         fragmentAssignSubjectBinding.termSpinner.setSelection(1);
         FinalTermIdStr = spinnerTermMap.get(0);
@@ -514,7 +536,7 @@ public class AssignSubjectFragment extends Fragment {
     public void fillTeacherSpinner() {
         ArrayList<Integer> firstValueId = new ArrayList<>();
         firstValueId.add(0);
-        ArrayList<Integer> TeacherId = new ArrayList<Integer>();
+        ArrayList<Integer> TeacherId = new ArrayList<>();
         for (int m = 0; m < firstValueId.size(); m++) {
             TeacherId.add(firstValueId.get(m));
             for (int i = 0; i < finalArrayTeachersModelList.size(); i++) {
@@ -525,7 +547,7 @@ public class AssignSubjectFragment extends Fragment {
         ArrayList<String> firstValue = new ArrayList<>();
         firstValue.add("--Select--");
 
-        ArrayList<String> Teacher = new ArrayList<String>();
+        ArrayList<String> Teacher = new ArrayList<>();
         for (int z = 0; z < firstValue.size(); z++) {
             Teacher.add(firstValue.get(z));
             for (int j = 0; j < finalArrayTeachersModelList.size(); j++) {
@@ -534,7 +556,7 @@ public class AssignSubjectFragment extends Fragment {
         }
         spinnerteacherIdArray = new String[TeacherId.size()];
 
-        spinnerTeacherMap = new HashMap<Integer, String>();
+        spinnerTeacherMap = new HashMap<>();
         for (int i = 0; i < TeacherId.size(); i++) {
             spinnerTeacherMap.put(i, String.valueOf(TeacherId.get(i)));
             spinnerteacherIdArray[i] = Teacher.get(i).trim();
@@ -551,25 +573,25 @@ public class AssignSubjectFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerteacherIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerteacherIdArray);
         fragmentAssignSubjectBinding.teacherSpinner.setAdapter(adapterTerm);
-
+        fragmentAssignSubjectBinding.teacherSpinner.setSelection(1);
     }
 
     //Use for fill the Subject Spinner
     public void fillSubjectSpinner() {
-        ArrayList<Integer> SubjectId = new ArrayList<Integer>();
+        ArrayList<Integer> SubjectId = new ArrayList<>();
         for (int i = 0; i < finalArraySubjectModelList.size(); i++) {
             SubjectId.add(finalArraySubjectModelList.get(i).getPkSubjectID());
         }
-        ArrayList<String> Subject = new ArrayList<String>();
+        ArrayList<String> Subject = new ArrayList<>();
         for (int j = 0; j < finalArraySubjectModelList.size(); j++) {
             Subject.add(finalArraySubjectModelList.get(j).getSubject());
         }
 
         spinnersubjectIdArray = new String[SubjectId.size()];
 
-        spinnerSubjectMap = new HashMap<Integer, String>();
+        spinnerSubjectMap = new HashMap<>();
         for (int i = 0; i < SubjectId.size(); i++) {
             spinnerSubjectMap.put(i, String.valueOf(SubjectId.get(i)));
             spinnersubjectIdArray[i] = Subject.get(i).trim();
@@ -586,7 +608,7 @@ public class AssignSubjectFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnersubjectIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnersubjectIdArray);
         fragmentAssignSubjectBinding.subjectSpinner.setAdapter(adapterTerm);
 
     }

@@ -2,6 +2,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -74,7 +75,7 @@ public class MarkSyllabusPermission extends Fragment {
     private String markCheckText = "", syllabusCheckText = "";
     private Spinner sp_term, sp_grade;
     private AppCompatCheckBox markCheckBox, mSyllabusCheckBox;
-    private Button mBtnBack, mBtnMenu, mBtnAddUpdate;
+    private Button mBtnAddUpdate;
     private LinearLayout mLayoutHeader;
     private TextView txNoRecords;
     private RecyclerView rvListData, rvMainListData;
@@ -84,6 +85,9 @@ public class MarkSyllabusPermission extends Fragment {
     private String PID = "", testName = "";
     private boolean isRefreshRequired = true;
     private String status, updatestatus, deletestatus;
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public MarkSyllabusPermission() {
 
@@ -103,8 +107,6 @@ public class MarkSyllabusPermission extends Fragment {
 
         sp_grade = rootView.findViewById(R.id.sp_grade);
         sp_term = rootView.findViewById(R.id.term_spinner);
-        mBtnBack = rootView.findViewById(R.id.btnBack);
-        mBtnMenu = rootView.findViewById(R.id.btnmenu);
         mBtnAddUpdate = rootView.findViewById(R.id.add_btn);
         markCheckBox = rootView.findViewById(R.id.cb_marks);
         mSyllabusCheckBox = rootView.findViewById(R.id.cb_syllabus);
@@ -116,11 +118,25 @@ public class MarkSyllabusPermission extends Fragment {
         rbInActive = rootView.findViewById(R.id.pendding_chk);
         fLEmptyView = rootView.findViewById(R.id.tv_empty_exam_view);
         rvMainListData = rootView.findViewById(R.id.rv_marks_syallabus_list);
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.marks_syllabus_label);
+
         setListners();
         callTermApi();
         callGradeApi();
 
-        return rootView;
     }
 
     public void setListners() {
@@ -128,13 +144,13 @@ public class MarkSyllabusPermission extends Fragment {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 13;
 
-        mBtnMenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppConfiguration.firsttimeback = true;

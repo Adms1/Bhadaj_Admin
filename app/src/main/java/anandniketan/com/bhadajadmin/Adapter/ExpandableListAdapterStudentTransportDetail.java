@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +28,6 @@ public class ExpandableListAdapterStudentTransportDetail extends BaseExpandableL
     private Context _context;
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<StudentAttendanceFinalArray>> _listDataChild;
-    ImageLoader imageLoader;
     private String status;
 
     public ExpandableListAdapterStudentTransportDetail(Context context, List<String> listDataHeader,

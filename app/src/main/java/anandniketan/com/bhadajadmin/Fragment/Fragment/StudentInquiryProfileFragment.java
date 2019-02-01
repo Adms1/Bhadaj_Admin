@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,16 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterStudentFullDetail;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableStudentInquiryProfileAdapter;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryProfileModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
-import anandniketan.com.bhadajadmin.databinding.FragmentAllDepartmentDetailsBinding;
 import anandniketan.com.bhadajadmin.databinding.FragmentStudentInquiryProfileBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -45,6 +44,9 @@ public class StudentInquiryProfileFragment extends Fragment{
     ExpandableStudentInquiryProfileAdapter listAdapterStudentFullDetail;
     private int lastExpandedPosition = -1;
 
+    private Button btnMenu, btnBack;
+    private TextView tvHeader;
+
     public StudentInquiryProfileFragment() {
     }
 
@@ -59,19 +61,33 @@ public class StudentInquiryProfileFragment extends Fragment{
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 58;
 
-        setListners();
-        callStaffApi();
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.student_profile);
+
+        setListners();
+        callStaffApi();
+
+    }
+
     public void setListners() {
-        fragmentStudentInquiryProfileBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStudentInquiryProfileBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppConfiguration.firsttimeback = true;
@@ -84,6 +100,7 @@ public class StudentInquiryProfileFragment extends Fragment{
                 getActivity().onBackPressed();
             }
         });
+
         fragmentStudentInquiryProfileBinding.lvExpStudentDetail.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {

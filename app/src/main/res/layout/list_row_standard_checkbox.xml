@@ -1,18 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:layout_marginLeft="@dimen/_3sdp" >
-
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:orientation="vertical">
 
     <CheckBox
         android:id="@+id/check_standard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
         android:fontFamily="serif"
         android:text="Standard"
-        android:padding="@dimen/_2sdp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_5sdp"
         android:button="@drawable/check_uncheck"
         android:textColor="#000000"
         android:textSize="@dimen/_10sdp"

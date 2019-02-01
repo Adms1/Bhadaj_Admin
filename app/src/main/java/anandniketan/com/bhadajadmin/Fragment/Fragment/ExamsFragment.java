@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -20,6 +23,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExamListAdapter;
@@ -50,26 +54,45 @@ public class ExamsFragment extends Fragment implements DatePickerDialog.OnDateSe
     List<FinalArrayStaffModel> finalArrayExamsModel;
     private String viewstatus;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public ExamsFragment() {
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentExamsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_exams, container, false);
 
         rootView = fragmentExamsBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
 
         Bundle bundle = this.getArguments();
-        viewstatus = bundle.getString("viewstatus");
-
-        setListners();
-        callExamsApi();
+        if (bundle != null) {
+            viewstatus = bundle.getString("viewstatus");
+        }
 
         return rootView;
     }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.exams);
+
+        setListners();
+        callExamsApi();
+
+
+    }
 
     public void setListners() {
         calendar = Calendar.getInstance();
@@ -80,13 +103,13 @@ public class ExamsFragment extends Fragment implements DatePickerDialog.OnDateSe
         fragmentExamsBinding.startDateBtn.setText(Utils.getTodaysDate());
         fragmentExamsBinding.endDateBtn.setText(Utils.getTodaysDate());
 
-        fragmentExamsBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentExamsBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StaffFragment();

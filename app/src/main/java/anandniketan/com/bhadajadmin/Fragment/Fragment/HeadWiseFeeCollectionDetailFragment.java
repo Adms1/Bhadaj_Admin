@@ -102,8 +102,8 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment implements Rec
         rootView = inflater.inflate(R.layout.fragment_headwise_fee, container, false);
         mContext = getActivity();
 
-//        AppConfiguration.position = 5;
-//        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 66;
+        AppConfiguration.firsttimeback = true;
 
 //        rootView = fragmentMisDataBinding.getRoot();
         progressBar = rootView.findViewById(R.id.headwisefee_loader);
@@ -186,9 +186,13 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment implements Rec
             @Override
             public void onClick(View v) {
 //                AppConfiguration.ReverseTermDetailId = "";
-                fragment = new MISFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+
+//                fragment = new MISFragment();
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 

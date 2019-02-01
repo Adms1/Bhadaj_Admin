@@ -1,14 +1,13 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
@@ -24,14 +23,11 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ExpandableListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -41,23 +37,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableLeaveRequest;
-import anandniketan.com.bhadajadmin.Adapter.ExpandableListCircular;
 import anandniketan.com.bhadajadmin.Interface.OnAdapterItemButtonClick;
-import anandniketan.com.bhadajadmin.Interface.OnUpdateRecord;
-import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
 import anandniketan.com.bhadajadmin.Model.HR.LeaveDayModel;
 import anandniketan.com.bhadajadmin.Model.HR.LeaveRequestModel;
 import anandniketan.com.bhadajadmin.Model.HR.LeaveStatusModel;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
-import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
-import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.DialogModifyLeaveBinding;
@@ -66,8 +55,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class LeaveRequestFragment extends Fragment implements OnAdapterItemButtonClick,DatePickerDialog.OnDateSetListener {
+public class LeaveRequestFragment extends Fragment implements OnAdapterItemButtonClick, DatePickerDialog.OnDateSetListener {
 
+    private static String dateFinal = "";
     private Context mContext;
     private ExpandableLeaveRequest expandableListCircular;
     private List<LeaveRequestModel.FinalArray> finalArrayAnnouncementFinal;
@@ -78,23 +68,24 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private OnAdapterItemButtonClick onAdapterItemButtonClick;
     private HashMap<Integer, String> spinnerOrderMap;
     private HashMap<Integer, String> spinnerDaymap;
-
     private Button backBtn;
     private List<LeaveStatusModel.FinalArray> finalArrayGetLeaveStatus;
     private List<LeaveDayModel.FinalArray> finalArrayGetLeaveDays;
-    private String FinalStatusIdStr = "",FinalDay = "",FinalTypetext = "Leave Date";
+    private String FinalStatusIdStr = "", FinalDay = "", FinalTypetext = "Leave Date";
     private FragmentLeaveRequestBinding fragmentLeaveRequestBinding;
     private DatePickerDialog datePickerDialog;
     private int whichDateClicked = 1;
-    private int Year, Month, Day,hour,minute,second;
+    private int Year, Month, Day, hour, minute, second;
     private int mYear, mMonth, mDay;
     private Calendar calendar;
-    private static String dateFinal = "";
     private DialogModifyLeaveBinding dialogModifyLeaveBinding;
     private Dialog dialog;
     private int leaveStatus = 0;
     private boolean isRecordInUpdate = false;
     private String updateDateFromDialog = "";
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public LeaveRequestFragment() {
 
@@ -104,7 +95,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     public void onAttach(Context context) {
         super.onAttach(context);
         super.onAttach(context);
-        onAdapterItemButtonClick = (OnAdapterItemButtonClick) this;
+        onAdapterItemButtonClick = this;
 
     }
 
@@ -113,23 +104,42 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         super.onDetach();
 
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        mContext = getActivity();
-        fragmentLeaveRequestBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_leave_request,container,false);
 
-        setListners();
-        callLeaveStatusApi();
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mContext = getActivity();
+        fragmentLeaveRequestBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_leave_request, container, false);
+
         return fragmentLeaveRequestBinding.getRoot();
 
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.report_card);
+
+        setListners();
+        setListners();
+        callLeaveStatusApi();
+
+    }
+
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        populateSetDate(year,monthOfYear,dayOfMonth);
+        populateSetDate(year, monthOfYear, dayOfMonth);
     }
+
     @Override
-    public void onItemButtonClick(Action target,int posID) {
-        switch (target){
+    public void onItemButtonClick(Action target, int posID) {
+        switch (target) {
             case ADD:
                 break;
 
@@ -141,8 +151,8 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
             case MODIFY:
                 leaveStatus = 3;
-                List<LeaveRequestModel.FinalArray> dataItem1 = expandableListCircular.getChild(posID,posID);
-                if(dataItem1 != null && dataItem1.size() > 0){
+                List<LeaveRequestModel.FinalArray> dataItem1 = expandableListCircular.getChild(posID, posID);
+                if (dataItem1 != null && dataItem1.size() > 0) {
                     modifyLeaveDialog(dataItem1.get(0));
                 }
 
@@ -150,9 +160,9 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
             case APPROVE:
                 leaveStatus = 3;
-                if(expandableListCircular != null){
-                    List<LeaveRequestModel.FinalArray> dataItem2 = expandableListCircular.getChild(posID,posID);
-                    if(dataItem2 != null && dataItem2.size() > 0){
+                if (expandableListCircular != null) {
+                    List<LeaveRequestModel.FinalArray> dataItem2 = expandableListCircular.getChild(posID, posID);
+                    if (dataItem2 != null && dataItem2.size() > 0) {
                         callUpdateLeaveStatusApi(dataItem2.get(0));
                     }
                 }
@@ -160,9 +170,9 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
             case REJECT:
                 leaveStatus = 4;
-                if(expandableListCircular != null){
-                    List<LeaveRequestModel.FinalArray> dataItem3 = expandableListCircular.getChild(posID,posID);
-                    if(dataItem3 != null && dataItem3.size() > 0){
+                if (expandableListCircular != null) {
+                    List<LeaveRequestModel.FinalArray> dataItem3 = expandableListCircular.getChild(posID, posID);
+                    if (dataItem3 != null && dataItem3.size() > 0) {
                         callUpdateLeaveStatusApi(dataItem3.get(0));
                     }
                 }
@@ -194,32 +204,32 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 datePickerDialog.showYearPickerFirst(false);
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date");
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), "DatePickerDialog");
             }
         });
         fragmentLeaveRequestBinding.todateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 whichDateClicked = 2;
-                datePickerDialog = DatePickerDialog.newInstance(LeaveRequestFragment.this,Year,Month,Day);
+                datePickerDialog = DatePickerDialog.newInstance(LeaveRequestFragment.this, Year, Month, Day);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.showYearPickerFirst(false);
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date");
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), "DatePickerDialog");
             }
         });
 
         fragmentLeaveRequestBinding.typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                if(i == R.id.rb_leavedate) {
+                if (i == R.id.rb_leavedate) {
                     FinalTypetext = fragmentLeaveRequestBinding.rbLeavedate.getText().toString();
                     fragmentLeaveRequestBinding.rbLeavedate.setChecked(true);
                     fragmentLeaveRequestBinding.rbAppdate.setChecked(false);
 
-                } else if(i == R.id.rb_appdate) {
+                } else if (i == R.id.rb_appdate) {
                     FinalTypetext = fragmentLeaveRequestBinding.rbAppdate.getText().toString();
                     fragmentLeaveRequestBinding.rbLeavedate.setChecked(false);
                     fragmentLeaveRequestBinding.rbAppdate.setChecked(true);
@@ -227,21 +237,19 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             }
         });
 
-
-
-        fragmentLeaveRequestBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DashboardActivity.onLeft();
             }
         });
 
-        fragmentLeaveRequestBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragment = new StaffLeaveFragment();
-                fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).replace(R.id.frame_container,fragment).commit();
+                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 
@@ -252,9 +260,9 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 String getid = spinnerOrderMap.get(fragmentLeaveRequestBinding.statusSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStatusIdStr = getid.toString();
+                FinalStatusIdStr = getid;
                 callLeaveRequestListApi();
-                Log.d("FinalStatusIdStr",FinalStatusIdStr);
+                Log.d("FinalStatusIdStr", FinalStatusIdStr);
             }
 
             @Override
@@ -275,12 +283,12 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
     private void callLeaveRequestListApi() {
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getAllStaffLeaveRequest(getDetail(),new retrofit.Callback<LeaveRequestModel>() {
+        ApiHandler.getApiService().getAllStaffLeaveRequest(getDetail(), new retrofit.Callback<LeaveRequestModel>() {
             @Override
             public void success(LeaveRequestModel announcementModel, Response response) {
                 Utils.dismissDialog();
@@ -313,7 +321,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                         fragmentLeaveRequestBinding.explinear.setVisibility(View.VISIBLE);
                         fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         fillExpLV();
-                        expandableListCircular = new ExpandableLeaveRequest(getActivity(),listDataHeader,listDataChild,onAdapterItemButtonClick);
+                        expandableListCircular = new ExpandableLeaveRequest(getActivity(), listDataHeader, listDataChild, onAdapterItemButtonClick);
                         fragmentLeaveRequestBinding.leavereqList.setAdapter(expandableListCircular);
                     } else {
                         fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -333,7 +341,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 fragmentLeaveRequestBinding.explinear.setVisibility(View.GONE);
                 fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.GONE);
 
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
@@ -341,11 +349,11 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
     private Map<String, String> getDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("Type",FinalTypetext);
-        map.put("FromDate",fragmentLeaveRequestBinding.fromdateBtn.getText().toString());
-        map.put("ToDate",fragmentLeaveRequestBinding.todateBtn.getText().toString());
-        map.put("LeaveStatusID",FinalStatusIdStr);
-        map.put("UserID",PrefUtils.getInstance(getActivity()).getStringValue("StaffID",""));
+        map.put("Type", FinalTypetext);
+        map.put("FromDate", fragmentLeaveRequestBinding.fromdateBtn.getText().toString());
+        map.put("ToDate", fragmentLeaveRequestBinding.todateBtn.getText().toString());
+        map.put("LeaveStatusID", FinalStatusIdStr);
+        map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", ""));
         return map;
     }
 
@@ -353,12 +361,12 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private void callUpdateLeaveStatusApi(LeaveRequestModel.FinalArray dataItem) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().updateLeaveStatus(getUpdateDetail(dataItem),new retrofit.Callback<LeaveRequestModel>() {
+        ApiHandler.getApiService().updateLeaveStatus(getUpdateDetail(dataItem), new retrofit.Callback<LeaveRequestModel>() {
             @Override
             public void success(LeaveRequestModel announcementModel, Response response) {
                 Utils.dismissDialog();
@@ -375,7 +383,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                     return;
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
-                    Utils.ping(getActivity(),"Leave updated successfully");
+                    Utils.ping(getActivity(), "Leave updated successfully");
                     callLeaveRequestListApi();
                 }
             }
@@ -389,7 +397,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
                 fragmentLeaveRequestBinding.explinear.setVisibility(View.GONE);
                 fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.GONE);
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
@@ -412,22 +420,22 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             }
             String[] dates;
             try {
-                dates  = dataItem.getLeaveDates().split("-");
-                String fromDate  = dates[0];
+                dates = dataItem.getLeaveDates().split("-");
+                String fromDate = dates[0];
                 String toDate = dates[1];
 
-                map.put("FromDate",fromDate);
-                map.put("ToDate",toDate);
+                map.put("FromDate", fromDate);
+                map.put("ToDate", toDate);
 
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
-            map.put("ApproveDays",String.valueOf(dataItem.getApproveDays()));
+            map.put("ApproveDays", String.valueOf(dataItem.getApproveDays()));
             map.put("EmployeeID", String.valueOf(dataItem.getEmployeeID()));
             map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", ""));
             return map;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return map;
@@ -438,12 +446,12 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private void callLeaveStatusApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getLeaveStatus(getTermDetail(),new retrofit.Callback<LeaveStatusModel>() {
+        ApiHandler.getApiService().getLeaveStatus(getTermDetail(), new retrofit.Callback<LeaveStatusModel>() {
             @Override
             public void success(LeaveStatusModel termModel, Response response) {
                 Utils.dismissDialog();
@@ -456,7 +464,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -479,8 +487,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     }
 
     private Map<String, String> getTermDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
 
@@ -488,12 +495,12 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private void callLeaveDaysApi(final LeaveRequestModel.FinalArray dataItem) {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getleaveDays(getLeaveDayParams(),new retrofit.Callback<LeaveDayModel>() {
+        ApiHandler.getApiService().getleaveDays(getLeaveDayParams(), new retrofit.Callback<LeaveDayModel>() {
             @Override
             public void success(LeaveDayModel termModel, Response response) {
                 Utils.dismissDialog();
@@ -506,7 +513,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext,getString(R.string.false_msg));
+                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -522,7 +529,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
@@ -530,23 +537,19 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
     private Map<String, String> getLeaveDayParams() {
         Map<String, String> map = new HashMap<>();
-        map.put("UserID",PrefUtils.getInstance(getActivity()).getStringValue("StaffID",""));
+        map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", ""));
         return map;
     }
 
 
-
-
-
-
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<LeaveRequestModel.FinalArray>>();
+        listDataChild = new HashMap<>();
 
         for (int i = 0; i < finalArrayAnnouncementFinal.size(); i++) {
-            listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName()+"|"+finalArrayAnnouncementFinal.get(i).getApplicationDate()+"|"+finalArrayAnnouncementFinal.get(i).getLeaveDays());
+            listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + finalArrayAnnouncementFinal.get(i).getLeaveDays());
             Log.d("header", "" + listDataHeader);
-            ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<LeaveRequestModel.FinalArray>();
+            ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<>();
             row.add(finalArrayAnnouncementFinal.get(i));
             Log.d("row", "" + row);
             listDataChild.put(listDataHeader.get(i), row);
@@ -557,18 +560,18 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
 
     public void fillStatusSpinner() {
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetLeaveStatus.size(); i++) {
             TermId.add(finalArrayGetLeaveStatus.get(i).getLeaveStatusID());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetLeaveStatus.size(); j++) {
             Term.add(finalArrayGetLeaveStatus.get(j).getStatusName());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerOrderMap = new HashMap<Integer, String>();
+        spinnerOrderMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerOrderMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -585,7 +588,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout,spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentLeaveRequestBinding.statusSpinner.setAdapter(adapterTerm);
 
         FinalStatusIdStr = spinnerOrderMap.get(0);
@@ -596,18 +599,18 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
 
     public void fillDialogDaysSpinner(LeaveRequestModel.FinalArray dataItem) {
-        ArrayList<String> TermId = new ArrayList<String>();
+        ArrayList<String> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetLeaveDays.size(); i++) {
             TermId.add(String.valueOf(finalArrayGetLeaveDays.get(i).getValue()));
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetLeaveDays.size(); j++) {
             Term.add(String.valueOf(finalArrayGetLeaveDays.get(j).getDays()));
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerDaymap = new HashMap<Integer, String>();
+        spinnerDaymap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerDaymap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -624,19 +627,18 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         dialogModifyLeaveBinding.leavedaySpinner.setAdapter(adapterTerm);
 
 
         FinalDay = spinnerDaymap.get(0);
 
 
-
         for (int i = 0; i < finalArrayGetLeaveDays.size(); i++) {
             if (dataItem != null) {
                 if (dataItem.getLeaveDays().equalsIgnoreCase(finalArrayGetLeaveDays.get(i).getValue())) {
                     dialogModifyLeaveBinding.leavedaySpinner.setSelection(i);
-                    String [] dates  = dataItem.getLeaveDates().split("-");
+                    String[] dates = dataItem.getLeaveDates().split("-");
                     dialogModifyLeaveBinding.fromdateBtn.setText(dates[0]);
                     dialogModifyLeaveBinding.todateBtn.setText(dates[1]);
                     updateDateFromDialog = dataItem.getLeaveDays();
@@ -646,7 +648,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                     updateDateFromDialog = "0";
 
                 }
-            }else{
+            } else {
                 dialogModifyLeaveBinding.leavedaySpinner.setSelection(0);
                 updateDateFromDialog = "0";
 
@@ -654,24 +656,24 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         }
 
 
-
     }
 
 
-
-
-
-
     public void modifyLeaveDialog(final LeaveRequestModel.FinalArray dataItem) {
-        dialogModifyLeaveBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext),R.layout.dialog_modify_leave,(ViewGroup)fragmentLeaveRequestBinding.getRoot(), false);
+        dialogModifyLeaveBinding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.dialog_modify_leave, (ViewGroup) fragmentLeaveRequestBinding.getRoot(), false);
 //
         dialog = new Dialog(mContext);
         Window window = dialog.getWindow();
-        WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.gravity = Gravity.CENTER;
-        window.setAttributes(wlp);
+        WindowManager.LayoutParams wlp = null;
+        if (window != null) {
+            wlp = window.getAttributes();
 
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            wlp.gravity = Gravity.CENTER;
+            window.setAttributes(wlp);
+
+        }
+
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
@@ -699,7 +701,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setMinDate(calendar);
                 datePickerDialog.setTitle("Select Date");
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), "DatePickerDialog");
             }
         });
 
@@ -711,24 +713,24 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 String getid = spinnerDaymap.get(dialogModifyLeaveBinding.leavedaySpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalDay  = getid.toString();
+                FinalDay = getid;
 
                 int finalDays = (int) Math.floor(Double.parseDouble(FinalDay));
-                if(FinalDay.equalsIgnoreCase(updateDateFromDialog)){
+                if (FinalDay.equalsIgnoreCase(updateDateFromDialog)) {
 
-                }else{
+                } else {
 
-                    String approveDay  = dataItem.getApproveDays();
+                    String approveDay = dataItem.getApproveDays();
 
                     int leaveDayInt = (int) Math.floor(Double.parseDouble(approveDay));
-                    if(finalDays > leaveDayInt){
-                        Utils.ping(getActivity(),"Approve days more than apply days leave");
+                    if (finalDays > leaveDayInt) {
+                        Utils.ping(getActivity(), "Approve days more than apply days leave");
 
                         for (int i = 0; i < finalArrayGetLeaveDays.size(); i++) {
                             if (dataItem != null) {
                                 if (dataItem.getLeaveDays().equalsIgnoreCase(finalArrayGetLeaveDays.get(i).getValue())) {
                                     dialogModifyLeaveBinding.leavedaySpinner.setSelection(i);
-                                    String [] dates  = dataItem.getLeaveDates().split("-");
+                                    String[] dates = dataItem.getLeaveDates().split("-");
                                     dialogModifyLeaveBinding.fromdateBtn.setText(dates[0]);
                                     dialogModifyLeaveBinding.todateBtn.setText(dates[1]);
                                     updateDateFromDialog = dataItem.getLeaveDays();
@@ -738,7 +740,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                                     updateDateFromDialog = "0";
 
                                 }
-                            }else{
+                            } else {
                                 dialogModifyLeaveBinding.leavedaySpinner.setSelection(0);
                                 updateDateFromDialog = "0";
 
@@ -746,15 +748,15 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                         }
 
 
-                    }else{
-                        String days =  dialogModifyLeaveBinding.leavedaySpinner.getSelectedItem().toString();
-                        String appDate =  dialogModifyLeaveBinding.fromdateBtn.getText().toString();
+                    } else {
+                        String days = dialogModifyLeaveBinding.leavedaySpinner.getSelectedItem().toString();
+                        String appDate = dialogModifyLeaveBinding.fromdateBtn.getText().toString();
                         try {
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             Calendar c = Calendar.getInstance();
                             c.setTime(sdf.parse(appDate));
 
-                            int numOfDays  = (int) Math.floor(Double.parseDouble(days));
+                            int numOfDays = (int) Math.floor(Double.parseDouble(days));
                             c.add(Calendar.DATE, numOfDays);
 
                             sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -763,15 +765,15 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
                             dialogModifyLeaveBinding.todateBtn.setText(toDate);
                             dataItem.setApproveDays(days);
-                            dataItem.setLeaveDates(dialogModifyLeaveBinding.fromdateBtn.getText().toString()+"-"+dialogModifyLeaveBinding.todateBtn.getText().toString());
+                            dataItem.setLeaveDates(dialogModifyLeaveBinding.fromdateBtn.getText().toString() + "-" + dialogModifyLeaveBinding.todateBtn.getText().toString());
 
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
                         }
                     }
                     //dialogModifyLeaveBinding.fromdateBtn.setText("");
 
-                  // dialogModifyLeaveBinding.todateBtn.setText("");
+                    // dialogModifyLeaveBinding.todateBtn.setText("");
                 }
 
 //                dialogModifyLeaveBinding.fromdateBtn.setText("");
@@ -797,7 +799,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 //                    }
 //                 }
 
-                Log.d("FinalStatusIdStr",FinalStatusIdStr);
+                Log.d("FinalStatusIdStr", FinalStatusIdStr);
             }
 
             @Override
@@ -819,10 +821,10 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
             @Override
             public void afterTextChanged(Editable editable) {
-               String leaveStartDateStr = dialogModifyLeaveBinding.fromdateBtn.getText().toString();
+                String leaveStartDateStr = dialogModifyLeaveBinding.fromdateBtn.getText().toString();
                 if (!leaveStartDateStr.equalsIgnoreCase("")) {
-                    String days =  dialogModifyLeaveBinding.leavedaySpinner.getSelectedItem().toString();
-                    String appDate =  dialogModifyLeaveBinding.fromdateBtn.getText().toString();
+                    String days = dialogModifyLeaveBinding.leavedaySpinner.getSelectedItem().toString();
+                    String appDate = dialogModifyLeaveBinding.fromdateBtn.getText().toString();
                     String toDate = "";
 
                     try {
@@ -830,7 +832,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                         Calendar c = Calendar.getInstance();
                         c.setTime(sdf.parse(appDate));
 
-                        int numOfDays  = (int) Math.floor(Double.parseDouble(days));
+                        int numOfDays = (int) Math.floor(Double.parseDouble(days));
                         c.add(Calendar.DATE, numOfDays);
 
                         sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -839,10 +841,10 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
                         dialogModifyLeaveBinding.todateBtn.setText(toDate);
                         dataItem.setApproveDays(days);
-                        dataItem.setLeaveDates(dialogModifyLeaveBinding.fromdateBtn.getText().toString()+"-"+dialogModifyLeaveBinding.todateBtn.getText().toString());
+                        dataItem.setLeaveDates(dialogModifyLeaveBinding.fromdateBtn.getText().toString() + "-" + dialogModifyLeaveBinding.todateBtn.getText().toString());
 
 
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 }
@@ -852,7 +854,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         dialogModifyLeaveBinding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validateModifyLeaveDialog()){
+                if (validateModifyLeaveDialog()) {
                     dialog.dismiss();
                     callUpdateLeaveStatusApi(dataItem);
                 }
@@ -867,19 +869,19 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         dialog.dismiss();
     }
 
-    private boolean validateModifyLeaveDialog(){
-        if(dialogModifyLeaveBinding.leavedaySpinner.getSelectedItemPosition() < 0){
-                Utils.ping(getActivity(),"Please select leave days");
-                return false;
-            } else if (TextUtils.isEmpty(dialogModifyLeaveBinding.fromdateBtn.getText().toString())) {
-                Utils.ping(getActivity(), "Please select start date");
-                return false;
-            } else if(TextUtils.isEmpty(dialogModifyLeaveBinding.todateBtn.getText().toString())){
-               Utils.ping(getActivity(),"Please select end date");
-                return false;
-            }
+    private boolean validateModifyLeaveDialog() {
+        if (dialogModifyLeaveBinding.leavedaySpinner.getSelectedItemPosition() < 0) {
+            Utils.ping(getActivity(), "Please select leave days");
+            return false;
+        } else if (TextUtils.isEmpty(dialogModifyLeaveBinding.fromdateBtn.getText().toString())) {
+            Utils.ping(getActivity(), "Please select start date");
+            return false;
+        } else if (TextUtils.isEmpty(dialogModifyLeaveBinding.todateBtn.getText().toString())) {
+            Utils.ping(getActivity(), "Please select end date");
+            return false;
+        }
 
-            return true;
+        return true;
     }
 
 
@@ -897,13 +899,13 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
         dateFinal = d + "/" + m + "/" + y;
 
-        if(whichDateClicked == 1) {
+        if (whichDateClicked == 1) {
             fragmentLeaveRequestBinding.fromdateBtn.setText(dateFinal);
 
-        }else if(whichDateClicked == 2){
+        } else if (whichDateClicked == 2) {
             fragmentLeaveRequestBinding.todateBtn.setText(dateFinal);
 
-        }else if(whichDateClicked == 3){
+        } else if (whichDateClicked == 3) {
             dialogModifyLeaveBinding.fromdateBtn.setText(dateFinal);
         }
     }

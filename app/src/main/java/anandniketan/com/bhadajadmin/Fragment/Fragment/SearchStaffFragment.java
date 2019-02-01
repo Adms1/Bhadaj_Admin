@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public class SearchStaffFragment extends Fragment {
     private List<SearchStaffModel.FinalArray> finalDatalist;
 
     private String viewstatus;
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public SearchStaffFragment() {
         // Required empty public constructor
@@ -99,6 +103,12 @@ public class SearchStaffFragment extends Fragment {
 
         viewstatus = AppConfiguration.HRstaffseachviewstatus;
 
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.searchstaff);
+
 //        fragmentStudentViewInquiryBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_staff,container,false);
 //        rootView =  fragmentStudentViewInquiryBinding.getRoot();
 
@@ -109,13 +119,14 @@ public class SearchStaffFragment extends Fragment {
 
     public void setListners() {
 
-        fragmentStudentViewInquiryBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStudentViewInquiryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new HRFragment();

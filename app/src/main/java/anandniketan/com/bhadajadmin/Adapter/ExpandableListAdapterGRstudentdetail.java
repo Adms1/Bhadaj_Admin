@@ -1,5 +1,6 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -12,21 +13,17 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.GrStudentListDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemCommunicationDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemFatherDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudentListItemMotherDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StudetnListItemTransportDetailBinding;
-
 
 /**
  * Created by admsandroid on 1/29/2018.
@@ -37,8 +34,6 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
     private Context _context;
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<StudentAttendanceFinalArray>> _listDataChild;
-    ImageLoader imageLoader;
-
 
     public ExpandableListAdapterGRstudentdetail(Context context, List<String> listDataHeader, HashMap<String,
             ArrayList<StudentAttendanceFinalArray>> listDataChild) {
@@ -47,15 +42,14 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
         this._listDataChild = listDataChild;
     }
 
-
     @Override
     public long getChildId(int groupPosition, int childPosition) {
         return childPosition;
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
         final ArrayList<StudentAttendanceFinalArray> childData = getChild(groupPosition, 0);
         GrStudentListDetailBinding binding;
         if (convertView == null) {
@@ -63,40 +57,69 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
         }
         String headerTitle = (String) getGroup(groupPosition);
         if (headerTitle.equalsIgnoreCase("Student Details")) {
-            binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.gr_student_list_detail, parent, false);
+            binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_student_full_detail, parent, false);
             convertView = binding.getRoot();
 
+            LinearLayout llBoard = convertView.findViewById(R.id.llBoard);
+            LinearLayout llUsername = convertView.findViewById(R.id.llUsername);
+            LinearLayout llPassword = convertView.findViewById(R.id.llPassword);
+            TextView middleTxt = convertView.findViewById(R.id.middle_txt);
+            TextView boardTxt = convertView.findViewById(R.id.board_txt);
+            TextView aadharTxt = convertView.findViewById(R.id.aadhar_txt);
+            TextView acedamicTxt = convertView.findViewById(R.id.acedamic_txt);
+            TextView doaTxt = convertView.findViewById(R.id.doa_txt);
+            TextView doatakenTxt = convertView.findViewById(R.id.doataken_txt);
+            TextView houseTxt = convertView.findViewById(R.id.house_txt);
+            TextView uniqueno = convertView.findViewById(R.id.unq_txt);
+            TextView location = convertView.findViewById(R.id.location_txt);
+            TextView oldgrTxt = convertView.findViewById(R.id.oldgr_txt);
 
+            llBoard.setVisibility(View.VISIBLE);
+
+            String[] name = childData.get(childPosition).getName().split("\\ ");
             binding.tagTxt.setText(childData.get(childPosition).getTag());
-            binding.firstnameTxt.setText(childData.get(childPosition).getFirstName());
-            binding.lastnameTxt.setText(childData.get(childPosition).getLastName());
+            binding.firstnameTxt.setText(name[0]);
+            middleTxt.setText(name[1]);
+            binding.lastnameTxt.setText(name[2]);
             binding.dobTxt.setText(childData.get(childPosition).getDateOfBirth());
             binding.birthplaceTxt.setText(childData.get(childPosition).getBirthPlace());
             binding.ageTxt.setText(childData.get(childPosition).getAge());
             binding.genderTxt.setText(childData.get(childPosition).getGender());
-            binding.studentTypeTxt.setText(AppConfiguration.TermName);
-            binding.gradeTxt.setText(childData.get(childPosition).getStandard());
-            binding.sectionTxt.setText(childData.get(childPosition).get_class());
+            boardTxt.setText(childData.get(childPosition).getBoard());
+            aadharTxt.setText(childData.get(childPosition).getAadhaarCardNo());
+            acedamicTxt.setText(childData.get(childPosition).getAcedamicYear());
+            binding.gradeTxt.setText(childData.get(childPosition).getGrade());
+            binding.sectionTxt.setText(childData.get(childPosition).getSection());
             binding.lastschoolTxt.setText(childData.get(childPosition).getLastSchool());
+            doaTxt.setText(childData.get(childPosition).getDateOfAdmission());
+            doatakenTxt.setText(childData.get(childPosition).getAdmissionTaken());
             binding.bloodgroupTxt.setText(childData.get(childPosition).getBloodGroup());
+            houseTxt.setText(childData.get(childPosition).getHouse());
+            uniqueno.setText(childData.get(childPosition).getUnique_no());
             binding.religionTxt.setText(childData.get(childPosition).getReligion());
-            binding.grnoTxt.setText(childData.get(childPosition).getGRNO());
             binding.nationalityTxt.setText(childData.get(childPosition).getNationality());
-            binding.admissionTakenTxt.setText(childData.get(childPosition).getAdmissionTaken());
-
+            location.setText(childData.get(childPosition).getLocation());
             if (childData.get(childPosition).getStatus().equalsIgnoreCase("1")) {
                 binding.statusTxt.setTextColor(Color.parseColor("#FF6BAE18"));
-                binding.statusTxt.setText("Active");
+                binding.statusTxt.setText(R.string.active);
 
             } else {
                 binding.statusTxt.setTextColor(Color.parseColor("#ff0000"));
-                binding.statusTxt.setText("InActive");
+                binding.statusTxt.setText(R.string.inactive);
             }
+            binding.grnoTxt.setText(childData.get(childPosition).getGRNO());
+            oldgrTxt.setText(childData.get(childPosition).getOldGRNO());
+
+            llPassword.setVisibility(View.GONE);
+            llUsername.setVisibility(View.GONE);
+
         } else if (headerTitle.equalsIgnoreCase("Transport Details")) {
             StudetnListItemTransportDetailBinding transportDetailBinding;
             transportDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.studetn_list_item_transport_detail, parent, false);
             convertView = transportDetailBinding.getRoot();
 
+            transportDetailBinding.llKm.setVisibility(View.VISIBLE);
+            transportDetailBinding.kmTxt.setText(childData.get(childPosition).getTransportKMs());
             transportDetailBinding.kmsTxt.setText(childData.get(childPosition).getRouteName());
             transportDetailBinding.pickupTxt.setText(childData.get(childPosition).getPickupBus());
             transportDetailBinding.pickuppointTxt.setText(childData.get(childPosition).getPickupPoint());
@@ -146,6 +169,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             communicationDetailBinding.addressTxt.setText(childData.get(childPosition).getAddress());
             communicationDetailBinding.zipTxt.setText(childData.get(childPosition).getZipCode());
             communicationDetailBinding.smsEmailTxt.setText(childData.get(childPosition).getsMSCommunicationemail());
+            communicationDetailBinding.addressTxt.setText(childData.get(childPosition).getAddress());
         }
 
 
@@ -178,6 +202,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
         return groupPosition;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
@@ -185,23 +210,34 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group_student_full_detail, null);
+            if (infalInflater != null) {
+                convertView = infalInflater.inflate(R.layout.list_group_student_full_detail, null);
+            }
         }
-        TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
-        lblListHeader.setText(headerTitle);
-        LinearLayout linear_group = convertView.findViewById(R.id.linear_group);
-        if (headerTitle.equalsIgnoreCase("Student Details")) {
-            linear_group.setBackgroundColor(Color.parseColor("#3597D3"));
-        } else if (headerTitle.equalsIgnoreCase("Transport Details")) {
-            linear_group.setBackgroundColor(Color.parseColor("#FF6BAE18"));
-        } else if (headerTitle.equalsIgnoreCase("Father Details")) {
-            linear_group.setBackgroundColor(Color.parseColor("#FFE6B12E"));
-        } else if (headerTitle.equalsIgnoreCase("Mother Details")) {
-            linear_group.setBackgroundColor(Color.parseColor("#FF48ADDE"));
-        } else if (headerTitle.equalsIgnoreCase("Communication Details")) {
-            linear_group.setBackgroundColor(Color.parseColor("#FF607D8B"));
+
+        TextView lblListHeader = null;
+        if (convertView != null) {
+
+            lblListHeader = convertView.findViewById(R.id.lblListHeader);
+
+            lblListHeader.setTypeface(null, Typeface.BOLD);
+            lblListHeader.setText(headerTitle);
+
+            LinearLayout linear_group = convertView.findViewById(R.id.linear_group);
+
+            if (headerTitle.equalsIgnoreCase("Student Details")) {
+                linear_group.setBackgroundColor(Color.parseColor("#3597D3"));
+            } else if (headerTitle.equalsIgnoreCase("Transport Details")) {
+                linear_group.setBackgroundColor(Color.parseColor("#FF6BAE18"));
+            } else if (headerTitle.equalsIgnoreCase("Father Details")) {
+                linear_group.setBackgroundColor(Color.parseColor("#FFE6B12E"));
+            } else if (headerTitle.equalsIgnoreCase("Mother Details")) {
+                linear_group.setBackgroundColor(Color.parseColor("#FF48ADDE"));
+            } else if (headerTitle.equalsIgnoreCase("Communication Details")) {
+                linear_group.setBackgroundColor(Color.parseColor("#FF607D8B"));
+            }
         }
+
         return convertView;
     }
 

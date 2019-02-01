@@ -62,6 +62,9 @@ public class MISStudentTransportFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        AppConfiguration.position = 66;
+        AppConfiguration.firsttimeback = true;
+
         Bundle bundle = this.getArguments();
         termid = bundle.getString("TermID");
         stdid = bundle.getString("stdID");
@@ -83,10 +86,15 @@ public class MISStudentTransportFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+
 //                getActivity().getSupportFragmentManager().popBackStackImmediate();
-                fragment = new MISFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+
+//                fragment = new MISFragment();
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 

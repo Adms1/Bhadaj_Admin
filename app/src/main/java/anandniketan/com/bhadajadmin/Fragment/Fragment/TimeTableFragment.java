@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -61,6 +64,9 @@ public class TimeTableFragment extends Fragment {
     private String[] spinnerstandardIdArray;
     private HashMap<Integer, String> spinnerStandardMap;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public TimeTableFragment() {
     }
 
@@ -79,7 +85,20 @@ public class TimeTableFragment extends Fragment {
         updatestatus = bundle.getString("updatestatus");
         deletestatus = bundle.getString("deletestatus");
 
-        setListners();
+        return rootView;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.timetable);
 
         fragmentTimeTableBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,19 +156,21 @@ public class TimeTableFragment extends Fragment {
             }
         });
 
+        setListners();
         callTermApi();
 
-        return rootView;
     }
 
     public void setListners() {
-        fragmentTimeTableBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentTimeTableBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StaffFragment();
@@ -431,7 +452,7 @@ public class TimeTableFragment extends Fragment {
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
         fragmentTimeTableBinding.gradeSpinner.setAdapter(adapterTerm);
-
+        fragmentTimeTableBinding.gradeSpinner.setSelection(1);
     }
 
 }

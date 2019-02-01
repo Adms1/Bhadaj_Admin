@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -64,6 +67,9 @@ public class StaffFragment extends Fragment {
     private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public StaffFragment() {
     }
 
@@ -75,9 +81,34 @@ public class StaffFragment extends Fragment {
         rootView = fragmentStaffBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        newArr = new ArrayList<>();
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student");
+
+        tvHeader = view.findViewById(R.id.home_sname_txt);
+        btnBack = view.findViewById(R.id.home_btnBack);
+        btnMenu = view.findViewById(R.id.home_btnmenu);
+
+        tvHeader.setText(R.string.staff);
+
+        for (int i = 0; i < mThumbNames.length; i++) {
+            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+
+                IconHeaderModel iconHeaderModel = new IconHeaderModel();
+                iconHeaderModel.setName(mThumbNames[i]);
+                iconHeaderModel.setUrl(mThumbIds[i]);
+                newArr.add(iconHeaderModel);
+            }
+        }
+
         initViews();
         setListners();
-        return rootView;
     }
 
     public void initViews() {
@@ -112,13 +143,14 @@ public class StaffFragment extends Fragment {
     }
 
     public void setListners() {
-        fragmentStaffBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStaffBinding.btnBackstaffAttendance.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new HomeFragment();

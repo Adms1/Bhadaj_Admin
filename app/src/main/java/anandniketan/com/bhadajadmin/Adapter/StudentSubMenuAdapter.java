@@ -77,9 +77,9 @@ public class StudentSubMenuAdapter extends BaseAdapter {
 
         } else {
             if (position == newArr.size() - 2 || position == newArr.size() - 1) {
-                line2.setVisibility(View.VISIBLE);
-            } else {
                 line2.setVisibility(View.GONE);
+            } else {
+                line2.setVisibility(View.VISIBLE);
             }
         }
 

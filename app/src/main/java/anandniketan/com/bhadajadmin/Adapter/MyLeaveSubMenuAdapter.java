@@ -47,7 +47,7 @@ public class MyLeaveSubMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgGridOptions = null;
         TextView txtGridOptionsName = null;
-        View line = null;
+        View line = null, line2 = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
@@ -55,6 +55,9 @@ public class MyLeaveSubMenuAdapter extends BaseAdapter {
         imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
         txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
         line = convertView.findViewById(R.id.view_line1);
+        line2 = convertView.findViewById(R.id.view_line2);
+
+        line2.setVisibility(View.GONE);
 
         String url = mThumbIds[position];
 //        Log.d("url", url);

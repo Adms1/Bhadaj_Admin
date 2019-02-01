@@ -18,6 +18,7 @@
     <string name="info_tech">Information Technology</string>
 
     <string name="student_label">Student</string>
+    <string name="staff_detail">Staff Detail</string>
 
     <string name="hr">HR</string>
     <string name="m_sms">SMS</string>
@@ -84,7 +85,7 @@
     <string name="expenses">Expenses</string>
     <string name="fees">Fees</string>
 
-    <string name="fees_rec">Fees Recieved</string>
+    <string name="fees_rec">Fees Received</string>
     <string name="deposited_bank">Deposited In Bank</string>
 
     <string name="route_problem">Route Problem</string>
@@ -104,11 +105,11 @@
     <string name="suggestion_by_parent_teacher">Suggestion By Parent/Teacher</string>
 
     <string name="admission_inquiry">Admission Inquiry</string>
-    <string name="total_new_admission">Total New Addmission</string>
+    <string name="total_new_admission">Total New Admission</string>
     <string name="event_of_the_day">Event Of The  Day</string>
     <string name="fb_update">FB Update</string>
     <string name="major_concern">Major Concern</string>
-
+    <string name="update">Update</string>
 
     <string name="laptop_issued">Laptop Issued</string>
     <string name="tab_issued">Tablet Issued</string>
@@ -247,7 +248,7 @@
     <string name="appsms">APP SMS</string>
     <string name="grregister">NEW REGISTER</string>
     <string name="attendance">ATTENDANCE</string>
-    <string name="leftdetail">Left Active</string>
+    <string name="leftdetail">Left/Active</string>
     <string name="studentviewmarks">VIEW MARKS</string>
     <string name="profilepermission">PROFILE PERMISSION</string>
     <string name="suggestionpermission">SUGGESTION PERMISSION</string>
@@ -347,6 +348,7 @@
     <string name="Studentcoll"><u>Student</u></string>
     <string name="standardwisecoll">Standard Wise Collection</string>
     <string name="exam">EXAMS</string>
+    <string name="exams">Exam</string>
     <string name="academicyear">Academic Year</string>
     <string name="edit">Edit</string>
     <string name="studentstatus">Student Status</string>
@@ -357,7 +359,7 @@
     <string name="fatherlastname">Last Name</string>
     <string name="fatherphoneno">Phone no</string>
     <string name="fathermobileno">Mobile no</string>
-    <string name="fatheremailaddress">Email Adress</string>
+    <string name="fatheremailaddress">Email Address</string>
     <string name="fatherqualification">Qualification</string>
     <string name="fatheroccupation">Occupation</string>
     <string name="fatheroragnization">Organization</string>
@@ -369,7 +371,7 @@
     <string name="motherlastname">Last Name</string>
     <string name="motherphoneno">Phone no</string>
     <string name="mothermobileno">Mobile no</string>
-    <string name="motheremailaddress">Email Adress</string>
+    <string name="motheremailaddress">Email Address</string>
     <string name="motherqualification">Qualification</string>
     <string name="motheroccupation">Occupation</string>
     <string name="motheroragnization">Organization</string>
@@ -513,5 +515,13 @@
     <string name="todo">TODO</string>
     <string name="location">Location</string>
     <string name="search">Search</string>
+    <string name="Add">add</string>
+    <string name="no_records_found">No Records Found...</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="select">Select</string>
+    <string name="is_schedule">Is Schedule</string>
+    <string name="upload_pdf">Upload PDF</string>
+    <string name="choose_file">Choose File</string>
 
 </resources>

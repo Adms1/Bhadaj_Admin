@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -57,6 +60,9 @@ public class LeftDetailFragment extends Fragment {
     GRRegisterAdapter grRegisterAdapter;
     private String status;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public LeftDetailFragment() {
     }
 
@@ -71,22 +77,35 @@ public class LeftDetailFragment extends Fragment {
         Bundle bundle = this.getArguments();
         status = bundle.getString("status");
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.leftdetail);
+
         setListners();
         callTermApi();
         callStandardApi();
 
-        return rootView;
     }
 
-
     public void setListners() {
-        fragmentLeftDetailBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentLeftDetailBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StudentFragment();
@@ -333,7 +352,7 @@ public class LeftDetailFragment extends Fragment {
                                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                                         .replace(R.id.frame_container, fragment).commit();
                             }
-                        }, status);
+                        }, status, "left/active");
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentLeftDetailBinding.studentLeftdetailList.setLayoutManager(mLayoutManager);
                         fragmentLeftDetailBinding.studentLeftdetailList.setItemAnimator(new DefaultItemAnimator());

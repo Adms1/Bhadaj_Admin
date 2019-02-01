@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -67,6 +69,10 @@ public class StudentFragment extends Fragment {
     private GridView rvList;
     private ArrayList<IconHeaderModel> newArr;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
+
     public StudentFragment() {
     }
 
@@ -94,6 +100,12 @@ public class StudentFragment extends Fragment {
 
         newArr = new ArrayList<>();
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student");
+
+        tvHeader = view.findViewById(R.id.home_sname_txt);
+        btnBack = view.findViewById(R.id.home_btnBack);
+        btnMenu = view.findViewById(R.id.home_btnmenu);
+
+        tvHeader.setText(R.string.student);
 
         rvList = view.findViewById(R.id.student_submenu_grid_view);
 
@@ -131,14 +143,14 @@ public class StudentFragment extends Fragment {
 
     public void setListners() {
 
-        fragmentStudentBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
 
-        fragmentStudentBinding.btnBackAttendance.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new HomeFragment();

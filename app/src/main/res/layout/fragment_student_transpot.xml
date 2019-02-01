@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -197,6 +197,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/linear_border"
                             android:hint="@string/grno"
+                            android:inputType="number"
                             android:padding="@dimen/_7sdp"
                             android:paddingEnd="@dimen/_5sdp"
                             android:paddingStart="@dimen/_5sdp"
@@ -223,7 +224,6 @@
                         android:id="@+id/txtNoRecords"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/linear_gr"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:gravity="center"
                         android:text="No Records Found..."

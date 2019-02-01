@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterStudentTransportDetail;
@@ -43,12 +44,6 @@ import retrofit.client.Response;
 
 public class StudentTranspotFragment extends Fragment {
 
-    private FragmentStudentTranspotBinding fragmentStudentTranspotBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
-    private int lastExpandedPosition = -1;
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
     HashMap<Integer, String> spinnerTermMap;
     List<FinalArrayTransportChargesModel> finalArrayRouteDetailModelList;
@@ -60,6 +55,12 @@ public class StudentTranspotFragment extends Fragment {
     List<String> listDataHeader;
     HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild;
     ExpandableListAdapterStudentTransportDetail expandableListAdapterStudentTransportDetail;
+    private FragmentStudentTranspotBinding fragmentStudentTranspotBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private int lastExpandedPosition = -1;
     private String status;
 
     private TextView tvHeader;
@@ -70,14 +71,16 @@ public class StudentTranspotFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentStudentTranspotBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_transpot, container, false);
 
         rootView = fragmentStudentTranspotBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
 
         Bundle bundle = this.getArguments();
-        status = bundle.getString("status");
+        if (bundle != null) {
+            status = bundle.getString("status");
+        }
 
         return rootView;
     }
@@ -113,9 +116,11 @@ public class StudentTranspotFragment extends Fragment {
             public void onClick(View v) {
                 fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                }
             }
         });
         fragmentStudentTranspotBinding.lvExpStudenttransport.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -139,7 +144,7 @@ public class StudentTranspotFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentStudentTranspotBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callStudentTransportDetailApi();
             }
@@ -156,7 +161,7 @@ public class StudentTranspotFragment extends Fragment {
                 String getid = spinnerRouteMap.get(fragmentStudentTranspotBinding.routeSpinner.getSelectedItemPosition());
 
                 Log.d("routevalue", name + " " + getid);
-                FinalRouteIdStr = getid.toString();
+                FinalRouteIdStr = getid;
                 Log.d("FinalRouteIdStr", FinalRouteIdStr);
                 RouteName = name;
                 fillPickUpSpinner();
@@ -171,13 +176,13 @@ public class StudentTranspotFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = fragmentStudentTranspotBinding.pickupPointSpinner.getSelectedItem().toString();
-                if(!name.equalsIgnoreCase("-Please Select-")) {
+                if (!name.equalsIgnoreCase("-Please Select-")) {
                     String getid = spinnerPickupMap.get(fragmentStudentTranspotBinding.pickupPointSpinner.getSelectedItemPosition());
 
                     Log.d("pickvalue", name + " " + getid);
-                    FinalPickupIdStr = getid.toString();
+                    FinalPickupIdStr = getid;
                     Log.d("FinalPickupIdStr", FinalPickupIdStr);
-                }else{
+                } else {
                     FinalPickupIdStr = "";
                     Log.d("NotPickupIdStr", FinalPickupIdStr);
                 }
@@ -242,8 +247,7 @@ public class StudentTranspotFragment extends Fragment {
     }
 
     private Map<String, String> getTermDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     // CALL RoputeDetail API HERE
@@ -293,9 +297,8 @@ public class StudentTranspotFragment extends Fragment {
     }
 
     private Map<String, String> getRouteDetail() {
-        Map<String, String> map = new HashMap<>();
 
-        return map;
+        return new HashMap<>();
     }
 
     // CALL Term API HERE
@@ -375,18 +378,18 @@ public class StudentTranspotFragment extends Fragment {
     }
 
     public void fillTermSpinner() {
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap = new HashMap<Integer, String>();
+        spinnerTermMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -403,7 +406,7 @@ public class StudentTranspotFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentStudentTranspotBinding.termSpinner.setAdapter(adapterTerm);
         fragmentStudentTranspotBinding.termSpinner.setSelection(1);
 
@@ -412,7 +415,7 @@ public class StudentTranspotFragment extends Fragment {
     public void fillRouteSpinner() {
         ArrayList<Integer> firstValueId = new ArrayList<>();
         firstValueId.add(0);
-        ArrayList<Integer> RouteId = new ArrayList<Integer>();
+        ArrayList<Integer> RouteId = new ArrayList<>();
         for (int m = 0; m < firstValueId.size(); m++) {
             RouteId.add(firstValueId.get(m));
             for (int i = 0; i < finalArrayRouteDetailModelList.size(); i++) {
@@ -421,7 +424,7 @@ public class StudentTranspotFragment extends Fragment {
         }
         ArrayList<String> firstValue = new ArrayList<>();
         firstValue.add("All");
-        ArrayList<String> Route = new ArrayList<String>();
+        ArrayList<String> Route = new ArrayList<>();
         for (int z = 0; z < firstValue.size(); z++) {
             Route.add(firstValue.get(z));
             for (int j = 0; j < finalArrayRouteDetailModelList.size(); j++) {
@@ -430,7 +433,7 @@ public class StudentTranspotFragment extends Fragment {
         }
         String[] spinnerrouteIdArray = new String[RouteId.size()];
 
-        spinnerRouteMap = new HashMap<Integer, String>();
+        spinnerRouteMap = new HashMap<>();
         for (int i = 0; i < RouteId.size(); i++) {
             spinnerRouteMap.put(i, String.valueOf(RouteId.get(i)));
             spinnerrouteIdArray[i] = Route.get(i).trim();
@@ -447,7 +450,7 @@ public class StudentTranspotFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerrouteIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerrouteIdArray);
         fragmentStudentTranspotBinding.routeSpinner.setAdapter(adapterTerm);
 
     }
@@ -467,7 +470,7 @@ public class StudentTranspotFragment extends Fragment {
         }
 
         if (pickupArray.size() > 0) {
-            ArrayList<Integer> PickupId = new ArrayList<Integer>();
+            ArrayList<Integer> PickupId = new ArrayList<>();
             ArrayList<Integer> firstValuePickId = new ArrayList<>();
             firstValuePickId.add(0);
             for (int a = 0; a < firstValuePickId.size(); a++) {
@@ -477,8 +480,8 @@ public class StudentTranspotFragment extends Fragment {
                     PickupId.add(pickupArray.get(i).getPickupPointID());
                 }
             }
-            ArrayList<String> PickupPoint = new ArrayList<String>();
-            ArrayList<String> firstValuePickPoint = new ArrayList<String>();
+            ArrayList<String> PickupPoint = new ArrayList<>();
+            ArrayList<String> firstValuePickPoint = new ArrayList<>();
             firstValuePickPoint.add("All");
             for (int r = 0; r < firstValuePickPoint.size(); r++) {
                 PickupPoint.add(firstValuePickPoint.get(r));
@@ -489,7 +492,7 @@ public class StudentTranspotFragment extends Fragment {
             }
             String[] spinnerpickupIdArray = new String[PickupId.size()];
 
-            spinnerPickupMap = new HashMap<Integer, String>();
+            spinnerPickupMap = new HashMap<>();
             for (int i = 0; i < PickupId.size(); i++) {
                 spinnerPickupMap.put(i, String.valueOf(PickupId.get(i)));
                 spinnerpickupIdArray[i] = PickupPoint.get(i).trim();
@@ -506,25 +509,25 @@ public class StudentTranspotFragment extends Fragment {
                 // silently fail...
             }
 
-            ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerpickupIdArray);
+            ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerpickupIdArray);
             fragmentStudentTranspotBinding.pickupPointSpinner.setAdapter(adapterTerm);
         } else {
-            ArrayList<String> pick=new ArrayList<String>();
+            ArrayList<String> pick = new ArrayList<>();
             pick.add("-Please Select-");
-            ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, pick);
+            ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, pick);
             fragmentStudentTranspotBinding.pickupPointSpinner.setAdapter(adapterTerm);
         }
     }
 
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<StudentAttendanceFinalArray>>();
+        listDataChild = new HashMap<>();
 
         for (int i = 0; i < finalArrayStudentTransportModelList.size(); i++) {
             listDataHeader.add(finalArrayStudentTransportModelList.get(i).getStudentName() + "|" +
                     finalArrayStudentTransportModelList.get(i).getGRNO() + "|" + finalArrayStudentTransportModelList.get(i).getStandard());
             Log.d("header", "" + listDataHeader);
-            ArrayList<StudentAttendanceFinalArray> row = new ArrayList<StudentAttendanceFinalArray>();
+            ArrayList<StudentAttendanceFinalArray> row = new ArrayList<>();
 //            for (int j = 0; j < finalArrayStudentTransportModelList.size(); j++) {
             row.add(finalArrayStudentTransportModelList.get(i));
 //            }

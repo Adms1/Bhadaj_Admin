@@ -5,49 +5,11 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/header"
+    <include
+        android:id="@id/header"
+        layout="@layout/main_header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_57sdp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:background="@drawable/header_blue"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="@dimen/_14sdp"
-            android:layout_height="@dimen/_14sdp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_38sdp"
-            android:background="@drawable/back_btn" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_23sdp"
-        android:layout_alignTop="@+id/header"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_38sdp"
-        android:text="@string/circular"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/_12sdp"
-        android:textStyle="normal" />
-
-    <Button
-        android:id="@+id/btnmenu"
-        android:layout_width="@dimen/_17sdp"
-        android:layout_height="@dimen/_17sdp"
-        android:layout_marginLeft="@dimen/_270sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_39sdp"
-        android:background="@drawable/menu" />
-
+        android:layout_height="@dimen/_65sdp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -74,13 +36,11 @@
                     android:id="@+id/annoucement_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_1sdp"
                     android:childDivider="@android:color/transparent"
                     android:divider="@android:color/white"
-
-                    android:dividerHeight="5dp"
                     android:groupIndicator="@null"
                     android:scrollbars="none" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -89,11 +49,11 @@
             android:id="@+id/txt_empty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/red"
             android:layout_centerInParent="true"
-            android:text="No Records Found"
-            android:visibility="gone"/>
+            android:text="@string/no_records_found"
+            android:textColor="@color/red"
+            android:textSize="17sp"
+            android:visibility="gone" />
 
 
     </RelativeLayout>
@@ -102,12 +62,12 @@
         android:id="@+id/fab_add_annoucement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/_12sdp"
-        app:rippleColor="@color/mdtp_white"
         android:src="@drawable/ic_add"
-        android:tint="@color/mdtp_white" />
+        android:tint="@color/white1"
+        app:fabCustomSize="@dimen/_40sdp"
+        app:rippleColor="@color/white1" />
 
 </RelativeLayout>

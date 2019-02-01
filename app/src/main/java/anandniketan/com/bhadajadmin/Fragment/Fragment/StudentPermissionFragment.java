@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -46,6 +49,9 @@ public class StudentPermissionFragment extends Fragment {
     private ArrayList<IconHeaderModel> newArr;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public StudentPermissionFragment() {
     }
 
@@ -57,10 +63,21 @@ public class StudentPermissionFragment extends Fragment {
         rootView = fragmentStudentPermissionBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.home_sname_txt);
+        btnBack = view.findViewById(R.id.home_btnBack);
+        btnMenu = view.findViewById(R.id.home_btnmenu);
+
+        tvHeader.setText(R.string.student_permission);
         initViews();
         setListners();
 
-        return rootView;
     }
 
     public void initViews() {
@@ -81,20 +98,22 @@ public class StudentPermissionFragment extends Fragment {
         }
 
         Glide.with(mContext)
-                .load(AppConfiguration.BASEURL_IMAGES + "Student/" + "Permission.png")
+//                .load(AppConfiguration.BASEURL_IMAGES + "Student/" + "Permission.png")
+                .load(AppConfiguration.BASEURL_IMAGES + "Main/" + "Permission.png")
                 .into(fragmentStudentPermissionBinding.circleImageView);
 
         fragmentStudentPermissionBinding.studentPermissionSubmenuGridView.setAdapter(new StudentSubMenuAdapter(mContext, newArr));
     }
 
     public void setListners() {
-        fragmentStudentPermissionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStudentPermissionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StudentFragment();

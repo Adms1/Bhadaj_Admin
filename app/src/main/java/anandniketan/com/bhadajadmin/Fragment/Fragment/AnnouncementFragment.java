@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -37,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AnnouncmentAdpater;
 import anandniketan.com.bhadajadmin.Adapter.StandardAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
@@ -84,7 +87,6 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
     private StandardAdapter standardAdapter;
     private RadioButton rbStatusActive,rbStatusInactive,rbEnterAnnoucement,rbUploadPdf,rbAll,rbIndividual;
     private String FinalDateStr,FinalSubjectStr,FinalDiscriptionStr, FinalOrderStr, FinalStatusStr = "1";
-    private Button btnBack;
     private LinearLayout llPdfView,llAnnsView;
     private static final int CHOOSE_PDF_REQ_CODE = 101;
     private PermissionUtils.ReqPermissionCallback reqPermissionCallback;
@@ -98,6 +100,9 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
     private List<AnnouncementModel.FinalArray> bundleData;
     private boolean isRecordInUpdate = false;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public AnnouncementFragment() {
     }
 
@@ -106,9 +111,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         super.onAttach(context);
         reqPermissionCallback = this;
        // onUpdateRecordRef = (OnUpdateRecord)this;
-
     }
-
 
     @Nullable
     @Override
@@ -131,7 +134,6 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         rbStatusInactive = rootView.findViewById(R.id.inactive_chk);
         rbAll = rootView.findViewById(R.id.rb_all);
         rbIndividual = rootView.findViewById(R.id.rb_individual);
-        btnBack = rootView.findViewById(R.id.btnBack);
         llAnnsView = rootView.findViewById(R.id.linear_announcment);
         llPdfView = rootView.findViewById(R.id.linear_pdf);
         btnDate = rootView.findViewById(R.id.date_btn);
@@ -140,8 +142,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         cbScheduledatetime = rootView.findViewById(R.id.cb_scheduledatetime);
         llAnnsView.setVisibility(View.VISIBLE);
         llPdfView.setVisibility(View.GONE);
-        setListners();
-        callStandardApi();
+
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 55;
         //Set Thread Policy
@@ -149,6 +150,21 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().build());
 
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.announcment);
+
+        setListners();
+        callStandardApi();
     }
 
 
@@ -161,6 +177,13 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
         second = calendar.get(Calendar.SECOND);
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DashboardActivity.onLeft();
+            }
+        });
 
         btnChooseFile.setOnClickListener(new View.OnClickListener() {
             @Override

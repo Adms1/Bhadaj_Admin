@@ -72,6 +72,9 @@ public class MISStudentTransportDetailFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        AppConfiguration.position = 66;
+        AppConfiguration.firsttimeback = true;
+
         tvHeader = view.findViewById(R.id.transport_detail_textView3);
         btnBack = view.findViewById(R.id.transport_detail_btnBack);
         btnMenu = view.findViewById(R.id.transport_detail_btnmenu);
@@ -127,7 +130,7 @@ public class MISStudentTransportDetailFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                fragment = new MISStudentTransportFragment();
 //                fragmentManager = getFragmentManager();
 //                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();

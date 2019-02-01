@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,20 +13,13 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.HR.SearchStaffModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryProfileModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-import anandniketan.com.bhadajadmin.databinding.LayoutInquiryProfileFatherListItemBinding;
-import anandniketan.com.bhadajadmin.databinding.LayoutInquiryProfileMotherListItemBinding;
-import anandniketan.com.bhadajadmin.databinding.OfficeListItemDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.StaffDetailsListItemBinding;
 import anandniketan.com.bhadajadmin.databinding.StaffOfficeDetailItemBinding;
 
@@ -69,7 +61,6 @@ public class ExpandableStaffInquiryProfileAdapter extends BaseExpandableListAdap
                 binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.staff_details_list_item, parent, false);
                 convertView = binding.getRoot();
 
-
                 //binding.tagTxt.setVisibility(View.GONE);
                 binding.nameTxt.setText(childData.get(childPosition).getName());
                 binding.ecodeTxt.setText(childData.get(childPosition).getEmpCode());
@@ -85,7 +76,7 @@ public class ExpandableStaffInquiryProfileAdapter extends BaseExpandableListAdap
                 binding.bankTxt.setText(childData.get(childPosition).getBankName());
                 // binding.siblingInAnandNiketanTxt.setText(childData.get(childPosition).getSiblingInAnandNiketanSchool());
 
-
+                binding.statusTxt.setText(childData.get(childPosition).getStatus());
                 binding.bankAcTxt.setText(childData.get(childPosition).getBankAccountNo());
                 binding.pfAcNoTxt.setText(childData.get(childPosition).getPFAccountNo());
                 binding.panTxt.setText(childData.get(childPosition).getPAN());
@@ -157,10 +148,10 @@ public class ExpandableStaffInquiryProfileAdapter extends BaseExpandableListAdap
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group_student_full_detail, null);
         }
-        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
+        TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
-        LinearLayout linear_group = (LinearLayout) convertView.findViewById(R.id.linear_group);
+        LinearLayout linear_group = convertView.findViewById(R.id.linear_group);
         if (headerTitle.equalsIgnoreCase("Personal Details")) {
             linear_group.setBackgroundColor(Color.parseColor("#3597D3"));
         } else if (headerTitle.equalsIgnoreCase("Transport Details")) {

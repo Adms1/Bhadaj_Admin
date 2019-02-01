@@ -1,11 +1,12 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.OnlinePaymentPermissionAdapter;
@@ -47,26 +51,24 @@ import retrofit.client.Response;
 
 public class OnlinePaymentFragment extends Fragment {
 
-    private FragmentOnlinePaymentBinding fragmentOnlinePaymentBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
     //Use for fill AcademicYear spinner
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
     HashMap<Integer, String> spinnerTermMap;
     HashMap<Integer, String> spinnerTermDetailIdMap;
-
     //Use for fill Standard
     List<FinalArrayStandard> finalArrayStandardsList;
     StandardAdapter standardAdapter;
-
     //Use for fill List
     List<StudentAttendanceFinalArray> finalArrayResultPermissionList;
     OnlinePaymentPermissionAdapter onlinePaymentPermissionAdapter;
-
-    String FinalTermIdStr, FinalGradeIsStr = "", FinalTermDetailIdStr = "",  FinalStatusStr = "1";
+    String FinalTermIdStr, FinalGradeIsStr = "", FinalTermDetailIdStr = "", FinalStatusStr = "1";
+    private FragmentOnlinePaymentBinding fragmentOnlinePaymentBinding;
+    private View rootView;
+    private Context mContext;
     private String status, updatestatus, deletestatus;
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public OnlinePaymentFragment() {
     }
@@ -77,18 +79,34 @@ public class OnlinePaymentFragment extends Fragment {
         fragmentOnlinePaymentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_online_payment, container, false);
 
         Bundle bundle = this.getArguments();
-        status = bundle.getString("onlinepayviewstatus");
-        updatestatus = bundle.getString("onlinepayupdatestatus");
-        deletestatus = bundle.getString("onlinepaydeletestatus");
+        if (bundle != null) {
+            status = bundle.getString("onlinepayviewstatus");
+            updatestatus = bundle.getString("onlinepayupdatestatus");
+            deletestatus = bundle.getString("onlinepaydeletestatus");
+        }
 
         rootView = fragmentOnlinePaymentBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
+
+        return rootView;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.onlinepayment);
 
         setListners();
         callTermApi();
         callStandardApi();
 
-        return rootView;
     }
 
     public void setListners() {
@@ -96,14 +114,14 @@ public class OnlinePaymentFragment extends Fragment {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 13;
 
-        fragmentOnlinePaymentBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
 
-        fragmentOnlinePaymentBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppConfiguration.firsttimeback = true;
@@ -155,6 +173,7 @@ public class OnlinePaymentFragment extends Fragment {
             }
         });
         fragmentOnlinePaymentBinding.statusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 RadioButton rb = radioGroup.findViewById(checkedId);
@@ -396,7 +415,7 @@ public class OnlinePaymentFragment extends Fragment {
                     return;
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
-                    Utils.ping(mContext,"Record update successful");
+                    Utils.ping(mContext, "Record update successful");
                     callOnlinePaymentPermission();
                 }
             }
@@ -452,7 +471,7 @@ public class OnlinePaymentFragment extends Fragment {
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentOnlinePaymentBinding.termSpinner.setAdapter(adapterTerm);
-
+        fragmentOnlinePaymentBinding.termSpinner.setSelection(1);
         FinalTermIdStr = spinnerTermMap.get(0);
     }
 
@@ -510,21 +529,22 @@ public class OnlinePaymentFragment extends Fragment {
     public void UpdatePermission() {
         List<FinalArrayStandard> standardArray1 = standardAdapter.getDatas();
         for (int i = 0; i < standardArray1.size(); i++) {
-                standardArray1.get(i).setCheckedStatus("0");
-                standardAdapter.notifyDataSetChanged();
+            standardArray1.get(i).setCheckedStatus("0");
+            standardAdapter.notifyDataSetChanged();
 
         }
         fragmentOnlinePaymentBinding.searchBtn.setText("Update");
         ArrayList<String> academicYearArray = new ArrayList<String>();
-        String statusArray = "", gradeArray = "";
+        String statusArray = "", gradeArray = "", termdetail = "";
 
         for (int k = 0; k < onlinePaymentPermissionAdapter.getRowValue().size(); k++) {
             String rowValueStr = onlinePaymentPermissionAdapter.getRowValue().get(k);
             Log.d("rowValueStr", rowValueStr);
             String[] spiltString = rowValueStr.split("\\|");
             academicYearArray.add(spiltString[0]);
-            gradeArray = spiltString[1];
-            statusArray = spiltString[2];
+            termdetail = spiltString[1];
+            gradeArray = spiltString[2];
+            statusArray = spiltString[3];
 //            statusArray = statusArray.substring(0, statusArray.length() - 1);
 
             Log.d("statusArray", statusArray);
@@ -542,6 +562,12 @@ public class OnlinePaymentFragment extends Fragment {
                 standardArray.get(i).setCheckedStatus("1");
                 standardAdapter.notifyDataSetChanged();
             }
+        }
+
+        if (termdetail.equalsIgnoreCase("term 1")) {
+            fragmentOnlinePaymentBinding.termDetailSpinner.setSelection(0);
+        } else {
+            fragmentOnlinePaymentBinding.termDetailSpinner.setSelection(1);
         }
 
     }

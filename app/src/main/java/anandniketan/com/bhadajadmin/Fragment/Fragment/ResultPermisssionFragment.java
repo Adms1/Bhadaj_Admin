@@ -1,11 +1,12 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ResultPermissionAdapter;
@@ -61,31 +65,49 @@ public class ResultPermisssionFragment extends Fragment {
     private FragmentResultPermisssionBinding fragmentResultPermisssionBinding;
     private View rootView;
     private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
-    private String status, updatestatus, deletestatus;
+    private String status = "", updatestatus = "", deletestatus = "";
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public ResultPermisssionFragment() {
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentResultPermisssionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_result_permisssion, container, false);
 
         Bundle bundle = this.getArguments();
-        status = bundle.getString("reportcardviewstatus");
-        updatestatus = bundle.getString("reportcardupdatestatus");
-        deletestatus = bundle.getString("reportcarddeletestatus");
+        if (bundle != null) {
+            status = bundle.getString("reportcardviewstatus");
+            updatestatus = bundle.getString("reportcardupdatestatus");
+            deletestatus = bundle.getString("reportcarddeletestatus");
+
+        }
 
         rootView = fragmentResultPermisssionBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
+
+        return rootView;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.report_card);
 
         setListners();
         callTermApi();
         callStandardApi();
 
-        return rootView;
     }
 
     public void setListners() {
@@ -93,13 +115,13 @@ public class ResultPermisssionFragment extends Fragment {
         AppConfiguration.firsttimeback = true;
         AppConfiguration.position = 13;
 
-        fragmentResultPermisssionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentResultPermisssionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -111,7 +133,7 @@ public class ResultPermisssionFragment extends Fragment {
 //                fragmentManager.beginTransaction()
 //                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
 //                        .replace(R.id.frame_container, fragment).commit();
-                getActivity().onBackPressed();
+                Objects.requireNonNull(getActivity()).onBackPressed();
             }
         });
         fragmentResultPermisssionBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -121,7 +143,7 @@ public class ResultPermisssionFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentResultPermisssionBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callResultPermission();
             }
@@ -160,6 +182,7 @@ public class ResultPermisssionFragment extends Fragment {
         });
 
         fragmentResultPermisssionBinding.statusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 RadioButton rb = radioGroup.findViewById(checkedId);
@@ -184,9 +207,8 @@ public class ResultPermisssionFragment extends Fragment {
                 String getid = spinnerTermDetailIdMap.get(fragmentResultPermisssionBinding.termDetailSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermDetailIdStr = getid.toString();
+                FinalTermDetailIdStr = getid;
                 Log.d("FinalTermDetailIdStr", FinalTermDetailIdStr);
-
             }
 
             @Override
@@ -242,23 +264,22 @@ public class ResultPermisssionFragment extends Fragment {
     }
 
     private Map<String, String> getTermDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     public void fillTermSpinner() {
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap = new HashMap<Integer, String>();
+        spinnerTermMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -275,7 +296,7 @@ public class ResultPermisssionFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentResultPermisssionBinding.termSpinner.setAdapter(adapterTerm);
     }
 
@@ -289,10 +310,9 @@ public class ResultPermisssionFragment extends Fragment {
         termdetail.add("Term 1");
         termdetail.add("Term 2");
 
-
         String[] spinnertermdetailIdArray = new String[termdetailId.size()];
 
-        spinnerTermDetailIdMap = new HashMap<Integer, String>();
+        spinnerTermDetailIdMap = new HashMap<>();
         for (int i = 0; i < termdetailId.size(); i++) {
             spinnerTermDetailIdMap.put(i, String.valueOf(termdetailId.get(i)));
             spinnertermdetailIdArray[i] = termdetail.get(i).trim();
@@ -309,7 +329,7 @@ public class ResultPermisssionFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermdetailIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermdetailIdArray);
         fragmentResultPermisssionBinding.termDetailSpinner.setAdapter(adapterTerm);
 
         FinalTermDetailIdStr = spinnerTermDetailIdMap.get(0);
@@ -429,8 +449,7 @@ public class ResultPermisssionFragment extends Fragment {
     }
 
     private Map<String, String> getStandardDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     // CALL InsertResultPermission
@@ -485,7 +504,7 @@ public class ResultPermisssionFragment extends Fragment {
 
     // Use for get the AllFinalValue for InsertPermission
     public void getFinalIdStr() {
-        ArrayList<String> gradeArray = new ArrayList<String>();
+        ArrayList<String> gradeArray = new ArrayList<>();
         List<FinalArrayStandard> standardArray = standardAdapter.getDatas();
         for (int i = 0; i < standardArray.size(); i++) {
             if (standardArray.get(i).getCheckedStatus().equalsIgnoreCase("1")) {
@@ -504,17 +523,18 @@ public class ResultPermisssionFragment extends Fragment {
             standardArray1.get(i).setCheckedStatus("0");
             standardAdapter.notifyDataSetChanged();
         }
-        fragmentResultPermisssionBinding.addBtn.setText("Update");
-        ArrayList<String> academicYearArray = new ArrayList<String>();
-        String statusArray = "", gradeArray = "";
+        fragmentResultPermisssionBinding.addBtn.setText(R.string.update);
+        ArrayList<String> academicYearArray = new ArrayList<>();
+        String statusArray = "", gradeArray = "", termdetail = "";
 
         for (int k = 0; k < resultPermissionAdapter.getRowValue().size(); k++) {
             String rowValueStr = resultPermissionAdapter.getRowValue().get(k);
             Log.d("rowValueStr", rowValueStr);
             String[] spiltString = rowValueStr.split("\\|");
             academicYearArray.add(spiltString[0]);
-            gradeArray = spiltString[1];
-            statusArray = spiltString[2];
+            termdetail = spiltString[1];
+            gradeArray = spiltString[2];
+            statusArray = spiltString[3];
 //            statusArray = statusArray.substring(0, statusArray.length() - 1);
 
             Log.d("statusArray", statusArray);
@@ -531,6 +551,12 @@ public class ResultPermisssionFragment extends Fragment {
                 standardArray.get(i).setCheckedStatus("1");
                 standardAdapter.notifyDataSetChanged();
             }
+        }
+
+        if (termdetail.equalsIgnoreCase("term 1")) {
+            fragmentResultPermisssionBinding.termDetailSpinner.setSelection(0);
+        } else {
+            fragmentResultPermisssionBinding.termDetailSpinner.setSelection(1);
         }
 
     }

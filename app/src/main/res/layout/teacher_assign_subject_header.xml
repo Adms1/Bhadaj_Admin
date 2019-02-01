@@ -23,7 +23,6 @@
             android:layout_weight="0.14"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
 
@@ -35,7 +34,6 @@
             android:layout_weight="0.3"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
         <TextView
@@ -46,7 +44,6 @@
             android:layout_weight="0.3"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
 

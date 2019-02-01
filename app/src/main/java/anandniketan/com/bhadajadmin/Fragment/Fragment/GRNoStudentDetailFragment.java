@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +22,6 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableListAdapterGRstudentdetail;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
@@ -47,6 +49,9 @@ public class GRNoStudentDetailFragment extends Fragment {
 
     private int lastExpandedPosition = -1;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public GRNoStudentDetailFragment() {
     }
 
@@ -59,10 +64,24 @@ public class GRNoStudentDetailFragment extends Fragment {
         mContext = getActivity().getApplicationContext();
 
         flag = getArguments().getString("flag");
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.studentdetail);
+
         initViews();
         setListners();
         callStaffApi();
-        return rootView;
     }
 
     public void initViews() {
@@ -70,13 +89,13 @@ public class GRNoStudentDetailFragment extends Fragment {
     }
 
     public void setListners() {
-        fragmentGrnoStudentDetailBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentGrnoStudentDetailBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (flag.equalsIgnoreCase("1")) {
@@ -153,7 +172,7 @@ public class GRNoStudentDetailFragment extends Fragment {
                             Log.d("array", "" + arraystu);
 
                             listDataHeader = new ArrayList<>();
-                            listDataChild = new HashMap<String, ArrayList<StudentAttendanceFinalArray>>();
+                            listDataChild = new HashMap<>();
 
                             for (int i = 0; i < arraystu.size(); i++) {
                                 Log.d("arraystu", "" + arraystu);

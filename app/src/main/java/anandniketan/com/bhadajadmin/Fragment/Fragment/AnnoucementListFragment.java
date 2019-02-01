@@ -2,6 +2,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -51,6 +52,9 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
     private OnUpdateRecord onUpdateRecordRef;
     private Button backBtn;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public AnnoucementListFragment() {
         mContext = getActivity();
     }
@@ -73,13 +77,28 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
         fabAddAnnouncement = rootView.findViewById(R.id.fab_add_annoucement);
         expandableListView = rootView.findViewById(R.id.annoucement_list);
         txtNoRecordsAnnouncement = rootView.findViewById(R.id.txt_empty_view);
-        btnMenuLinear = rootView.findViewById(R.id.btnmenu);
-        backBtn = rootView.findViewById(R.id.btnBack);
-        setListners();
-        callAnnouncementListApi();
 
         return rootView;
     }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.announcment);
+
+        setListners();
+        callAnnouncementListApi();
+
+
+    }
+
 
     public void setListners() {
         fabAddAnnouncement.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +111,14 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
 
             }
         });
-        btnMenuLinear.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DashboardActivity.onLeft();
             }
         });
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragment = new StudentFragment();

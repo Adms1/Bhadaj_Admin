@@ -22,10 +22,10 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearchListItemAdapter.MyViewHolder> {
-    private Context context;
-    private List<SearchStaffModel.FinalArray> announcmentModel;
     SpannableStringBuilder discriptionSpanned;
     String discriptionStr;
+    private Context context;
+    private List<SearchStaffModel.FinalArray> announcmentModel;
     private Fragment fragment;
     private FragmentManager fragmentManager;
     private String viewstatus;
@@ -47,10 +47,20 @@ public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearch
     public void onBindViewHolder(StaffSearchListItemAdapter.MyViewHolder holder, final int position) {
         String sr = String.valueOf(position + 1);
         final SearchStaffModel.FinalArray result = announcmentModel.get(position);
-        holder.employee_txt.setText(result.getName()+"("+result.getEmpCode()+")");
-        holder.fh_name_txt.setText(result.getFatherHusbandName());
-        holder.dob_txt.setText(result.getDateOfBirth());
+        holder.employee_txt.setText(result.getName() + "(" + result.getEmpCode() + ")");
         holder.department_txt.setText(String.valueOf(result.getDepartment()));
+
+        if (result.getFatherHusbandName().equalsIgnoreCase("")) {
+            holder.fh_name_txt.setText("-");
+        } else {
+            holder.fh_name_txt.setText(result.getFatherHusbandName());
+        }
+
+        if (result.getDateOfBirth().equalsIgnoreCase("")) {
+            holder.dob_txt.setText("-");
+        } else {
+            holder.dob_txt.setText(result.getDateOfBirth());
+        }
 
         holder.view_txt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,21 +98,6 @@ public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearch
         return announcmentModel.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView employee_txt,fh_name_txt, dob_txt, department_txt, view_txt;
-
-
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            employee_txt = itemView.findViewById(R.id.employee_txt);
-            fh_name_txt = itemView.findViewById(R.id.fh_name_txt);
-            dob_txt = itemView.findViewById(R.id.dob_txt);
-            department_txt = itemView.findViewById(R.id.department_txt);
-            view_txt = itemView.findViewById(R.id.view_txt);
-
-        }
-    }
-
     private SpannableStringBuilder trimSpannable(SpannableStringBuilder spannable) {
         int trimStart = 0;
         int trimEnd = 0;
@@ -117,5 +112,20 @@ public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearch
             trimEnd += 1;
         }
         return spannable.delete(0, trimStart).delete(spannable.length() - trimEnd, spannable.length());
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView employee_txt, fh_name_txt, dob_txt, department_txt, view_txt;
+
+
+        public MyViewHolder(View itemView) {
+            super(itemView);
+            employee_txt = itemView.findViewById(R.id.employee_txt);
+            fh_name_txt = itemView.findViewById(R.id.fh_name_txt);
+            dob_txt = itemView.findViewById(R.id.dob_txt);
+            department_txt = itemView.findViewById(R.id.department_txt);
+            view_txt = itemView.findViewById(R.id.view_txt);
+
+        }
     }
 }

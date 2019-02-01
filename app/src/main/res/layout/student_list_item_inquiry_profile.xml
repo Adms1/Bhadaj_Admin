@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:visibility="gone"
@@ -38,8 +39,7 @@
                 android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -48,8 +48,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/tag_txt"
@@ -58,7 +57,7 @@
                 android:text="@string/studenttag"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -68,6 +67,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -77,8 +77,7 @@
                 android:text="@string/firstname"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -86,8 +85,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/firstname_txt"
@@ -95,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -105,6 +103,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -114,8 +113,7 @@
                 android:text="@string/middlename"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -123,8 +121,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/middle_txt"
@@ -132,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -142,6 +139,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -151,8 +149,7 @@
                 android:text="@string/lastname"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -160,8 +157,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/lastname_txt"
@@ -169,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -178,6 +174,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -187,8 +184,7 @@
                 android:text="@string/grade_section"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -196,8 +192,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/grade_txt"
@@ -205,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -216,6 +211,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -225,8 +221,7 @@
                 android:text="Session"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -234,8 +229,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/session_txt"
@@ -243,7 +237,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -253,6 +247,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -262,8 +257,7 @@
                 android:text="@string/form_no"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -271,8 +265,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/form_txt"
@@ -280,7 +273,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -290,6 +283,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -299,8 +293,7 @@
                 android:text="@string/date"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -308,8 +301,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/date_txt"
@@ -317,7 +309,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -327,6 +319,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -336,8 +329,7 @@
                 android:text="@string/grno"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -345,8 +337,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/grno_txt"
@@ -354,7 +345,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -365,6 +356,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -374,8 +366,7 @@
                 android:text="@string/gender"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -383,8 +374,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/gender_txt1"
@@ -392,7 +382,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -402,6 +392,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -411,8 +402,7 @@
                 android:text="@string/bloodgroup"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -420,8 +410,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/bloodgroup_txt"
@@ -429,7 +418,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -439,6 +428,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -448,8 +438,7 @@
                 android:text="@string/dob"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -457,8 +446,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/dob_txt"
@@ -466,7 +454,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -479,6 +467,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -488,8 +477,7 @@
                 android:text="@string/birthplace"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -497,8 +485,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/birthplace_txt"
@@ -506,7 +493,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -516,6 +503,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -525,8 +513,7 @@
                 android:text="@string/nationality"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -534,8 +521,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/nationality_txt"
@@ -543,7 +529,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -552,6 +538,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -561,8 +548,7 @@
                 android:text="@string/hometown"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -570,8 +556,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/hometown_txt"
@@ -579,7 +564,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -589,6 +574,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -598,8 +584,7 @@
                 android:text="@string/mother_toungue"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -607,8 +592,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/mother_toungue_txt"
@@ -616,7 +600,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -627,6 +611,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -635,10 +620,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/currently_reside"
                 android:textAlignment="textStart"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -646,8 +629,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/currently_residewith_txt"
@@ -655,7 +637,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -665,6 +647,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -674,9 +657,7 @@
                 android:text="@string/previous_school"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:layout_marginBottom="@dimen/_2sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -684,8 +665,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/previous_school_txt"
@@ -693,7 +673,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -704,6 +684,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -712,10 +693,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/festival_celebrated"
                 android:textAlignment="textStart"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -723,8 +702,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/festivals_txt1"
@@ -732,7 +710,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -743,6 +721,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:visibility="gone"
             android:orientation="horizontal">
 
@@ -753,8 +732,7 @@
                 android:text="@string/state"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -762,8 +740,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/state_txt"
@@ -771,7 +748,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
 
         </LinearLayout>
@@ -788,6 +765,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:visibility="gone"
             android:orientation="horizontal">
 
@@ -798,8 +776,7 @@
                 android:text="@string/board"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -807,8 +784,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/board_txt"
@@ -816,7 +792,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -826,6 +802,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -835,8 +812,7 @@
                 android:text="@string/name_of_sibling_one"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -844,8 +820,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling_name1_txt"
@@ -853,7 +828,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -862,6 +837,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -870,10 +846,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sibling1_brother_sister"
                 android:textAlignment="textStart"
-                android:layout_marginBottom="@dimen/_2sdp"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -881,8 +855,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling1_brother_sister_txt"
@@ -890,7 +863,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -900,6 +873,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -909,8 +883,7 @@
                 android:text="@string/sibling_one_grade"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -918,8 +891,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling_one_grade_txt"
@@ -927,7 +899,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -936,6 +908,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -945,8 +918,7 @@
                 android:text="@string/sibling1_school"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -954,8 +926,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling1_school_txt"
@@ -963,7 +934,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -973,6 +944,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -981,10 +953,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/name_of_sibling_two"
                 android:textAlignment="textStart"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -992,8 +962,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling_name2_txt"
@@ -1001,7 +970,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -1010,6 +979,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -1018,11 +988,9 @@
                 android:layout_height="wrap_content"
                 android:text="@string/sibling2_brother_sister"
                 android:textAlignment="textStart"
-                android:layout_marginBottom="@dimen/_5sdp"
 
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1030,8 +998,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling2_brother_sister_txt"
@@ -1039,7 +1006,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -1049,6 +1016,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -1058,8 +1026,7 @@
                 android:text="@string/sibling_two_grade"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1067,8 +1034,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling_grade2_txt"
@@ -1076,7 +1042,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -1085,6 +1051,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -1094,8 +1061,7 @@
                 android:text="@string/sibling2_school"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1103,8 +1069,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling_school2_txt"
@@ -1112,7 +1077,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -1121,6 +1086,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -1130,10 +1096,7 @@
                 android:text="@string/name_of_local_guardian"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1141,8 +1104,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/guardian_name_txt"
@@ -1150,7 +1112,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -1161,6 +1123,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -1170,10 +1133,7 @@
                 android:text="@string/contact_of_local_guardian"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1181,8 +1141,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/guardian_contact_txt"
@@ -1190,7 +1149,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -1200,6 +1159,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -1209,8 +1169,7 @@
                 android:text="@string/address"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1218,8 +1177,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/address_txt"
@@ -1227,7 +1185,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
         <LinearLayout
@@ -1236,6 +1194,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -1245,10 +1204,7 @@
                 android:text="@string/emergency_contact"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1256,8 +1212,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/ecno_txt"
@@ -1265,7 +1220,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -1276,6 +1231,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:layout_marginBottom="@dimen/_20sdp"
             android:orientation="horizontal">
 
@@ -1286,10 +1242,7 @@
                 android:text="@string/would_like_avail_transport_facility"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1297,8 +1250,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/avail_transport_txt"
@@ -1306,7 +1258,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textStyle="normal" />
         </LinearLayout>
 
@@ -1316,6 +1268,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:visibility="gone"
             android:orientation="horizontal">
 
@@ -1326,8 +1279,7 @@
                 android:text="@string/age"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1335,8 +1287,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/age_txt"
@@ -1357,6 +1308,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
             android:visibility="gone"
             android:orientation="horizontal">
 
@@ -1367,8 +1319,7 @@
                 android:text="@string/seeking_admission_for_grade"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1376,8 +1327,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/seeking_admission_for_grade_txt"
@@ -1395,7 +1345,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
+            android:gravity="center"
             android:visibility="gone"
             android:orientation="horizontal">
 
@@ -1406,8 +1356,7 @@
                 android:text="@string/sibling_in_anand_niketan_school"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1415,8 +1364,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/sibling_in_anand_niketan_txt"
@@ -1438,7 +1386,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
+            android:gravity="center"
             android:visibility="gone"
             android:orientation="horizontal">
 
@@ -1449,8 +1397,7 @@
                 android:text="@string/distance_from_school_in_kms"
                 android:textAlignment="textStart"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="@dimen/_10sdp"
@@ -1458,8 +1405,7 @@
                 android:text=":"
                 android:textAlignment="center"
                 android:textColor="@color/scheduleheadertextcolor"
-                android:textSize="@dimen/_9sdp"
-                android:textStyle="bold" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/distance_txt"

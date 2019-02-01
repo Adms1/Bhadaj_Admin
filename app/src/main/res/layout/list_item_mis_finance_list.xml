@@ -78,7 +78,7 @@
             android:layout_gravity="center">
 
             <TextView
-                android:id="@+id/term2_credit_txt"
+                android:id="@+id/term2_debit_txt"
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:textSize="@dimen/_11sdp" />
 
             <TextView
-                android:id="@+id/term2_debit_txt"
+                android:id="@+id/term2_credit_txt"
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"

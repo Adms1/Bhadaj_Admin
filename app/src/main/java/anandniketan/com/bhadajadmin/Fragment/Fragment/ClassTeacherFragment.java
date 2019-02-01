@@ -1,8 +1,10 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,15 +17,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ClassTeacherDetailListAdapter;
@@ -65,15 +70,19 @@ public class ClassTeacherFragment extends Fragment {
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private RadioGroup radioGroup;
-    private int selectedPosition = -1;
     private String viewstatus, updatestatus, deletestatus;
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
+
     //Use for get the Final selected ClassID
     private RadioGroup.OnCheckedChangeListener mCheckedListner = new RadioGroup.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
 
             if (group.findViewById(checkedId) != null) {
-                RadioButton btn = getActivity().findViewById(checkedId);
+                RadioButton btn = Objects.requireNonNull(getActivity()).findViewById(checkedId);
                 finalClassIdStr = btn.getTag().toString();
                 Log.d("Your selected ", finalClassIdStr);
             }
@@ -85,38 +94,56 @@ public class ClassTeacherFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentClassTeacherBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_class_teacher, container, false);
 
         rootView = fragmentClassTeacherBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
 
         Bundle bundle = this.getArguments();
-        viewstatus = bundle.getString("viewstatus");
-        updatestatus = bundle.getString("updatestatus");
-        deletestatus = bundle.getString("deletestatus");
+        if (bundle != null) {
+            viewstatus = bundle.getString("viewstatus");
+            updatestatus = bundle.getString("updatestatus");
+            deletestatus = bundle.getString("deletestatus");
 
-        callTermApi();
-        setListners();
+        }
 
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.classTeacher);
+
+        callTermApi();
+        setListners();
+
+    }
+
     public void setListners() {
-        fragmentClassTeacherBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentClassTeacherBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StaffFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                }
             }
         });
         fragmentClassTeacherBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -126,13 +153,13 @@ public class ClassTeacherFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentClassTeacherBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                finalTermIdStr = getid.toString();
+                finalTermIdStr = getid;
                 Log.d("FinalTermIdStr", finalTermIdStr);
 
                 if (viewstatus.equalsIgnoreCase("true")) {
                     fragmentClassTeacherBinding.listHeader.setVisibility(View.VISIBLE);
                     callClassTeacherApi();
-                    callTeacherApi(getid.toString());
+                    callTeacherApi(getid);
                 } else {
                     fragmentClassTeacherBinding.listHeader.setVisibility(View.GONE);
                     Utils.ping(getActivity(), "Access Denied");
@@ -151,7 +178,7 @@ public class ClassTeacherFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentClassTeacherBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                finalStandardIdStr = getid.toString();
+                finalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", finalStandardIdStr);
                 standardName = name;
                 Log.d("StandardName", standardName);
@@ -170,7 +197,7 @@ public class ClassTeacherFragment extends Fragment {
                 String getid = spinnerTeacherMap.get(fragmentClassTeacherBinding.teacherSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                finalTeacherIdStr = getid.toString();
+                finalTeacherIdStr = getid;
                 Log.d("FinalTeacherIdStr", finalTeacherIdStr);
             }
 
@@ -238,8 +265,7 @@ public class ClassTeacherFragment extends Fragment {
     }
 
     private Map<String, String> getTermDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     // CALL Standard API HERE
@@ -287,8 +313,7 @@ public class ClassTeacherFragment extends Fragment {
     }
 
     private Map<String, String> getStandardDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
 
     // CALL Teacher API HERE
@@ -508,7 +533,7 @@ public class ClassTeacherFragment extends Fragment {
     public void fillGradeSpinner() {
         ArrayList<Integer> firstValueId = new ArrayList<>();
         firstValueId.add(0);
-        ArrayList<Integer> StandardId = new ArrayList<Integer>();
+        ArrayList<Integer> StandardId = new ArrayList<>();
         for (int m = 0; m < firstValueId.size(); m++) {
             StandardId.add(firstValueId.get(m));
             for (int i = 0; i < finalArrayStandardsList.size(); i++) {
@@ -517,7 +542,7 @@ public class ClassTeacherFragment extends Fragment {
         }
         ArrayList<String> firstValue = new ArrayList<>();
         firstValue.add("--Select--");
-        ArrayList<String> Standard = new ArrayList<String>();
+        ArrayList<String> Standard = new ArrayList<>();
         for (int z = 0; z < firstValue.size(); z++) {
             Standard.add(firstValue.get(z));
 
@@ -528,7 +553,7 @@ public class ClassTeacherFragment extends Fragment {
 
         spinnerstandardIdArray = new String[StandardId.size()];
 
-        spinnerStandardMap = new HashMap<Integer, String>();
+        spinnerStandardMap = new HashMap<>();
         for (int i = 0; i < StandardId.size(); i++) {
             spinnerStandardMap.put(i, String.valueOf(StandardId.get(i)));
             spinnerstandardIdArray[i] = Standard.get(i).trim();
@@ -545,8 +570,10 @@ public class ClassTeacherFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
         fragmentClassTeacherBinding.gradeSpinner.setAdapter(adapterTerm);
+
+        fragmentClassTeacherBinding.gradeSpinner.setSelection(1);
 
     }
 
@@ -554,7 +581,7 @@ public class ClassTeacherFragment extends Fragment {
     public void fillTeacherSpinner() {
         ArrayList<Integer> firstValueId = new ArrayList<>();
         firstValueId.add(0);
-        ArrayList<Integer> TeacherId = new ArrayList<Integer>();
+        ArrayList<Integer> TeacherId = new ArrayList<>();
         for (int m = 0; m < firstValueId.size(); m++) {
             TeacherId.add(firstValueId.get(m));
             for (int i = 0; i < finalArrayTeachersModelList.size(); i++) {
@@ -565,7 +592,7 @@ public class ClassTeacherFragment extends Fragment {
         ArrayList<String> firstValue = new ArrayList<>();
         firstValue.add("--Select--");
 
-        ArrayList<String> Teacher = new ArrayList<String>();
+        ArrayList<String> Teacher = new ArrayList<>();
         for (int z = 0; z < firstValue.size(); z++) {
             Teacher.add(firstValue.get(z));
             for (int j = 0; j < finalArrayTeachersModelList.size(); j++) {
@@ -574,7 +601,7 @@ public class ClassTeacherFragment extends Fragment {
         }
         spinnerteacherIdArray = new String[TeacherId.size()];
 
-        spinnerTeacherMap = new HashMap<Integer, String>();
+        spinnerTeacherMap = new HashMap<>();
         for (int i = 0; i < TeacherId.size(); i++) {
             spinnerTeacherMap.put(i, String.valueOf(TeacherId.get(i)));
             spinnerteacherIdArray[i] = Teacher.get(i).trim();
@@ -591,17 +618,16 @@ public class ClassTeacherFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerteacherIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerteacherIdArray);
         fragmentClassTeacherBinding.teacherSpinner.setAdapter(adapterTerm);
 
+        fragmentClassTeacherBinding.termSpinner.setSelection(1);
 
     }
 
     //Use for fill the Class Spinner
     public void fillSection() {
         ArrayList<String> classname = new ArrayList<>();
-        ArrayList<String> classId = new ArrayList<>();
-
 
         if (!standardName.equalsIgnoreCase("--Select--")) {
             for (int i = 0; i < finalArrayStandardsList.size(); i++) {
@@ -619,13 +645,14 @@ public class ClassTeacherFragment extends Fragment {
         }
         try {
             for (int i = 0; i < 1; i++) {
-                View convertView = LayoutInflater.from(mContext).inflate(R.layout.list_checkbox, null);
+                @SuppressLint("InflateParams") View convertView = LayoutInflater.from(mContext).inflate(R.layout.list_checkbox, null);
                 radioGroup = convertView.findViewById(R.id.radiogroup);
 
                 for (int k = 0; k < classname.size(); k++) {
                     RadioButton radioButton = new RadioButton(mContext);
                     radioButton.setButtonDrawable(R.drawable.check_uncheck);
-                    radioButton.setPadding(10, 10, 10, 10);
+//                    radioButton.setPadding(10, 10, 10, 10);
+                    radioButton.setTextSize(10f);
                     radioButton.setTextColor(getResources().getColor(R.color.black));
 
                     String[] splitValue = classname.get(k).split("\\|");
@@ -648,18 +675,18 @@ public class ClassTeacherFragment extends Fragment {
 
     //Use for fill the Term Spinner
     public void fillTermSpinner() {
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap = new HashMap<Integer, String>();
+        spinnerTermMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -676,7 +703,7 @@ public class ClassTeacherFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentClassTeacherBinding.termSpinner.setAdapter(adapterTerm);
         fragmentClassTeacherBinding.termSpinner.setSelection(1);
         finalTermIdStr = spinnerTermMap.get(0);

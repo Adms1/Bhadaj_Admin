@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -44,27 +47,28 @@ import retrofit.client.Response;
 
 public class StudentAttendaneFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private FragmentStudentAttendaneBinding fragmentStudentAttendaneBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
-
+    private static String dateFinal;
     List<FinalArrayStandard> finalArrayStandardsList;
     HashMap<Integer, String> spinnerStandardMap;
     HashMap<Integer, String> spinnerSectionMap;
     List<StudentAttendanceFinalArray> finalArrayStudentNameModelList;
     String FinalStandardIdStr, FinalClassIdStr, StandardName, FinalStandardStr, FinalSectionStr, FinalDataStr;
     AttendanceAdapter attendanceAdapter;
-
     int Year, Month, Day;
     int mYear, mMonth, mDay;
     Calendar calendar;
-    private static String dateFinal;
+    private FragmentStudentAttendaneBinding fragmentStudentAttendaneBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
     private DatePickerDialog datePickerDialog;
-    private  PrefUtils prefUtils ;
-    private String Attendanceidstr = "",Attendacestatusstr = "",studentidstr = "";
+    private PrefUtils prefUtils;
+    private String Attendanceidstr = "", Attendacestatusstr = "", studentidstr = "";
     private String status, updateStatus, update;
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public StudentAttendaneFragment() {
     }
@@ -82,12 +86,24 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         rootView = fragmentStudentAttendaneBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-        setListners();
-        callStandardApi();
-
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.attendace);
+
+        setListners();
+        callStandardApi();
+
+    }
 
     public void setListners() {
         calendar = Calendar.getInstance();
@@ -97,13 +113,13 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
 
         fragmentStudentAttendaneBinding.dateButton.setText(Utils.getTodaysDate());
 
-        fragmentStudentAttendaneBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStudentAttendaneBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StudentFragment();
@@ -244,7 +260,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     // CALL Attendence_Admin API HERE
     private void callAttendence_AdminApi() {
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error),getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
         Utils.showDialog(getActivity());
@@ -289,10 +305,10 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                         fragmentStudentAttendaneBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentStudentAttendaneBinding.recyclerLinear.setVisibility(View.VISIBLE);
                         fragmentStudentAttendaneBinding.listHeader.setVisibility(View.VISIBLE);
-                        fragmentStudentAttendaneBinding.totalTxt.setText(Html.fromHtml("Total Students : " + "<font color='#1B88C8'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotal() + "</b>"));
-                        fragmentStudentAttendaneBinding.presentTxt.setText(Html.fromHtml("" + "<font color='#a4c639'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalPresent() + "</b>"));
-                        fragmentStudentAttendaneBinding.absentTxt.setText(Html.fromHtml("" + "<font color='#ff0000'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalAbsent() + "</b>"));
-                        fragmentStudentAttendaneBinding.leaveTxt.setText(Html.fromHtml("" + "<font color='#ff9623'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalLeave() + "</b>"));
+                        fragmentStudentAttendaneBinding.totalTxt.setText(Html.fromHtml("Total Students : " + "<font color='#1B88C8'>" + attendanceModel.getFinalArray().get(0).getTotal()));
+                        fragmentStudentAttendaneBinding.presentTxt.setText(Html.fromHtml("" + "<font color='#a4c639'>" + attendanceModel.getFinalArray().get(0).getTotalPresent()));
+                        fragmentStudentAttendaneBinding.absentTxt.setText(Html.fromHtml("" + "<font color='#ff0000'>" + attendanceModel.getFinalArray().get(0).getTotalAbsent()));
+                        fragmentStudentAttendaneBinding.leaveTxt.setText(Html.fromHtml("" + "<font color='#ff9623'>" + attendanceModel.getFinalArray().get(0).getTotalLeave()));
                         //fragmentStudentAttendaneBinding.ondutyTxt.setText(Html.fromHtml("OnDuty : " + "<font color='#d8b834'>" + "<b>" + attendanceModel.getFinalArray().get(0).getTotalOnDuty() + "</b>"));
 
                         if (!attendanceModel.getFinalArray().get(0).getStudentDetail().get(0).getAttendenceStatus().equalsIgnoreCase("-2")) {
@@ -330,6 +346,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         });
 
     }
+
     private Map<String, String> getAttendence_AdminDetail() {
         Map<String, String> map = new HashMap<>();
         FinalDataStr = fragmentStudentAttendaneBinding.dateButton.getText().toString();
@@ -341,7 +358,6 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     }
 
 
-
     public void fillGradeSpinner() {
 //        ArrayList<String> firstValue = new ArrayList<>();
 //        firstValue.add("All");
@@ -349,18 +365,18 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         ArrayList<String> standardname = new ArrayList<>();
 //        for (int z = 0; z < firstValue.size(); z++) {
 //            standardname.add(firstValue.get(z));
-            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
-                standardname.add(finalArrayStandardsList.get(i).getStandard());
-            }
+        for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+            standardname.add(finalArrayStandardsList.get(i).getStandard());
+        }
 //        }
 //        ArrayList<Integer> firstValueId = new ArrayList<>();
 //        firstValueId.add(0);
         ArrayList<Integer> standardId = new ArrayList<>();
 //        for (int m = 0; m < firstValueId.size(); m++) {
 //            standardId.add(firstValueId.get(m));
-            for (int j = 0; j < finalArrayStandardsList.size(); j++) {
-                standardId.add(finalArrayStandardsList.get(j).getStandardID());
-            }
+        for (int j = 0; j < finalArrayStandardsList.size(); j++) {
+            standardId.add(finalArrayStandardsList.get(j).getStandardID());
+        }
 //        }
         String[] spinnerstandardIdArray = new String[standardId.size()];
 
@@ -411,15 +427,15 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
             if (StandardName.equalsIgnoreCase(finalArrayStandardsList.get(z).getStandard())) {
 //                for (int j = 0; j < firstSectionValue.size(); j++) {
 //                    sectionname.add(firstSectionValue.get(j));
-                    for (int i = 0; i < finalArrayStandardsList.get(z).getSectionDetail().size(); i++) {
-                        sectionname.add(finalArrayStandardsList.get(z).getSectionDetail().get(i).getSection());
+                for (int i = 0; i < finalArrayStandardsList.get(z).getSectionDetail().size(); i++) {
+                    sectionname.add(finalArrayStandardsList.get(z).getSectionDetail().get(i).getSection());
 //                    }
                 }
 //                for (int j = 0; j < firstSectionId.size(); j++) {
 //                    sectionId.add(firstSectionId.get(j));
-                    for (int m = 0; m < finalArrayStandardsList.get(z).getSectionDetail().size(); m++) {
-                        sectionId.add(finalArrayStandardsList.get(z).getSectionDetail().get(m).getSectionID());
-                    }
+                for (int m = 0; m < finalArrayStandardsList.get(z).getSectionDetail().size(); m++) {
+                    sectionId.add(finalArrayStandardsList.get(z).getSectionDetail().get(m).getSectionID());
+                }
 //                }
             }
         }
@@ -519,7 +535,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                 }
                 if (attendanceModel.getSuccess().equalsIgnoreCase("True")) {
                     Utils.dismissDialog();
-                    Utils.ping(getActivity(),"Attendance updated successfully");
+                    Utils.ping(getActivity(), "Attendance updated successfully");
                     if (status.equalsIgnoreCase("true")) {
 
                         callAttendence_AdminApi();
@@ -552,10 +568,10 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                     final ArrayList<String> studid = new ArrayList<>();
 
                     for (int j = 0; j < finalArrayStudentNameModelList.get(0).getStudentDetail().size(); j++) {
-                            Attendanceid.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getAttendanceID()));
-                            Attendacestatus.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getAttendenceStatus()));
-                            studid.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getStudentID()));
-                        }
+                        Attendanceid.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getAttendanceID()));
+                        Attendacestatus.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getAttendenceStatus()));
+                        studid.add(String.valueOf(finalArrayStudentNameModelList.get(0).getStudentDetail().get(j).getStudentID()));
+                    }
 
                     Log.d("Attendanceid", "" + Attendanceid);
                     Log.d("Attendacestatus", "" + Attendacestatus);
@@ -576,8 +592,8 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                     }
                     Log.d("Attendacestatusstr", Attendacestatusstr);
 
-                    Attendacestatusstr = Attendacestatusstr.substring(1,Attendacestatusstr.length());
-                    Attendacestatusstr = Attendacestatusstr.replace("-2","1");
+                    Attendacestatusstr = Attendacestatusstr.substring(1, Attendacestatusstr.length());
+                    Attendacestatusstr = Attendacestatusstr.replace("-2", "1");
                     Log.d("Attendacestatusstr", Attendacestatusstr);
 
                     studentidstr = "";
@@ -604,7 +620,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
             }
             return map;
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return map;

@@ -38,7 +38,7 @@ public class OnlinePaymentPermissionAdapter extends RecyclerView.Adapter<OnlineP
 
     @Override
     public OnlinePaymentPermissionAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.online_payment_permission_list, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.result_permission_list, parent, false);
         return new OnlinePaymentPermissionAdapter.MyViewHolder(itemView);
     }
 

@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -46,6 +49,9 @@ public class HRFragment extends Fragment {
     private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public HRFragment() {
     }
 
@@ -54,11 +60,24 @@ public class HRFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentHrBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_hr, container, false);
 
+        rootView = fragmentHrBinding.getRoot();
+        mContext = getActivity().getApplicationContext();
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         newArr = new ArrayList<>();
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "HR");
 
-        rootView = fragmentHrBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        tvHeader = view.findViewById(R.id.home_sname_txt);
+        btnBack = view.findViewById(R.id.home_btnBack);
+        btnMenu = view.findViewById(R.id.home_btnmenu);
+
+        tvHeader.setText(R.string.hr);
 
         for (int i = 0; i < mThumbNames.length; i++) {
             if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
@@ -72,7 +91,6 @@ public class HRFragment extends Fragment {
 
         initViews();
         setListners();
-        return rootView;
     }
 
     public void initViews() {
@@ -86,13 +104,13 @@ public class HRFragment extends Fragment {
     }
 
     public void setListners() {
-        fragmentHrBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentHrBinding.btnBackhr.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new HomeFragment();

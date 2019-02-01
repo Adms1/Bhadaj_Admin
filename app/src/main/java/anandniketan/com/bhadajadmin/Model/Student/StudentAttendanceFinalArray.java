@@ -69,6 +69,9 @@ public class StudentAttendanceFinalArray {
     @SerializedName("Section")
     @Expose
     private String section;
+    @SerializedName("Board")
+    @Expose
+    private String board;
     @SerializedName("Last School")
     @Expose
     private String lastSchool;
@@ -708,6 +711,14 @@ public class StudentAttendanceFinalArray {
 
     public void setFatherQualification(String fatherQualification) {
         this.fatherQualification = fatherQualification;
+    }
+
+    public String getBoard() {
+        return board;
+    }
+
+    public void setBoard(String board) {
+        this.board = board;
     }
 
     public String getFatherOccupation() {
