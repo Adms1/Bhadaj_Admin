@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -56,6 +59,9 @@ public class SMSFragment extends Fragment {
     private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public SMSFragment() {
     }
 
@@ -67,10 +73,22 @@ public class SMSFragment extends Fragment {
         rootView = fragmentSmBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.home_sname_txt);
+        btnBack = view.findViewById(R.id.home_btnBack);
+        btnMenu = view.findViewById(R.id.home_btnmenu);
+
+        tvHeader.setText(R.string.m_sms);
+
         initViews();
         setListners();
 
-        return rootView;
     }
 
     public void initViews() {
@@ -99,7 +117,7 @@ public class SMSFragment extends Fragment {
     }
 
     public void setListners() {
-        fragmentSmBinding.btnBackSMS.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new HomeFragment();
@@ -110,7 +128,7 @@ public class SMSFragment extends Fragment {
             }
         });
 
-        fragmentSmBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();

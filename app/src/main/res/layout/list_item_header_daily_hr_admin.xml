@@ -13,7 +13,7 @@
             app:cardCornerRadius="@dimen/_1sdp"
             app:cardUseCompatPadding="true"
             app:cardElevation="@dimen/_3sdp"
-            app:contentPadding="@dimen/_3sdp">
+            app:contentPadding="@dimen/_1sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -70,6 +72,9 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
     private int whichClick  = 1;
     private String viewstatus;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public DailyFeesCollectionFragment() {
     }
 
@@ -84,13 +89,24 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
         Bundle bundle = this.getArguments();
         viewstatus = bundle.getString("viewstatus");
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.dailyfeescollection);
+
         setListners();
         callTermApi();
         callStandardApi();
 
-        return rootView;
     }
-
 
     public void setListners() {
         calendar = Calendar.getInstance();
@@ -100,7 +116,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
 
        // fragmentDailyFeesCollectionBinding.dateButton.setText(Utils.getTodaysDate());
 
-        fragmentDailyFeesCollectionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
@@ -138,7 +154,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
             }
         });
 
-        fragmentDailyFeesCollectionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new AccountFragment();
@@ -425,7 +441,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap = new HashMap<Integer, String>();
+        spinnerTermMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -444,6 +460,8 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentDailyFeesCollectionBinding.termSpinner.setAdapter(adapterTerm);
+
+        fragmentDailyFeesCollectionBinding.termSpinner.setSelection(1);
 
         FinalTermIdStr=spinnerTermMap.get(0);
     }
@@ -550,7 +568,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerpaymentIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerpaymentIdArray);
         fragmentDailyFeesCollectionBinding.paymentModeSpinner.setAdapter(adapterTerm);
 
         FinalPaymentmodeStr = spinnerPaymentModeMap.get(0);
@@ -560,13 +578,13 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
     //Use for fill the Term Spinner
     public void fillExpLV() {
         listDataHeader = new ArrayList<>();
-        listDataChild = new HashMap<String, ArrayList<DateWiseFeesCollectionModel.FinalArray>>();
+        listDataChild = new HashMap<>();
 
         for (int i = 0; i < dailyCollectionsList.size(); i++) {
             listDataHeader.add(dailyCollectionsList.get(i).getName() + "|" +
                     dailyCollectionsList.get(i).getGRNO() + "|" + dailyCollectionsList.get(i).getStandard()+"|" + dailyCollectionsList.get(i).getTotalAmt()+"|"+dailyCollectionsList.get(i).getStudentID());
             Log.d("header", "" + listDataHeader);
-            ArrayList<DateWiseFeesCollectionModel.FinalArray> row = new ArrayList<DateWiseFeesCollectionModel.FinalArray>();
+            ArrayList<DateWiseFeesCollectionModel.FinalArray> row = new ArrayList<>();
             row.add(dailyCollectionsList.get(i));
             Log.d("row", "" + row);
             listDataChild.put(listDataHeader.get(i), row);

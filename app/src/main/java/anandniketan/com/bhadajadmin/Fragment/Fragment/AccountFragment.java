@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -61,6 +64,9 @@ public class AccountFragment extends Fragment {
     private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public AccountFragment() {
     }
 
@@ -72,6 +78,19 @@ public class AccountFragment extends Fragment {
         rootView = fragmentAccountBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.home_sname_txt);
+        btnBack = view.findViewById(R.id.home_btnBack);
+        btnMenu = view.findViewById(R.id.home_btnmenu);
+
+        tvHeader.setText(R.string.account);
+
         newArr = new ArrayList<>();
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Account");
 
@@ -79,7 +98,6 @@ public class AccountFragment extends Fragment {
         setListners();
         SelectTerm();
         callAccountFeesStatusApi();
-        return rootView;
     }
 
     public void initViews() {
@@ -104,7 +122,7 @@ public class AccountFragment extends Fragment {
     }
 
     public void setListners() {
-        fragmentAccountBinding.btnBackAccount.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppConfiguration.ReverseTermDetailId = "";
@@ -115,7 +133,7 @@ public class AccountFragment extends Fragment {
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
-        fragmentAccountBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();

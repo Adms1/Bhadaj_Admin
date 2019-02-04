@@ -50,7 +50,7 @@ public class AttendenceReportSubMenuAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imgGridOptions = null;
         TextView txtGridOptionsName = null;
-        View line1 = null;
+        View line1 = null, line2 = null;
 
         LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.sub_menu_grid_cell, null);
@@ -58,6 +58,7 @@ public class AttendenceReportSubMenuAdapter extends BaseAdapter {
         imgGridOptions = convertView.findViewById(R.id.imgGridOptions);
         txtGridOptionsName = convertView.findViewById(R.id.txtGridOptionsName);
         line1 = convertView.findViewById(R.id.view_line1);
+        line2 = convertView.findViewById(R.id.view_line2);
 
         String url = mThumbIds[position];
 //        Log.d("url", url);
@@ -72,6 +73,22 @@ public class AttendenceReportSubMenuAdapter extends BaseAdapter {
             line1.setVisibility(View.VISIBLE);
         } else {
             line1.setVisibility(View.GONE);
+        }
+
+        if (mThumbNames.length % 2 != 0) {
+
+            if (position == mThumbNames.length - 1) {
+                line2.setVisibility(View.GONE);
+            } else {
+                line2.setVisibility(View.VISIBLE);
+            }
+
+        } else {
+            if (position == mThumbNames.length - 2 || position == mThumbNames.length - 1) {
+                line2.setVisibility(View.GONE);
+            } else {
+                line2.setVisibility(View.VISIBLE);
+            }
         }
 
         return convertView;

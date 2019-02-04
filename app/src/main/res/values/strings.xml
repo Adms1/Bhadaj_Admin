@@ -61,7 +61,7 @@
     <string name="ondate">On Date</string>
 
     <string name="send_time">Send Time</string>
-    <string name="receive_time">Rec Time</string>
+    <string name="receive_time">Receive Time</string>
     <string name="resultstatus">Result Status</string>
     <string name="standardname">Standarname</string>
     <string name="standardstatus">Status</string>
@@ -523,5 +523,14 @@
     <string name="is_schedule">Is Schedule</string>
     <string name="upload_pdf">Upload PDF</string>
     <string name="choose_file">Choose File</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <string name="trans_id">Transaction ID</string>
+    <string name="delivered">Delivered</string>
+    <string name="today_sms">Today SMS</string>
+    <string name="sr_no">SR\nNo</string>
+    <string name="submit">Submit</string>
+    <string name="send">Send</string>
+    <string name="clear">Clear</string>
 
 </resources>

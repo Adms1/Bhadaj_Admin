@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,48 +18,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-            <LinearLayout
+            <include
                 android:id="@+id/header"
+                layout="@layout/main_header"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_57sdp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:background="@drawable/header_blue"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/btnBack"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_38sdp"
-                    android:background="@drawable/back_btn" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_23sdp"
-                android:layout_alignTop="@+id/header"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_38sdp"
-                android:text="@string/datefeescollection"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="normal" />
-
-            <Button
-                android:id="@+id/btnmenu"
-                android:layout_width="@dimen/_17sdp"
-                android:layout_height="@dimen/_17sdp"
-                android:layout_marginLeft="@dimen/_270sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_38sdp"
-                android:background="@drawable/menu" />
+                android:layout_height="@dimen/_65sdp" />
 
             <LinearLayout
                 android:id="@+id/mainstudent_linear"
@@ -77,29 +40,27 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <TextView
                             android:id="@+id/term_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
-                            android:text="@string/term_label"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
+                            android:text="@string/term"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -108,50 +69,41 @@
                         <Spinner
                             android:id="@+id/term_spinner"
                             android:layout_width="0dp"
-
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.65"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
                             android:gravity="center"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
+                            android:overlapAnchor="false" />
 
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <TextView
                             android:id="@+id/termdetail_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/termdetail"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -160,30 +112,24 @@
                         <Spinner
                             android:id="@+id/term_detail_spinner"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.65"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
                             android:gravity="center"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
+                            android:overlapAnchor="false" />
 
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/linear_Standard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:visibility="gone"
                         android:weightSum="3">
 
@@ -221,41 +167,40 @@
                             android:layout_weight="1.65"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
                             android:gravity="center|center_vertical"
+                            android:overlapAnchor="false"
                             android:paddingBottom="1dp"
                             android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/linear_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <TextView
                             android:id="@+id/date_txt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
-                            android:text="From Date"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
+                            android:text="@string/from_date"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -264,17 +209,12 @@
                         <Button
                             android:id="@+id/from_date_button"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="@dimen/_26sdp"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.65"
+                            android:layout_weight="1.8"
+                            android:background="@drawable/linear_border"
+                            android:gravity="center"
                             android:paddingLeft="@dimen/_5sdp"
-                            android:background="@drawable/calendar_line"
-                            android:gravity="left"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
@@ -285,29 +225,27 @@
                         android:id="@+id/linear_todate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <TextView
                             android:id="@+id/todate_txt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
-                            android:text="To Date"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
+                            android:text="@string/to_date"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -316,17 +254,12 @@
                         <Button
                             android:id="@+id/todate_button"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
+                            android:layout_height="@dimen/_26sdp"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.65"
-                            android:background="@drawable/calendar_line"
-                            android:gravity="left"
-                            android:paddingBottom="1dp"
+                            android:layout_weight="1.8"
+                            android:background="@drawable/linear_border"
+                            android:gravity="center"
                             android:paddingLeft="@dimen/_5sdp"
-                            android:paddingTop="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
@@ -336,29 +269,27 @@
                         android:id="@+id/linear_mode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:orientation="horizontal"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:weightSum="3">
 
                         <TextView
                             android:id="@+id/payment_mode_txt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.77"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.8"
                             android:text="@string/paymentmode"
                             android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            android:layout_weight="0.14"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
@@ -367,43 +298,36 @@
                         <Spinner
                             android:id="@+id/payment_mode_spinner"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:layout_weight="1.65"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1.8"
                             android:background="@drawable/dropdown_button"
                             android:forceHasOverlappingRendering="false"
-                            android:overlapAnchor="false"
-                            android:gravity="left"
-                            android:paddingBottom="1dp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
+                            android:gravity="center"
+                            android:overlapAnchor="false" />
 
                     </LinearLayout>
+
                     <Button
                         android:id="@+id/search_btn"
                         android:layout_width="@dimen/_80sdp"
-                        android:layout_height="@dimen/_30sdp"
+                        android:layout_height="@dimen/_28sdp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/_3sdp"
-                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@drawable/round_button"
-                        android:text="Search"
+                        android:text="@string/search"
                         android:textAllCaps="true"
                         android:textColor="@color/app_bg"
                         android:textSize="@dimen/_11sdp" />
+
                     <TextView
                         android:id="@+id/txtNoRecords"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/search_btn"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:gravity="center"
-                        android:text="No Records Found..."
+                        android:text="@string/no_records_found"
                         android:textColor="@android:color/holo_red_dark"
                         android:textSize="@dimen/_11sdp"
                         android:textStyle="bold"
@@ -414,7 +338,6 @@
                     android:id="@+id/lvExp_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/main_linear_add"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -436,9 +359,6 @@
                         android:id="@+id/lvExpstudentfeescollection"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/header"
                         android:divider="@android:color/white" />
 
                 </LinearLayout>

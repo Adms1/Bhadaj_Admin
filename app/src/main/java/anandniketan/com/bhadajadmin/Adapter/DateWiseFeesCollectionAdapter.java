@@ -47,7 +47,7 @@ public class DateWiseFeesCollectionAdapter extends RecyclerView.Adapter<DateWise
 
         holder.studentname_txt.setText(result.getName());
         holder.grnno_txt.setText(result.getGRNO());
-        holder.section_txt.setText(result.getStandard());
+        holder.section_txt.setText(result.getStandard() + "-" + result.getClass_());
         holder.totalPaid_txt.setText("₹" + String.valueOf(result.getAmount()));
 
 

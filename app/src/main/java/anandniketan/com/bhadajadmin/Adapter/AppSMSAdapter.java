@@ -51,6 +51,7 @@ public class AppSMSAdapter extends RecyclerView.Adapter<AppSMSAdapter.MyViewHold
         holder.status_txt.setText(finalArrayBulkSMSModelList.get(position).getAppStatus());
         holder.grade_txt.setText(finalArrayBulkSMSModelList.get(position).getStandard());
         holder.mobileno_txt.setText(String.valueOf(finalArrayBulkSMSModelList.get(position).getSmsNo()));
+        holder.grno.setText(String.valueOf(finalArrayBulkSMSModelList.get(position).getGR()));
 
         holder.mobileno_txt.addTextChangedListener(new TextWatcher() {
             @Override
@@ -116,18 +117,19 @@ public class AppSMSAdapter extends RecyclerView.Adapter<AppSMSAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView index_txt, student_name_txt, status_txt, grade_txt;
+        TextView index_txt, student_name_txt, status_txt, grade_txt, grno;
         EditText mobileno_txt;
         CheckBox sms_chk;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            student_name_txt = (TextView) itemView.findViewById(R.id.student_name_txt);
-            status_txt = (TextView) itemView.findViewById(R.id.status_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            mobileno_txt = (EditText) itemView.findViewById(R.id.mobileno_txt);
-            sms_chk = (CheckBox) itemView.findViewById(R.id.sms_chk);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            student_name_txt = itemView.findViewById(R.id.student_name_txt);
+            status_txt = itemView.findViewById(R.id.status_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            mobileno_txt = itemView.findViewById(R.id.mobileno_txt);
+            sms_chk = itemView.findViewById(R.id.sms_chk);
+            grno = itemView.findViewById(R.id.student_grno_txt);
         }
     }
 

@@ -11,7 +11,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent">
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <LinearLayout
                 android:id="@+id/card_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -32,7 +32,7 @@
                          android:layout_gravity="center"
                          android:text="User(52525)"
                          android:textColor="@color/scheduleheadertextcolor"
-                         android:layout_marginTop="@dimen/_10sdp"
+                         android:layout_marginTop="@dimen/_20sdp"
                          android:textSize="@dimen/_11ssp"
                          android:gravity="center"/>
 
@@ -113,6 +113,7 @@
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:visibility="visible"
+                    android:background="@drawable/linear_border"
                     android:orientation="vertical">
 
                     <include layout="@layout/layout_datewise_child_item_header"/>
@@ -124,7 +125,7 @@
 
                 </LinearLayout>
 
-            </android.support.v7.widget.LinearLayoutCompat>
+            </LinearLayout>
 
         </RelativeLayout>
         <Button

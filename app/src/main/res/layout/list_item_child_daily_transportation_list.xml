@@ -259,7 +259,7 @@
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="@string/timing_problem"
+                android:text="@string/other_label"
                 android:textAlignment="textStart"
                 android:layout_gravity="left"
                 android:textColor="@color/txt_blue"

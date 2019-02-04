@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -35,6 +38,9 @@ public class AttendenceReportFragment extends Fragment {
 
     private Map<String, PermissionDataModel.Detaill> permissionMap;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public AttendenceReportFragment() {
     }
 
@@ -46,13 +52,25 @@ public class AttendenceReportFragment extends Fragment {
         rootView = fragmentAttendenceReportBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "HR");
+
+        tvHeader = view.findViewById(R.id.home_sname_txt);
+        btnBack = view.findViewById(R.id.home_btnBack);
+        btnMenu = view.findViewById(R.id.home_btnmenu);
+
+        tvHeader.setText(R.string.attendencereport);
 
         initViews();
         setListners();
-
-        return rootView;
     }
+
 
     public void initViews() {
         AppConfiguration.firsttimeback = true;

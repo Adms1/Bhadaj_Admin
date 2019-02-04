@@ -4,12 +4,15 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -53,6 +56,10 @@ public class HrAdminFragment extends Fragment implements DatePickerDialog.OnDate
     private Calendar calendar;
     private String viewstatus;
 
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public HrAdminFragment() {
         // Required empty public constructor
     }
@@ -65,12 +72,26 @@ public class HrAdminFragment extends Fragment implements DatePickerDialog.OnDate
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentHrAdminBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_hr_admin,container,false);
         mContext = getActivity().getApplicationContext();
-        setListners();
 
-        callDailyAdminApi();
 
         return fragmentHrAdminBinding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.admin);
+
+        setListners();
+
+        callDailyAdminApi();
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -128,13 +149,13 @@ public class HrAdminFragment extends Fragment implements DatePickerDialog.OnDate
             }
         });
 
-        fragmentHrAdminBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentHrAdminBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new DailyReportFragment();

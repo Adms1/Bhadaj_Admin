@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -55,6 +58,8 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
     private List<TallyTranscationModel.FinalArray> dailyCollectionsList;
     private TallyTransactionAdapter tallyTransactionAdapter;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     @Override
     public void onAttach(Context context){
@@ -76,11 +81,24 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().build());
 
-        setListner();
-        callStandardApi();
         return rootView;
     }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.online_transcation);
+
+        setListner();
+        callStandardApi();
+
+    }
 
     public void setListner() {
         calendar = Calendar.getInstance();
@@ -91,14 +109,14 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
         fragmentTallyTranscationBinding.fromDate1Edt.setText(Utils.getTodaysDate());
         fragmentTallyTranscationBinding.toDate2Edt.setText(Utils.getTodaysDate());
 
-
-        fragmentTallyTranscationBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentTallyTranscationBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new AccountFragment();

@@ -23,7 +23,6 @@
             android:layout_weight="1"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
 
@@ -34,8 +33,6 @@
             android:text="@string/date"
             android:layout_weight="1"
             android:gravity="center"
-            android:textAlignment="textStart"
-            android:layout_marginLeft="@dimen/_15sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp"
             android:layout_gravity="center" />
@@ -46,9 +43,8 @@
             android:layout_height="@dimen/_31sdp"
             android:layout_weight="1.5"
             android:text="@string/createby"
-            android:paddingTop="@dimen/_7sdp"
             android:layout_gravity="left"
-            android:paddingLeft="@dimen/_2sdp"
+            android:gravity="center"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp"
             tools:ignore="RtlSymmetry" />

@@ -4,12 +4,15 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -45,6 +48,8 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
     private EmployeeInOutDetailsAdapter employeePresentDetailAdapter;
     private String viewstatus;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,11 +60,22 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
         Bundle bundle = this.getArguments();
         viewstatus = bundle.getString("");
 
-        setListners();
-        callEmployeePresentListApi();
         return fragmentEmployeePresentDetailBinding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.inoutsummarydetail);
+
+        setListners();
+        callEmployeePresentListApi();
+    }
 
     private void setListners() {
 
@@ -72,13 +88,13 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
         minute = calendar.get(Calendar.MINUTE);
         second = calendar.get(Calendar.SECOND);
 
-        fragmentEmployeePresentDetailBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentEmployeePresentDetailBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new AttendenceReportFragment();

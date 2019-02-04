@@ -14,8 +14,6 @@
         android:visibility="visible"
         android:background="@drawable/box_blue">
 
-
-
         <TextView
             android:id="@+id/emp_name_txt"
             android:layout_width="wrap_content"
@@ -23,10 +21,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/employeename_label"
-            android:paddingTop="@dimen/_7sdp"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
 
@@ -36,11 +30,9 @@
             android:text="PL"
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:paddingTop="@dimen/_7sdp"
             android:layout_gravity="center"
             android:gravity="center"
             android:textAlignment="center"
-
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
         <TextView
@@ -49,7 +41,6 @@
             android:text="CL"
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/_15sdp"
-            android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
             android:layout_gravity="center"
             android:gravity="center"
@@ -61,7 +52,6 @@
             android:layout_height="wrap_content"
             android:text="Total"
             android:layout_weight="1"
-            android:paddingTop="@dimen/_7sdp"
             android:layout_marginLeft="@dimen/_15sdp"
             android:textAlignment="center"
             android:layout_marginRight="@dimen/_5sdp"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -31,7 +34,6 @@ import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentSmsreportBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
 
 public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
@@ -53,6 +55,9 @@ public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDa
     private int lastExpandedPosition = -1;
     private String viewstatus;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public SMSReportFragment() {
     }
 
@@ -64,11 +69,22 @@ public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDa
         rootView = fragmentSmsreportBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-        setListners();
-
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.SMS_report);
+
+        setListners();
+
+    }
 
     public void setListners() {
 
@@ -83,13 +99,14 @@ public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDa
         fragmentSmsreportBinding.startdateButton.setText(Utils.getTodaysDate());
         fragmentSmsreportBinding.enddateButton.setText(Utils.getTodaysDate());
 
-        fragmentSmsreportBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentSmsreportBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new SMSFragment();
@@ -177,9 +194,9 @@ public class SMSReportFragment extends Fragment implements DatePickerDialog.OnDa
                     return;
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("True")) {
-                    fragmentSmsreportBinding.totalSmsTxt.setText("Total SMS : "+inquiryDataModel.getTotal());
-                    fragmentSmsreportBinding.deliveredSmsTxt.setText("Delivered SMS : "+inquiryDataModel.getDelivered());
-                    fragmentSmsreportBinding.otherSmsTxt.setText("Other SMS : "+inquiryDataModel.getOther());
+                    fragmentSmsreportBinding.totalSmsTxt.setText("Total SMS : " + inquiryDataModel.getTotal());
+                    fragmentSmsreportBinding.deliveredSmsTxt.setText("Delivered SMS : " + inquiryDataModel.getDelivered());
+                    fragmentSmsreportBinding.otherSmsTxt.setText("Other SMS : " + inquiryDataModel.getOther());
 
                     finalArrayinquiryCountList = inquiryDataModel.getFinalArray();
                     if (finalArrayinquiryCountList != null) {

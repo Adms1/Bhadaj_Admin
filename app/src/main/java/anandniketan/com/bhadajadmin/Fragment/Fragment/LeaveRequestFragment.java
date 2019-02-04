@@ -123,9 +123,8 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         btnBack = view.findViewById(R.id.btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
 
-        tvHeader.setText(R.string.report_card);
+        tvHeader.setText(R.string.leave_req);
 
-        setListners();
         setListners();
         callLeaveStatusApi();
 

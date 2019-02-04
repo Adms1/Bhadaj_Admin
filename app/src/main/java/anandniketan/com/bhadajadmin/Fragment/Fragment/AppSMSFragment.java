@@ -2,10 +2,8 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,17 +12,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,7 +30,6 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AppSMSAdapter;
-import anandniketan.com.bhadajadmin.Adapter.BulkSMSDetailListAdapter;
 import anandniketan.com.bhadajadmin.Interface.getEmployeeCheck;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
@@ -75,6 +68,9 @@ public class AppSMSFragment extends Fragment {
     private Button send_btn, close_btn;
     private AlertDialog alertDialogAndroid = null;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public AppSMSFragment() {
     }
 
@@ -86,21 +82,33 @@ public class AppSMSFragment extends Fragment {
         rootView = fragmentAppSmBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-        setListners();
-        callTermApi();
-
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.appsms);
+
+        setListners();
+        callTermApi();
+
+    }
 
     public void setListners() {
-        fragmentAppSmBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentAppSmBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new SMSFragment();

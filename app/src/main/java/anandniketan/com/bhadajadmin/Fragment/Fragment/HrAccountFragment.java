@@ -4,12 +4,15 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -54,6 +57,9 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
     private Calendar calendar;
     private String viewstatus;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public HrAccountFragment() {
         // Required empty public constructor
     }
@@ -67,11 +73,25 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentHrAccountBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_hr_account,container,false);
         mContext = getActivity().getApplicationContext();
-        setListners();
-        callDailyTransportationApi();
+
 
         return fragmentHrAccountBinding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.account);
+
+        setListners();
+        callDailyTransportationApi();
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -128,13 +148,14 @@ public class HrAccountFragment extends Fragment implements DatePickerDialog.OnDa
             }
         });
 
-        fragmentHrAccountBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentHrAccountBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new DailyReportFragment();

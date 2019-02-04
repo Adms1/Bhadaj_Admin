@@ -109,9 +109,6 @@ public class SearchStaffFragment extends Fragment {
 
         tvHeader.setText(R.string.searchstaff);
 
-//        fragmentStudentViewInquiryBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_search_staff,container,false);
-//        rootView =  fragmentStudentViewInquiryBinding.getRoot();
-
         setListners();
         callTermApi();
 

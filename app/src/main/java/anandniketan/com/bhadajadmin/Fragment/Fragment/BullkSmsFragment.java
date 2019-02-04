@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -70,6 +71,9 @@ public class BullkSmsFragment extends Fragment {
     private Button send_btn, close_btn;
     private AlertDialog alertDialogAndroid = null;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public BullkSmsFragment() {
     }
 
@@ -81,22 +85,35 @@ public class BullkSmsFragment extends Fragment {
         rootView = fragmentBullkSmsBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.bulksms);
+
         setListners();
         callTermApi();
         callStandardApi();
 
-        return rootView;
     }
 
-
     public void setListners() {
-        fragmentBullkSmsBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentBullkSmsBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new SMSFragment();
@@ -576,10 +593,10 @@ public class BullkSmsFragment extends Fragment {
         window.setAttributes(wlp);
         alertDialogAndroid.show();
 
-        date_txt = (TextView) layout.findViewById(R.id.insert_message_date_txt);
-        message_edt = (TextView) layout.findViewById(R.id.insert_message_Message_txt);
-        send_btn = (Button) layout.findViewById(R.id.send_message_btn);
-        close_btn = (Button) layout.findViewById(R.id.close_btn);
+        date_txt = layout.findViewById(R.id.insert_message_date_txt);
+        message_edt = layout.findViewById(R.id.insert_message_Message_txt);
+        send_btn = layout.findViewById(R.id.send_message_btn);
+        close_btn = layout.findViewById(R.id.close_btn);
 
         date_txt.setText(Utils.getTodaysDate());
         close_btn.setOnClickListener(new View.OnClickListener() {

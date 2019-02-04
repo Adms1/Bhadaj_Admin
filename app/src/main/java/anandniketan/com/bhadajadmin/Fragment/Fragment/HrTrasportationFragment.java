@@ -4,12 +4,15 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -54,6 +57,10 @@ public class HrTrasportationFragment extends Fragment implements DatePickerDialo
     private String viewstatus;
 
     private Calendar calendar;
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public HrTrasportationFragment() {
         // Required empty public constructor
     }
@@ -75,13 +82,24 @@ public class HrTrasportationFragment extends Fragment implements DatePickerDialo
         fragmentInOutSummaryBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_hr_trasportation,container,false);
 
         mContext = getActivity().getApplicationContext();
-        setListners();
-        callDailyTransportationApi();
+
         return fragmentInOutSummaryBinding.getRoot();
     }
 
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.transportation);
+
+        setListners();
+        callDailyTransportationApi();
+    }
 
     private void setListners() {
 
@@ -128,13 +146,14 @@ public class HrTrasportationFragment extends Fragment implements DatePickerDialo
             }
         });
 
-        fragmentInOutSummaryBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentInOutSummaryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new DailyReportFragment();

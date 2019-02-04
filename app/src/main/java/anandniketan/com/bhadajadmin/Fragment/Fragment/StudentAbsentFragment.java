@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -68,7 +69,7 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
     private boolean temp = false;
     BulkSMSDetailListAdapter bulkSMSDetailListAdapter;
     String finalstudentAbsentIdArray, finalmessageMessageLine, finalDateStr;
-    private TextView date_txt, message_edt;
+    private TextView message_edt;
     private Button send_btn, close_btn;
     private AlertDialog alertDialogAndroid = null;
     private DatePickerDialog datePickerDialog;
@@ -76,6 +77,8 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
     Calendar calendar;
     int mYear, mMonth, mDay;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
 
     public StudentAbsentFragment() {
     }
@@ -88,6 +91,20 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
         rootView = fragmentStudentAbsentBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.studentabsent);
+
         calendar = Calendar.getInstance();
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
@@ -98,18 +115,17 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
 //        callTermApi();
         callStandardApi();
 
-        return rootView;
     }
 
-
     public void setListners() {
-        fragmentStudentAbsentBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentStudentAbsentBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new SMSFragment();
@@ -119,6 +135,7 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
+
         fragmentStudentAbsentBinding.dateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

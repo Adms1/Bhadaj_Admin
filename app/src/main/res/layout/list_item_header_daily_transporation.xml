@@ -13,7 +13,7 @@
             app:cardCornerRadius="@dimen/_1sdp"
             app:cardUseCompatPadding="true"
             app:cardElevation="@dimen/_3sdp"
-            app:contentPadding="@dimen/_3sdp">
+            app:contentPadding="@dimen/_1sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,7 +31,6 @@
                     android:textAlignment="center"
                     android:singleLine="true"
                     android:ellipsize="end"
-                    android:paddingLeft="@dimen/_2sdp"
                     android:textColor="@color/app_text"
                     android:textSize="@dimen/_11sdp" />
 
@@ -42,7 +41,6 @@
                     android:layout_weight="1.5"
                     android:paddingTop="@dimen/_7sdp"
                     android:textAlignment="center"
-                    android:paddingLeft="@dimen/_2sdp"
                     android:textColor="@color/app_text"
                     android:textSize="@dimen/_11sdp" />
 
@@ -53,7 +51,6 @@
                     android:layout_weight="1.5"
                     android:paddingTop="@dimen/_7sdp"
                     android:textAlignment="center"
-                    android:paddingLeft="@dimen/_2sdp"
                     android:textColor="@color/app_text"
                     android:textSize="@dimen/_11sdp" />
 
@@ -62,10 +59,12 @@
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:src="@drawable/arrow_1_42"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="@dimen/_7sdp"
-                    android:paddingLeft="@dimen/_2sdp" />
+                    android:layout_gravity="center" />
+
             </LinearLayout>
+
         </android.support.v7.widget.CardView>
+
     </LinearLayout>
+
 </layout>

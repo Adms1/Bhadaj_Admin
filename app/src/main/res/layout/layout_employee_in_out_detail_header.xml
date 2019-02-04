@@ -20,9 +20,8 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:text="@string/code"
-            android:layout_weight="1"
+            android:layout_weight="0.9"
             android:textAlignment="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:gravity="center"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
@@ -31,10 +30,9 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:text="@string/name"
-            android:layout_weight="1.5"
+            android:layout_weight="1.6"
             android:textAlignment="center"
             android:gravity="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
 
@@ -47,16 +45,15 @@
             android:gravity="center"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp"
-            android:layout_gravity="left" />
+            android:layout_gravity="center" />
         <TextView
             android:id="@+id/inoutdetails_txt"
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:layout_weight="1.5"
             android:text="@string/inoutdetails"
-            android:layout_gravity="left"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp"
             tools:ignore="RtlSymmetry" />
@@ -66,10 +63,8 @@
             android:layout_height="@dimen/_31sdp"
             android:layout_weight="1.5"
             android:text="@string/workinghours"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_gravity="left"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:paddingLeft="@dimen/_2sdp"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp"
             tools:ignore="RtlSymmetry" />

@@ -16,10 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentMenuPermissionBinding;
 import retrofit.RetrofitError;
@@ -71,6 +74,9 @@ public class MenuPermissionFragment extends Fragment {
     boolean check = false;
     private String viewstatus;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public MenuPermissionFragment() {
     }
 
@@ -86,21 +92,40 @@ public class MenuPermissionFragment extends Fragment {
         Bundle bundle = this.getArguments();
         viewstatus = bundle.getString("status");
 
-        setListners();
-        callTeacherApi();
-
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Inflate the layout for this fragment
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 61;
+
+        viewstatus = AppConfiguration.HRstaffseachviewstatus;
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.menupermission);
+        setListners();
+        callTeacherApi();
+
+
+    }
+
+
     public void setListners() {
-        fragmentMenuPermissionBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
 
-        fragmentMenuPermissionBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new HRFragment();

@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -55,6 +56,9 @@ public class EmployeeSmsFragment extends Fragment {
     private Button send_btn, close_btn;
     private boolean temp = false;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public EmployeeSmsFragment() {
     }
 
@@ -66,11 +70,23 @@ public class EmployeeSmsFragment extends Fragment {
         rootView = fragmentEmployeeSmsBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.employeesms);
+
         initView();
         setListners();
         callStaffSMSDataApi();
 
-        return rootView;
     }
 
     public void initView() {
@@ -78,13 +94,14 @@ public class EmployeeSmsFragment extends Fragment {
     }
 
     public void setListners() {
-        fragmentEmployeeSmsBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentEmployeeSmsBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new SMSFragment();
@@ -94,12 +111,14 @@ public class EmployeeSmsFragment extends Fragment {
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
+
         fragmentEmployeeSmsBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SendMessage();
             }
         });
+
         fragmentEmployeeSmsBinding.smsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

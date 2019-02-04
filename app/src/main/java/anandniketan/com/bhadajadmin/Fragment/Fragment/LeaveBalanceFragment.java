@@ -2,11 +2,11 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -48,24 +50,40 @@ public class LeaveBalanceFragment extends Fragment {
     private String finalTermIdStr = "0";
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
+
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public LeaveBalanceFragment() {
         // Required empty public constructor
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity();
-        
-        fragmentMyLeaveBalanceBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_leave_balance,container,false);
 
-        callTermApi();
-        setListners();
+        fragmentMyLeaveBalanceBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_leave_balance, container, false);
 
         return fragmentMyLeaveBalanceBinding.getRoot();
 
-
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        view1 = view.findViewById(R.id.header);
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.leave_balance);
+
+        setListners();
+        callTermApi();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -77,17 +95,16 @@ public class LeaveBalanceFragment extends Fragment {
         super.onDetach();
     }
 
+    private void setListners() {
 
-
-    private void setListners(){
-
-        fragmentMyLeaveBalanceBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentMyLeaveBalanceBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new StaffLeaveFragment();
@@ -119,15 +136,10 @@ public class LeaveBalanceFragment extends Fragment {
     }
 
 
-
-
-
-
-
     private void callTermApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
@@ -173,16 +185,17 @@ public class LeaveBalanceFragment extends Fragment {
         Map<String, String> map = new HashMap<>();
         return map;
     }
+
     // CALL Term API HERE
     private void callLeaveBalanceApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().leaveBalance(getDetail(),new retrofit.Callback<LeaveModel>() {
+        ApiHandler.getApiService().leaveBalance(getDetail(), new retrofit.Callback<LeaveModel>() {
             @Override
             public void success(LeaveModel termModel, Response response) {
                 Utils.dismissDialog();
@@ -209,11 +222,11 @@ public class LeaveBalanceFragment extends Fragment {
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
                     dataList = termModel.getFinalArray();
-                    if(dataList != null && dataList.size() > 0){
+                    if (dataList != null && dataList.size() > 0) {
                         fragmentMyLeaveBalanceBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         fragmentMyLeaveBalanceBinding.recyclerLinear.setVisibility(View.VISIBLE);
                         fragmentMyLeaveBalanceBinding.txtNoRecords.setVisibility(View.GONE);
-                        leaveBalanceListAdapter = new LeaveBalanceListAdapter(getActivity(),dataList);
+                        leaveBalanceListAdapter = new LeaveBalanceListAdapter(getActivity(), dataList);
                         fragmentMyLeaveBalanceBinding.leaveList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         fragmentMyLeaveBalanceBinding.leaveList.setAdapter(leaveBalanceListAdapter);
                     }
@@ -238,7 +251,7 @@ public class LeaveBalanceFragment extends Fragment {
 
     private Map<String, String> getDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("TermID",finalTermIdStr);
+        map.put("TermID", finalTermIdStr);
         return map;
     }
 
@@ -271,7 +284,7 @@ public class LeaveBalanceFragment extends Fragment {
             // silently fail...
         }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext,R.layout.spinner_layout,spinnertermIdArray);
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentMyLeaveBalanceBinding.termSpinner.setAdapter(adapterTerm);
         finalTermIdStr = spinnerTermMap.get(0);
         callLeaveBalanceApi();

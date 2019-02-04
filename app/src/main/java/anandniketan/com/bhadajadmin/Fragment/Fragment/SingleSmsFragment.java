@@ -3,12 +3,15 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +35,9 @@ public class SingleSmsFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     String FinalSMSStr, FinalMobileNoStr;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public SingleSmsFragment() {
     }
 
@@ -43,21 +49,32 @@ public class SingleSmsFragment extends Fragment {
         rootView = fragmentSingleSmsBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-        setListners();
-
-
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.singlesms);
+
+        setListners();
+
+    }
 
     public void setListners() {
-        fragmentSingleSmsBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
-        fragmentSingleSmsBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new SMSFragment();
