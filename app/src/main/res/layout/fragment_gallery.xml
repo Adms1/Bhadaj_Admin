@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -19,15 +19,14 @@
                 android:layout_height="@dimen/_65sdp" />
 
             <LinearLayout
-                android:id="@+id/applyleave_linear"
+                android:id="@+id/gallery_linear"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/btnSubmit"
                 android:layout_below="@+id/header"
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/applyleave_linear_add"
+                    android:id="@+id/main_linear_add"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -42,12 +41,11 @@
                         android:weightSum="3">
 
                         <TextView
-                            android:id="@+id/applyleave_tvLeaveDays"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:text="@string/leave_days"
+                            android:text="@string/title"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
 
@@ -61,96 +59,58 @@
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
-                        <Spinner
-                            android:id="@+id/applyleave_spLeaveDays"
+                        <AutoCompleteTextView
+                            android:id="@+id/gallery_title_txt"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_25sdp"
+                            android:layout_height="@dimen/_28sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1.8"
+                            android:background="@drawable/linear_border"
+                            android:enabled="true"
+                            android:gravity="center_vertical"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1.2"
-                            android:background="@drawable/dropdown_button"
-                            android:forceHasOverlappingRendering="false"
+                            android:layout_weight="0.8"
+                            android:text="@string/date"
+                            android:textColor="@color/scheduleheadertextcolor"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.1"
+                            android:text=":"
+                            android:textColor="@color/scheduleheadertextcolor"
+                            android:textSize="@dimen/_11sdp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/gellery_date_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_28sdp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1.8"
+                            android:background="@drawable/linear_border"
                             android:gravity="center"
-                            android:overlapAnchor="false" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:id="@+id/applyleave_tvsDate"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.8"
-                            android:text="@string/startdate"
-                            android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:text=":"
-                            android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/applyleave_btnsDate"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_28sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1.2"
-                            android:background="@drawable/linear_border"
-                            android:textSize="@dimen/_11sdp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_4sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <TextView
-                            android:id="@+id/applyleave_tveDate"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.8"
-                            android:text="@string/enddate"
-                            android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.1"
-                            android:text=":"
-                            android:textColor="@color/scheduleheadertextcolor"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
-
-                        <Button
-                            android:id="@+id/applyleave_btneDate"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_28sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1.2"
-                            android:background="@drawable/linear_border"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />
 
                     </LinearLayout>
@@ -165,12 +125,11 @@
                         android:weightSum="3">
 
                         <TextView
-                            android:id="@+id/applyleave_tvHead"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:text="@string/head"
+                            android:text="@string/comment"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
 
@@ -184,17 +143,18 @@
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
-                        <Spinner
-                            android:id="@+id/applyleave_spHead"
+                        <AutoCompleteTextView
+                            android:id="@+id/gellery_comment_txt"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_25sdp"
+                            android:layout_height="@dimen/_28sdp"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="1.2"
-                            android:background="@drawable/dropdown_button"
-                            android:forceHasOverlappingRendering="false"
-                            android:gravity="center"
-                            android:overlapAnchor="false" />
-
+                            android:layout_weight="1.8"
+                            android:background="@drawable/linear_border"
+                            android:enabled="true"
+                            android:gravity="center_vertical"
+                            android:paddingStart="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
 
                     </LinearLayout>
 
@@ -208,74 +168,99 @@
                         android:weightSum="3">
 
                         <TextView
-                            android:id="@+id/applyleave_tvReason"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:text="@string/reason"
+                            android:text="@string/photo"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_weight="0.1"
                             android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
-                        <EditText
-                            android:id="@+id/applyleave_etReason"
+                        <Button
+                            android:id="@+id/gallery_photo_btn"
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_70sdp"
+                            android:layout_height="@dimen/_25sdp"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="1.8"
-                            android:background="@drawable/linear_border"
-                            android:gravity="top"
-                            android:padding="@dimen/_5sdp"
-                            android:textSize="@dimen/_11sdp" />
+                            android:layout_weight="1"
+                            android:background="@drawable/greybg_border"
+                            android:enabled="true"
+                            android:gravity="center"
+                            android:text="@string/choose_file"
+                            android:textAllCaps="false"
+                            android:textColor="@color/light_blue"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="right"
+                        android:orientation="vertical"
+                        android:weightSum="3">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/photo_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_80sdp"
+                            android:scrollbars="none" />
 
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/applyleave_btnSend"
-                        android:layout_width="@dimen/_85sdp"
+                        android:id="@+id/gallery_search_btn"
+                        android:layout_width="@dimen/_80sdp"
                         android:layout_height="@dimen/_28sdp"
                         android:layout_gravity="center"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@drawable/round_button"
-                        android:text="@string/send"
+                        android:gravity="center"
+                        android:text="@string/Add"
                         android:textAllCaps="true"
                         android:textColor="@color/app_bg"
                         android:textSize="@dimen/_11sdp"
                         android:textStyle="normal" />
 
-                    <TextView
-                        android:id="@+id/txtNoRecords"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:gravity="center"
-                        android:text="@string/no_records_found"
-                        android:textColor="@android:color/holo_red_dark"
-                        android:textSize="@dimen/_11sdp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
-
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtNoRecords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:gravity="center"
+                    android:text="@string/no_records_found"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textSize="@dimen/_11sdp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/list_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
-                    <include layout="@layout/applyleave_not_header" />
+                    <include layout="@layout/gallery_header" />
 
                 </LinearLayout>
 
@@ -283,17 +268,16 @@
                     android:id="@+id/recycler_linear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
                     android:background="@drawable/linear_border"
                     android:orientation="vertical">
 
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/applyleave_list"
+                        android:id="@+id/gallery_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scrollbars="none"
-                        android:visibility="gone" />
+                        android:scrollbars="none" />
 
                 </LinearLayout>
 

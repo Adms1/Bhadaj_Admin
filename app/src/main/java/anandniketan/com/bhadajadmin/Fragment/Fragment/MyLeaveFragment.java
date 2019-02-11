@@ -109,7 +109,7 @@ public class MyLeaveFragment extends Fragment {
         fragmentMyLeaveBinding.staffMyLeaveSubmenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*if (position == 0) {
+                if (position == 0) {
                     fragment = new ApplyLeaveFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
@@ -125,7 +125,7 @@ public class MyLeaveFragment extends Fragment {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 22;
-                }*/
+                }
             }
         });
     }

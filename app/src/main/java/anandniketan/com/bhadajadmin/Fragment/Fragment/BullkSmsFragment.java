@@ -49,14 +49,8 @@ import anandniketan.com.bhadajadmin.databinding.FragmentBullkSmsBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
 public class BullkSmsFragment extends Fragment {
 
-    private FragmentBullkSmsBinding fragmentBullkSmsBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
     HashMap<Integer, String> spinnerTermMap;
     List<FinalArrayStandard> finalArrayStandardsList;
@@ -64,9 +58,14 @@ public class BullkSmsFragment extends Fragment {
     HashMap<Integer, String> spinnerSectionMap;
     String FinalStandardIdStr, FinalClassIdStr, StandardName, FinalTermIdStr, FinalStandardStr, FinalSectionStr;
     List<FinalArraySMSDataModel> finalArrayBulkSMSModelList;
-    private boolean temp = false;
     BulkSMSDetailListAdapter bulkSMSDetailListAdapter;
     String finalBulkIdArray, finalmessageMessageLine, finalDateStr;
+    private FragmentBullkSmsBinding fragmentBullkSmsBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private boolean temp = false;
     private TextView date_txt, message_edt;
     private Button send_btn, close_btn;
     private AlertDialog alertDialogAndroid = null;
@@ -194,7 +193,7 @@ public class BullkSmsFragment extends Fragment {
                         finalArrayBulkSMSModelList.get(i).setCheck("1");
                     }
                     bulkSMSDetailListAdapter.notifyDataSetChanged();
-                    temp=false;
+                    temp = false;
                 } else {
                     if (!temp) {
                         for (int i = 0; i < finalArrayBulkSMSModelList.size(); i++) {
@@ -365,6 +364,7 @@ public class BullkSmsFragment extends Fragment {
         });
 
     }
+
     private Map<String, String> getGetBulkSMSDataDetail() {
         if (FinalStandardIdStr.equalsIgnoreCase("0")) {
             FinalStandardIdStr = "";
@@ -633,7 +633,7 @@ public class BullkSmsFragment extends Fragment {
                     Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
                     return;
                 }
-                if (!finalBulkIdArray.equalsIgnoreCase("")&&!finalmessageMessageLine.equalsIgnoreCase("")&&!finalDateStr.equalsIgnoreCase("")){
+                if (!finalBulkIdArray.equalsIgnoreCase("") && !finalmessageMessageLine.equalsIgnoreCase("") && !finalDateStr.equalsIgnoreCase("")) {
                     Utils.showDialog(getActivity());
                     ApiHandler.getApiService().InsertBulkSMSData(InsertBulkSMSData(), new retrofit.Callback<InsertMenuPermissionModel>() {
                         @Override
@@ -666,7 +666,7 @@ public class BullkSmsFragment extends Fragment {
                             Utils.ping(mContext, getString(R.string.something_wrong));
                         }
                     });
-                }else{
+                } else {
                     Utils.ping(mContext, getString(R.string.blank));
                 }
             }

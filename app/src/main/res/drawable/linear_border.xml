@@ -7,9 +7,5 @@
 <solid android:color="@color/app_bg"/>
 
 
-    <corners
-        android:bottomLeftRadius="1dp"
-        android:bottomRightRadius="1dp"
-        android:topLeftRadius="1dp"
-        android:topRightRadius="1dp" />
+    <corners android:radius="@dimen/_3sdp" />
 </shape>

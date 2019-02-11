@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,7 +45,6 @@ import static android.content.ContentValues.TAG;
 
 public class SuggestionFragment extends Fragment {
 
-    //
     protected ArrayList<CharSequence> selectedmonthForString = new ArrayList<>();
     protected ArrayList<CharSequence> selectedmonth = new ArrayList<>();
     //Use for employee spinner
@@ -54,15 +52,13 @@ public class SuggestionFragment extends Fragment {
     HashMap<Integer, String> spinnerEmployeeMap;
     //Use for fill SuggestionPermission List
     SuggestionPermissionAdapter suggestionPermissionAdapter;
-    String FinalEmployeeIdStr, FinaltypeIdStr, FinalEmployeeStr, FinaltypeStr, FinalDeleteIdStr;
+    String FinalEmployeeIdStr, FinalEmployeeStr, FinaltypeStr, FinalDeleteIdStr;
     CharSequence[] m_months;
     ArrayList<String> month_no = new ArrayList<>();
     ArrayList<String> MonthID_Arr;
     private FragmentSuggestionBinding fragmentsuggestionBinding;
     private View rootView;
     private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
     private String status, updatestatus, deletestatus;
 
     private TextView tvHeader;
@@ -166,7 +162,7 @@ public class SuggestionFragment extends Fragment {
                 String getid = spinnerEmployeeMap.get(fragmentsuggestionBinding.assignSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalEmployeeIdStr = getid.toString();
+                FinalEmployeeIdStr = getid;
                 Log.d("FinalEmployeeIdStr", FinalEmployeeIdStr);
 
                 FinalEmployeeStr = selectedsectionstr;
@@ -266,7 +262,7 @@ public class SuggestionFragment extends Fragment {
                     }
 
                     Log.d(" FinalEmployeeIdStr", FinalEmployeeIdStr);
-                    if (!FinaltypeStr.equalsIgnoreCase("Please Select")) {
+                    if (!FinaltypeStr.equalsIgnoreCase("-Please Select-")) {
                         if (!FinalEmployeeIdStr.equalsIgnoreCase("")) {
                             callInsertSuggestionPermission();
                         } else {
@@ -538,7 +534,7 @@ public class SuggestionFragment extends Fragment {
 //    //use for fill assign spinner
     public void fillAssignSpinner() {
         ArrayList<String> firstValue = new ArrayList<>();
-        firstValue.add("--Select--");
+        firstValue.add("-Please Select-");
 
         ArrayList<String> employeename = new ArrayList<>();
         for (int z = 0; z < firstValue.size(); z++) {
@@ -587,7 +583,7 @@ public class SuggestionFragment extends Fragment {
     //use for fill Type spinner
     public void fillType() {
         ArrayList<String> selectedArray = new ArrayList<>();
-        selectedArray.add("Please Select");
+        selectedArray.add("-Please Select-");
         selectedArray.add("Academic");
         selectedArray.add("Admin");
         selectedArray.add("Other");

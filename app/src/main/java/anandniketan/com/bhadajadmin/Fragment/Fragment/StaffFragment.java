@@ -218,15 +218,20 @@ public class StaffFragment extends Fragment {
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
 
-                }/*else if (position == 4 && permissionMap.get("Home Work Not Done").getStatus().equalsIgnoreCase("true")) {
+                } else if (position == 4 && permissionMap.get("Home Work Not Done").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HomeworkNotDoneFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("Home Work Not Done").getIsuserview());
+                    bundle.putString("updatestatus", permissionMap.get("Home Work Not Done").getIsuserupdate());
+                    bundle.putString("deletestatus", permissionMap.get("Home Work Not Done").getIsuserdelete());
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                             AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
-                }*/ else if (position == 5 && permissionMap.get("My Leave").getStatus().equalsIgnoreCase("true")) {
+                } else if (position == 5 && permissionMap.get("My Leave").getStatus().equalsIgnoreCase("true")) {
                     fragment = new MyLeaveFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("viewstatus", permissionMap.get("My Leave").getIsuserview());

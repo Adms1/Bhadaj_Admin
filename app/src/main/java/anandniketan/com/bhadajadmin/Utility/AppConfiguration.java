@@ -23,11 +23,11 @@ public class AppConfiguration {
 
     public static String BASE_API_CONTAINER ="MobileApp_Service.asmx/";
     //    public static String LIVE_BASE_URL = PrefUtils.getInstance(BaseApp.mAppcontext).getStringValue("live_base_url", "http://192.168.1.26:8086/");
-    public static String LIVE_BASE_URL = "http://192.168.1.26:8086/";
+    public static String LIVE_BASE_URL = "http://192.168.1.22:8086/";
 
     //public static String LIVE_BASE_URL = "http://103.250.144.109:8085/";
 
-    public static String BASEURL = LIVE_BASE_URL+BASE_API_CONTAINER;
+    public static String BASEURL = LIVE_BASE_URL + BASE_API_CONTAINER;
 
     public static String BASEURL_IMAGES = LIVE_BASE_URL+"skool360-Category-Images/Admin/";
     public static String BASEURL_ICONS = LIVE_BASE_URL+"skool360-Design-Icons/Admin/";

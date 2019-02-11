@@ -44,12 +44,15 @@ public class FinalArrayStaffModel {
     @SerializedName("Name")
     @Expose
     private String name;
-    @SerializedName("StandardId")
+    @SerializedName(value = "stdid", alternate = {"StandardId", "StandardID"})
     @Expose
     private Integer standardId;
     @SerializedName("SubjectId")
     @Expose
     private Integer subjectId;
+    @SerializedName("ClassID")
+    @Expose
+    private String classid;
     @SerializedName("SubjectID")
     @Expose
     private Integer subjectID;
@@ -151,6 +154,14 @@ public class FinalArrayStaffModel {
 
     public void setStaffAbsent(String staffAbsent) {
         this.staffAbsent = staffAbsent;
+    }
+
+    public String getClassid() {
+        return classid;
+    }
+
+    public void setClassid(String classid) {
+        this.classid = classid;
     }
 
     public String getTeacher() {

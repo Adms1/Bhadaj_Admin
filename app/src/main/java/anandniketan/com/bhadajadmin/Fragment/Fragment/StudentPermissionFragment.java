@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.StudentSubMenuAdapter;
@@ -57,11 +58,11 @@ public class StudentPermissionFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentStudentPermissionBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_permission, container, false);
 
         rootView = fragmentStudentPermissionBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
 
         return rootView;
     }
@@ -118,9 +119,11 @@ public class StudentPermissionFragment extends Fragment {
             public void onClick(View v) {
                 fragment = new StudentFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                        .replace(R.id.frame_container, fragment).commit();
+                if (fragmentManager != null) {
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                }
             }
         });
 
@@ -139,9 +142,11 @@ public class StudentPermissionFragment extends Fragment {
                     fragment.setArguments(bundle);
 
                     fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                .replace(R.id.frame_container, fragment).commit();
+                    }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
 
@@ -156,9 +161,11 @@ public class StudentPermissionFragment extends Fragment {
                     fragment.setArguments(bundle);
 
                     fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                .replace(R.id.frame_container, fragment).commit();
+                    }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
 
@@ -174,9 +181,11 @@ public class StudentPermissionFragment extends Fragment {
                     fragment.setArguments(bundle);
 
                     fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                .replace(R.id.frame_container, fragment).commit();
+                    }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
 
@@ -192,9 +201,11 @@ public class StudentPermissionFragment extends Fragment {
                     fragment.setArguments(bundle);
 
                     fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                            .replace(R.id.frame_container, fragment).commit();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                .replace(R.id.frame_container, fragment).commit();
+                    }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
                 } else {

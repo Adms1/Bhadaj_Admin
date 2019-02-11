@@ -251,7 +251,7 @@
     <string name="leftdetail">Left/Active</string>
     <string name="studentviewmarks">VIEW MARKS</string>
     <string name="profilepermission">PROFILE PERMISSION</string>
-    <string name="suggestionpermission">SUGGESTION PERMISSION</string>
+    <string name="suggestionpermission">SUGGESTION</string>
     <string name="type">Type</string>
     <string name="studentabsent">STUDENT ABSENT</string>
     <string name="term1">Term 1</string>
@@ -297,9 +297,12 @@
     <string name="inoutsummarydetail">Employee In Out Details</string>
 
     <string name="announcment1">Announcment</string>
+    <string name="homeworknotdone">Home Work Not Done</string>
 
     <string name="viewinquiry">VIEW INQUIRY</string>
     <string name="addinquiry">ADD ENQUIRY</string>
+
+    <string name="gallery">Gallery</string>
 
     <string name="SMS_report">SMS REPORT</string>
     <string name="holiday">HOLIDAY</string>
@@ -532,5 +535,12 @@
     <string name="submit">Submit</string>
     <string name="send">Send</string>
     <string name="clear">Clear</string>
+    <string name="comment">Comment</string>
+    <string name="photo">Photo</string>
+    <string name="teachers">Teachers</string>
+    <string name="mdtp_notdone_label">Not Done</string>
+    <string name="head">Head</string>
+    <string name="applyleave">Apply Leave</string>
+    <string name="reason">Reason</string>
 
 </resources>

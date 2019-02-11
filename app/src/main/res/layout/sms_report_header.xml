@@ -79,5 +79,7 @@
             android:textAlignment="textStart"
             android:textColor="@color/app_bg"
             android:textSize="@dimen/_11sdp" />
+
     </LinearLayout>
+
 </LinearLayout>

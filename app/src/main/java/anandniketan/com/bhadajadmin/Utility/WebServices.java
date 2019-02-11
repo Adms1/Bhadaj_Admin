@@ -1,7 +1,9 @@
 package anandniketan.com.bhadajadmin.Utility;
 
+import com.google.gson.JsonObject;
 import com.squareup.okhttp.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
@@ -47,9 +49,11 @@ import anandniketan.com.bhadajadmin.Model.MISModel;
 import anandniketan.com.bhadajadmin.Model.MIStudentWiseCalendarModel;
 import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
+import anandniketan.com.bhadajadmin.Model.Staff.HomeWorkModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
+import anandniketan.com.bhadajadmin.Model.Student.GalleryDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.MarkSyllabusModel;
 import anandniketan.com.bhadajadmin.Model.Student.PlannerModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
@@ -527,11 +531,14 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/TeacherStudentHomeworkStatus")
-    void teacherStudentHomeworkStatus(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+    void getHomeDetail(@FieldMap Map<String, String> map, Callback<HomeWorkModel> callback);
 
     @FormUrlEncoded
-    @POST("/TeacherStudentHomeworkStatusInsertUpdate")
-    void teacherStudentHomeworkStatusInsertUpdate(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+    @POST("/TeacherStudentHomeworkStatus")
+    void teacherStudentHomeworkStatus(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @retrofit2.http.GET()
+    Call<JsonObject> teacherStudentHomeworkStatusInsertUpdate(@Url String url);
 
     @FormUrlEncoded
     @POST("/TallyTransactionList")
@@ -640,6 +647,10 @@ public interface WebServices {
     @Multipart
     @retrofit2.http.POST("uploadpdf.aspx")
     Call<okhttp3.ResponseBody> uploadSingleFile(@Part MultipartBody.Part file);
+
+    @Multipart
+    @retrofit2.http.POST("upload.aspx")
+    Call<okhttp3.ResponseBody> uploadMultipleFile(@Part List<MultipartBody.Part> files);
 
     @FormUrlEncoded
     @POST("/TotalFeesCollectionByTerm")
@@ -926,5 +937,14 @@ public interface WebServices {
 
     @retrofit2.http.GET
     Call<PermissionDataModel> getPermissionData(@Url String url);
+
+    @retrofit2.http.GET
+    Call<GalleryDataModel> getGalleryData(@Url String url);
+
+    @retrofit2.http.GET
+    Call<JsonObject> deleteGalleryData(@Url String url);
+
+    @retrofit2.http.GET
+    Call<GalleryDataModel> insertGalleryData(@Url String url);
 
 }

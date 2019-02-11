@@ -20,12 +20,10 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -501,17 +499,18 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
 
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentStudentViewInquiryBinding.termSpinner);
-
-            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentStudentViewInquiryBinding.termSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentStudentViewInquiryBinding.termSpinner.setAdapter(adapterTerm);
@@ -526,42 +525,40 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
         statusIdArray.add("All");
         statusIdArray.add("Generated");
         statusIdArray.add("Admission Form Issued");
+        statusIdArray.add("Received Admission Form");
         statusIdArray.add("Interaction Call");
-        //  statusIdArray.add("Interaction Call");
         statusIdArray.add("Interview Done");
-        // statusIdArray.add("Generate Circular");
+        statusIdArray.add("Generate Circular");
         statusIdArray.add("Fees Paid");
-
 
         ArrayList<String> statusdetail = new ArrayList<>();
         statusdetail.add("All");
-        statusdetail.add("Enquiry Generated");
+        statusdetail.add("Inquiry Generated");
         statusdetail.add("Generated Admission Form");
-        statusdetail.add("Received Admission Form/Interaction Call");
-        // statusdetail.add("Interaction Call");
+        statusdetail.add("Received Admission Form");
+        statusdetail.add("Interaction Call");
         statusdetail.add("Come for Interview");
-        // statusdetail.add("Generate Circular");
+        statusdetail.add("Confirm Admission");
         statusdetail.add("Fees Paid");
-
 
         String[] spinnerstatusIdArray = new String[statusIdArray.size()];
 
-        spinnerOrderMap = new HashMap<Integer, String>();
+        spinnerOrderMap = new HashMap<>();
         for (int i = 0; i < statusIdArray.size(); i++) {
             spinnerOrderMap.put(i, String.valueOf(statusIdArray.get(i)));
             spinnerstatusIdArray[i] = statusdetail.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentStudentViewInquiryBinding.statusSpinner);
-
-            popupWindow.setHeight(spinnerstatusIdArray.length > 4 ? 500 : spinnerstatusIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentStudentViewInquiryBinding.statusSpinner);
+//
+//            popupWindow.setHeight(spinnerstatusIdArray.length > 4 ? 500 : spinnerstatusIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstatusIdArray);
         fragmentStudentViewInquiryBinding.statusSpinner.setAdapter(adapterTerm);

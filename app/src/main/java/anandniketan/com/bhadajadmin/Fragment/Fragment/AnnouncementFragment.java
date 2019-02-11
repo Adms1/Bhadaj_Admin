@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.AnnouncmentAdpater;
@@ -62,40 +63,38 @@ import retrofit2.Call;
 import static android.app.Activity.RESULT_OK;
 
 
-public class AnnouncementFragment extends Fragment implements PermissionUtils.ReqPermissionCallback,DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
+public class AnnouncementFragment extends Fragment implements PermissionUtils.ReqPermissionCallback, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
+    private static final int CHOOSE_PDF_REQ_CODE = 101;
+    private static String dateFinal;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-
-    private int Year, Month, Day,hour,minute,second;
+    private int Year, Month, Day, hour, minute, second;
     private int mYear, mMonth, mDay;
     private Calendar calendar;
-    private static String dateFinal;
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
-
     private HashMap<Integer, String> spinnerOrderMap;
     private AnnouncmentAdpater announcmentAdpater;
-    private RadioGroup radioGroupUploadType,radioGroupStatus,radioGroupStandard;
-    private EditText etSubject,etAnnsText;
+    private RadioGroup radioGroupUploadType, radioGroupStatus, radioGroupStandard;
+    private EditText etSubject, etAnnsText;
     private GridView gridViewStandard;
     private Button btnChooseFile;
     private AppCompatButton btnAdd;
     private List<FinalArrayStandard> finalArrayStandardsList;
     private StandardAdapter standardAdapter;
-    private RadioButton rbStatusActive,rbStatusInactive,rbEnterAnnoucement,rbUploadPdf,rbAll,rbIndividual;
-    private String FinalDateStr,FinalSubjectStr,FinalDiscriptionStr, FinalOrderStr, FinalStatusStr = "1";
-    private LinearLayout llPdfView,llAnnsView;
-    private static final int CHOOSE_PDF_REQ_CODE = 101;
+    private RadioButton rbStatusActive, rbStatusInactive, rbEnterAnnoucement, rbUploadPdf, rbAll, rbIndividual;
+    private String FinalDateStr, FinalSubjectStr, FinalDiscriptionStr, FinalOrderStr, FinalStatusStr = "1";
+    private LinearLayout llPdfView, llAnnsView;
     private PermissionUtils.ReqPermissionCallback reqPermissionCallback;
-    private String pdfFilePath  = "";
+    private String pdfFilePath = "";
     private Button btnDate;
     private AppCompatCheckBox cbScheduleDateTime;
     private LinearLayout llDateTimeView;
     private AppCompatCheckBox cbScheduledatetime;
-    private String fileName = "",Pk_AnnouncementID = "";
+    private String fileName = "", Pk_AnnouncementID = "";
     private FragmentAnnouncementBinding fragmentAnnouncementBinding;
     private List<AnnouncementModel.FinalArray> bundleData;
     private boolean isRecordInUpdate = false;
@@ -107,19 +106,19 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
     }
 
     @Override
-    public void onAttach(Context context){
+    public void onAttach(Context context) {
         super.onAttach(context);
         reqPermissionCallback = this;
-       // onUpdateRecordRef = (OnUpdateRecord)this;
+        // onUpdateRecordRef = (OnUpdateRecord)this;
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentAnnouncementBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_announcement,container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        fragmentAnnouncementBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_announcement, container, false);
 
         rootView = fragmentAnnouncementBinding.getRoot();
-        mContext = getActivity().getApplicationContext();
+        mContext = Objects.requireNonNull(getActivity()).getApplicationContext();
         radioGroupUploadType = rootView.findViewById(R.id.upload_type_group);
         radioGroupStatus = rootView.findViewById(R.id.status_group);
         radioGroupStandard = rootView.findViewById(R.id.standard_group);
@@ -189,28 +188,28 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
             @Override
             public void onClick(View view) {
 
-                if(PermissionUtils.hasPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) && PermissionUtils.hasPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if (PermissionUtils.hasPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) && PermissionUtils.hasPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     intent.setType("application/pdf");
-                    startActivityForResult(intent,CHOOSE_PDF_REQ_CODE);
-                }else{
-                    PermissionUtils.checkPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE,102,"Please allow extrnal storage permission to continue","You can't upload pdf without giving permission",reqPermissionCallback);
+                    startActivityForResult(intent, CHOOSE_PDF_REQ_CODE);
+                } else {
+                    PermissionUtils.checkPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE, 102, "Please allow extrnal storage permission to continue", "You can't upload pdf without giving permission", reqPermissionCallback);
                 }
             }
         });
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate()){
-                   callInsertUpdateAnnouncement();
+                if (validate()) {
+                    callInsertUpdateAnnouncement();
                 }
             }
         });
         rbEnterAnnoucement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     llAnnsView.setVisibility(View.VISIBLE);
                     llPdfView.setVisibility(View.GONE);
                 }
@@ -219,7 +218,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         rbUploadPdf.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     llAnnsView.setVisibility(View.GONE);
                     llPdfView.setVisibility(View.VISIBLE);
                 }
@@ -229,15 +228,17 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         cbScheduleDateTime.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     fragmentAnnouncementBinding.linearDate.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     try {
-                        String currentDateTime = Utils.getCurrentDateTime("dd/MM/yyyy-hh:mm");
-                        fragmentAnnouncementBinding.dateTimeBtn.setText(currentDateTime.replace("-"," "));
-                     }catch (Exception ex){
+                        String currentDateTime = Utils.getCurrentDateTime("dd/MM/yyyy");
+                        String currentDateTime1 = Utils.getCurrentDateTime("hh:mm");
+                        fragmentAnnouncementBinding.dateBtn.setText(currentDateTime);
+                        fragmentAnnouncementBinding.timeBtn.setText(currentDateTime1);
+                    } catch (Exception ex) {
                         ex.printStackTrace();
-                     }
+                    }
                     fragmentAnnouncementBinding.linearDate.setVisibility(View.GONE);
                 }
             }
@@ -245,8 +246,8 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         rbStatusInactive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    FinalStatusStr =  "0";
+                if (b) {
+                    FinalStatusStr = "0";
                 }
             }
         });
@@ -254,16 +255,16 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         rbStatusActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    FinalStatusStr  = "1";
+                if (b) {
+                    FinalStatusStr = "1";
                 }
             }
         });
         rbAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-                    if(!isRecordInUpdate) {
+                if (b) {
+                    if (!isRecordInUpdate) {
                         if (finalArrayStandardsList != null) {
                             if (finalArrayStandardsList.size() > 0) {
 
@@ -282,14 +283,15 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         });
 
         try {
-            String currentDateTime = Utils.getCurrentDateTime("dd/MM/yyyy-hh:mm");
-            fragmentAnnouncementBinding.dateTimeBtn.setText(currentDateTime.replace("-"," "));
-        }catch (Exception ex){
+            String currentDateTime = Utils.getCurrentDateTime("dd/MM/yyyy");
+            String currentDateTime1 = Utils.getCurrentDateTime("hh:mm");
+            fragmentAnnouncementBinding.dateBtn.setText(currentDateTime);
+            fragmentAnnouncementBinding.timeBtn.setText(currentDateTime1);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-
-        fragmentAnnouncementBinding.dateTimeBtn.setOnClickListener(new View.OnClickListener() {
+        fragmentAnnouncementBinding.dateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 datePickerDialog = DatePickerDialog.newInstance(AnnouncementFragment.this, Year, Month, Day);
@@ -298,15 +300,28 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
                 datePickerDialog.showYearPickerFirst(false);
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date From DatePickerDialog");
-                datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+                datePickerDialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), "DatePickerDialog");
+            }
+        });
+
+        fragmentAnnouncementBinding.timeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timePickerDialog = TimePickerDialog.newInstance(AnnouncementFragment.this, hour, minute, second, true);
+                timePickerDialog.setThemeDark(false);
+                timePickerDialog.setOkText("Done");
+                timePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
+                timePickerDialog.setTitle("Select Time From TimePickerDialog");
+                timePickerDialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), "TimePickerDialog");
+
             }
         });
 
         rbIndividual.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b) {
-                    if(!isRecordInUpdate) {
+                if (b) {
+                    if (!isRecordInUpdate) {
                         if (finalArrayStandardsList != null) {
                             if (finalArrayStandardsList.size() > 0) {
 
@@ -330,7 +345,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
                 AppConfiguration.position = 55;
                 fragment = new AnnoucementListFragment();
-                fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                 AppConfiguration.firsttimeback = true;
 
@@ -341,7 +356,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
     private void callStandardApi() {
 
         if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error),getResources().getString(R.string.internet_connection_error), getActivity());
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
@@ -368,19 +383,19 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
                         for (int i = 0; i < finalArrayStandardsList.size(); i++) {
                             finalArrayStandardsList.get(i).setCheckedStatus("1");
                         }
-                        standardAdapter = new StandardAdapter(mContext,finalArrayStandardsList);
+                        standardAdapter = new StandardAdapter(mContext, finalArrayStandardsList);
                         gridViewStandard.setAdapter(standardAdapter);
                     }
                     try {
                         Bundle bundle = AnnouncementFragment.this.getArguments();
                         if (bundle != null) {
-                            bundleData = new ArrayList<AnnouncementModel.FinalArray>();
+                            bundleData = new ArrayList<>();
                             bundleData = bundle.getParcelableArrayList("data");
-                            if(bundleData != null){
+                            if (bundleData != null) {
                                 setData(bundleData);
                             }
                         }
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                     //onUpdateRecordRef.onUpdateRecord();
@@ -392,17 +407,15 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext,getString(R.string.something_wrong));
+                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 
     }
 
     private Map<String, String> getStandardDetail() {
-        Map<String, String> map = new HashMap<>();
-        return map;
+        return new HashMap<>();
     }
-
 
 
     // CALL InsertAnnouncement
@@ -413,7 +426,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().InsertAnnouncement(getInsertAnnouncement(),new retrofit.Callback<AnnouncementModel>() {
+        ApiHandler.getApiService().InsertAnnouncement(getInsertAnnouncement(), new retrofit.Callback<AnnouncementModel>() {
             @Override
             public void success(AnnouncementModel permissionModel, Response response) {
                 Utils.dismissDialog();
@@ -430,36 +443,36 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
                     return;
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
-                    if(rbUploadPdf.isChecked()){
-                        if(pdfFilePath != null){
-                            if(!TextUtils.isEmpty(pdfFilePath)){
+                    if (rbUploadPdf.isChecked()) {
+                        if (pdfFilePath != null) {
+                            if (!TextUtils.isEmpty(pdfFilePath)) {
                                 uploadPdf(pdfFilePath);
-                            }else{
+                            } else {
                                 //record updated.
-                                if(!isRecordInUpdate){
+                                if (!isRecordInUpdate) {
                                     Utils.ping(mContext, getString(R.string.anns_success_msg));
-                                }else{
-                                    Utils.ping(mContext,"Announcement updated successfully");
+                                } else {
+                                    Utils.ping(mContext, "Announcement updated successfully");
                                 }
 
                                 AppConfiguration.position = 11;
                                 fragment = new AnnoucementListFragment();
-                                fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                                 AppConfiguration.firsttimeback = true;
 
                             }
                         }
-                    }else{
-                        if(!isRecordInUpdate){
+                    } else {
+                        if (!isRecordInUpdate) {
                             Utils.ping(mContext, getString(R.string.anns_success_msg));
-                        }else{
-                            Utils.ping(mContext,"Announcement updated successfully");
+                        } else {
+                            Utils.ping(mContext, "Announcement updated successfully");
 
                         }
                         AppConfiguration.position = 11;
                         fragment = new AnnoucementListFragment();
-                        fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                                 .replace(R.id.frame_container, fragment).commit();
@@ -484,20 +497,20 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
     private Map<String, String> getInsertAnnouncement() {
         Map<String, String> map = new HashMap<>();
         map.put("Subject", FinalSubjectStr);
-        if(FinalDiscriptionStr == null){
+        if (FinalDiscriptionStr == null) {
             FinalDiscriptionStr = "";
         }
         map.put("Description", FinalDiscriptionStr);
         map.put("Status", FinalStatusStr);
-        if(Pk_AnnouncementID != null){
-            if(TextUtils.isEmpty(Pk_AnnouncementID)){
+        if (Pk_AnnouncementID != null) {
+            if (TextUtils.isEmpty(Pk_AnnouncementID)) {
                 map.put("PK_AnnouncmentID", "0");
-            }else{
-                map.put("PK_AnnouncmentID",Pk_AnnouncementID);
+            } else {
+                map.put("PK_AnnouncmentID", Pk_AnnouncementID);
             }
         }
 
-        if(TextUtils.isEmpty(fileName)) {
+        if (TextUtils.isEmpty(fileName)) {
             Long tsLong = System.currentTimeMillis() / 1000;
             fileName = "Pdf_" + String.valueOf(tsLong) + ".pdf";
         }
@@ -505,51 +518,49 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 //            fileName = pdfFilePath.substring(pdfFilePath.lastIndexOf("/") + 1);
 //        }
 
-
-        if(rbEnterAnnoucement.isChecked()){
-            map.put("FileName","");
-        }else{
-            if(rbUploadPdf.isChecked()){
-                map.put("FileName",fileName);
+        if (rbEnterAnnoucement.isChecked()) {
+            map.put("FileName", "");
+        } else {
+            if (rbUploadPdf.isChecked()) {
+                map.put("FileName", fileName);
             }
         }
-        if(rbAll.isChecked()) {
+        if (rbAll.isChecked()) {
             map.put("GradeAll", "Y");
-        }else{
+        } else {
             map.put("GradeAll", "N");
         }
 
-        if(rbAll.isChecked()) {
-           // map.put("GradeID", "0");
-            if(standardAdapter != null){
-                String selectedGradeIds  = TextUtils.join(",", standardAdapter.getCheckedStandards());
-                map.put("GradeID",selectedGradeIds);
+        if (rbAll.isChecked()) {
+            // map.put("GradeID", "0");
+            if (standardAdapter != null) {
+                String selectedGradeIds = TextUtils.join(",", standardAdapter.getCheckedStandards());
+                map.put("GradeID", selectedGradeIds);
             }
 
-        }else{
-            if(standardAdapter != null){
-              String selectedGradeIds  = TextUtils.join(",", standardAdapter.getCheckedStandards());
-              map.put("GradeID",selectedGradeIds);
+        } else {
+            if (standardAdapter != null) {
+                String selectedGradeIds = TextUtils.join(",", standardAdapter.getCheckedStandards());
+                map.put("GradeID", selectedGradeIds);
             }
         }
 
 
-
         try {
-            if(cbScheduleDateTime.isChecked()) {
-                if (fragmentAnnouncementBinding.dateTimeBtn.getText().toString().length() > 0) {
-                    String[] dateTime = fragmentAnnouncementBinding.dateTimeBtn.getText().toString().split(" ");
-                    String date = dateTime[0];
-                    String time = dateTime[1];
-                    map.put("ScheduleDate", date);
-                    map.put("ScheduleTime", time);
-                }
-            }else{
-                map.put("ScheduleDate","");
-                map.put("ScheduleTime","");
+            if (cbScheduleDateTime.isChecked()) {
+//                if (fragmentAnnouncementBinding.dateTimeBtn.getText().toString().length() > 0) {
+//                    String[] dateTime = fragmentAnnouncementBinding.dateTimeBtn.getText().toString().split(" ");
+//                    String date = dateTime[0];
+//                    String time = dateTime[1];
+                map.put("ScheduleDate", fragmentAnnouncementBinding.dateBtn.getText().toString());
+                map.put("ScheduleTime", fragmentAnnouncementBinding.timeBtn.getText().toString());
+//                }
+            } else {
+                map.put("ScheduleDate", "");
+                map.put("ScheduleTime", "");
             }
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -557,7 +568,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
         return map;
     }
 
-    private void uploadPdf(String filePath){
+    private void uploadPdf(String filePath) {
         //upload file using retrofit 2
         try {
             File file = null;
@@ -575,40 +586,39 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
                     Utils.showDialog(getActivity());
 
-                    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-                    MultipartBody.Part body = MultipartBody.Part.createFormData("Pdf",fileName,requestFile);
+                    MultipartBody.Part body = MultipartBody.Part.createFormData("Pdf", fileName, requestFile);
 
                     Call<ResponseBody> responseBodyCall = ApiHandler.getApiServiceForFileUplod().uploadSingleFile(body);
 
-
                     responseBodyCall.enqueue(new retrofit2.Callback<ResponseBody>() {
                         @Override
-                        public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                            if(response.isSuccessful()){
+                        public void onResponse(@NonNull Call<ResponseBody> call, @NonNull retrofit2.Response<ResponseBody> response) {
+                            if (response.isSuccessful()) {
                                 Utils.dismissDialog();
-                                if(!isRecordInUpdate){
-                                    Utils.ping(getActivity(),getString(R.string.anns_success_msg));
-                                }else{
-                                    Utils.ping(getActivity(),"Announcement updated successfully");
+                                if (!isRecordInUpdate) {
+                                    Utils.ping(getActivity(), getString(R.string.anns_success_msg));
+                                } else {
+                                    Utils.ping(getActivity(), "Announcement updated successfully");
                                 }
                                 AppConfiguration.position = 11;
                                 fragment = new AnnoucementListFragment();
-                                fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                                 AppConfiguration.firsttimeback = true;
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Utils.ping(getActivity(),t.getMessage());
+                        public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                            Utils.ping(getActivity(), t.getMessage());
                             Utils.dismissDialog();
                         }
                     });
                 }
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
@@ -616,7 +626,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case CHOOSE_PDF_REQ_CODE:
                 if (resultCode == RESULT_OK) {
@@ -630,12 +640,12 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
                     if (uriString.startsWith("content://")) {
                         Cursor cursor = null;
                         try {
-                            cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+                            cursor = Objects.requireNonNull(getActivity()).getContentResolver().query(uri, null, null, null, null);
                             if (cursor != null && cursor.moveToFirst()) {
                                 displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                                 //btnChooseFile.setText(displayName);
 
-                                String filePath = Utils.getFilePathFromUri(getActivity(),uri);
+                                String filePath = Utils.getFilePathFromUri(getActivity(), uri);
                                 File file = null;
                                 try {
                                     file = new File(filePath);
@@ -678,16 +688,14 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
 
                             }
-                        } catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.printStackTrace();
-                        }
-
-                        finally {
+                        } finally {
                             cursor.close();
                         }
                     } else if (uriString.startsWith("file://")) {
 
-                        String filePath = Utils.getFilePathFromUri(getActivity(),uri);
+                        String filePath = Utils.getFilePathFromUri(getActivity(), uri);
                         File file = null;
                         try {
                             file = new File(filePath);
@@ -714,61 +722,59 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
     }
 
 
-
-
     @Override
     public void onResult(boolean success) {
-        if(success){
+        if (success) {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.setType("application/pdf");
-            startActivityForResult(intent,CHOOSE_PDF_REQ_CODE);
+            startActivityForResult(intent, CHOOSE_PDF_REQ_CODE);
         }
     }
 
-    private boolean validate(){
+    private boolean validate() {
         try {
             FinalSubjectStr = etSubject.getText().toString();
 
-            if(TextUtils.isEmpty(etSubject.getText().toString().trim())){
-                Utils.ping(getActivity(),"Please enter subject");
+            if (TextUtils.isEmpty(etSubject.getText().toString().trim())) {
+                Utils.ping(getActivity(), "Please enter subject");
                 return false;
             }
-             if(rbEnterAnnoucement.isChecked()){
+            if (rbEnterAnnoucement.isChecked()) {
                 FinalDiscriptionStr = etAnnsText.getText().toString();
-                if(TextUtils.isEmpty(etAnnsText.getText().toString().trim())){
-                    Utils.ping(getActivity(),"Please enter announcement text");
+                if (TextUtils.isEmpty(etAnnsText.getText().toString().trim())) {
+                    Utils.ping(getActivity(), "Please enter announcement text");
                     return false;
                 }
             }
-            if(rbUploadPdf.isChecked()){
-                if(!isRecordInUpdate) {
+            if (rbUploadPdf.isChecked()) {
+                if (!isRecordInUpdate) {
                     if (TextUtils.isEmpty(pdfFilePath)) {
                         Utils.ping(getActivity(), "Please attach pdf file");
                         return false;
                     }
                 }
             }
-            if(rbIndividual.isChecked()){
-                if(standardAdapter != null){
-                    if(standardAdapter.getCheckedStandards() != null){
-                        if(standardAdapter.getCheckedStandards().size() <= 0){
-                            Utils.ping(getActivity(),"Please select standard");
+            if (rbIndividual.isChecked()) {
+                if (standardAdapter != null) {
+                    if (standardAdapter.getCheckedStandards() != null) {
+                        if (standardAdapter.getCheckedStandards().size() <= 0) {
+                            Utils.ping(getActivity(), "Please select standard");
                             return false;
                         }
                     }
                 }
             }
-            if(cbScheduleDateTime.isChecked()){
-                if(TextUtils.isEmpty(fragmentAnnouncementBinding.dateTimeBtn.getText().toString()) || fragmentAnnouncementBinding.dateTimeBtn.getText().length() <= 0){
-                    Utils.ping(getActivity(),"Please select schedule date time");
+            if (cbScheduleDateTime.isChecked()) {
+                if (TextUtils.isEmpty(fragmentAnnouncementBinding.dateBtn.getText().toString()) || fragmentAnnouncementBinding.dateBtn.getText().length() <= 0 || TextUtils.isEmpty(fragmentAnnouncementBinding.timeBtn.getText().toString()) || fragmentAnnouncementBinding.timeBtn.getText().length() <= 0) {
+                    Utils.ping(getActivity(), "Please select schedule date time");
                     return false;
                 }
             }
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-         }
+        }
         return true;
 
     }
@@ -792,16 +798,16 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
         dateFinal = d + "/" + m + "/" + y;
 
-        fragmentAnnouncementBinding.dateTimeBtn.setText(dateFinal);
+        fragmentAnnouncementBinding.dateBtn.setText(dateFinal);
 
         calendar = Calendar.getInstance();
 
-        timePickerDialog = TimePickerDialog.newInstance(AnnouncementFragment.this, hour, minute, second,true);
-        timePickerDialog.setThemeDark(false);
-        timePickerDialog.setOkText("Done");
-        timePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
-        timePickerDialog.setTitle("Select Time From TimePickerDialog");
-        timePickerDialog.show(getActivity().getFragmentManager(), "TimePickerDialog");
+//        timePickerDialog = TimePickerDialog.newInstance(AnnouncementFragment.this, hour, minute, second, true);
+//        timePickerDialog.setThemeDark(false);
+//        timePickerDialog.setOkText("Done");
+//        timePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
+//        timePickerDialog.setTitle("Select Time From TimePickerDialog");
+//        timePickerDialog.show(Objects.requireNonNull(getActivity()).getFragmentManager(), "TimePickerDialog");
 
     }
 
@@ -822,9 +828,9 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
             m = "0" + m;
         }
 
-        dateFinal = fragmentAnnouncementBinding.dateTimeBtn.getText().toString()+" " +d + ":" + m;
+        dateFinal = d + ":" + m;
 
-        fragmentAnnouncementBinding.dateTimeBtn.setText(dateFinal);
+        fragmentAnnouncementBinding.timeBtn.setText(dateFinal);
 
     }
 
@@ -858,19 +864,19 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
                             String[] standards = dataList.get(count).getStandard().split(",");
 
-                           // standardAdapter.setCheckedStandards(items);
+                            // standardAdapter.setCheckedStandards(items);
 
-                            if(finalArrayStandardsList != null){
-                                if(finalArrayStandardsList.size() > 0){
+                            if (finalArrayStandardsList != null) {
+                                if (finalArrayStandardsList.size() > 0) {
 
-                                    for(int count2 = 0;count2 <finalArrayStandardsList.size();count2++){
+                                    for (int count2 = 0; count2 < finalArrayStandardsList.size(); count2++) {
                                         finalArrayStandardsList.get(count2).setCheckedStatus("0");
                                     }
 
-                                    for(int count3 = 0;count3 <finalArrayStandardsList.size();count3++){
-                                        for(int count1 = 0;count1<standards.length;count1++){
-                                            if(standards[count1].equalsIgnoreCase(finalArrayStandardsList.get(count3).getStandard())){
-                                                    finalArrayStandardsList.get(count3).setCheckedStatus("1");
+                                    for (int count3 = 0; count3 < finalArrayStandardsList.size(); count3++) {
+                                        for (int count1 = 0; count1 < standards.length; count1++) {
+                                            if (standards[count1].equalsIgnoreCase(finalArrayStandardsList.get(count3).getStandard())) {
+                                                finalArrayStandardsList.get(count3).setCheckedStatus("1");
                                             }
                                         }
                                     }
@@ -884,7 +890,8 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
 
                         if (!TextUtils.isEmpty(dataList.get(count).getScheduleDate()) && !TextUtils.isEmpty(dataList.get(count).getScheduleTime())) {
                             fragmentAnnouncementBinding.cbScheduledatetime.setChecked(true);
-                            fragmentAnnouncementBinding.dateTimeBtn.setText(dataList.get(count).getScheduleDate() + " " + dataList.get(count).getScheduleTime());
+                            fragmentAnnouncementBinding.dateBtn.setText(dataList.get(count).getScheduleDate());
+                            fragmentAnnouncementBinding.timeBtn.setText(dataList.get(count).getScheduleTime());
                         }
 
                         if (!TextUtils.isEmpty(dataList.get(count).getAnnDesc())) {
@@ -922,7 +929,7 @@ public class AnnouncementFragment extends Fragment implements PermissionUtils.Re
                     }
                 }
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

@@ -130,7 +130,6 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
     }
 
-
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         populateSetDate(year, monthOfYear, dayOfMonth);
@@ -191,7 +190,6 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
         fragmentLeaveRequestBinding.fromdateBtn.setText(Utils.getTodaysDate());
         fragmentLeaveRequestBinding.todateBtn.setText(Utils.getTodaysDate());
-
 
         fragmentLeaveRequestBinding.fromdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
