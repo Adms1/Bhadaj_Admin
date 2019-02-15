@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -395,24 +396,21 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
             spinnertermIdArray[i] = Term.get(i).trim();
         }
 
-
-
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentAddInquiryBinding.sessionSpinner);
-
-            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentAddInquiryBinding.sessionSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentAddInquiryBinding.sessionSpinner.setAdapter(adapterTerm);
         FinalTermIdStr = spinnerTermMap.get(0);
-        fragmentAddInquiryBinding.sessionSpinner.setEnabled(false);
     }
 
 
@@ -486,7 +484,7 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
         }
         String[] spinnerstandardIdArray = new String[standardId.size()];
 
-        spinnerStandardMap = new HashMap<Integer, String>();
+        spinnerStandardMap = new HashMap<>();
         for (int i = 0; i < standardId.size(); i++) {
             spinnerStandardMap.put(i, String.valueOf(standardId.get(i)));
             spinnerstandardIdArray[i] = standardname.get(i).trim();
@@ -499,7 +497,7 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
             // Get private mPopup member variable and try cast to ListPopupWindow
             android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentAddInquiryBinding.gradeSpinner);
 
-            popupWindow.setHeight(spinnerstandardIdArray.length > 4 ? 500 : spinnerstandardIdArray.length * 100);
+            popupWindow.setHeight(200);
 //            popupWindow1.setHeght(200);
         } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
             // silently fail...
@@ -549,23 +547,23 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
 
         String[] spinnersectionIdArray = new String[sectionId.size()];
 
-        spinnerSectionMap = new HashMap<Integer, String>();
+        spinnerSectionMap = new HashMap<>();
         for (int i = 0; i < sectionId.size(); i++) {
             spinnerSectionMap.put(i, String.valueOf(sectionId.get(i)));
             spinnersectionIdArray[i] = sectionname.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentAddInquiryBinding.sectionSpinner);
-
-            popupWindow.setHeight(spinnersectionIdArray.length > 4 ? 500 : spinnersectionIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
-        ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnersectionIdArray);
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentAddInquiryBinding.sectionSpinner);
+//
+//            popupWindow.setHeight(spinnersectionIdArray.length > 4 ? 500 : spinnersectionIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
+        ArrayAdapter<String> adapterstandard = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnersectionIdArray);
         fragmentAddInquiryBinding.sectionSpinner.setAdapter(adapterstandard);
 
         FinalSectionStr = spinnerSectionMap.get(0);
@@ -605,7 +603,9 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
                     AppConfiguration.toDate = Utils.getTodaysDate();
                     fragment = new StudentViewInquiryFragment();
                     fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                    }
 
                 }
             }
@@ -652,6 +652,8 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
         fragmentAddInquiryBinding.fatherLastnameTxt.setText("");
         fragmentAddInquiryBinding.fatherFirstnameTxt.setText("");
         fragmentAddInquiryBinding.fatherMobilenoTxt.setText("");
+
+        fragmentAddInquiryBinding.mainScrollview.fullScroll(ScrollView.FOCUS_UP);
 
     }
 

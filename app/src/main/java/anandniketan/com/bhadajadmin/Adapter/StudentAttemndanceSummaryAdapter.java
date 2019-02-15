@@ -1,27 +1,21 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Student.ConsistentAbsentStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.TotalAttendanceItemBinding;
 
@@ -41,14 +35,13 @@ public class StudentAttemndanceSummaryAdapter extends RecyclerView.Adapter<Stude
         this.consistentAbsentStudentModelList=consistentAbsentStudentModelList;
     }
 
-
     @Override
     public StudentAttemndanceSummaryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
         totalAttendanceItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.total_attendance_item, parent, false);
         view = totalAttendanceItemBinding.getRoot();
-        return new ViewHolder(view);
 
+        return new ViewHolder(view);
     }
 
     @Override
@@ -58,18 +51,37 @@ public class StudentAttemndanceSummaryAdapter extends RecyclerView.Adapter<Stude
         totalAttendanceItemBinding.leavestudentCountTxt.setText(studentAttendanceFinalArrayList.get(position).getStudentLeave());
         totalAttendanceItemBinding.totalstudentCountTxt.setText(studentAttendanceFinalArrayList.get(position).getTotalStudent());
 
-        standardwiseStudentAttendaceAdapter = new StandardwiseStudentAttendaceAdapter(context, standardWiseAttendanceModelList);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, OrientationHelper.VERTICAL, false);
-        totalAttendanceItemBinding.standardwiseRcv.setLayoutManager(mLayoutManager);
-        totalAttendanceItemBinding.standardwiseRcv.setItemAnimator(new DefaultItemAnimator());
-        totalAttendanceItemBinding.standardwiseRcv.setAdapter(standardwiseStudentAttendaceAdapter);
+        if (standardWiseAttendanceModelList.size() > 0) {
 
-        consistentAbsentTeacherAdapter=new ConsistentAbsentTeacherAdapter(context,consistentAbsentStudentModelList);
-        LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(context, OrientationHelper.VERTICAL, false);
-        totalAttendanceItemBinding.consistentAbsentRcv.setLayoutManager(mLayoutManager1);
-        totalAttendanceItemBinding.consistentAbsentRcv.setItemAnimator(new DefaultItemAnimator());
-        totalAttendanceItemBinding.consistentAbsentRcv.setAdapter(consistentAbsentTeacherAdapter);
+            totalAttendanceItemBinding.standardwiseRcv.setVisibility(View.VISIBLE);
+            holder.llHeader1.setVisibility(View.VISIBLE);
+            totalAttendanceItemBinding.txtNoRecords1.setVisibility(View.GONE);
+            standardwiseStudentAttendaceAdapter = new StandardwiseStudentAttendaceAdapter(context, standardWiseAttendanceModelList);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, OrientationHelper.VERTICAL, false);
+            totalAttendanceItemBinding.standardwiseRcv.setLayoutManager(mLayoutManager);
+            totalAttendanceItemBinding.standardwiseRcv.setItemAnimator(new DefaultItemAnimator());
+            totalAttendanceItemBinding.standardwiseRcv.setAdapter(standardwiseStudentAttendaceAdapter);
+        } else {
+            totalAttendanceItemBinding.txtNoRecords1.setVisibility(View.VISIBLE);
+            totalAttendanceItemBinding.standardwiseRcv.setVisibility(View.GONE);
+            holder.llHeader1.setVisibility(View.GONE);
+        }
 
+        if (consistentAbsentStudentModelList.size() > 0) {
+
+            totalAttendanceItemBinding.consistentAbsentRcv.setVisibility(View.VISIBLE);
+            holder.llHeader2.setVisibility(View.VISIBLE);
+            totalAttendanceItemBinding.txtNoRecords2.setVisibility(View.GONE);
+            consistentAbsentTeacherAdapter = new ConsistentAbsentTeacherAdapter(context, consistentAbsentStudentModelList);
+            LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(context, OrientationHelper.VERTICAL, false);
+            totalAttendanceItemBinding.consistentAbsentRcv.setLayoutManager(mLayoutManager1);
+            totalAttendanceItemBinding.consistentAbsentRcv.setItemAnimator(new DefaultItemAnimator());
+            totalAttendanceItemBinding.consistentAbsentRcv.setAdapter(consistentAbsentTeacherAdapter);
+        } else {
+            holder.llHeader2.setVisibility(View.GONE);
+            totalAttendanceItemBinding.txtNoRecords2.setVisibility(View.VISIBLE);
+            totalAttendanceItemBinding.consistentAbsentRcv.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -79,8 +91,14 @@ public class StudentAttemndanceSummaryAdapter extends RecyclerView.Adapter<Stude
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        LinearLayout llHeader1, llHeader2;
+
         public ViewHolder(View itemView) {
             super(itemView);
+
+            llHeader1 = itemView.findViewById(R.id.llHeader1);
+            llHeader2 = itemView.findViewById(R.id.llHeader2);
+
         }
     }
 

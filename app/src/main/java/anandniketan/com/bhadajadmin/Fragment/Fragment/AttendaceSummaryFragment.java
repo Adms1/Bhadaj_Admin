@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,18 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
-import anandniketan.com.bhadajadmin.Adapter.ConsistentAbsentTeacherAdapter;
-import anandniketan.com.bhadajadmin.Adapter.StandardwiseStudentAttendaceAdapter;
 import anandniketan.com.bhadajadmin.Adapter.StudentAttemndanceSummaryAdapter;
-import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
-import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.Model.Student.ConsistentAbsentStudentModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentAttendaceSummaryBinding;
 import retrofit.RetrofitError;
@@ -47,15 +42,17 @@ public class AttendaceSummaryFragment extends Fragment {
     List<StudentAttendanceFinalArray> studentAttendanceFinalArrayList;
     List<StandardWiseAttendanceModel> standardWiseAttendanceModelList;
     List<ConsistentAbsentStudentModel> consistentAbsentStudentModelList;
+    ArrayList<String> standardCount;
     private FragmentAttendaceSummaryBinding fragmentAttendaceSummaryBinding;
     private View rootView;
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private String Datestr;
+
     public AttendaceSummaryFragment() {
     }
-    ArrayList<String> standardCount;
+
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,10 +91,14 @@ public class AttendaceSummaryFragment extends Fragment {
         fragmentAttendaceSummaryBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 11;
+
                 Fragment fragment = new StudentFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction()
-                        .setCustomAnimations(0, 0)
+                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                         .replace(R.id.frame_container, fragment).commit();
             }
         });
@@ -133,14 +134,14 @@ public class AttendaceSummaryFragment extends Fragment {
                         studentAttendanceFinalArrayList = studentUser.getFinalArray();
                     }
                     if (studentUser.getStandardWiseAttendance() != null) {
-                        standardCount=new ArrayList<>();
+                        standardCount = new ArrayList<>();
                         standardCount.add("1");
                         standardWiseAttendanceModelList = studentUser.getStandardWiseAttendance();
                     }
                     if (studentUser.getConsistentAbsent() != null) {
                         consistentAbsentStudentModelList = studentUser.getConsistentAbsent();
                     }
-                    studentAttemndanceSummaryAdapter = new StudentAttemndanceSummaryAdapter(mContext, studentAttendanceFinalArrayList,standardWiseAttendanceModelList,consistentAbsentStudentModelList);
+                    studentAttemndanceSummaryAdapter = new StudentAttemndanceSummaryAdapter(mContext, studentAttendanceFinalArrayList, standardWiseAttendanceModelList, consistentAbsentStudentModelList);
                     LinearLayoutManager mLayoutManager = new LinearLayoutManager(mContext, OrientationHelper.VERTICAL, false);
                     fragmentAttendaceSummaryBinding.studentAttendanceListRcv.setLayoutManager(mLayoutManager);
                     fragmentAttendaceSummaryBinding.studentAttendanceListRcv.setItemAnimator(new DefaultItemAnimator());

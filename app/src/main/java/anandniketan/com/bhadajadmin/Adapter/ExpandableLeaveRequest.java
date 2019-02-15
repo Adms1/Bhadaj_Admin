@@ -171,29 +171,30 @@ public class ExpandableLeaveRequest extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if (infalInflater != null) {
-                convertView = infalInflater.inflate(R.layout.list_item_header_leave_request, null);
+//            if (infalInflater != null) {
+            convertView = infalInflater.inflate(R.layout.list_item_header_leave_request, null);
+        }
 
-                TextView txt_emp, appdate_txt, nodays;
-                ImageView iv_indicator;
+        TextView txt_emp, appdate_txt, nodays;
+        ImageView iv_indicator;
 
-                txt_emp = convertView.findViewById(R.id.emp_txt);
-                appdate_txt = convertView.findViewById(R.id.appdate_txt);
-                nodays = convertView.findViewById(R.id.noofdays_txt);
+        txt_emp = convertView.findViewById(R.id.emp_txt);
+        appdate_txt = convertView.findViewById(R.id.appdate_txt);
+        nodays = convertView.findViewById(R.id.noofdays_txt);
 
-                iv_indicator = convertView.findViewById(R.id.iv_indicator);
+        iv_indicator = convertView.findViewById(R.id.iv_indicator);
 
-                txt_emp.setText(headerTitle1);
-                appdate_txt.setText(headerTitle2);
-                nodays.setText(headerTitle3);
+        txt_emp.setText(headerTitle1);
+        appdate_txt.setText(headerTitle2);
+        nodays.setText(headerTitle3);
 
-                if (isExpanded) {
-                    iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
-                } else {
-                    iv_indicator.setImageResource(R.drawable.arrow_1_42);
-                }
+//            }
+//        }
 
-            }
+        if (isExpanded) {
+            iv_indicator.setImageResource(R.drawable.arrow_1_42_down);
+        } else {
+            iv_indicator.setImageResource(R.drawable.arrow_1_42);
         }
 
         return convertView;

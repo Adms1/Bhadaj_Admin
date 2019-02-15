@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import anandniketan.com.bhadajadmin.Interface.onViewClick;
+import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-import anandniketan.com.bhadajadmin.Utility.Utils;
 
 
 /**
@@ -24,11 +23,11 @@ import anandniketan.com.bhadajadmin.Utility.Utils;
 public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.MyViewHolder> {
     private Context context;
     private StudentAttendanceModel filteredDataModel;
-    private onViewClick onViewClick;
+    private OnEditRecordWithPosition onViewClick;
     private String status;
     private String type;
 
-    public GRRegisterAdapter(Context mContext, StudentAttendanceModel studentFullDetailModel, onViewClick onViewClick, String status, String type) {
+    public GRRegisterAdapter(Context mContext, StudentAttendanceModel studentFullDetailModel, OnEditRecordWithPosition onViewClick, String status, String type) {
         this.context = mContext;
         this.filteredDataModel = studentFullDetailModel;
         this.onViewClick = onViewClick;
@@ -44,7 +43,7 @@ public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GRRegisterAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GRRegisterAdapter.MyViewHolder holder, final int position) {
 
         final StudentAttendanceFinalArray filter = filteredDataModel.getFinalArray().get(position);
         String sr = String.valueOf(position + 1);
@@ -74,13 +73,13 @@ public class GRRegisterAdapter extends RecyclerView.Adapter<GRRegisterAdapter.My
             @Override
             public void onClick(View v) {
 
-                if (status.equalsIgnoreCase("true")) {
+//                if (status.equalsIgnoreCase("true")) {
                     AppConfiguration.CheckStudentId = String.valueOf(filter.getStudent_ID().toString());
                     Log.d("CheckStudentId", AppConfiguration.CheckStudentId);
-                    onViewClick.getViewClick();
-                } else {
-                    Utils.ping(context, "Access Denied");
-                }
+                onViewClick.getEditpermission(position);
+//                } else {
+//                    Utils.ping(context, "Access Denied");
+//                }
 
             }
         });

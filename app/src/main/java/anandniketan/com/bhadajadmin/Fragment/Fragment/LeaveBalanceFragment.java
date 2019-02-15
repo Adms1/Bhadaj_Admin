@@ -230,8 +230,6 @@ public class LeaveBalanceFragment extends Fragment {
                         fragmentMyLeaveBalanceBinding.leaveList.setLayoutManager(new LinearLayoutManager(getActivity()));
                         fragmentMyLeaveBalanceBinding.leaveList.setAdapter(leaveBalanceListAdapter);
                     }
-
-
                 }
             }
 
@@ -267,7 +265,7 @@ public class LeaveBalanceFragment extends Fragment {
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap = new HashMap<Integer, String>();
+        spinnerTermMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();

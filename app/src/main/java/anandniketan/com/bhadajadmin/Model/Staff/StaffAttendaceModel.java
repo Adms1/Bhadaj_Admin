@@ -13,7 +13,7 @@ public class StaffAttendaceModel {
     @SerializedName("Success")
     @Expose
     private String success;
-    @SerializedName("Year")
+    @SerializedName(value = "msg", alternate = {"Year", "Message"})
     @Expose
     private String year;
     @SerializedName("FinalArray")

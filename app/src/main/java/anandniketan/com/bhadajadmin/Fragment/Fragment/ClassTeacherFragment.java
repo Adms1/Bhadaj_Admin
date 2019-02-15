@@ -1,6 +1,5 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,10 +31,13 @@ import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ClassTeacherDetailListAdapter;
+import anandniketan.com.bhadajadmin.Adapter.SectionAdapter;
+import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
 import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Interface.onDeleteButton;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
+import anandniketan.com.bhadajadmin.Model.Account.SectionDetailModel;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
@@ -59,11 +61,12 @@ public class ClassTeacherFragment extends Fragment {
     List<FinalArrayStaffModel> finalArrayClassTeacherDetailModelList;
     List<FinalArrayStaffModel> finalArrayInsertClassTeachersModelList;
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
-    String finalStandardIdStr, finalTeacherIdStr, finalClassIdStr, standardName, finalTermIdStr, finalClassTeacherIdStr = "", editClassteacherStr = "", editGradeStr = "", editSectionStr = "";
+    String finalStandardIdStr, finalTeacherIdStr, finalClassIdStr, standardName, finalTermIdStr, finalClassTeacherIdStr = "0", editClassteacherStr = "", editGradeStr = "", editSectionStr = "";
     ClassTeacherDetailListAdapter classTeacherDetailListAdapter;
-    ArrayList<String> getEditValuearray;
+    String getEditValuearray;
     String[] spinnerteacherIdArray;
     String[] spinnerstandardIdArray;
+    List<SectionDetailModel> classname;
     private FragmentClassTeacherBinding fragmentClassTeacherBinding;
     private View rootView;
     private Context mContext;
@@ -71,23 +74,12 @@ public class ClassTeacherFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private RadioGroup radioGroup;
     private String viewstatus, updatestatus, deletestatus;
-
     private TextView tvHeader;
-    private Button btnBack, btnMenu;
+    private RecyclerView rvList;
+    private Button btnBack, btnMenu, btnCancel;
+    private Boolean isUpdate = false;
 
-
-    //Use for get the Final selected ClassID
-    private RadioGroup.OnCheckedChangeListener mCheckedListner = new RadioGroup.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-            if (group.findViewById(checkedId) != null) {
-                RadioButton btn = Objects.requireNonNull(getActivity()).findViewById(checkedId);
-                finalClassIdStr = btn.getTag().toString();
-                Log.d("Your selected ", finalClassIdStr);
-            }
-        }
-    };
+    private SectionAdapter sectionAdapter;
 
     public ClassTeacherFragment() {
     }
@@ -119,6 +111,8 @@ public class ClassTeacherFragment extends Fragment {
         tvHeader = view.findViewById(R.id.textView3);
         btnBack = view.findViewById(R.id.btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
+        rvList = view.findViewById(R.id.radio_list);
+        btnCancel = view.findViewById(R.id.classteacher_cancel_btn);
 
         tvHeader.setText(R.string.classTeacher);
 
@@ -128,6 +122,9 @@ public class ClassTeacherFragment extends Fragment {
     }
 
     public void setListners() {
+
+        rvList.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,8 +155,8 @@ public class ClassTeacherFragment extends Fragment {
 
                 if (viewstatus.equalsIgnoreCase("true")) {
                     fragmentClassTeacherBinding.listHeader.setVisibility(View.VISIBLE);
-                    callClassTeacherApi();
                     callTeacherApi(getid);
+                    callClassTeacherApi();
                 } else {
                     fragmentClassTeacherBinding.listHeader.setVisibility(View.GONE);
                     Utils.ping(getActivity(), "Access Denied");
@@ -182,7 +179,24 @@ public class ClassTeacherFragment extends Fragment {
                 Log.d("FinalStandardIdStr", finalStandardIdStr);
                 standardName = name;
                 Log.d("StandardName", standardName);
-                fillSection();
+
+                if (!isUpdate) {
+                    for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+                        classname = new ArrayList<>();
+                        classname.addAll(finalArrayStandardsList.get(i).getSectionDetail());
+
+                        if (finalArrayStandardsList.get(i).getSectionDetail().size() == 1) {
+                            finalArrayStandardsList.get(i).getSectionDetail().get(0).setCheckstatus("1");
+                        }
+
+                        if (standardName.equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard())) {
+
+                            fillSection1(classname, name);
+                            break;
+                        }
+                    }
+
+                }
             }
 
             @Override
@@ -190,6 +204,14 @@ public class ClassTeacherFragment extends Fragment {
 
             }
         });
+
+//        fragmentClassTeacherBinding.gradeSpinner.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                isUpdate = false;
+//            }
+//        });
+//
         fragmentClassTeacherBinding.teacherSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -215,6 +237,18 @@ public class ClassTeacherFragment extends Fragment {
                 } else {
                     Utils.ping(getActivity(), "Access Denied");
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                fragmentClassTeacherBinding.termSpinner.setSelection(1);
+                fragmentClassTeacherBinding.gradeSpinner.setSelection(0);
+                fragmentClassTeacherBinding.teacherSpinner.setSelection(0);
+
+                btnCancel.setVisibility(View.GONE);
             }
         });
     }
@@ -451,12 +485,20 @@ public class ClassTeacherFragment extends Fragment {
                     return;
                 }
                 if (insertClassTeachersModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+                    Utils.ping(mContext, "Already Assigned Class Teacher.");
 
                     return;
                 }
                 if (insertClassTeachersModel.getSuccess().equalsIgnoreCase("True")) {
-                    Utils.ping(mContext, "Record Inserted Successfully...!!");
+//                    Utils.ping(mContext, "Record Inserted Successfully...!!");
+                    Utils.ping(mContext, insertClassTeachersModel.getYear());
+
+                    fragmentClassTeacherBinding.termSpinner.setSelection(1);
+                    fragmentClassTeacherBinding.gradeSpinner.setSelection(0);
+                    fragmentClassTeacherBinding.teacherSpinner.setSelection(0);
+
+                    btnCancel.setVisibility(View.GONE);
+
                     finalArrayInsertClassTeachersModelList = insertClassTeachersModel.getFinalArray();
                     if (finalArrayInsertClassTeachersModelList != null) {
 
@@ -516,7 +558,6 @@ public class ClassTeacherFragment extends Fragment {
         }, new getEditpermission() {
             @Override
             public void getEditpermission() {
-                getEditValuearray = new ArrayList<>();
                 getEditValuearray = classTeacherDetailListAdapter.getEditId();
                 updateTeacher();
 
@@ -621,57 +662,94 @@ public class ClassTeacherFragment extends Fragment {
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerteacherIdArray);
         fragmentClassTeacherBinding.teacherSpinner.setAdapter(adapterTerm);
 
-        fragmentClassTeacherBinding.termSpinner.setSelection(1);
+        fragmentClassTeacherBinding.teacherSpinner.setSelection(0);
 
     }
 
-    //Use for fill the Class Spinner
-    public void fillSection() {
-        ArrayList<String> classname = new ArrayList<>();
+    public void fillSection1(final List<SectionDetailModel> classname1, String standardName) {
 
         if (!standardName.equalsIgnoreCase("--Select--")) {
-            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
-                if (standardName.equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard())) {
-                    for (int j = 0; j < finalArrayStandardsList.get(i).getSectionDetail().size(); j++) {
-                        classname.add(finalArrayStandardsList.get(i).getSectionDetail().get(j).getSection() + "|"
-                                + String.valueOf(finalArrayStandardsList.get(i).getSectionDetail().get(j).getSectionID()));
-                    }
+//            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+//                classname = new ArrayList<>();
+//                classname.addAll(finalArrayStandardsList.get(i).getSectionDetail());
+////                finalArrayStandardsList.get(i).getSectionDetail().get(0).setCheckstatus("1");
+//
+//                if (standardName.equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard())) {
+
+            sectionAdapter = new SectionAdapter(getActivity(), new OnEditRecordWithPosition() {
+                @Override
+                public void getEditpermission(int pos) {
+                    finalClassIdStr = String.valueOf(classname1.get(pos).getSectionID());
                 }
-            }
-        }
-
-        if (fragmentClassTeacherBinding.sectionLinear.getChildCount() > 0) {
-            fragmentClassTeacherBinding.sectionLinear.removeAllViews();
-        }
-        try {
-            for (int i = 0; i < 1; i++) {
-                @SuppressLint("InflateParams") View convertView = LayoutInflater.from(mContext).inflate(R.layout.list_checkbox, null);
-                radioGroup = convertView.findViewById(R.id.radiogroup);
-
-                for (int k = 0; k < classname.size(); k++) {
-                    RadioButton radioButton = new RadioButton(mContext);
-                    radioButton.setButtonDrawable(R.drawable.check_uncheck);
-//                    radioButton.setPadding(10, 10, 10, 10);
-                    radioButton.setTextSize(10f);
-                    radioButton.setTextColor(getResources().getColor(R.color.black));
-
-                    String[] splitValue = classname.get(k).split("\\|");
-                    radioButton.setText(splitValue[0]);
-                    radioButton.setTag(splitValue[1]);
-                    if (editSectionStr.equalsIgnoreCase(radioButton.getText().toString())) {
-                        radioButton.setChecked(true);
-                    }
-                    radioGroup.addView(radioButton);
-                }
-                radioGroup.setOnCheckedChangeListener(mCheckedListner);
-
-
-                fragmentClassTeacherBinding.sectionLinear.addView(convertView);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            }, classname1);
+            rvList.setAdapter(sectionAdapter);
+//                    break;
+//                }
+//            }
         }
     }
+
+//    //Use for fill the Class Spinner
+//    public void fillSection() {
+//        ArrayList<String> classname = new ArrayList<>();
+//
+//        if (!standardName.equalsIgnoreCase("--Select--")) {
+//            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+//                if (standardName.equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard())) {
+//                    for (int j = 0; j < finalArrayStandardsList.get(i).getSectionDetail().size(); j++) {
+//                        classname.add(finalArrayStandardsList.get(i).getSectionDetail().get(j).getSection() + "|"
+//                                + String.valueOf(finalArrayStandardsList.get(i).getSectionDetail().get(j).getSectionID()));
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (fragmentClassTeacherBinding.sectionLinear.getChildCount() > 0) {
+//            fragmentClassTeacherBinding.sectionLinear.removeAllViews();
+//        }
+//        try {
+//            for (int i = 0; i < 1; i++) {
+//                @SuppressLint("InflateParams") View convertView = LayoutInflater.from(mContext).inflate(R.layout.list_checkbox, null);
+//                radioGroup = convertView.findViewById(R.id.radiogroup);
+//
+//                for (int k = 0; k < classname.size(); k++) {
+//                    RadioButton radioButton = new RadioButton(mContext);
+//                    ColorStateList colorStateList = new ColorStateList(
+//                            new int[][]{
+//                                    new int[]{-android.R.attr.state_checked},
+//                                    new int[]{android.R.attr.state_checked}
+//                            },
+//                            new int[]{
+//
+//                                    Color.rgb(23,145,216)
+//                                    , Color.rgb(23,145,216),
+//                            }
+//                    );
+//                    radioButton.setButtonTintList(colorStateList);
+////                    radioButton.setButtonDrawable(R.drawable.check_uncheck);
+////                    radioButton.setPadding(10, 0, 10, 10);
+//                    radioButton.setTextColor(getResources().getColor(R.color.black));
+//
+//                    String[] splitValue = classname.get(k).split("\\|");
+//                    radioButton.setText(splitValue[0]);
+//                    radioButton.setTag(splitValue[1]);
+//                    if (editSectionStr.equalsIgnoreCase(radioButton.getText().toString())) {
+//                        radioButton.setChecked(true);
+//                    }
+//                    else {
+//                        radioButton.setChecked(false);
+//                    }
+//                    radioGroup.addView(radioButton);
+//                }
+//                radioGroup.setOnCheckedChangeListener(mCheckedListner);
+//
+//
+//                fragmentClassTeacherBinding.sectionLinear.addView(convertView);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     //Use for fill the Term Spinner
     public void fillTermSpinner() {
@@ -769,16 +847,18 @@ public class ClassTeacherFragment extends Fragment {
         return map;
     }
 
-
     public void updateTeacher() {
 
-        for (int i = 0; i < getEditValuearray.size(); i++) {
-            String[] spiltValue = getEditValuearray.get(i).split("\\|");
-            finalClassTeacherIdStr = spiltValue[0];
-            editClassteacherStr = spiltValue[1];
-            editGradeStr = spiltValue[2];
-            editSectionStr = spiltValue[3];
-        }
+        isUpdate = true;
+        btnCancel.setVisibility(View.VISIBLE);
+
+//        for (int i = 0; i < getEditValuearray.size(); i++) {
+        String[] spiltValue = getEditValuearray.split("\\|");
+        finalClassTeacherIdStr = spiltValue[0];
+        editClassteacherStr = spiltValue[1];
+        editGradeStr = spiltValue[2];
+        editSectionStr = spiltValue[3];
+//        }
 
         if (!editClassteacherStr.equalsIgnoreCase("")) {
             for (int i = 0; i < spinnerteacherIdArray.length; i++) {
@@ -787,6 +867,7 @@ public class ClassTeacherFragment extends Fragment {
                 }
             }
         }
+
         if (!editGradeStr.equalsIgnoreCase("")) {
             for (int i = 0; i < spinnerstandardIdArray.length; i++) {
                 if (spinnerstandardIdArray[i].trim().equalsIgnoreCase(editGradeStr.trim())) {
@@ -794,8 +875,50 @@ public class ClassTeacherFragment extends Fragment {
                 }
             }
         }
+
         if (!editSectionStr.equalsIgnoreCase("")) {
-            fillSection();
+
+//            classname = new ArrayList<>();
+
+//            classname = finalArrayStandardsList.get()
+
+            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+
+                classname = new ArrayList<>();
+
+                if (editGradeStr.trim().equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard().trim())) {
+                    classname = finalArrayStandardsList.get(i).getSectionDetail();
+
+                    for (int j = 0; j < classname.size(); j++) {
+
+                        if (editSectionStr.trim().equalsIgnoreCase(classname.get(j).getSection().trim())) {
+
+                            classname.get(j).setCheckstatus("1");
+
+                        } else {
+                            classname.get(j).setCheckstatus("0");
+
+                        }
+                    }
+
+                    break;
+
+                }
+            }
+
+            if (!editSectionStr.equalsIgnoreCase("--select--")) {
+                sectionAdapter = new SectionAdapter(getActivity(), new OnEditRecordWithPosition() {
+                    @Override
+                    public void getEditpermission(int pos) {
+                        finalClassIdStr = String.valueOf(classname.get(pos).getSectionID());
+                    }
+                }, classname);
+                rvList.setAdapter(sectionAdapter);
+                sectionAdapter.notifyDataSetChanged();
+            }
+
+            isUpdate = false;
+//            fillSection1(classname, editSectionStr);
         }
     }
 }

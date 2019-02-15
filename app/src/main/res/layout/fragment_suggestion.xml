@@ -177,7 +177,6 @@
                         android:id="@+id/suggestion_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingBottom="@dimen/_5sdp"
                         android:scrollbars="none" />
                 </LinearLayout>
             </LinearLayout>

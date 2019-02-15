@@ -19,10 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -190,6 +188,7 @@ public class OnlinePaymentFragment extends Fragment {
                 }
             }
         });
+
         fragmentOnlinePaymentBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,6 +214,26 @@ public class OnlinePaymentFragment extends Fragment {
                     }
                 }
 
+            }
+        });
+
+        fragmentOnlinePaymentBinding.cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentOnlinePaymentBinding.searchBtn.setText(R.string.Add);
+
+                fragmentOnlinePaymentBinding.termSpinner.setSelection(1);
+                fragmentOnlinePaymentBinding.termDetailSpinner.setSelection(0);
+                fragmentOnlinePaymentBinding.doneChk.setChecked(true);
+
+                if (finalArrayStandardsList != null) {
+                    for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+                        finalArrayStandardsList.get(i).setCheckedStatus("0");
+                    }
+                    standardAdapter.notifyDataSetChanged();
+                }
+
+                fragmentOnlinePaymentBinding.cancelBtn.setVisibility(View.GONE);
             }
         });
 
@@ -361,6 +380,7 @@ public class OnlinePaymentFragment extends Fragment {
                         onlinePaymentPermissionAdapter = new OnlinePaymentPermissionAdapter(mContext, resultPermissionModel, new getEditpermission() {
                             @Override
                             public void getEditpermission() {
+                                fragmentOnlinePaymentBinding.cancelBtn.setVisibility(View.VISIBLE);
                                 UpdatePermission();
                             }
                         }, status);
@@ -457,17 +477,17 @@ public class OnlinePaymentFragment extends Fragment {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentOnlinePaymentBinding.termSpinner);
-
-            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentOnlinePaymentBinding.termSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentOnlinePaymentBinding.termSpinner.setAdapter(adapterTerm);
@@ -493,17 +513,6 @@ public class OnlinePaymentFragment extends Fragment {
             spinnerTermDetailIdMap.put(i, String.valueOf(termdetailId.get(i)));
             spinnertermdetailIdArray[i] = termdetail.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentOnlinePaymentBinding.termDetailSpinner);
-
-            popupWindow.setHeight(spinnertermdetailIdArray.length > 4 ? 500 : spinnertermdetailIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermdetailIdArray);
         fragmentOnlinePaymentBinding.termDetailSpinner.setAdapter(adapterTerm);
@@ -527,28 +536,33 @@ public class OnlinePaymentFragment extends Fragment {
 
     // Use For UpdatePermission
     public void UpdatePermission() {
-        List<FinalArrayStandard> standardArray1 = standardAdapter.getDatas();
-        for (int i = 0; i < standardArray1.size(); i++) {
-            standardArray1.get(i).setCheckedStatus("0");
-            standardAdapter.notifyDataSetChanged();
+//        List<FinalArrayStandard> standardArray1 = standardAdapter.getDatas();
+//        for (int i = 0; i < standardArray1.size(); i++) {
+//            standardArray1.get(i).setCheckedStatus("0");
+//            standardAdapter.notifyDataSetChanged();
+//
+//        }
 
-        }
+
+//        2018-19|K2|Inactive|Term2
+
         fragmentOnlinePaymentBinding.searchBtn.setText("Update");
         ArrayList<String> academicYearArray = new ArrayList<String>();
         String statusArray = "", gradeArray = "", termdetail = "";
-
-        for (int k = 0; k < onlinePaymentPermissionAdapter.getRowValue().size(); k++) {
-            String rowValueStr = onlinePaymentPermissionAdapter.getRowValue().get(k);
+//
+//        for (int k = 0; k < onlinePaymentPermissionAdapter.getRowValue().size(); k++) {
+        String rowValueStr = onlinePaymentPermissionAdapter.getRowValue();
             Log.d("rowValueStr", rowValueStr);
             String[] spiltString = rowValueStr.split("\\|");
             academicYearArray.add(spiltString[0]);
-            termdetail = spiltString[1];
-            gradeArray = spiltString[2];
-            statusArray = spiltString[3];
+        termdetail = spiltString[3];
+        gradeArray = spiltString[1];
+        statusArray = spiltString[2];
 //            statusArray = statusArray.substring(0, statusArray.length() - 1);
 
             Log.d("statusArray", statusArray);
-        }
+//        }
+
         if (statusArray.equalsIgnoreCase(fragmentOnlinePaymentBinding
                 .doneChk.getText().toString())) {
             fragmentOnlinePaymentBinding.doneChk.setChecked(true);
@@ -557,14 +571,18 @@ public class OnlinePaymentFragment extends Fragment {
 
         }
         List<FinalArrayStandard> standardArray = standardAdapter.getDatas();
-        for (int i = 0; i < standardArray.size(); i++) {
-            if (gradeArray.equalsIgnoreCase(standardArray.get(i).getStandard())) {
-                standardArray.get(i).setCheckedStatus("1");
-                standardAdapter.notifyDataSetChanged();
+        if (standardArray.size() > 0) {
+            for (int i = 0; i < standardArray.size(); i++) {
+                if (gradeArray.equalsIgnoreCase(standardArray.get(i).getStandard())) {
+                    standardArray.get(i).setCheckedStatus("1");
+                } else {
+                    standardArray.get(i).setCheckedStatus("0");
+                }
             }
+            standardAdapter.notifyDataSetChanged();
         }
 
-        if (termdetail.equalsIgnoreCase("term 1")) {
+        if (termdetail.equalsIgnoreCase("term1")) {
             fragmentOnlinePaymentBinding.termDetailSpinner.setSelection(0);
         } else {
             fragmentOnlinePaymentBinding.termDetailSpinner.setSelection(1);

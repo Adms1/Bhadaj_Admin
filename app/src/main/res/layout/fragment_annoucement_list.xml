@@ -52,7 +52,6 @@
             android:textSize="17sp"
             android:visibility="gone" />
 
-
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

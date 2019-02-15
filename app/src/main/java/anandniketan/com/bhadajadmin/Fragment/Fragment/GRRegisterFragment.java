@@ -28,7 +28,7 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.GRRegisterAdapter;
-import anandniketan.com.bhadajadmin.Interface.onViewClick;
+import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
@@ -106,6 +106,10 @@ public class GRRegisterFragment extends Fragment {
     }
 
     public void setListners() {
+
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 11;
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,7 +326,7 @@ public class GRRegisterFragment extends Fragment {
         Utils.showDialog(getActivity());
         ApiHandler.getApiService().getNewRegister(getGRRegisterDetail(), new retrofit.Callback<StudentAttendanceModel>() {
             @Override
-            public void success(StudentAttendanceModel studentFullDetailModel, Response response) {
+            public void success(final StudentAttendanceModel studentFullDetailModel, Response response) {
 //                Utils.dismissDialog();
                 if (studentFullDetailModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -349,17 +353,22 @@ public class GRRegisterFragment extends Fragment {
                         fragmentGrregisterBinding.studentGrregisterList.setVisibility(View.VISIBLE);
                         fragmentGrregisterBinding.recyclerLinear.setVisibility(View.VISIBLE);
                         fragmentGrregisterBinding.listHeader.setVisibility(View.VISIBLE);
-                        grRegisterAdapter = new GRRegisterAdapter(mContext, studentFullDetailModel, new onViewClick() {
+                        grRegisterAdapter = new GRRegisterAdapter(mContext, studentFullDetailModel, new OnEditRecordWithPosition() {
                             @Override
-                            public void getViewClick() {
+                            public void getEditpermission(int pos) {
+
+                                AppConfiguration.firsttimeback = true;
+                                AppConfiguration.position = 58;
+
                                 fragment = new GRNoStudentDetailFragment();
                                 Bundle args=new Bundle();
+                                args.putInt("stuid", studentFullDetailModel.getFinalArray().get(pos).getStudent_ID());
                                 args.putString("flag","0");
                                 fragment.setArguments(args);
                                 fragmentManager = getFragmentManager();
                                 fragmentManager.beginTransaction()
                                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                                        .replace(R.id.frame_container, fragment).commit();
+                                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
                             }
                         }, status, "new register");
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

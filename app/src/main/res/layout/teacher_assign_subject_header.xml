@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:text="@string/teacher"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
             android:textColor="@color/app_bg"
@@ -41,7 +41,17 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_31sdp"
             android:text="@string/subject"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
+            android:paddingTop="@dimen/_7sdp"
+            android:textAlignment="center"
+            android:textColor="@color/app_bg"
+            android:textSize="@dimen/_11sdp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_31sdp"
+            android:layout_weight="0.2"
+            android:text="@string/status"
             android:paddingTop="@dimen/_7sdp"
             android:textAlignment="center"
             android:textColor="@color/app_bg"

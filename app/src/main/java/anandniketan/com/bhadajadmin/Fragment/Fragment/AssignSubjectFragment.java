@@ -62,15 +62,15 @@ public class AssignSubjectFragment extends Fragment {
     private Context mContext;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    private ArrayList<String> getEditValuearray;
+    private String getEditValuearray;
     private String[] spinnersubjectIdArray;
     private RadioButton rbActive, rbInactive;
-    private String viewstatus, updatestatus, deletestatus, assignID = "", statusstr = "";
+    private String viewstatus, updatestatus, deletestatus, assignID = "", statusstr = "", finalStatusStr = "";
 
     private String editClassteacherStr, editGradeStr;
 
     private TextView tvHeader;
-    private Button btnBack, btnMenu;
+    private Button btnBack, btnMenu, btnCancel;
 
     public AssignSubjectFragment() {
     }
@@ -85,6 +85,7 @@ public class AssignSubjectFragment extends Fragment {
 
         rbActive = rootView.findViewById(R.id.radio_active);
         rbInactive = rootView.findViewById(R.id.radio_inactive);
+        btnCancel = rootView.findViewById(R.id.cancel_btn);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -127,9 +128,9 @@ public class AssignSubjectFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radio_active)
-                    statusstr = "0";
-                else if (checkedId == R.id.radio_inactive)
                     statusstr = "1";
+                else if (checkedId == R.id.radio_inactive)
+                    statusstr = "0";
             }
         });
 
@@ -162,7 +163,6 @@ public class AssignSubjectFragment extends Fragment {
                 } else {
                     Utils.ping(getActivity(), "Access Denied");
                 }
-
             }
 
             @Override
@@ -213,6 +213,21 @@ public class AssignSubjectFragment extends Fragment {
                 }
             }
         });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                fragmentAssignSubjectBinding.saveBtn.setText(R.string.save);
+                fragmentAssignSubjectBinding.termSpinner.setSelection(1);
+                fragmentAssignSubjectBinding.teacherSpinner.setSelection(0);
+                fragmentAssignSubjectBinding.subjectSpinner.setSelection(0);
+                fragmentAssignSubjectBinding.radioActive.setChecked(true);
+                btnCancel.setVisibility(View.GONE);
+
+            }
+        });
+
     }
 
     // CALL Term API HERE
@@ -237,7 +252,7 @@ public class AssignSubjectFragment extends Fragment {
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -285,8 +300,9 @@ public class AssignSubjectFragment extends Fragment {
                     return;
                 }
                 if (teachersModel.getSuccess().equalsIgnoreCase("false")) {
-                    finalArrayTeachersModelList = teachersModel.getFinalArray();
-                    fillTeacherSpinner();
+                    finalArrayTeachersModelList.clear();
+                    ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerteacherIdArray);
+                    fragmentAssignSubjectBinding.teacherSpinner.setAdapter(adapterTerm);
 
                     return;
                 }
@@ -336,7 +352,7 @@ public class AssignSubjectFragment extends Fragment {
                     return;
                 }
                 if (subjectModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (subjectModel.getSuccess().equalsIgnoreCase("True")) {
@@ -384,7 +400,7 @@ public class AssignSubjectFragment extends Fragment {
                     return;
                 }
                 if (getSubjectAssginModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    Utils.ping(mContext, getString(R.string.false_msg));
                     if (getSubjectAssginModel.getFinalArray().size() == 0) {
                         fragmentAssignSubjectBinding.txtNoRecords.setVisibility(View.VISIBLE);
                         fragmentAssignSubjectBinding.recyclerLinear.setVisibility(View.GONE);
@@ -448,7 +464,6 @@ public class AssignSubjectFragment extends Fragment {
                 }
                 if (insertAssignSubjectModel.getSuccess().equalsIgnoreCase("false")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
-
                     return;
                 }
                 if (insertAssignSubjectModel.getSuccess().equalsIgnoreCase("True")) {
@@ -623,23 +638,23 @@ public class AssignSubjectFragment extends Fragment {
         assignSubjectDetailListAdapter = new AssignSubjectDetailListAdapter(mContext, finalArrayAssignSubjectModelList, new onDeleteButton() {
             @Override
             public void deleteSentMessage() {
-//                assignID = String.valueOf(assignSubjectDetailListAdapter.getId());
+                assignID = String.valueOf(assignSubjectDetailListAdapter.getId());
 //                finalClassTeacherIdStr = finalClassTeacherIdStr.substring(1, finalClassTeacherIdStr.length() - 1);
-//
-//                if (!finalClassTeacherIdStr.equalsIgnoreCase("")) {
-//                    callDeleteClassTeacherApi();
-//                }
+
+                if (!assignID.equalsIgnoreCase("")) {
+                    callDeleteAssinSubjectApi(assignID);
+                }
 
             }
         }, new getEditpermission() {
             @Override
             public void getEditpermission() {
-                getEditValuearray = new ArrayList<>();
                 getEditValuearray = assignSubjectDetailListAdapter.getEditId();
                 updateTeacher();
 
             }
         }, updatestatus, deletestatus);
+
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         fragmentAssignSubjectBinding.assignSubjectDetailList.setLayoutManager(mLayoutManager);
         fragmentAssignSubjectBinding.assignSubjectDetailList.setItemAnimator(new DefaultItemAnimator());
@@ -648,17 +663,21 @@ public class AssignSubjectFragment extends Fragment {
 
     public void updateTeacher() {
 
-        for (int i = 0; i < getEditValuearray.size(); i++) {
-            String[] spiltValue = getEditValuearray.get(i).split("\\|");
+        btnCancel.setVisibility(View.VISIBLE);
+
+//        for (int i = 0; i < getEditValuearray.size(); i++) {
+        String[] spiltValue = getEditValuearray.split("\\|");
             statusstr = spiltValue[0];
             assignID = spiltValue[1];
             editClassteacherStr = spiltValue[2];
             editGradeStr = spiltValue[3];
-        }
+//        }
 
         if (statusstr.equalsIgnoreCase("active")) {
+            finalStatusStr = "1";
             rbActive.setChecked(true);
         } else {
+            finalStatusStr = "0";
             rbInactive.setChecked(true);
         }
 
@@ -677,5 +696,70 @@ public class AssignSubjectFragment extends Fragment {
             }
         }
     }
+
+    private void callDeleteAssinSubjectApi(String did) {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().DeleteAssignSubject(getDeleteAssignSubjectDetail(did), new retrofit.Callback<StaffAttendaceModel>() {
+            @Override
+            public void success(StaffAttendaceModel insertAssignSubjectModel, Response response) {
+                Utils.dismissDialog();
+                if (insertAssignSubjectModel == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (insertAssignSubjectModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (insertAssignSubjectModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    return;
+                }
+                if (insertAssignSubjectModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    fragmentAssignSubjectBinding.subjectSpinner.setSelection(0);
+                    fragmentAssignSubjectBinding.teacherSpinner.setSelection(0);
+                    rbActive.setChecked(false);
+                    rbInactive.setChecked(false);
+
+                    finalArrayInsertAssignSubjectModelList = insertAssignSubjectModel.getFinalArray();
+                    if (finalArrayInsertAssignSubjectModelList != null) {
+
+                        if (viewstatus.equalsIgnoreCase("true")) {
+
+                            callAssignSubjectApi();
+                        } else {
+                            Utils.ping(getActivity(), "Access Denied");
+                        }
+                        Utils.dismissDialog();
+                    } else {
+                        fragmentAssignSubjectBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+    }
+
+    private Map<String, String> getDeleteAssignSubjectDetail(String did) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("Pk_AssignID", did);
+        return map;
+    }
+
 }
 

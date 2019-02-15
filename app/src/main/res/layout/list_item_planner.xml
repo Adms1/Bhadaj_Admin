@@ -36,11 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="ywewtetwetwyetywetwettwyteywteyte"
+                android:text=""
                 android:paddingTop="@dimen/_7sdp"
                 android:textAlignment="center"
                 android:paddingLeft="@dimen/_2sdp"
-                android:layout_marginBottom="@dimen/_8sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
             <TextView

@@ -75,7 +75,7 @@ public class MarkSyllabusPermission extends Fragment {
     private String markCheckText = "", syllabusCheckText = "";
     private Spinner sp_term, sp_grade;
     private AppCompatCheckBox markCheckBox, mSyllabusCheckBox;
-    private Button mBtnAddUpdate;
+    private Button mBtnAddUpdate, btnCancel;
     private LinearLayout mLayoutHeader;
     private TextView txNoRecords;
     private RecyclerView rvListData, rvMainListData;
@@ -118,6 +118,7 @@ public class MarkSyllabusPermission extends Fragment {
         rbInActive = rootView.findViewById(R.id.pendding_chk);
         fLEmptyView = rootView.findViewById(R.id.tv_empty_exam_view);
         rvMainListData = rootView.findViewById(R.id.rv_marks_syallabus_list);
+        btnCancel = rootView.findViewById(R.id.cancel_btn);
 
         return rootView;
     }
@@ -242,6 +243,28 @@ public class MarkSyllabusPermission extends Fragment {
 
                     }
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBtnAddUpdate.setText(R.string.Add);
+
+                sp_term.setSelection(1);
+                markCheckBox.setChecked(true);
+                mSyllabusCheckBox.setChecked(false);
+                sp_grade.setSelection(0);
+                rbActive.setChecked(true);
+
+                if (finalArrayTestList != null) {
+                    for (int i = 0; i < finalArrayTestList.size(); i++) {
+                        finalArrayTestList.get(i).setCheckedStatus("0");
+                    }
+                    standardAdapter.notifyDataSetChanged();
+                }
+
+                btnCancel.setVisibility(View.GONE);
             }
         });
 
@@ -380,17 +403,17 @@ public class MarkSyllabusPermission extends Fragment {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(sp_term);
-
-            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(sp_term);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         sp_term.setAdapter(adapterTerm);
@@ -481,7 +504,7 @@ public class MarkSyllabusPermission extends Fragment {
             // Get private mPopup member variable and try cast to ListPopupWindow
             android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(sp_grade);
 
-            popupWindow.setHeight(spinnerstandardIdArray.length > 4 ? 500 : spinnerstandardIdArray.length * 100);
+            popupWindow.setHeight(400);
 //            popupWindow1.setHeght(200);
         } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
             // silently fail...
@@ -533,7 +556,7 @@ public class MarkSyllabusPermission extends Fragment {
 
                             @Override
                             public void getEditpermission(int pos) {
-
+                                btnCancel.setVisibility(View.VISIBLE);
                                 UpdatePermission(pos);
                             }
                         }, status);
@@ -758,7 +781,7 @@ public class MarkSyllabusPermission extends Fragment {
             ArrayList<String> academicYearArray = new ArrayList<String>();
             String grade = "", term = "", type = "", testName = "", status = "", PID = "";
 
-            String rowValueStr = resultPermissionAdapter.getRowValue().get(pos);
+            String rowValueStr = resultPermissionAdapter.getRowValue();
             Log.d("rowValueStr", rowValueStr);
             String[] spiltString = rowValueStr.split("\\|");
             term = spiltString[0];
@@ -770,8 +793,8 @@ public class MarkSyllabusPermission extends Fragment {
             PID = spiltString[5];
             this.PID = PID;
 
+            Log.e("mark iddddddd", PID);
 //            statusArray = statusArray.substring(0, statusArray.length() - 1);
-
 
             markCheckBox.setChecked(false);
             mSyllabusCheckBox.setChecked(false);
@@ -786,7 +809,6 @@ public class MarkSyllabusPermission extends Fragment {
                 markCheckBox.setChecked(true);
                 mSyllabusCheckBox.setChecked(true);
             }
-
 
             if (finalArrayGetTermModels != null) {
 
@@ -807,7 +829,6 @@ public class MarkSyllabusPermission extends Fragment {
                     }
                 }
             }
-
 
             if (status.equalsIgnoreCase(rbActive.getText().toString())) {
                 rbActive.setChecked(true);

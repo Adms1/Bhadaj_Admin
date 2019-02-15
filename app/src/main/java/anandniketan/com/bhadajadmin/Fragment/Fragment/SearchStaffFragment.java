@@ -99,7 +99,7 @@ public class SearchStaffFragment extends Fragment {
 
         // Inflate the layout for this fragment
         AppConfiguration.firsttimeback = true;
-        AppConfiguration.position = 61;
+        AppConfiguration.position = 51;
 
         viewstatus = AppConfiguration.HRstaffseachviewstatus;
 
@@ -126,6 +126,7 @@ public class SearchStaffFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 fragment = new HRFragment();
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();

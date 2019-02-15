@@ -25,6 +25,7 @@
         </RelativeLayout>
 
         <ScrollView
+            android:id="@+id/main_scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/mdtp_white"

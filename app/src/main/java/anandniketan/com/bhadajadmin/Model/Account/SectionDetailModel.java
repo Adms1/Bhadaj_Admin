@@ -15,6 +15,10 @@ public class SectionDetailModel {
     @Expose
     private Integer sectionID;
 
+    @SerializedName("checksttus")
+    @Expose
+    private String checkstatus = "0";
+
     public String getSection() {
         return section;
     }
@@ -31,4 +35,11 @@ public class SectionDetailModel {
         this.sectionID = sectionID;
     }
 
+    public String getCheckstatus() {
+        return checkstatus;
+    }
+
+    public void setCheckstatus(String checkstatus) {
+        this.checkstatus = checkstatus;
+    }
 }

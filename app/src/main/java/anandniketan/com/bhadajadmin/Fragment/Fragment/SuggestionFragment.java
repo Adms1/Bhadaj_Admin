@@ -447,11 +447,11 @@ public class SuggestionFragment extends Fragment {
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
 //                    Utils.ping(mContext, getString(R.string.true_msg));
-                    if (status.equalsIgnoreCase("true")) {
+//                    if (status.equalsIgnoreCase("true")) {
                         callSuggestionPermissionApi();
-                    } else {
-                        Utils.ping(getActivity(), "Access Denied");
-                    }
+//                    } else {
+//                        Utils.ping(getActivity(), "Access Denied");
+//                    }
                 }
             }
 
@@ -500,11 +500,11 @@ public class SuggestionFragment extends Fragment {
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
 //                    Utils.ping(mContext, getString(R.string.true_msg));
-                    if (status.equalsIgnoreCase("true")) {
+//                    if (status.equalsIgnoreCase("true")) {
                         callSuggestionPermissionApi();
-                    } else {
-                        Utils.ping(getActivity(), "Access Denied");
-                    }
+//                    } else {
+//                        Utils.ping(getActivity(), "Access Denied");
+//                    }
                 }
             }
 

@@ -77,7 +77,7 @@ public class StaffSearchListItemAdapter extends RecyclerView.Adapter<StaffSearch
                         data.add(announcmentModel.get(position));
                         bundle.putParcelableArrayList("dataList", data);
                         fragment.setArguments(bundle);
-                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
                         AppConfiguration.firsttimeback = true;
                         AppConfiguration.position = 61;
 

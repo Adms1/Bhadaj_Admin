@@ -542,5 +542,7 @@
     <string name="head">Head</string>
     <string name="applyleave">Apply Leave</string>
     <string name="reason">Reason</string>
+    <string name="approve_date">Approve Date</string>
+    <string name="approve_by">Approve By</string>
 
 </resources>

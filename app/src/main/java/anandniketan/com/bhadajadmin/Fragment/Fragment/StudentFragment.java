@@ -100,6 +100,9 @@ public class StudentFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         newArr = new ArrayList<>();
+
+        Utils.callPermissionDetail(getActivity(), PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
+
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Student");
 
         tvHeader = view.findViewById(R.id.home_sname_txt);

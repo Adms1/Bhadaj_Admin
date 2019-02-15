@@ -19,9 +19,9 @@ import anandniketan.com.bhadajadmin.Utility.Utils;
 public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyllabusPermissionAdapter.MyViewHolder> {
     private Context context;
     private MarkSyllabusModel profilePermissionModel;
-    private List<MarkSyllabusModel.FinalArray> mDataList = new ArrayList<MarkSyllabusModel.FinalArray>();
+    private List<MarkSyllabusModel.FinalArray> mDataList = new ArrayList<>();
     private OnEditRecordWithPosition listner;
-    private ArrayList<String> rowvalue = new ArrayList<String>();
+    private String rowvalue;
     private String status;
 
     public MarkSyllabusPermissionAdapter(Context mContext, MarkSyllabusModel profilePermissionModel, OnEditRecordWithPosition listner, String status) {
@@ -41,22 +41,23 @@ public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyll
 
     @Override
     public void onBindViewHolder(MarkSyllabusPermissionAdapter.MyViewHolder holder, final int position) {
-        String sr = String.valueOf(position + 1);
-        final MarkSyllabusModel.FinalArray result = mDataList.get(position);
+//        final MarkSyllabusModel.FinalArray result = mDataList.get(position);
 
-        rowvalue.add(result.getTerm() + "|" + result.getType() + "|" + result.getStandard() + "|" +result.getTestName()+ "|" +result.getStatus() +"|" +result.getPermissionID());
-
-        holder.term_txt.setText(result.getTerm());
-        holder.type_txt.setText(String.valueOf(result.getType()));
-        holder.grade_txt.setText(result.getStandard());
-        holder.testname_txt.setText(result.getTestName());
-        holder.result_status_txt.setText(result.getStatus());
+        holder.term_txt.setText(mDataList.get(position).getTerm());
+        holder.type_txt.setText(String.valueOf(mDataList.get(position).getType()));
+        holder.grade_txt.setText(mDataList.get(position).getStandard());
+        holder.testname_txt.setText(mDataList.get(position).getTestName());
+        holder.result_status_txt.setText(mDataList.get(position).getStatus());
 
         holder.mIvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (status.equalsIgnoreCase("true")) {
+
+                    rowvalue = mDataList.get(position).getTerm() + "|" + mDataList.get(position).getType() + "|" + mDataList.get(position).getStandard() + "|" + mDataList.get(position).getTestName() + "|" + mDataList.get(position).getStatus() + "|" + mDataList.get(position).getPermissionID();
+
+
                     listner.getEditpermission(position);
                 } else {
                     Utils.ping(context, "Access Denied");
@@ -87,7 +88,7 @@ public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyll
         }
     }
 
-    public ArrayList<String> getRowValue() {
+    public String getRowValue() {
         return rowvalue;
     }
 

@@ -80,6 +80,8 @@ public class SMSFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Utils.callPermissionDetail(getActivity(), PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
+
         tvHeader = view.findViewById(R.id.home_sname_txt);
         btnBack = view.findViewById(R.id.home_btnBack);
         btnMenu = view.findViewById(R.id.home_btnmenu);

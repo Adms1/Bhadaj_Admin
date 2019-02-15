@@ -28,7 +28,7 @@ import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.GRRegisterAdapter;
-import anandniketan.com.bhadajadmin.Interface.onViewClick;
+import anandniketan.com.bhadajadmin.Interface.OnEditRecordWithPosition;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
@@ -42,22 +42,21 @@ import anandniketan.com.bhadajadmin.databinding.FragmentLeftDetailBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
 public class LeftDetailFragment extends Fragment {
 
-    private FragmentLeftDetailBinding fragmentLeftDetailBinding;
-    private View rootView;
-    private Context mContext;
-    private Fragment fragment = null;
-    private FragmentManager fragmentManager = null;
     List<FinalArrayGetTermModel> finalArrayGetTermModels;
     HashMap<Integer, String> spinnerTermMap;
     List<FinalArrayStandard> finalArrayStandardsList;
     HashMap<Integer, String> spinnerStandardMap;
     HashMap<Integer, String> spinnerSectionMap;
     HashMap<Integer, String> spinnerStatusMap;
-    String FinalStandardIdStr, FinalClassIdStr,StandardName,FinalTermIdStr,FinalStandardStr,FinalSectionStr,FinalStatusStr,FinalStatusIdStr;
+    String FinalStandardIdStr, FinalClassIdStr, StandardName, FinalTermIdStr, FinalStandardStr, FinalSectionStr, FinalStatusStr, FinalStatusIdStr;
     GRRegisterAdapter grRegisterAdapter;
+    private FragmentLeftDetailBinding fragmentLeftDetailBinding;
+    private View rootView;
+    private Context mContext;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
     private String status;
 
     private TextView tvHeader;
@@ -74,8 +73,10 @@ public class LeftDetailFragment extends Fragment {
         rootView = fragmentLeftDetailBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-        Bundle bundle = this.getArguments();
-        status = bundle.getString("status");
+//        Bundle bundle = this.getArguments();
+//        status = bundle.getString("status");
+
+        status = "";
 
         return rootView;
     }
@@ -98,6 +99,10 @@ public class LeftDetailFragment extends Fragment {
     }
 
     public void setListners() {
+
+        AppConfiguration.firsttimeback = true;
+        AppConfiguration.position = 11;
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +130,7 @@ public class LeftDetailFragment extends Fragment {
                 Log.d("value", name + " " + getid);
                 FinalTermIdStr = getid.toString();
                 Log.d("FinalTermIdStr", FinalTermIdStr);
-                AppConfiguration.TermName=name;
+                AppConfiguration.TermName = name;
             }
 
             @Override
@@ -144,9 +149,9 @@ public class LeftDetailFragment extends Fragment {
                 FinalStandardIdStr = getid.toString();
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
-                if (name.equalsIgnoreCase("All")){
+                if (name.equalsIgnoreCase("All")) {
                     FinalStandardStr = "0";
-                }else{
+                } else {
                     FinalStandardStr = name;
                 }
                 Log.d("StandardName", FinalStandardStr);
@@ -167,9 +172,9 @@ public class LeftDetailFragment extends Fragment {
 
                 Log.d("value", selectedsectionstr + " " + getid);
                 FinalClassIdStr = getid.toString();
-                if (selectedsectionstr.equalsIgnoreCase("All")){
+                if (selectedsectionstr.equalsIgnoreCase("All")) {
                     FinalSectionStr = "0";
-                }else{
+                } else {
                     FinalSectionStr = selectedsectionstr;
                 }
 
@@ -315,7 +320,7 @@ public class LeftDetailFragment extends Fragment {
         Utils.showDialog(getActivity());
         ApiHandler.getApiService().getLeftDetainStudent(getGRRegisterDetail(), new retrofit.Callback<StudentAttendanceModel>() {
             @Override
-            public void success(StudentAttendanceModel studentFullDetailModel, Response response) {
+            public void success(final StudentAttendanceModel studentFullDetailModel, Response response) {
                 Utils.dismissDialog();
                 if (studentFullDetailModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -328,10 +333,10 @@ public class LeftDetailFragment extends Fragment {
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("False")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
                     Utils.dismissDialog();
-                        fragmentLeftDetailBinding.studentLeftdetailList.setVisibility(View.GONE);
-                        fragmentLeftDetailBinding.recyclerLinear.setVisibility(View.GONE);
-                        fragmentLeftDetailBinding.listHeader.setVisibility(View.GONE);
-                        fragmentLeftDetailBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                    fragmentLeftDetailBinding.studentLeftdetailList.setVisibility(View.GONE);
+                    fragmentLeftDetailBinding.recyclerLinear.setVisibility(View.GONE);
+                    fragmentLeftDetailBinding.listHeader.setVisibility(View.GONE);
+                    fragmentLeftDetailBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
                 if (studentFullDetailModel.getSuccess().equalsIgnoreCase("True")) {
@@ -340,17 +345,24 @@ public class LeftDetailFragment extends Fragment {
                         fragmentLeftDetailBinding.studentLeftdetailList.setVisibility(View.VISIBLE);
                         fragmentLeftDetailBinding.recyclerLinear.setVisibility(View.VISIBLE);
                         fragmentLeftDetailBinding.listHeader.setVisibility(View.VISIBLE);
-                        grRegisterAdapter = new GRRegisterAdapter(mContext, studentFullDetailModel, new onViewClick() {
+                        grRegisterAdapter = new GRRegisterAdapter(mContext, studentFullDetailModel, new OnEditRecordWithPosition() {
+
                             @Override
-                            public void getViewClick() {
+                            public void getEditpermission(int pos) {
+
+                                AppConfiguration.firsttimeback = true;
+                                AppConfiguration.position = 58;
+
                                 fragment = new GRNoStudentDetailFragment();
-                                Bundle args=new Bundle();
-                                args.putString("flag","1");
+                                Bundle args = new Bundle();
+                                args.putInt("stuid", studentFullDetailModel.getFinalArray().get(pos).getStudent_ID());
+                                args.putString("flag", "1");
                                 fragment.setArguments(args);
                                 fragmentManager = getFragmentManager();
                                 fragmentManager.beginTransaction()
                                         .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                                        .replace(R.id.frame_container, fragment).commit();
+                                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+
                             }
                         }, status, "left/active");
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -407,17 +419,17 @@ public class LeftDetailFragment extends Fragment {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentLeftDetailBinding.termSpinner);
-
-            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentLeftDetailBinding.termSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentLeftDetailBinding.termSpinner.setAdapter(adapterTerm);
@@ -459,7 +471,7 @@ public class LeftDetailFragment extends Fragment {
             // Get private mPopup member variable and try cast to ListPopupWindow
             android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentLeftDetailBinding.gradeSpinner);
 
-            popupWindow.setHeight(spinnerstandardIdArray.length > 4 ? 500 : spinnerstandardIdArray.length * 100);
+            popupWindow.setHeight(400);
 //            popupWindow1.setHeght(200);
         } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
             // silently fail...
@@ -513,17 +525,17 @@ public class LeftDetailFragment extends Fragment {
             spinnerSectionMap.put(i, String.valueOf(sectionId.get(i)));
             spinnersectionIdArray[i] = sectionname.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentLeftDetailBinding.sectionSpinner);
-
-            popupWindow.setHeight(spinnersectionIdArray.length > 4 ? 500 : spinnersectionIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentLeftDetailBinding.sectionSpinner);
+//
+//            popupWindow.setHeight(spinnersectionIdArray.length > 4 ? 500 : spinnersectionIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
         ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnersectionIdArray);
         fragmentLeftDetailBinding.sectionSpinner.setAdapter(adapterstandard);
 
@@ -554,17 +566,17 @@ public class LeftDetailFragment extends Fragment {
             spinnerStatusMap.put(i, String.valueOf(statusdetailId.get(i)));
             spinnerstatusdetailIdArray[i] = statusdetail.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentLeftDetailBinding.statusSpinner);
-
-            popupWindow.setHeight(spinnerstatusdetailIdArray.length > 4 ? 500 : spinnerstatusdetailIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentLeftDetailBinding.statusSpinner);
+//
+//            popupWindow.setHeight(spinnerstatusdetailIdArray.length > 4 ? 500 : spinnerstatusdetailIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstatusdetailIdArray);
         fragmentLeftDetailBinding.statusSpinner.setAdapter(adapterTerm);

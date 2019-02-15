@@ -275,20 +275,42 @@
                             </LinearLayout>
                         </LinearLayout>
 
-
-                        <android.support.v7.widget.AppCompatButton
-                            android:id="@+id/btn_AddUpdate"
-                            android:layout_width="@dimen/_80sdp"
-                            android:layout_height="@dimen/_30sdp"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/_3sdp"
-                            android:layout_marginLeft="@dimen/_3sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@drawable/round_button"
-                            android:text="Add"
-                            android:textAllCaps="true"
-                            android:textColor="@color/app_bg"
-                            android:textSize="@dimen/_11sdp" />
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.AppCompatButton
+                                android:id="@+id/btn_AddUpdate"
+                                android:layout_width="@dimen/_80sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/_3sdp"
+                                android:layout_marginLeft="@dimen/_3sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@drawable/round_button"
+                                android:text="@string/Add"
+                                android:textAllCaps="true"
+                                android:textColor="@color/app_bg"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <android.support.v7.widget.AppCompatButton
+                                android:id="@+id/btn_cancel"
+                                android:layout_width="@dimen/_80sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/_3sdp"
+                                android:layout_marginLeft="@dimen/_3sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:background="@drawable/round_button"
+                                android:text="@string/mdtp_cancel"
+                                android:textAllCaps="true"
+                                android:textColor="@color/app_bg"
+                                android:textSize="@dimen/_11sdp"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
 
                         <TextView
                             android:id="@+id/txtNoRecords"

@@ -27,7 +27,7 @@ public class ClassTeacherDetailListAdapter extends RecyclerView.Adapter<ClassTea
     onDeleteButton onDeleteButton;
     getEditpermission getEditpermission;
     ArrayList<String> deleteId;
-    ArrayList<String> editId;
+    String editId;
     private Context context;
     private String updatestatus, deletestatus;
 
@@ -64,10 +64,9 @@ public class ClassTeacherDetailListAdapter extends RecyclerView.Adapter<ClassTea
             public void onClick(View view) {
 
                 if (updatestatus.equalsIgnoreCase("true")) {
-                    editId = new ArrayList<>();
-                    editId.add(String.valueOf(classTeacherDetail.get(position).getPkClsTeacherID()) + "|" +
+                    editId = String.valueOf(classTeacherDetail.get(position).getPkClsTeacherID()) + "|" +
                             classTeacherDetail.get(position).getName() + "|" + holder.grade_txt.getText().toString() + "|" +
-                            holder.section_txt.getText().toString());
+                            holder.section_txt.getText().toString();
                     getEditpermission.getEditpermission();
                 } else {
                     Utils.ping(context, "Access Denied");
@@ -97,7 +96,7 @@ public class ClassTeacherDetailListAdapter extends RecyclerView.Adapter<ClassTea
         return deleteId;
     }
 
-    public ArrayList<String> getEditId() {
+    public String getEditId() {
         return editId;
     }
 

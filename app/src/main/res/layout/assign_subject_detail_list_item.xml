@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_33sdp"
             android:text="@string/teacher"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp" />
@@ -39,9 +39,19 @@
             android:id="@+id/subject_txt"
             android:layout_width="0dp"
             android:layout_height="@dimen/_33sdp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:text="@string/subject"
             android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_10sdp" />
+
+        <TextView
+            android:id="@+id/status_txt"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_33sdp"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/status"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp" />
 
@@ -61,8 +71,7 @@
             android:layout_gravity="center"
             android:padding="@dimen/_3sdp"
             android:layout_weight="0.13"
-            android:src="@drawable/delete"
-            android:visibility="gone" />
+            android:src="@drawable/delete" />
 
     </LinearLayout>
 

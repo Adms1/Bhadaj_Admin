@@ -19,10 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -171,6 +169,7 @@ public class ResultPermisssionFragment extends Fragment {
                         Utils.ping(getActivity(), "Access Denied");
                     }
                 } else {
+
                     getFinalIdStr();
                     if (!FinalGradeIsStr.equalsIgnoreCase("")) {
                         callInsertResultPermission();
@@ -178,6 +177,26 @@ public class ResultPermisssionFragment extends Fragment {
                         Utils.ping(mContext, "Please Select Grade.");
                     }
                 }
+            }
+        });
+
+        fragmentResultPermisssionBinding.cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentResultPermisssionBinding.addBtn.setText(R.string.Add);
+
+                fragmentResultPermisssionBinding.termSpinner.setSelection(1);
+                fragmentResultPermisssionBinding.termDetailSpinner.setSelection(0);
+                fragmentResultPermisssionBinding.doneChk.setChecked(true);
+
+                if (finalArrayStandardsList.size() > 0) {
+                    for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+                        finalArrayStandardsList.get(i).setCheckedStatus("0");
+                    }
+                    standardAdapter.notifyDataSetChanged();
+                }
+
+                fragmentResultPermisssionBinding.cancelBtn.setVisibility(View.GONE);
             }
         });
 
@@ -284,17 +303,17 @@ public class ResultPermisssionFragment extends Fragment {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentResultPermisssionBinding.termSpinner);
-
-            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentResultPermisssionBinding.termSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentResultPermisssionBinding.termSpinner.setAdapter(adapterTerm);
@@ -317,17 +336,17 @@ public class ResultPermisssionFragment extends Fragment {
             spinnerTermDetailIdMap.put(i, String.valueOf(termdetailId.get(i)));
             spinnertermdetailIdArray[i] = termdetail.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentResultPermisssionBinding.termDetailSpinner);
-
-            popupWindow.setHeight(spinnertermdetailIdArray.length > 4 ? 500 : spinnertermdetailIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentResultPermisssionBinding.termDetailSpinner);
+//
+//            popupWindow.setHeight(spinnertermdetailIdArray.length > 4 ? 500 : spinnertermdetailIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermdetailIdArray);
         fragmentResultPermisssionBinding.termDetailSpinner.setAdapter(adapterTerm);
@@ -372,6 +391,7 @@ public class ResultPermisssionFragment extends Fragment {
                         resultPermissionAdapter = new ResultPermissionAdapter(mContext, resultPermissionModel, new getEditpermission() {
                             @Override
                             public void getEditpermission() {
+                                fragmentResultPermisssionBinding.cancelBtn.setVisibility(View.VISIBLE);
                                 UpdatePermission();
                             }
                         }, status);

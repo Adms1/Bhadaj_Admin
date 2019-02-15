@@ -42,6 +42,7 @@ import anandniketan.com.bhadajadmin.Fragment.Fragment.DailyReportFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HRFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HolidayFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.HomeFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.LeftDetailFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MISFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MyLeaveFragment;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.PTMMainFragment;
@@ -555,6 +556,16 @@ public class DashboardActivity extends FragmentActivity {
                             .replace(R.id.frame_container, fragment).commit();
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 5;
+                } else if (AppConfiguration.position == 68) {
+
+                    fragment = new LeftDetailFragment();
+                    fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 11;
+
                 } else if (AppConfiguration.position == 58) {
 
                     if (getSupportFragmentManager().getBackStackEntryCount() > 0) {

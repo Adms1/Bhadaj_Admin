@@ -8,21 +8,27 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Datum {
+
     @SerializedName("Lecture")
     @Expose
     private Integer lecture;
+
     @SerializedName("TimetableID")
     @Expose
     private String timetableID;
+
     @SerializedName("Subject")
     @Expose
     private String subject;
+
     @SerializedName("StandardClass")
     @Expose
     private String standardClass;
+
     @SerializedName("ProxyStatus")
     @Expose
     private String proxyStatus;
+
     @SerializedName("EmpName")
     @Expose
     private String empName;

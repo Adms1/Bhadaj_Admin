@@ -227,6 +227,10 @@ public interface WebServices {
     void InsertAssignSubject(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 
     @FormUrlEncoded
+    @POST("/DeleteAssginSubject")
+    void DeleteAssignSubject(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+
+    @FormUrlEncoded
     @POST("/GetClassTeacherDetail")
     void getClassTeacherDetail(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
 
@@ -503,7 +507,7 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/GetStaffLeaveRequest")
-    void getStaffLeaveRequest(@FieldMap Map<String, String> map, Callback<LeaveRequestModel> callback);
+    void getStaffLeaveRequest(@FieldMap Map<String, String> map, Callback<LeaveModel> callback);
 
     @FormUrlEncoded
     @POST("/GetLeaveDays")

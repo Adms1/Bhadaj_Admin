@@ -83,7 +83,6 @@
                     app:tabSelectedTextColor="@color/app_bg"
                     app:tabTextAppearance="@style/MyCustomTabText"
                     app:tabTextColor="@color/app_bg" />
-                 
 
                 <View
                     android:id="@+id/view"

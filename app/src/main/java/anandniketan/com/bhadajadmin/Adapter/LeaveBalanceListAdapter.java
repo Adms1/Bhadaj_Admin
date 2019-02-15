@@ -1,28 +1,18 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.LeaveModel;
-import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LeaveBalanceListAdapter extends RecyclerView.Adapter<LeaveBalanceListAdapter.MyViewHolder> {
     private Context context;
@@ -33,7 +23,6 @@ public class LeaveBalanceListAdapter extends RecyclerView.Adapter<LeaveBalanceLi
         this.context = mContext;
         this.data = data;
     }
-
 
     @Override
     public LeaveBalanceListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -59,7 +48,6 @@ public class LeaveBalanceListAdapter extends RecyclerView.Adapter<LeaveBalanceLi
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -73,13 +61,13 @@ public class LeaveBalanceListAdapter extends RecyclerView.Adapter<LeaveBalanceLi
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            emp_name_txt = (TextView) itemView.findViewById(R.id.empname_txt);
-            txt_totalPL = (TextView) itemView.findViewById(R.id.totalpl_txt);
-            txt_donePL = (TextView) itemView.findViewById(R.id.donepl_txt);
-            txt_totalCL = (TextView) itemView.findViewById(R.id.totalcl_txt);
-            txt_doneCL = (TextView) itemView.findViewById(R.id.donecl_txt);
-            txt_doneLeave = (TextView) itemView.findViewById(R.id.donetotalleave_txt);
-            txt_totalLeave = (TextView) itemView.findViewById(R.id.totalleave_txt);
+            emp_name_txt = itemView.findViewById(R.id.empname_txt);
+            txt_totalPL = itemView.findViewById(R.id.totalpl_txt);
+            txt_donePL = itemView.findViewById(R.id.donepl_txt);
+            txt_totalCL = itemView.findViewById(R.id.totalcl_txt);
+            txt_doneCL = itemView.findViewById(R.id.donecl_txt);
+            txt_doneLeave = itemView.findViewById(R.id.donetotalleave_txt);
+            txt_totalLeave = itemView.findViewById(R.id.totalleave_txt);
 
         }
     }

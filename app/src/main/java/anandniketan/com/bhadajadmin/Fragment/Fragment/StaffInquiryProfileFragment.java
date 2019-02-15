@@ -57,7 +57,7 @@ public class StaffInquiryProfileFragment extends Fragment {
         mContext = getActivity().getApplicationContext();
 
         AppConfiguration.firsttimeback = true;
-        AppConfiguration.position = 61;
+        AppConfiguration.position = 58;
 
         //callStaffApi();
         return rootView;
@@ -127,10 +127,15 @@ public class StaffInquiryProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AppConfiguration.firsttimeback = true;
-                AppConfiguration.position = 61;
-                fragment = new SearchStaffFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.position = 58;
+
+                getActivity().onBackPressed();
+
+
+//                fragment = new SearchStaffFragment();
+//                fragmentManager = getFragmentManager();
+//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+
 //                fragment = new SearchStaffFragment();
 //
 //                fragmentManager = getFragmentManager();

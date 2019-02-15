@@ -1,18 +1,19 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,9 +29,15 @@ import java.util.Map;
 import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
+import anandniketan.com.bhadajadmin.Adapter.ApplyLeaveAdapter;
+import anandniketan.com.bhadajadmin.Interface.OnUpdateRecord;
+import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
 import anandniketan.com.bhadajadmin.Model.HR.LeaveDayModel;
+import anandniketan.com.bhadajadmin.Model.LeaveModel;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
+import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
+import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -39,11 +46,11 @@ import anandniketan.com.bhadajadmin.Utility.Utils;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnDateSetListener, onDeleteWithId, OnUpdateRecord {
 
     private TextView tvHeader, tvNoRecords;
     private Button btnBack, btnMenu, btnSend, btnSDate, btnEDate;
-    private RecyclerView rvList;
+    private ExpandableListView rvList;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     private DatePickerDialog datePickerDialog;
@@ -56,9 +63,23 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
     private HashMap<Integer, String> spinnerDaymap, spinnerHeadmap;
     private Spinner spLeaveDays, spHead;
     private String FinalDay, FinalHead;
+    private ArrayList<LeaveModel.FinalArray> finalArray;
+    private ApplyLeaveAdapter applyLeaveAdapter;
+    private List<String> listDataHeader;
+    private onDeleteWithId onDeleteWithIdRef;
+    private OnUpdateRecord onUpdateRecordRef;
+    private HashMap<String, ArrayList<LeaveModel.FinalArray>> listDataChild;
 
     public ApplyLeaveFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        onDeleteWithIdRef = this;
+        onUpdateRecordRef = this;
+
     }
 
     @Override
@@ -90,11 +111,11 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         spLeaveDays = view.findViewById(R.id.applyleave_spLeaveDays);
         spHead = view.findViewById(R.id.applyleave_spHead);
 
-        rvList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         tvHeader.setText(R.string.applyleave);
 
         setListners();
         callLeaveDaysApi();
+        callApplyLeaveListApi();
         callHeadApi();
 
     }
@@ -112,7 +133,7 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callApplyLeaveListApi();
+//                callApplyLeaveListApi();
             }
         });
 
@@ -266,7 +287,7 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
             // Get private mPopup member variable and try cast to ListPopupWindow
             android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(spLeaveDays);
 
-            popupWindow.setHeight(200);
+            popupWindow.setHeight(600);
         } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
             // silently fail...
         }
@@ -386,7 +407,107 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
     }
 
     private void callApplyLeaveListApi() {
+        if (!Utils.checkNetwork(Objects.requireNonNull(getActivity()))) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+//        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getStaffLeaveRequest(getApplyLeaveParams(), new retrofit.Callback<LeaveModel>() {
+            @Override
+            public void success(LeaveModel leaveModel, Response response) {
+                Utils.dismissDialog();
+                if (leaveModel == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    llHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    tvNoRecords.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (leaveModel.getSuccess() == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    llHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    tvNoRecords.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (leaveModel.getSuccess().equalsIgnoreCase("false")) {
+                    llHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    tvNoRecords.setVisibility(View.VISIBLE);
+                    //                    finalArraySubjectModelList.clear();
+//                    final ArrayAdapter adb = new ArrayAdapter(getActivity(), R.layout.spinner_layout, finalArraySubjectModelList);
+//                    subjectSpinner.setAdapter(adb);
+                    return;
+                }
+                if (leaveModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    llHeader.setVisibility(View.VISIBLE);
+                    rvList.setVisibility(View.VISIBLE);
+                    tvNoRecords.setVisibility(View.GONE);
+
+                    finalArray = leaveModel.getFinalArray();
+                    if (finalArray != null) {
+                        tvNoRecords.setVisibility(View.GONE);
+                        rvList.setVisibility(View.VISIBLE);
+                        fillExpLV();
+                        applyLeaveAdapter = new ApplyLeaveAdapter(getActivity(), listDataHeader, listDataChild, onDeleteWithIdRef,
+                                onUpdateRecordRef, "true", "true", "true");
+                        rvList.setAdapter(applyLeaveAdapter);
+                    } else {
+                        tvNoRecords.setVisibility(View.VISIBLE);
+                        rvList.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                llHeader.setVisibility(View.GONE);
+                rvList.setVisibility(View.GONE);
+                tvNoRecords.setVisibility(View.VISIBLE);
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(getActivity(), getString(R.string.something_wrong));
+            }
+        });
+    }
+
+    private Map<String, String> getApplyLeaveParams() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("StaffID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
+
+        return map;
+    }
+
+    public void fillExpLV() {
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+        for (int i = 0; i < finalArray.size(); i++) {
+            listDataHeader.add(finalArray.get(i).getLeaveDays() + "|" + finalArray.get(i).getLeaveStartDate() + "|" + finalArray.get(i).getLeaveEndDate() + "|" + finalArray.get(i).getHeadname() + "|" + finalArray.get(i).getReason());
+            Log.d("header", "" + listDataHeader);
+            ArrayList<LeaveModel.FinalArray> row = new ArrayList<>();
+            row.add(finalArray.get(i));
+            Log.d("row", "" + row);
+            listDataChild.put(listDataHeader.get(i), row);
+            Log.d("child", "" + listDataChild);
+        }
 
     }
 
+    @Override
+    public void onUpdateRecord(List<AnnouncementModel.FinalArray> dataList) {
+
+    }
+
+    @Override
+    public void onUpdateRecordCircular(List<CircularModel.FinalArray> dataList) {
+
+    }
+
+    @Override
+    public void deleteRecordWithId(String id) {
+//        callDeleteAnnouncement(id);
+    }
 }

@@ -53,11 +53,17 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
         final ArrayList<StudentAttendanceFinalArray> childData = getChild(groupPosition, 0);
         GrStudentListDetailBinding binding;
         if (convertView == null) {
+
+//            LayoutInflater layoutInflater = (LayoutInflater) this._context
+//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            convertView = layoutInflater.inflate(R.layout.student_list_item_student_full_detail, null);
+
             Log.d("groupposition", "" + groupPosition);
         }
+
         String headerTitle = (String) getGroup(groupPosition);
         if (headerTitle.equalsIgnoreCase("Student Details")) {
-            binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_student_full_detail, parent, false);
+            binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.gr_student_list_detail, parent, false);
             convertView = binding.getRoot();
 
             LinearLayout llBoard = convertView.findViewById(R.id.llBoard);
@@ -74,31 +80,50 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             TextView location = convertView.findViewById(R.id.location_txt);
             TextView oldgrTxt = convertView.findViewById(R.id.oldgr_txt);
 
-            llBoard.setVisibility(View.VISIBLE);
+//            TextView tagTxt = convertView.findViewById(R.id.tag_txt);
+//            TextView firstnameTxt = convertView.findViewById(R.id.firstname_txt);
+//            TextView lastnameTxt = convertView.findViewById(R.id.lastname_txt);
+//            TextView dobTxt = convertView.findViewById(R.id.dob_txt);
+//            TextView birthplaceTxt = convertView.findViewById(R.id.birthplace_txt);
+//            TextView geTxt = convertView.findViewById(R.id.age_txt);
+//            TextView genderTxt = convertView.findViewById(R.id.gender_txt);
+//            TextView gradeTxt = convertView.findViewById(R.id.grade_txt);
+//            TextView sectionTxt = convertView.findViewById(R.id.section_txt);
+//            TextView lastschoolTxt = convertView.findViewById(R.id.lastschool_txt);
+//
+//            TextView bloodgroupTxt = convertView.findViewById(R.id.bloodgroup_txt);
+//            TextView religionTxt = convertView.findViewById(R.id.religion_txt);
+//            TextView nationalityTxt = convertView.findViewById(R.id.nationality_txt);
+//            TextView statusTxt = convertView.findViewById(R.id.status_txt);
+//            TextView grnoTxt = convertView.findViewById(R.id.grnno_txt);
 
-            String[] name = childData.get(childPosition).getName().split("\\ ");
+//            llBoard.setVisibility(View.VISIBLE);
+
+//            String[] name = childData.get(childPosition).getName().split("\\ ");
             binding.tagTxt.setText(childData.get(childPosition).getTag());
-            binding.firstnameTxt.setText(name[0]);
-            middleTxt.setText(name[1]);
-            binding.lastnameTxt.setText(name[2]);
+//            binding.firstnameTxt.setText(name[0]);
+//            middleTxt.setText(name[1]);
+//            binding.lastnameTxt.setText(name[2]);
+            binding.firstnameTxt.setText(childData.get(childPosition).getFirstName());
+            binding.lastnameTxt.setText(childData.get(childPosition).getLastName());
             binding.dobTxt.setText(childData.get(childPosition).getDateOfBirth());
             binding.birthplaceTxt.setText(childData.get(childPosition).getBirthPlace());
             binding.ageTxt.setText(childData.get(childPosition).getAge());
             binding.genderTxt.setText(childData.get(childPosition).getGender());
-            boardTxt.setText(childData.get(childPosition).getBoard());
-            aadharTxt.setText(childData.get(childPosition).getAadhaarCardNo());
-            acedamicTxt.setText(childData.get(childPosition).getAcedamicYear());
+            binding.studentTypeTxt.setText(childData.get(childPosition).getBoard());
+            binding.aadharTxt.setText(childData.get(childPosition).getAadhaarCardNo());
+            binding.acedamicTxt.setText(childData.get(childPosition).getAcedamicYear());
             binding.gradeTxt.setText(childData.get(childPosition).getGrade());
             binding.sectionTxt.setText(childData.get(childPosition).getSection());
             binding.lastschoolTxt.setText(childData.get(childPosition).getLastSchool());
-            doaTxt.setText(childData.get(childPosition).getDateOfAdmission());
-            doatakenTxt.setText(childData.get(childPosition).getAdmissionTaken());
+            binding.doaTxt.setText(childData.get(childPosition).getDateOfAdmission());
+            binding.doatakenTxt.setText(childData.get(childPosition).getAdmissionTaken());
             binding.bloodgroupTxt.setText(childData.get(childPosition).getBloodGroup());
-            houseTxt.setText(childData.get(childPosition).getHouse());
-            uniqueno.setText(childData.get(childPosition).getUnique_no());
+            binding.houseTxt.setText(childData.get(childPosition).getHouse());
+            binding.unqTxt.setText(childData.get(childPosition).getUnique_no());
             binding.religionTxt.setText(childData.get(childPosition).getReligion());
             binding.nationalityTxt.setText(childData.get(childPosition).getNationality());
-            location.setText(childData.get(childPosition).getLocation());
+            binding.locationTxt.setText(childData.get(childPosition).getLocation());
             if (childData.get(childPosition).getStatus().equalsIgnoreCase("1")) {
                 binding.statusTxt.setTextColor(Color.parseColor("#FF6BAE18"));
                 binding.statusTxt.setText(R.string.active);
@@ -106,14 +131,14 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             } else {
                 binding.statusTxt.setTextColor(Color.parseColor("#ff0000"));
                 binding.statusTxt.setText(R.string.inactive);
-            }
-            binding.grnoTxt.setText(childData.get(childPosition).getGRNO());
-            oldgrTxt.setText(childData.get(childPosition).getOldGRNO());
 
-            llPassword.setVisibility(View.GONE);
-            llUsername.setVisibility(View.GONE);
+            }
+
+            binding.grnoTxt.setText(childData.get(childPosition).getGRNO());
+            binding.oldgrTxt.setText(childData.get(childPosition).getOldGRNO());
 
         } else if (headerTitle.equalsIgnoreCase("Transport Details")) {
+
             StudetnListItemTransportDetailBinding transportDetailBinding;
             transportDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.studetn_list_item_transport_detail, parent, false);
             convertView = transportDetailBinding.getRoot();
@@ -129,6 +154,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             transportDetailBinding.droptimeTxt.setText(childData.get(childPosition).getDropPointTime());
 
         } else if (headerTitle.equalsIgnoreCase("Father Details")) {
+
             StudentListItemFatherDetailBinding fatherDetailBinding;
             fatherDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_father_detail, parent, false);
             convertView = fatherDetailBinding.getRoot();
@@ -144,6 +170,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             fatherDetailBinding.officeTxt.setText(childData.get(childPosition).getFatherofficeaddress());
 
         } else if (headerTitle.equalsIgnoreCase("Mother Details")) {
+
             StudentListItemMotherDetailBinding motherDetailBinding;
             motherDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_mother_detail, parent, false);
             convertView = motherDetailBinding.getRoot();
@@ -160,6 +187,7 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             motherDetailBinding.officeTxt.setText(childData.get(childPosition).getMotherofficeaddress());
 
         } else if (headerTitle.equalsIgnoreCase("Communication Details")) {
+
             StudentListItemCommunicationDetailBinding communicationDetailBinding;
             communicationDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_communication_detail, parent, false);
             convertView = communicationDetailBinding.getRoot();
@@ -171,7 +199,6 @@ public class ExpandableListAdapterGRstudentdetail extends BaseExpandableListAdap
             communicationDetailBinding.smsEmailTxt.setText(childData.get(childPosition).getsMSCommunicationemail());
             communicationDetailBinding.addressTxt.setText(childData.get(childPosition).getAddress());
         }
-
 
         return convertView;
     }

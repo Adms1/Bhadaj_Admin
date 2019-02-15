@@ -64,7 +64,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     private String status, updateStatus, deletestatus;
 
     private TextView tvHeader;
-    private Button btnBack, btnMenu;
+    private Button btnBack, btnMenu, btnCancel;
 
 
     public FragmentPlanner() {
@@ -109,6 +109,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
         tvHeader = view.findViewById(R.id.textView3);
         btnBack = view.findViewById(R.id.btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
+        btnCancel = view.findViewById(R.id.btn_cancel);
 
         tvHeader.setText(R.string.planner);
 
@@ -162,20 +163,20 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    if (!isRecordInUpdate) {
-                        if (finalArrayStandardsList != null) {
-                            if (finalArrayStandardsList.size() > 0) {
+//                    if (!isRecordInUpdate) {
+                    if (finalArrayStandardsList != null) {
+                        if (finalArrayStandardsList.size() > 0) {
 
-                                for (int listsize = 0; listsize < finalArrayStandardsList.size(); listsize++) {
-                                    finalArrayStandardsList.get(listsize).setCheckedStatus("1");
-                                }
-                                if (standardAdapter != null) {
-                                    standardAdapter.notifyDataSetChanged();
-                                    //standardAdapter.disableSelection();
-                                }
+                            for (int listsize = 0; listsize < finalArrayStandardsList.size(); listsize++) {
+                                finalArrayStandardsList.get(listsize).setCheckedStatus("1");
+                            }
+                            if (standardAdapter != null) {
+                                standardAdapter.notifyDataSetChanged();
+                                //standardAdapter.disableSelection();
                             }
                         }
                     }
+//                    }
                 }
             }
         });
@@ -184,19 +185,19 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    if (!isRecordInUpdate) {
-                        if (finalArrayStandardsList != null) {
-                            if (finalArrayStandardsList.size() > 0) {
+//                    if (!isRecordInUpdate) {
+                    if (finalArrayStandardsList != null) {
+                        if (finalArrayStandardsList.size() > 0) {
 
-                                for (int listsize = 0; listsize < finalArrayStandardsList.size(); listsize++) {
-                                    finalArrayStandardsList.get(listsize).setCheckedStatus("0");
-                                }
-                                if (standardAdapter != null) {
-                                    standardAdapter.notifyDataSetChanged();
-                                    //  standardAdapter.enableSelection();
-                                }
+                            for (int listsize = 0; listsize < finalArrayStandardsList.size(); listsize++) {
+                                finalArrayStandardsList.get(listsize).setCheckedStatus("0");
+                            }
+                            if (standardAdapter != null) {
+                                standardAdapter.notifyDataSetChanged();
+                                //  standardAdapter.enableSelection();
                             }
                         }
+//                        }
                     }
                 }
             }
@@ -235,6 +236,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
             public void onClick(View view) {
 
                 if (fragmentPlannerBinding.btnAddUpdate.getText().toString().equalsIgnoreCase("Update")) {
+
                     if (updateStatus.equalsIgnoreCase("true")) {
                         if (validate()) {
                             callInsertUpdatePlannerDataApi();
@@ -247,6 +249,34 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                         callInsertUpdatePlannerDataApi();
                     }
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentPlannerBinding.btnAddUpdate.setText(R.string.Add);
+
+                fragmentPlannerBinding.fromDate1Edt.setText(Utils.getTodaysDate());
+                fragmentPlannerBinding.toDate2Edt.setText(Utils.getTodaysDate());
+                fragmentPlannerBinding.titleEdt.setText("");
+                fragmentPlannerBinding.rbAll.setChecked(true);
+                fragmentPlannerBinding.rbHoliday.setChecked(true);
+
+                if (finalArrayStandardsList != null) {
+                    if (finalArrayStandardsList.size() > 0) {
+
+                        for (int listsize = 0; listsize < finalArrayStandardsList.size(); listsize++) {
+                            finalArrayStandardsList.get(listsize).setCheckedStatus("1");
+                        }
+                        if (standardAdapter != null) {
+                            standardAdapter.notifyDataSetChanged();
+                            //standardAdapter.disableSelection();
+                        }
+                    }
+                }
+
+                btnCancel.setVisibility(View.GONE);
             }
         });
 
@@ -591,6 +621,8 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     public void getEditpermission(int pos) {
         isRecordInUpdate = true;
         fragmentPlannerBinding.btnAddUpdate.setText("Update");
+
+        btnCancel.setVisibility(View.VISIBLE);
 
         try {
             if (finalArrayPlannerList1 != null) {

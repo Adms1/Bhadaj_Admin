@@ -257,7 +257,6 @@ public class AnnoucementListFragment extends Fragment implements onDeleteWithId,
         return map;
     }
 
-
     @Override
     public void onUpdateRecord(List<AnnouncementModel.FinalArray> dataList) {
 

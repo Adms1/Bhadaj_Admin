@@ -134,8 +134,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
-                            android:text="@string/grade"
                             android:layout_weight="0.8"
+                            android:text="@string/grade"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
 
@@ -143,8 +143,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_7sdp"
-                            android:text=":"
                             android:layout_weight="0.1"
+                            android:text=":"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
@@ -152,7 +152,7 @@
                         <GridView
                             android:id="@+id/grade_grid_view"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_100sdp"
                             android:layout_weight="2"
                             android:numColumns="3"
                             android:scrollbars="none" />
@@ -220,20 +220,45 @@
 
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/add_btn"
-                        android:layout_width="@dimen/_70sdp"
-                        android:layout_height="@dimen/_28sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_weight="0.22"
-                        android:background="@drawable/round_button"
-                        android:text="@string/Add"
-                        android:textAllCaps="true"
-                        android:textColor="@color/app_bg"
-                        android:textSize="@dimen/_11sdp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/add_btn"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_height="@dimen/_28sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_weight="0.22"
+                            android:background="@drawable/round_button"
+                            android:text="@string/Add"
+                            android:textAllCaps="true"
+                            android:textColor="@color/app_bg"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <Button
+                            android:id="@+id/cancel_btn"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_height="@dimen/_28sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_weight="0.22"
+                            android:background="@drawable/round_button"
+                            android:text="@string/mdtp_cancel"
+                            android:textAllCaps="true"
+                            android:textColor="@color/app_bg"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <TextView

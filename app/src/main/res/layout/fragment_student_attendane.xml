@@ -225,7 +225,6 @@
                                 android:layout_margin="@dimen/_2sdp"
                                 android:forceHasOverlappingRendering="false"
                                 android:gravity="center_vertical"
-                                android:text="dvdvrvrbr"
                                 android:overlapAnchor="false"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_11sdp" />

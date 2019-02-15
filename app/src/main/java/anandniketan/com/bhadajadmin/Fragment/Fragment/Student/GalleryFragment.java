@@ -89,7 +89,7 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
     private DatePickerDialog datePickerDialog;
     private OnEditRecordWithPosition onUpdateRecordRef;
     private boolean isRecordInUpdate = false;
-    private Button btnAdd, btnPhoto;
+    private Button btnAdd, btnPhoto, btnCancel;
     private ArrayList<GalleryDataModel.GalleryFinalArray> galleryArr;
     private ArrayList<GalleryDataModel.photosFinalArray> photoArr;
     //    private InsertPhotoAdapter insertPhotoAdapter;
@@ -176,6 +176,7 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
         llHeader = view.findViewById(R.id.list_header);
         rvPhotoList = view.findViewById(R.id.photo_list);
         btnAdd = view.findViewById(R.id.gallery_search_btn);
+        btnCancel = view.findViewById(R.id.gallery_cancel_btn);
 
         tvTitle = view.findViewById(R.id.gallery_title_txt);
         tvComment = view.findViewById(R.id.gellery_comment_txt);
@@ -275,6 +276,7 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
             @Override
             public void onClick(View v) {
                 if (btnAdd.getText().toString().equalsIgnoreCase("Update")) {
+
                     if (editstatus.equalsIgnoreCase("true")) {
 
                         callInsertUpdateGalleryDataApi(galid);
@@ -287,6 +289,24 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
                     callInsertUpdateGalleryDataApi("0");
 
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                btnAdd.setText(R.string.Add);
+
+                tvTitle.setText("");
+                tvDate.setText(Utils.getTodaysDate());
+                tvComment.setText("");
+
+                photoArray.clear();
+                photoAdapter.notifyDataSetChanged();
+
+                btnCancel.setVisibility(View.GONE);
+
             }
         });
     }
@@ -555,6 +575,8 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
 
         isRecordInUpdate = true;
         btnAdd.setText("Update");
+
+        btnCancel.setVisibility(View.VISIBLE);
 
         mArrayUri = new ArrayList<>();
         photoArray = new ArrayList<>();

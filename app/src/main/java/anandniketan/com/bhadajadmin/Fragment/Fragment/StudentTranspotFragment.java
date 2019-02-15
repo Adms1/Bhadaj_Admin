@@ -104,13 +104,13 @@ public class StudentTranspotFragment extends Fragment {
 
     public void setListners() {
 
-
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
         });
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +123,7 @@ public class StudentTranspotFragment extends Fragment {
                 }
             }
         });
+
         fragmentStudentTranspotBinding.lvExpStudenttransport.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
 
@@ -137,6 +138,7 @@ public class StudentTranspotFragment extends Fragment {
             }
 
         });
+
         fragmentStudentTranspotBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -315,10 +317,12 @@ public class StudentTranspotFragment extends Fragment {
             public void success(StudentAttendanceModel studentTransportDetailModel, Response response) {
 //                Utils.dismissDialog();
                 if (studentTransportDetailModel == null) {
+                    Utils.dismissDialog();
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (studentTransportDetailModel.getSuccess() == null) {
+                    Utils.dismissDialog();
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
@@ -394,17 +398,17 @@ public class StudentTranspotFragment extends Fragment {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
         }
-        try {
-            Field popup = Spinner.class.getDeclaredField("mPopup");
-            popup.setAccessible(true);
-
-            // Get private mPopup member variable and try cast to ListPopupWindow
-            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentStudentTranspotBinding.termSpinner);
-
-            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
-        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
-            // silently fail...
-        }
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentStudentTranspotBinding.termSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentStudentTranspotBinding.termSpinner.setAdapter(adapterTerm);

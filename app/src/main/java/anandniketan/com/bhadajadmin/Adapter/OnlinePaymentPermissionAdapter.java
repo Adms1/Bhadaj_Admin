@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
@@ -24,7 +22,7 @@ import anandniketan.com.bhadajadmin.Utility.Utils;
 public class OnlinePaymentPermissionAdapter extends RecyclerView.Adapter<OnlinePaymentPermissionAdapter.MyViewHolder> {
     private Context context;
     private StudentAttendanceModel resultPermissionModel;
-    private ArrayList<String> rowvalue;
+    private String rowvalue;
     getEditpermission listner;
     private String status;
 
@@ -57,8 +55,8 @@ public class OnlinePaymentPermissionAdapter extends RecyclerView.Adapter<OnlineP
             public void onClick(View view) {
 
                 if (status.equalsIgnoreCase("true")) {
-                    rowvalue = new ArrayList<String>();
-                    rowvalue.add(resultPermissionModel.getYear() + "|" + result.getStandard() + "|" + result.getStatus() + "|" + resultPermissionModel.getTerm());
+
+                    rowvalue = resultPermissionModel.getYear() + "|" + result.getStandard() + "|" + result.getStatus() + "|" + resultPermissionModel.getTerm();
                     listner.getEditpermission();
                 } else {
                     Utils.ping(context, "Access Denied");
@@ -89,7 +87,7 @@ public class OnlinePaymentPermissionAdapter extends RecyclerView.Adapter<OnlineP
         }
     }
 
-    public ArrayList<String> getRowValue() {
+    public String getRowValue() {
         return rowvalue;
     }
 }
