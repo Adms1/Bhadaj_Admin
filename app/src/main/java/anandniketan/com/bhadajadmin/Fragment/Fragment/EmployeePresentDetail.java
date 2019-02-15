@@ -176,14 +176,14 @@ public class EmployeePresentDetail extends Fragment implements DatePickerDialog.
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("false")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
-                    fragmentEmployeePresentDetailBinding.recylerHeader.setVisibility(View.VISIBLE);
+                    fragmentEmployeePresentDetailBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentEmployeePresentDetailBinding.recylerHeader.setVisibility(View.GONE);
 
                     return;
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
                     finalArrayEmlopyee = announcementModel.getFinalArray();
-                    if (finalArrayEmlopyee != null) {
+                    if (finalArrayEmlopyee != null && finalArrayEmlopyee.size() > 0) {
                         fragmentEmployeePresentDetailBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentEmployeePresentDetailBinding.recylerHeader.setVisibility(View.VISIBLE);
 

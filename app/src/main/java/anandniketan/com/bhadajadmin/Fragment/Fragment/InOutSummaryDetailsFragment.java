@@ -168,14 +168,14 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("false")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
-                    fragmentEmployeePresentDetailBinding.recylerHeader.setVisibility(View.VISIBLE);
+                    fragmentEmployeePresentDetailBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentEmployeePresentDetailBinding.recylerHeader.setVisibility(View.GONE);
 
                     return;
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
                     finalArrayEmlopyee = announcementModel.getFinalArray();
-                    if (finalArrayEmlopyee != null) {
+                    if (finalArrayEmlopyee != null && finalArrayEmlopyee.size() > 0) {
                         fragmentEmployeePresentDetailBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentEmployeePresentDetailBinding.recylerHeader.setVisibility(View.VISIBLE);
 
@@ -194,9 +194,10 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-//                fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
-//                fragmentInOutSummaryBinding.expHeader.setVisibility(View.GONE);
-//                fragmentInOutSummaryBinding.txtNoRecords.setText(error.getMessage());
+                fragmentEmployeePresentDetailBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                fragmentEmployeePresentDetailBinding.recylerHeader.setVisibility(View.GONE);
+                fragmentEmployeePresentDetailBinding.employeeList.setVisibility(View.GONE);
+                fragmentEmployeePresentDetailBinding.txtNoRecords.setText(error.getMessage());
                 Utils.ping(mContext,getString(R.string.something_wrong));
             }
         });

@@ -91,7 +91,7 @@ public class InOutSummaryFragment extends Fragment {
 
         // Inflate the layout for this fragment
         AppConfiguration.firsttimeback = true;
-        AppConfiguration.position = 61;
+        AppConfiguration.position = 51;
 
         viewstatus = AppConfiguration.HRstaffseachviewstatus;
 
@@ -154,6 +154,9 @@ public class InOutSummaryFragment extends Fragment {
                 yearId = getid.toString();
                 AppConfiguration.year = yearId;
                 Log.d("yearId", yearId);
+
+                monthId = AppConfiguration.month;
+
                 //callInOutSummaryListDataApi();
                 callEmployeeInOutListApi();
             }
@@ -167,6 +170,9 @@ public class InOutSummaryFragment extends Fragment {
         fragmentInOutSummaryBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                monthId = AppConfiguration.month;
+
                 callEmployeeInOutListApi();
             }
         });
@@ -184,6 +190,9 @@ public class InOutSummaryFragment extends Fragment {
         ApiHandler.getApiService().getEmployeeInOutSummary(getInOutParams(), new retrofit.Callback<EmployeeInOutSummaryModel>() {
             @Override
             public void success(EmployeeInOutSummaryModel announcementModel, Response response) {
+
+                monthId = "";
+
                 Utils.dismissDialog();
                 if (announcementModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -198,6 +207,7 @@ public class InOutSummaryFragment extends Fragment {
                     return;
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("false")) {
+
                     Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentInOutSummaryBinding.expHeader.setVisibility(View.GONE);
@@ -205,8 +215,6 @@ public class InOutSummaryFragment extends Fragment {
 
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
-
-                    monthId = "";
 
                     finalArrayInOut = announcementModel.getFinalArray();
                     if (finalArrayInOut != null) {
@@ -224,6 +232,9 @@ public class InOutSummaryFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
+
+                monthId = "";
+
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
