@@ -101,7 +101,7 @@ public class MenuPermissionFragment extends Fragment {
 
         // Inflate the layout for this fragment
         AppConfiguration.firsttimeback = true;
-        AppConfiguration.position = 61;
+        AppConfiguration.position = 51;
 
         viewstatus = AppConfiguration.HRstaffseachviewstatus;
 
