@@ -202,8 +202,12 @@ public class InOutSummaryFragment extends Fragment {
                     fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentInOutSummaryBinding.expHeader.setVisibility(View.GONE);
                     return;
+
                 }
                 if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    monthId = "";
+
                     finalArrayInOut = announcementModel.getFinalArray();
                     if (finalArrayInOut != null) {
                         fragmentInOutSummaryBinding.txtNoRecords.setVisibility(View.GONE);
