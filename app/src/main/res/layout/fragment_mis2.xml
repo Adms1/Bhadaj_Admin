@@ -3,10 +3,8 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".Fragment.Fragment.MISFragment">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -234,34 +232,34 @@
                                 <!--android:layout_height="wrap_content"-->
                                 <!--android:scrollbars="none">-->
 
+                                <LinearLayout
+                                    android:id="@+id/linear_finance_recyler_grid"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white1"
+                                    android:orientation="vertical">
+
                                     <LinearLayout
-                                        android:id="@+id/linear_finance_recyler_grid"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:background="@color/white1"
-                                        android:orientation="vertical">
+                                        android:orientation="vertical"
+                                        android:tag="sticky">
 
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="vertical"
-                                            android:tag="sticky">
+                                        <include layout="@layout/list_item_mis_finance_header" />
 
-                                            <include layout="@layout/list_item_mis_finance_header" />
-
-                                            <include layout="@layout/list_item_mis_finance_sub_header" />
-
-                                        </LinearLayout>
-
-                                        <android.support.v7.widget.RecyclerView
-                                            android:id="@+id/rv_finance_list"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:clipToPadding="false"
-                                            android:orientation="horizontal" />
-
+                                        <include layout="@layout/list_item_mis_finance_sub_header" />
 
                                     </LinearLayout>
+
+                                    <android.support.v7.widget.RecyclerView
+                                        android:id="@+id/rv_finance_list"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:clipToPadding="false"
+                                        android:orientation="horizontal" />
+
+
+                                </LinearLayout>
 
                                 <!--</anandniketan.com.bhadajadmin.StickyScrollView>-->
 
@@ -373,7 +371,7 @@
                                     android:layout_marginLeft="@dimen/_10sdp"
                                     android:layout_marginTop="@dimen/_2sdp"
                                     android:layout_weight="1.5"
-                                    android:background="@drawable/calendar_line"
+                                    android:background="@drawable/linear_border"
                                     android:paddingBottom="1dp"
                                     android:paddingLeft="@dimen/_1sdp"
                                     android:paddingTop="@dimen/_2sdp"
@@ -390,8 +388,7 @@
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:background="@drawable/box_blue"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_1sdp"
-                                android:paddingBottom="1dp"
+                                android:padding="@dimen/_3sdp"
                                 android:visibility="visible"
                                 android:weightSum="2">
 
@@ -400,10 +397,10 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:layout_marginLeft="@dimen/_3sdp"
                                     android:layout_weight="1"
-                                    android:gravity="center"
+                                    android:gravity="left"
                                     android:text="@string/type"
-                                    android:textAlignment="center"
                                     android:textColor="@color/app_bg"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -412,9 +409,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:text="@string/total"
-                                    android:textAlignment="center"
                                     android:textColor="@color/app_bg"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -424,9 +420,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:text="Boys"
-                                    android:textAlignment="center"
                                     android:textColor="@color/app_bg"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -435,9 +430,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:text="Girls"
-                                    android:textAlignment="center"
                                     android:textColor="@color/app_bg"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -469,7 +463,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -478,7 +472,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -487,7 +481,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -519,7 +513,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -528,7 +522,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -537,7 +531,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -570,7 +564,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -579,7 +573,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -588,7 +582,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -621,7 +615,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -631,7 +625,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -641,7 +635,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -673,7 +667,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -683,7 +677,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -693,7 +687,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -717,7 +711,7 @@
                                     android:layout_marginLeft="@dimen/_3sdp"
                                     android:layout_weight="1"
                                     android:text="A.N.T"
-                                    android:textColor="@color/black"
+                                    android:textColor="@color/red"
                                     android:textSize="@dimen/_11sdp" />
 
                                 <TextView
@@ -725,8 +719,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
-                                    android:textColor="@color/scheduleheadertextcolor"
+                                    android:gravity="right"
+                                    android:textColor="@color/red"
                                     android:textSize="@dimen/_11sdp" />
 
                                 <TextView
@@ -734,8 +728,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
-                                    android:textColor="@color/scheduleheadertextcolor"
+                                    android:gravity="right"
+                                    android:textColor="@color/red"
                                     android:textSize="@dimen/_11sdp" />
 
                                 <TextView
@@ -743,8 +737,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
-                                    android:textColor="@color/scheduleheadertextcolor"
+                                    android:gravity="right"
+                                    android:textColor="@color/red"
                                     android:textSize="@dimen/_11sdp" />
 
                             </LinearLayout>
@@ -776,7 +770,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -785,7 +779,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -794,7 +788,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -827,7 +821,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -836,7 +830,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -845,7 +839,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.33"
-                                    android:gravity="center"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -909,7 +903,6 @@
                             android:layout_gravity="center"
                             android:visibility="gone" />
 
-
                         <LinearLayout
                             android:id="@+id/LL_staffcontainer"
                             android:layout_width="match_parent"
@@ -925,7 +918,6 @@
                                 android:orientation="horizontal"
                                 android:padding="@dimen/_3sdp"
                                 android:weightSum="2">
-
 
                                 <TextView
                                     android:id="@+id/absentstaff_count_txt"
@@ -943,7 +935,6 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.6"
-
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
                             </LinearLayout>
@@ -1224,9 +1215,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_23sdp"
                                 android:background="@drawable/box"
-                                android:gravity="center_vertical"
+                                android:gravity="center"
                                 android:text="Staff"
-                                android:textAlignment="center"
                                 android:textAllCaps="false"
                                 android:textColor="@color/scheduleheadertextcolor"
                                 android:textSize="@dimen/_12sdp"
@@ -1290,7 +1280,7 @@
                                     android:layout_marginLeft="@dimen/_10sdp"
                                     android:layout_marginTop="@dimen/_2sdp"
                                     android:layout_weight="1.5"
-                                    android:background="@drawable/calendar_line"
+                                    android:background="@drawable/linear_border"
                                     android:paddingBottom="1dp"
                                     android:paddingLeft="@dimen/_1sdp"
                                     android:paddingTop="@dimen/_2sdp"
@@ -1429,7 +1419,7 @@
                                     android:layout_marginLeft="@dimen/_10sdp"
                                     android:layout_marginTop="@dimen/_2sdp"
                                     android:layout_weight="1.5"
-                                    android:background="@drawable/calendar_line"
+                                    android:background="@drawable/linear_border"
                                     android:paddingBottom="1dp"
                                     android:paddingLeft="@dimen/_1sdp"
                                     android:paddingTop="@dimen/_2sdp"
@@ -2143,9 +2133,11 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
-
 
                                 <TextView
                                     android:id="@+id/na_inquirycount_txt"
@@ -2164,6 +2156,7 @@
                                     android:layout_height="wrap_content"
 
                                     android:layout_weight="0.6"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
                             </LinearLayout>
@@ -2173,7 +2166,10 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2195,6 +2191,7 @@
 
                                     android:layout_weight="0.6"
 
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -2206,7 +2203,10 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2227,6 +2227,7 @@
                                     android:layout_height="wrap_content"
 
                                     android:layout_weight="0.6"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -2239,7 +2240,10 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2259,6 +2263,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.6"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -2270,7 +2275,10 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2290,7 +2298,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.6"
-
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -2302,7 +2310,10 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2321,7 +2332,7 @@
                                     android:id="@+id/na_confirmaddmission_txt"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-
+                                    android:gravity="right"
                                     android:layout_weight="0.6"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
@@ -2334,7 +2345,10 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2354,6 +2368,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.6"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -2366,7 +2381,10 @@
                                 android:layout_marginBottom="@dimen/_1sdp"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2386,6 +2404,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.6"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 
@@ -2396,7 +2415,10 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/linear_border2"
                                 android:orientation="horizontal"
-                                android:padding="@dimen/_3sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
                                 android:weightSum="2">
 
 
@@ -2416,6 +2438,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="0.6"
+                                    android:gravity="right"
                                     android:textColor="@color/scheduleheadertextcolor"
                                     android:textSize="@dimen/_11sdp" />
 

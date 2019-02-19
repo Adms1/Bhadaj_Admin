@@ -1,63 +1,63 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
+import anandniketan.com.bhadajadmin.Adapter.LeaveBalanceAdapter;
+import anandniketan.com.bhadajadmin.Adapter.LeaveBalanceDetailAdapter;
+import anandniketan.com.bhadajadmin.Model.HR.LeaveDayModel;
+import anandniketan.com.bhadajadmin.Model.LeaveModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
+import anandniketan.com.bhadajadmin.Utility.Utils;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyLeaveBalanceFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyLeaveBalanceFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MyLeaveBalanceFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public MyLeaveBalanceFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyLeaveBalanceFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MyLeaveBalanceFragment newInstance(String param1, String param2) {
-        MyLeaveBalanceFragment fragment = new MyLeaveBalanceFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private TextView tvHeader, tvNoRecords;
+    private Button btnBack, btnMenu;
+    private ExpandableListView rvList;
+    private RecyclerView rvTop;
+    private Fragment fragment = null;
+    private FragmentManager fragmentManager = null;
+    private LinearLayout llHeader;
+    private int whichclicked;
+    private List<LeaveDayModel.FinalArray> finalArrayGetLeaveDays;
+    private ArrayList<LeaveModel.FinalArray> finalArray;
+    private ArrayList<LeaveModel.FinalArray> detailArrayList;
+    private LeaveBalanceAdapter applyLeaveAdapter;
+    private LeaveBalanceDetailAdapter leaveBalanceDetailAdapter;
+    private List<String> listDataHeader;
+    private int lastExpandedPosition = -1;
+    private HashMap<String, ArrayList<LeaveModel.FinalArray>> listDataChild;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -67,42 +67,165 @@ public class MyLeaveBalanceFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_my_leave_balance, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+        llHeader = view.findViewById(R.id.list_header);
+        rvList = view.findViewById(R.id.leavebalance_list);
+        tvNoRecords = view.findViewById(R.id.txtNoRecords);
+        rvTop = view.findViewById(R.id.leavebalance_rvList);
+
+        rvTop.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        tvHeader.setText(R.string.leave_balance);
+
+        setListners();
+        callGetApplyLeaveRequest();
+
+    }
+
+    private void setListners() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DashboardActivity.onLeft();
+            }
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+//                AppConfiguration.position = 55;
+                fragment = new MyLeaveFragment();
+                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                AppConfiguration.firsttimeback = true;
+
+            }
+        });
+
+        rvList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
+                    rvList.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+    }
+
+    private void callGetApplyLeaveRequest() {
+        if (!Utils.checkNetwork(Objects.requireNonNull(getActivity()))) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getStaffLeaveRequest(getApplyLeaveParams(), new retrofit.Callback<LeaveModel>() {
+            @Override
+            public void success(LeaveModel leaveModel, Response response) {
+                Utils.dismissDialog();
+                if (leaveModel == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    llHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    tvNoRecords.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (leaveModel.getSuccess() == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    llHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    tvNoRecords.setVisibility(View.VISIBLE);
+                    return;
+                }
+                if (leaveModel.getSuccess().equalsIgnoreCase("false")) {
+                    llHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    tvNoRecords.setVisibility(View.VISIBLE);
+                    //                    finalArraySubjectModelList.clear();
+//                    final ArrayAdapter adb = new ArrayAdapter(getActivity(), R.layout.spinner_layout, finalArraySubjectModelList);
+//                    subjectSpinner.setAdapter(adb);
+                    return;
+                }
+                if (leaveModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    llHeader.setVisibility(View.VISIBLE);
+                    rvList.setVisibility(View.VISIBLE);
+                    tvNoRecords.setVisibility(View.GONE);
+
+                    detailArrayList = new ArrayList<>();
+
+                    LeaveModel.FinalArray finalArray1 = new LeaveModel.FinalArray();
+                    finalArray1.setCategory("Category");
+                    finalArray1.setTotal("Total");
+                    finalArray1.setUsed("Paid");
+                    finalArray1.setRemaining("Remaining");
+                    detailArrayList.add(finalArray1);
+
+                    finalArray = leaveModel.getFinalArray();
+                    detailArrayList.addAll(leaveModel.getLeavedetails());
+
+                    if (finalArray != null) {
+                        tvNoRecords.setVisibility(View.GONE);
+                        rvList.setVisibility(View.VISIBLE);
+
+                        fillExpLV();
+                        fillRvTop();
+
+                        applyLeaveAdapter = new LeaveBalanceAdapter(getActivity(), listDataHeader, listDataChild);
+                        rvList.setAdapter(applyLeaveAdapter);
+                    } else {
+                        tvNoRecords.setVisibility(View.VISIBLE);
+                        rvList.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                llHeader.setVisibility(View.GONE);
+                rvList.setVisibility(View.GONE);
+                tvNoRecords.setVisibility(View.VISIBLE);
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(getActivity(), getString(R.string.something_wrong));
+            }
+        });
+    }
+
+    private Map<String, String> getApplyLeaveParams() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("StaffID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
+
+        return map;
+    }
+
+    public void fillExpLV() {
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+        for (int i = 0; i < finalArray.size(); i++) {
+            listDataHeader.add(finalArray.get(i).getCreatedate() + "|" + finalArray.get(i).getLeaveDays() + "|" + finalArray.get(i).getStatus() + "|" + finalArray.get(i).getHeadname() + "|" + finalArray.get(i).getReason());
+            Log.d("header", "" + listDataHeader);
+            ArrayList<LeaveModel.FinalArray> row = new ArrayList<>();
+            row.add(finalArray.get(i));
+            Log.d("row", "" + row);
+            listDataChild.put(listDataHeader.get(i), row);
+            Log.d("child", "" + listDataChild);
         }
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
+    private void fillRvTop() {
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        leaveBalanceDetailAdapter = new LeaveBalanceDetailAdapter(getActivity(), detailArrayList);
+        rvTop.setAdapter(leaveBalanceDetailAdapter);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

@@ -10,21 +10,21 @@
         android:id="@+id/llHeader"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_31sdp"
+        android:background="@drawable/linear_border2"
         android:orientation="horizontal"
-        android:padding="@dimen/_1sdp"
-        android:paddingBottom="1dp"
-        android:visibility="visible"
-        android:background="@drawable/linear_border2">
+        android:paddingBottom="@dimen/_3sdp"
+        android:paddingLeft="@dimen/_8sdp"
+        android:paddingRight="@dimen/_8sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/head_txt"
             android:layout_width="0dp"
-            android:layout_weight="1.5"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/_10ssp"
-            android:textAlignment="textStart"
+            android:layout_weight="1.5"
+            android:gravity="left|center_vertical"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp"
             tools:ignore="RtlCompat" />
@@ -33,17 +33,16 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_weight="1.5">
 
             <TextView
                 android:id="@+id/term1_debit_txt"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center"
-                android:textAlignment="center"
+                android:layout_weight="0.5"
+                android:gravity="right|center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
@@ -53,19 +52,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.5"
-                android:gravity="center"
-                android:textAlignment="center"
+                android:gravity="right|center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
             <TextView
                 android:id="@+id/term1_due_txt"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_gravity="center"
-                android:textAlignment="center"
+                android:layout_weight="0.5"
+                android:gravity="right|center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
@@ -74,28 +71,26 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_weight="1.5">
 
             <TextView
                 android:id="@+id/term2_debit_txt"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAlignment="center"
                 android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:gravity="right|center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
             <TextView
                 android:id="@+id/term2_credit_txt"
                 android:layout_width="0dp"
-                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAlignment="center"
                 android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:gravity="right|center_vertical"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
@@ -105,8 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.5"
-                android:gravity="center"
-                android:textAlignment="center"
+                android:gravity="right|center_vertical"
+                android:text="12"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 

@@ -8,11 +8,13 @@
         android:id="@+id/llHeader"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_31sdp"
+        android:background="@drawable/linear_border2"
         android:orientation="horizontal"
-        android:padding="@dimen/_1sdp"
-        android:paddingBottom="1dp"
-        android:visibility="visible"
-        android:background="@drawable/linear_border2">
+        android:paddingBottom="@dimen/_3sdp"
+        android:paddingLeft="@dimen/_8sdp"
+        android:paddingRight="@dimen/_8sdp"
+        android:paddingTop="@dimen/_3sdp"
+        android:visibility="visible">
 
         <!--<TextView-->
         <!--android:id="@+id/grade_txt"-->
@@ -30,22 +32,20 @@
         <TextView
             android:id="@+id/section_txt"
             android:layout_width="0dp"
-            android:layout_weight="1.8"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:textAlignment="center"
+            android:layout_weight="1.8"
+            android:gravity="left|center_vertical|center"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
 
         <TextView
             android:id="@+id/student_txt"
             android:layout_width="0dp"
-            android:layout_weight="1.8"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAlignment="center"
             android:layout_gravity="center"
+            android:layout_weight="1.8"
+            android:gravity="left|center_vertical"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
 
@@ -64,11 +64,10 @@
         <TextView
             android:id="@+id/grade_txt_1"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:textAlignment="center"
+            android:layout_weight="1"
+            android:gravity="right|center_vertical"
             android:textColor="@color/black"
             android:textSize="@dimen/_11sdp" />
 

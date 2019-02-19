@@ -15,6 +15,7 @@
     <string name="transport">TRANSPORT</string>
     <string name="admin">Admin</string>
     <string name="hr_head">Hr Head</string>
+    <string name="house_keeping">House Keeping</string>
     <string name="info_tech">Information Technology</string>
 
     <string name="student_label">Student</string>
@@ -416,6 +417,7 @@
     <string name="delete_confirm_msg">Are you sure want to delete?</string>
     <string name="approve_confirm_msg">Are you sure want to approve leave?</string>
     <string name="reject_confirm_msg">Are you sure want to reject leave?</string>
+    <string name="delete_leave_confirm_msg">Are you sure you want to delete Leave?</string>
     <string name="msg_confirm_msg">Are you sure want to send sms on mobile no?</string>
     <string name="confirmed">Confirmed</string>
 
@@ -544,5 +546,16 @@
     <string name="reason">Reason</string>
     <string name="approve_date">Approve Date</string>
     <string name="approve_by">Approve By</string>
+    <string name="repair_maintenance"><![CDATA[Repair & Maintenance]]></string>
+    <string name="toilets">Toilets</string>
+    <string name="wash_area">Wash Area</string>
+    <string name="class_room">Class Room</string>
+    <string name="teacher_complain">Teacher Complain</string>
+    <string name="gardner">Gardner</string>
+    <string name="suggestion">Suggestion</string>
+    <string name="category">Category</string>
+    <string name="paid">Paid</string>
+    <string name="remaining">Remaining</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

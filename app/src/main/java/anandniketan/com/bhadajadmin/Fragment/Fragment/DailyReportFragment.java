@@ -162,20 +162,19 @@ public class DailyReportFragment extends Fragment {
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 54;
 
+                } else if (position == 3 && permissionMap.get("House Keeping").getStatus().equalsIgnoreCase("true")) {
+                    fragment = new HrHouseKeepingFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("viewstatus", permissionMap.get("House Keeping").getIsuserview());
+                    fragment.setArguments(bundle);
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                            .replace(R.id.frame_container, fragment).commit();
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 54;
+
                 }
-//                else if (position == 3 && permissionMap.get("House Keeping").getStatus().equalsIgnoreCase("true")) {
-//                    fragment = new HrHouseKeepingFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("viewstatus", permissionMap.get("House Keeping").getIsuserview());
-//                    fragment.setArguments(bundle);
-//                    fragmentManager = getFragmentManager();
-//                    fragmentManager.beginTransaction()
-//                            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-//                            .replace(R.id.frame_container, fragment).commit();
-//                    AppConfiguration.firsttimeback = true;
-//                    AppConfiguration.position = 54;
-//
-//                }
                 else if (position == 4 && permissionMap.get("Information Technology").getStatus().equalsIgnoreCase("true")) {
                     fragment = new HrInformationtechnologyFragment();
                     Bundle bundle = new Bundle();

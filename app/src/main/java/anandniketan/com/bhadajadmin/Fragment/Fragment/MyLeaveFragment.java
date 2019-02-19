@@ -16,10 +16,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.Map;
+
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.MyLeaveSubMenuAdapter;
+import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.databinding.FragmentMyLeaveBinding;
 
 
@@ -34,6 +38,7 @@ public class MyLeaveFragment extends Fragment {
 
     private TextView tvHeader;
     private Button btnBack, btnMenu;
+    private Map<String, PermissionDataModel.Detaill> permissionMap;
 
     public MyLeaveFragment() {
     }
@@ -46,18 +51,21 @@ public class MyLeaveFragment extends Fragment {
         rootView = fragmentMyLeaveBinding.getRoot();
         mContext = getActivity().getApplicationContext();
 
-        Bundle bundle = this.getArguments();
-        viewstatus = bundle.getString("viewstatus");
-        updatestatus = bundle.getString("updatestatus");
-        deletestatus = bundle.getString("deletestatus");
 
-        applyviewstatus = bundle.getString("applyviewstatus");
-        applyupdatestatus = bundle.getString("applyupdatestatus");
-        applydeletestatus = bundle.getString("applydeletestatus");
+        permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Staff");
 
-        balanceviewstatus = bundle.getString("balanceviewstatus");
-        balanceupdatestatus = bundle.getString("balanceupdatestatus");
-        balancedeletestatus = bundle.getString("balancedeletestatus");
+//        Bundle bundle = this.getArguments();
+//        viewstatus = bundle.getString("viewstatus");
+//        updatestatus = bundle.getString("updatestatus");
+//        deletestatus = bundle.getString("deletestatus");
+//
+//        applyviewstatus = bundle.getString("applyviewstatus");
+//        applyupdatestatus = bundle.getString("applyupdatestatus");
+//        applydeletestatus = bundle.getString("applydeletestatus");
+//
+//        balanceviewstatus = bundle.getString("balanceviewstatus");
+//        balanceupdatestatus = bundle.getString("balanceupdatestatus");
+//        balancedeletestatus = bundle.getString("balancedeletestatus");
 
         return rootView;
     }

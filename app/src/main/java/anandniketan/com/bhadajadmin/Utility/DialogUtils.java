@@ -1,5 +1,6 @@
 package anandniketan.com.bhadajadmin.Utility;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -49,6 +50,16 @@ public class DialogUtils {
         return builder.create();
     }
 
+    public static Dialog createConfirmDialog(Activity context, String titleId, DialogInterface.OnClickListener positiveClickListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(titleId);
+//        builder.setMessage(messageId);
+        // builder.setView(view);
+        builder.setPositiveButton(R.string.ok, positiveClickListener);
+
+        return builder.create();
+    }
+
     public static void showWebviewDialog(Context context,String webViewUrl){
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -56,7 +67,7 @@ public class DialogUtils {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        WebView webView  = (WebView)dialog.findViewById(R.id.webView);
+        WebView webView = dialog.findViewById(R.id.webView);
         webView.clearCache(true);
         webView.clearHistory();
         webView.getSettings().setJavaScriptEnabled(true);
@@ -77,7 +88,7 @@ public class DialogUtils {
             }
         });
 
-        Button btnClose  = (Button)dialog.findViewById(R.id.close_btn);
+        Button btnClose = dialog.findViewById(R.id.close_btn);
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -83,7 +84,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private int leaveStatus = 0;
     private boolean isRecordInUpdate = false;
     private String updateDateFromDialog = "";
-
+    private int lastExpandedPosition = -1;
     private TextView tvHeader;
     private Button btnBack, btnMenu;
 
@@ -233,6 +234,19 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 }
             }
         });
+
+        fragmentLeaveRequestBinding.leavereqList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    fragmentLeaveRequestBinding.leavereqList.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override

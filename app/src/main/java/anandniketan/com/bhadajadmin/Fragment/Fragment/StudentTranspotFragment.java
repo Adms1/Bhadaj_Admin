@@ -339,18 +339,18 @@ public class StudentTranspotFragment extends Fragment {
                     finalArrayStudentTransportModelList = studentTransportDetailModel.getFinalArray();
                     if (finalArrayStudentTransportModelList != null) {
                         fragmentStudentTranspotBinding.txtNoRecords.setVisibility(View.GONE);
-                        fragmentStudentTranspotBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         fragmentStudentTranspotBinding.lvExpStudenttransport.setVisibility(View.VISIBLE);
                         fillExpLV();
                         expandableListAdapterStudentTransportDetail = new ExpandableListAdapterStudentTransportDetail(getActivity(), listDataHeader, listDataChild, status);
                         fragmentStudentTranspotBinding.lvExpStudenttransport.setAdapter(expandableListAdapterStudentTransportDetail);
+                        fragmentStudentTranspotBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         Utils.dismissDialog();
+
                     } else {
                         fragmentStudentTranspotBinding.txtNoRecords.setVisibility(View.VISIBLE);
                         fragmentStudentTranspotBinding.lvExpHeader.setVisibility(View.GONE);
                         fragmentStudentTranspotBinding.lvExpStudenttransport.setVisibility(View.GONE);
                     }
-
                 }
             }
 

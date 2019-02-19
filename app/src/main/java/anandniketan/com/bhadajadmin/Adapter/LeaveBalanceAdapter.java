@@ -1,7 +1,6 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -22,10 +21,8 @@ import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
 import anandniketan.com.bhadajadmin.Model.LeaveModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.DialogUtils;
-import anandniketan.com.bhadajadmin.Utility.Utils;
 
-public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
+public class LeaveBalanceAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader;
@@ -36,18 +33,15 @@ public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
     private getEditpermission onUpdateRecordRef;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
-    private String status, updatestatus, deletestatus;
+//    private String status, updatestatus, deletestatus;
 
-    public ApplyLeaveAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<LeaveModel.FinalArray>> listDataChild,
-                             onDeleteWithId onDeleteWithIdref, getEditpermission onUpdateRecordRef, String status, String updatestatus, String deletestatus) {
+    public LeaveBalanceAdapter(Context context, List<String> listDataHeader, HashMap<String, ArrayList<LeaveModel.FinalArray>> listDataChild) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
-        this.onDeleteWithIdref = onDeleteWithIdref;
-        this.onUpdateRecordRef = onUpdateRecordRef;
-        this.status = status;
-        this.updatestatus = updatestatus;
-        this.deletestatus = deletestatus;
+//        this.status = status;
+//        this.updatestatus = updatestatus;
+//        this.deletestatus = deletestatus;
     }
 
     @Override
@@ -70,8 +64,8 @@ public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_child_applyleave, null);
         }
 
-        TextView leavedate, approvedate, approvedays, approveby, reason;
-        LinearLayout llLeaveDate, llApproveDate, llLeaveDays, llApproveby, llReason;
+        TextView leavedate, approvedate, approvedays, approveby, reason, tvPL, tvCL;
+        LinearLayout llLeaveDate, llApproveDate, llLeaveDays, llApproveby, llReason, llPLCL;
         RelativeLayout llBottom;
 
         leavedate = convertView.findViewById(R.id.txt_leavedate);
@@ -85,6 +79,9 @@ public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
         llLeaveDays = convertView.findViewById(R.id.llLeaveDays);
         llApproveby = convertView.findViewById(R.id.llApproveBy);
         llReason = convertView.findViewById(R.id.llReason);
+        llPLCL = convertView.findViewById(R.id.llPLCL);
+        tvPL = convertView.findViewById(R.id.txt_pl);
+        tvCL = convertView.findViewById(R.id.txt_cl);
         Button btnDelete = convertView.findViewById(R.id.applyleave_btn_delete);
         Button btnEdit = convertView.findViewById(R.id.applyleave_btn_edit);
 
@@ -95,6 +92,8 @@ public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
         leavedate.setText(childData.get(childPosition).getLeaveStartDate() + " - " + childData.get(childPosition).getLeaveEndDate());
         approvedate.setText(childData.get(childPosition).getApproveStartDate() + " - " + childData.get(childPosition).getApproveEndDate());
         approvedays.setText(childData.get(childPosition).getApproveDays() + " Days");
+        tvCL.setText(childData.get(childPosition).getCL());
+        tvPL.setText(childData.get(childPosition).getPL());
         approveby.setText(childData.get(childPosition).getApproveBy());
         reason.setText(childData.get(childPosition).getReason());
 
@@ -104,7 +103,8 @@ public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
             llLeaveDays.setVisibility(View.GONE);
             llApproveby.setVisibility(View.GONE);
             llReason.setVisibility(View.VISIBLE);
-            llBottom.setVisibility(View.VISIBLE);
+            llBottom.setVisibility(View.GONE);
+            llPLCL.setVisibility(View.GONE);
         } else {
             llLeaveDate.setVisibility(View.VISIBLE);
             llApproveDate.setVisibility(View.VISIBLE);
@@ -112,62 +112,64 @@ public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
             llApproveby.setVisibility(View.VISIBLE);
             llReason.setVisibility(View.VISIBLE);
             llBottom.setVisibility(View.GONE);
+            llPLCL.setVisibility(View.VISIBLE);
         }
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (deletestatus.equalsIgnoreCase("true")) {
-                    DialogUtils.createConfirmDialog(_context, R.string.delete, R.string.delete_leave_confirm_msg, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            onDeleteWithIdref.deleteRecordWithId(String.valueOf(childData.get(childPosition).getLeaveid()));
-                        }
-
-                    }, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    }).show();
-                } else {
-                    Utils.ping(_context, "Access Denied");
-                }
-            }
-        });
-
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (updatestatus.equalsIgnoreCase("true")) {
-
-                    getData = childData.get(childPosition).getLeaveDays() + "|" + childData.get(childPosition).getLeaveStartDate() + "|" +
-                            childData.get(childPosition).getLeaveEndDate() + "|" + childData.get(childPosition).getHeadname() + "|" +
-                            childData.get(childPosition).getReason() + "|" + childData.get(childPosition).getLeaveid();
-
-                    onUpdateRecordRef.getEditpermission();
-
-                } else {
-                    Utils.ping(_context, "Access Denied");
-                }
-
-
-            }
-        });
+//        btnDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if (deletestatus.equalsIgnoreCase("true")) {
+//                    DialogUtils.createConfirmDialog(_context, R.string.delete, R.string.delete_leave_confirm_msg, new DialogInterface.OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            onDeleteWithIdref.deleteRecordWithId(String.valueOf(childData.get(childPosition).getLeaveid()));
+//                        }
+//
+//                    }, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.dismiss();
+//                        }
+//                    }).show();
+//                } else {
+//                    Utils.ping(_context, "Access Denied");
+//                }
+//            }
+//        });
+//
+//        btnEdit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (updatestatus.equalsIgnoreCase("true")) {
+//
+//                    getData = childData.get(childPosition).getLeaveDays() + "|" + childData.get(childPosition).getLeaveStartDate() + "|" +
+//                            childData.get(childPosition).getLeaveEndDate() + "|" + childData.get(childPosition).getHeadname() + "|" +
+//                            childData.get(childPosition).getReason() + "|" + childData.get(childPosition).getLeaveid();
+//
+//                    onUpdateRecordRef.getEditpermission();
+//
+//                } else {
+//                    Utils.ping(_context, "Access Denied");
+//                }
+//
+//
+//            }
+//        });
 
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (status.equalsIgnoreCase("true")) {
-            return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
-        } else {
-            Utils.ping(_context, "Access Denied");
-            return 0;
-        }
+//        if (status.equalsIgnoreCase("true")) {
+        return this.listChildData.get(this._listDataHeader.get(groupPosition)).size();
+//        } else {
+//            Utils.ping(_context, "Access Denied");
+//            return 0;
+//        }
     }
 
     @Override
@@ -243,4 +245,3 @@ public class ApplyLeaveAdapter extends BaseExpandableListAdapter {
     }
 
 }
-

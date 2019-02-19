@@ -16,6 +16,9 @@ public class LeaveModel {
     @Expose
     private ArrayList<FinalArray> finalArray = null;
 
+    @SerializedName("LeaveDetails")
+    @Expose
+    private ArrayList<FinalArray> leavedetails = null;
 
     public String getSuccess() {
         return success;
@@ -31,6 +34,14 @@ public class LeaveModel {
 
     public void setFinalArray(ArrayList<FinalArray> finalArray) {
         this.finalArray = finalArray;
+    }
+
+    public ArrayList<FinalArray> getLeavedetails() {
+        return leavedetails;
+    }
+
+    public void setLeavedetails(ArrayList<FinalArray> leavedetails) {
+        this.leavedetails = leavedetails;
     }
 
     public class Detail {
@@ -222,7 +233,7 @@ public class LeaveModel {
         }
     }
 
-    public class FinalArray {
+    public static class FinalArray {
 
         @SerializedName("LeaveStartDate")
         @Expose
@@ -277,6 +288,23 @@ public class LeaveModel {
         @SerializedName("EmployeeName")
         @Expose
         private String employeeName;
+
+
+        @SerializedName("Category")
+        @Expose
+        private String category;
+
+        @SerializedName("Total")
+        @Expose
+        private String total;
+
+        @SerializedName("Used")
+        @Expose
+        private String used;
+        @SerializedName("Remaining")
+        @Expose
+        private String remaining;
+
         @SerializedName("EmployeeID")
         @Expose
         private Integer employeeID;
@@ -292,12 +320,7 @@ public class LeaveModel {
         @SerializedName("TotalCL")
         @Expose
         private Integer totalCL;
-        @SerializedName("Used")
-        @Expose
-        private Double used;
-        @SerializedName("Total")
-        @Expose
-        private Integer total;
+
         @SerializedName("PayStatus")
         @Expose
         private String payStatus;
@@ -489,20 +512,52 @@ public class LeaveModel {
             this.totalCL = totalCL;
         }
 
-        public Double getUsed() {
-            return used;
+        public String getCategory() {
+            return category;
         }
 
-        public void setUsed(Double used) {
-            this.used = used;
+        public void setCategory(String category) {
+            this.category = category;
         }
 
-        public Integer getTotal() {
+        public String getTotal() {
             return total;
         }
 
-        public void setTotal(Integer total) {
+        public void setTotal(String total) {
             this.total = total;
+        }
+
+        public String getUsed() {
+            return used;
+        }
+
+        public void setUsed(String used) {
+            this.used = used;
+        }
+
+        public String getRemaining() {
+            return remaining;
+        }
+
+        public void setRemaining(String remaining) {
+            this.remaining = remaining;
+        }
+
+        public Double getpLUSed() {
+            return pLUSed;
+        }
+
+        public void setpLUSed(Double pLUSed) {
+            this.pLUSed = pLUSed;
+        }
+
+        public Double getcLUsed() {
+            return cLUsed;
+        }
+
+        public void setcLUsed(Double cLUsed) {
+            this.cLUsed = cLUsed;
         }
 
         public String getPayStatus() {

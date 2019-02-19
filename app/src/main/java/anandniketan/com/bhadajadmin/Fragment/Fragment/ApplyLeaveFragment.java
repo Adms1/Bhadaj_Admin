@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -30,14 +32,12 @@ import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ApplyLeaveAdapter;
-import anandniketan.com.bhadajadmin.Interface.OnUpdateRecord;
+import anandniketan.com.bhadajadmin.Interface.getEditpermission;
 import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
 import anandniketan.com.bhadajadmin.Model.HR.LeaveDayModel;
 import anandniketan.com.bhadajadmin.Model.LeaveModel;
 import anandniketan.com.bhadajadmin.Model.Staff.FinalArrayStaffModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -46,10 +46,11 @@ import anandniketan.com.bhadajadmin.Utility.Utils;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnDateSetListener, onDeleteWithId, OnUpdateRecord {
+public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnDateSetListener, onDeleteWithId {
 
     private TextView tvHeader, tvNoRecords;
-    private Button btnBack, btnMenu, btnSend, btnSDate, btnEDate;
+    private Button btnBack, btnMenu, btnSend, btnSDate, btnEDate, btnCancel;
+    private EditText etReason;
     private ExpandableListView rvList;
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
@@ -62,12 +63,13 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
     private List<FinalArrayStaffModel> finalArrayGetHead;
     private HashMap<Integer, String> spinnerDaymap, spinnerHeadmap;
     private Spinner spLeaveDays, spHead;
-    private String FinalDay, FinalHead;
+    private String finalDayId = "0", finalHeadId = "0", finalLeaveId = "0";
     private ArrayList<LeaveModel.FinalArray> finalArray;
     private ApplyLeaveAdapter applyLeaveAdapter;
     private List<String> listDataHeader;
     private onDeleteWithId onDeleteWithIdRef;
-    private OnUpdateRecord onUpdateRecordRef;
+    private getEditpermission onUpdateRecordRef;
+    private int lastExpandedPosition = -1;
     private HashMap<String, ArrayList<LeaveModel.FinalArray>> listDataChild;
 
     public ApplyLeaveFragment() {
@@ -78,7 +80,6 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
     public void onAttach(Context context) {
         super.onAttach(context);
         onDeleteWithIdRef = this;
-        onUpdateRecordRef = this;
 
     }
 
@@ -110,12 +111,14 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         tvNoRecords = view.findViewById(R.id.txtNoRecords);
         spLeaveDays = view.findViewById(R.id.applyleave_spLeaveDays);
         spHead = view.findViewById(R.id.applyleave_spHead);
+        etReason = view.findViewById(R.id.applyleave_etReason);
+        btnCancel = view.findViewById(R.id.applyleave_btnCancel);
 
         tvHeader.setText(R.string.applyleave);
 
         setListners();
         callLeaveDaysApi();
-        callApplyLeaveListApi();
+        callGetApplyLeaveRequest();
         callHeadApi();
 
     }
@@ -133,7 +136,22 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                callApplyLeaveListApi();
+                callApplyLeaveListApi();
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnCancel.setVisibility(View.GONE);
+                finalDayId = "0";
+                finalHeadId = "0";
+                finalLeaveId = "0";
+                btnSDate.setText(Utils.getTodaysDate());
+                btnEDate.setText(Utils.getTodaysDate());
+                spLeaveDays.setSelection(0);
+                spHead.setSelection(0);
+                etReason.setText("");
             }
         });
 
@@ -165,6 +183,17 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
             }
         });
 
+        rvList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
+                    rvList.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,13 +206,50 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
             public void onClick(View view) {
 
 //                AppConfiguration.position = 55;
-                fragment = new StaffFragment();
+                fragment = new MyLeaveFragment();
                 fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
                 AppConfiguration.firsttimeback = true;
 
             }
         });
+
+        spLeaveDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = spLeaveDays.getSelectedItem().toString();
+                String getid = spinnerDaymap.get(spLeaveDays.getSelectedItemPosition());
+
+                Log.d("value", name + " " + getid);
+                finalDayId = finalArrayGetLeaveDays.get(position).getValue();
+                Log.d("FinalTermIdStr", finalDayId);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spHead.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = spHead.getSelectedItem().toString();
+//                String getid = spinnerDaymap.get(spHead.getSelectedItemPosition());
+//
+//                Log.d("value", name + " " + getid);
+                finalHeadId = finalArrayGetHead.get(position).getEmpId().toString();
+                Log.d("FinalTermIdStr", finalDayId);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     @Override
@@ -295,7 +361,7 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(getActivity(), R.layout.spinner_layout, spinnertermIdArray);
         spLeaveDays.setAdapter(adapterTerm);
 
-        FinalDay = spinnerDaymap.get(0);
+        finalDayId = spinnerDaymap.get(0);
         spLeaveDays.setSelection(0);
 
 //        for (int i = 0; i < finalArrayGetLeaveDays.size(); i++) {
@@ -402,17 +468,17 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(getActivity(), R.layout.spinner_layout, spinnertermIdArray);
         spHead.setAdapter(adapterTerm);
 
-        FinalHead = spinnerHeadmap.get(0);
+        finalHeadId = spinnerHeadmap.get(0);
         spHead.setSelection(0);
     }
 
-    private void callApplyLeaveListApi() {
+    private void callGetApplyLeaveRequest() {
         if (!Utils.checkNetwork(Objects.requireNonNull(getActivity()))) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
         }
 
-//        Utils.showDialog(getActivity());
+        Utils.showDialog(getActivity());
         ApiHandler.getApiService().getStaffLeaveRequest(getApplyLeaveParams(), new retrofit.Callback<LeaveModel>() {
             @Override
             public void success(LeaveModel leaveModel, Response response) {
@@ -450,9 +516,45 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
                     if (finalArray != null) {
                         tvNoRecords.setVisibility(View.GONE);
                         rvList.setVisibility(View.VISIBLE);
+
                         fillExpLV();
+
                         applyLeaveAdapter = new ApplyLeaveAdapter(getActivity(), listDataHeader, listDataChild, onDeleteWithIdRef,
-                                onUpdateRecordRef, "true", "true", "true");
+                                new getEditpermission() {
+                                    @Override
+                                    public void getEditpermission() {
+
+                                        btnCancel.setVisibility(View.VISIBLE);
+                                        btnSend.setText(R.string.update);
+
+                                        String[] dataArr = applyLeaveAdapter.getData().split("\\|");
+
+                                        String edtLeaveDay = dataArr[0];
+
+                                        for (int i = 0; i < finalArrayGetLeaveDays.size(); i++) {
+                                            if (finalArrayGetLeaveDays.get(i).getValue().equalsIgnoreCase(edtLeaveDay)) {
+                                                spLeaveDays.setSelection(i);
+                                            }
+                                        }
+
+                                        btnSDate.setText(dataArr[1]);
+                                        btnEDate.setText(dataArr[2]);
+                                        etReason.setText(dataArr[4]);
+
+                                        finalLeaveId = dataArr[5];
+//                                        finalDayId = dataArr[6];
+//                                        finalHeadId = dataArr[7];
+
+                                        String edtHead = dataArr[3];
+                                        for (int i = 0; i < finalArrayGetHead.size(); i++) {
+                                            if (finalArrayGetHead.get(i).getEmpName().equalsIgnoreCase(edtHead)) {
+                                                spHead.setSelection(i);
+                                            }
+                                        }
+
+
+                                    }
+                                }, "true", "true", "true");
                         rvList.setAdapter(applyLeaveAdapter);
                     } else {
                         tvNoRecords.setVisibility(View.VISIBLE);
@@ -485,7 +587,7 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
         for (int i = 0; i < finalArray.size(); i++) {
-            listDataHeader.add(finalArray.get(i).getLeaveDays() + "|" + finalArray.get(i).getLeaveStartDate() + "|" + finalArray.get(i).getLeaveEndDate() + "|" + finalArray.get(i).getHeadname() + "|" + finalArray.get(i).getReason());
+            listDataHeader.add(finalArray.get(i).getCreatedate() + "|" + finalArray.get(i).getLeaveDays() + "|" + finalArray.get(i).getStatus() + "|" + finalArray.get(i).getHeadname() + "|" + finalArray.get(i).getReason());
             Log.d("header", "" + listDataHeader);
             ArrayList<LeaveModel.FinalArray> row = new ArrayList<>();
             row.add(finalArray.get(i));
@@ -497,17 +599,122 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
     }
 
     @Override
-    public void onUpdateRecord(List<AnnouncementModel.FinalArray> dataList) {
-
-    }
-
-    @Override
-    public void onUpdateRecordCircular(List<CircularModel.FinalArray> dataList) {
-
-    }
-
-    @Override
     public void deleteRecordWithId(String id) {
-//        callDeleteAnnouncement(id);
+        callDeleteRecord(id);
     }
+
+    private void callDeleteRecord(String id) {
+
+        if (!Utils.checkNetwork(getActivity())) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().deleteStaffLeave(getDeleteLeaveParams(id), new retrofit.Callback<StaffAttendaceModel>() {
+            @Override
+            public void success(StaffAttendaceModel permissionModel, Response response) {
+                Utils.dismissDialog();
+                if (permissionModel == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    return;
+                }
+                if (permissionModel.getSuccess() == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    return;
+                }
+                if (permissionModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(getActivity(), getString(R.string.false_msg));
+                    return;
+                }
+                if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
+                    Utils.ping(getActivity(), "Leave Request Deleted Successfully...");
+                    btnSend.setText(R.string.send);
+                    btnCancel.setVisibility(View.GONE);
+                    finalDayId = "0";
+                    finalHeadId = "0";
+                    finalLeaveId = "0";
+                    btnSDate.setText(Utils.getTodaysDate());
+                    btnEDate.setText(Utils.getTodaysDate());
+                    spLeaveDays.setSelection(0);
+                    spHead.setSelection(0);
+                    etReason.setText("");
+                    callGetApplyLeaveRequest();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(getActivity(), getString(R.string.something_wrong));
+            }
+        });
+
+    }
+
+    private Map<String, String> getDeleteLeaveParams(String id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("LeaveID", id);
+        return map;
+    }
+
+    private void callApplyLeaveListApi() {
+        if (!Utils.checkNetwork(getActivity())) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().insertStaffLeaveRequest(getLeaveParams(), new retrofit.Callback<StaffAttendaceModel>() {
+            @Override
+            public void success(StaffAttendaceModel permissionModel, Response response) {
+                Utils.dismissDialog();
+                if (permissionModel == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    return;
+                }
+                if (permissionModel.getSuccess() == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    return;
+                }
+                if (permissionModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(getActivity(), getString(R.string.false_msg));
+                    return;
+                }
+                if (permissionModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    finalLeaveId = "0";
+                    finalDayId = "0";
+                    finalHeadId = "0";
+
+                    Utils.ping(getActivity(), "Leave Request Inserted Successfully...");
+                    callGetApplyLeaveRequest();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(getActivity(), getString(R.string.something_wrong));
+            }
+        });
+
+    }
+
+    private Map<String, String> getLeaveParams() {
+        Map<String, String> map = new HashMap<>();
+        map.put("LeaveID", finalLeaveId);
+        map.put("FromDate", btnSDate.getText().toString());
+        map.put("ToDate", btnEDate.getText().toString());
+        map.put("StaffID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
+        map.put("HeadID", finalHeadId);
+        map.put("LeaveDays", finalDayId);
+        map.put("Reason", etReason.getText().toString());
+        return map;
+    }
+
 }

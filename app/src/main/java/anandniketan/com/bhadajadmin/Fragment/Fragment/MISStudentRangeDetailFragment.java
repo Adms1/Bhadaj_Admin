@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +68,7 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        AppConfiguration.position = 66;
+        AppConfiguration.position = 58;
         AppConfiguration.firsttimeback = true;
 
         expandableListView = view.findViewById(R.id.range_lvExpstudentlist);
@@ -115,7 +114,13 @@ public class MISStudentRangeDetailFragment extends Fragment implements ResponseC
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                AppConfiguration.position = 58;
+                AppConfiguration.firsttimeback = true;
+
+                getActivity().onBackPressed();
+
+//                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });

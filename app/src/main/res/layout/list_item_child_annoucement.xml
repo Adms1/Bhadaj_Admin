@@ -190,5 +190,7 @@
                 android:textSize="@dimen/_11ssp" />
 
         </RelativeLayout>
+
     </LinearLayout>
+
 </RelativeLayout>

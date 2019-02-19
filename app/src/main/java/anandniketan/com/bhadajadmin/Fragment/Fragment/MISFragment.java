@@ -492,7 +492,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 fragmentMisBinding.LLNacontainer.setVisibility(View.GONE);
                 fragmentMisBinding.LLMsgcontainer.setVisibility(View.GONE);
 
-
                 fragmentMisBinding.progressStudent.setVisibility(View.VISIBLE);
                 fragmentMisBinding.progressStaff.setVisibility(View.VISIBLE);
                 fragmentMisBinding.progressAccount.setVisibility(View.VISIBLE);
@@ -1897,12 +1896,14 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private Map<String, String> getFinanceListParams(String termId) {
         Map<String, String> map = new HashMap<>();
         map.put("TermID", String.valueOf(termId));
+        map.put("stop", "");
         return map;
     }
 
     private Map<String, String> getTopperListParams() {
         Map<String, String> map = new HashMap<>();
         map.put("TermDetailID", String.valueOf(FinalSchoolResultTermID));
+        map.put("stop", "");
         return map;
     }
 
@@ -1911,6 +1912,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         map.put("Date", date);
         map.put("TermID", FinalTermIdStr);
         map.put("RequestType", reqType);
+        map.put("stop", "");
         return map;
     }
 
@@ -1928,6 +1930,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         map.put("Date", Utils.getTodaysDate());
         map.put("TermID", FinalNATermID);
         map.put("RequestType", params);
+        map.put("stop", "");
         return map;
     }
 
@@ -1935,7 +1938,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         Map<String, String> map = new HashMap<>();
         map.put("Date", date);
         map.put("TermID", FinalTermIdStr);
-
+        map.put("stop", "");
         return map;
     }
 
@@ -1943,7 +1946,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         Map<String, String> map = new HashMap<>();
         map.put("Date", date);
         map.put("TermID", FinalTermIdStr);
-
+        map.put("stop", "");
         return map;
     }
 
@@ -2965,7 +2968,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         llCalendar.setVisibility(View.GONE);
 
         WebServices apiService = ApiClient.getClient().create(WebServices.class);
-        Call<MIStudentWiseCalendarModel> call = apiService.getSchoolCalendarDetail(AppConfiguration.BASEURL + "GetMISCalender?TermID=" + term);
+        Call<MIStudentWiseCalendarModel> call = apiService.getSchoolCalendarDetail(AppConfiguration.BASEURL + "GetMISCalender?TermID=" + term + "&stop=");
         call.enqueue(new Callback<MIStudentWiseCalendarModel>() {
             //
             @Override

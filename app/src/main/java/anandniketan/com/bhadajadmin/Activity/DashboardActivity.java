@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,8 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,10 +61,14 @@ import anandniketan.com.bhadajadmin.Fragment.Fragment.SummaryFragment;
 import anandniketan.com.bhadajadmin.Model.MenuoptionItemModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.DialogUtils;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
+import anandniketan.com.bhadajadmin.Utility.WebServices;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 public class DashboardActivity extends FragmentActivity {
@@ -108,6 +115,9 @@ public class DashboardActivity extends FragmentActivity {
         setContentView(R.layout.activity_dashboard);
         mContext = this;
         prefUtils = PrefUtils.getInstance(mContext);
+
+        callGetUserStatus();
+
         Initialize();
         displayView(0);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_launcher, // nav menu toggle icon
@@ -125,6 +135,52 @@ public class DashboardActivity extends FragmentActivity {
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    private void callGetUserStatus() {
+//        http://192.168.1.22:8086/MobileApp_Service.asmx/CheckStaffActive?UserID=51
+
+        Utils.showDialog(DashboardActivity.this);
+        WebServices apiService = ApiClient.getClient().create(WebServices.class);
+
+        Call<JsonObject> call = apiService.getUserStatus(PrefUtils.getInstance(DashboardActivity.this).getStringValue("StaffID", "0"));
+        call.enqueue(new Callback<JsonObject>() {
+
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull final retrofit2.Response<JsonObject> response) {
+                Utils.dismissDialog();
+                if (response.body() != null) {
+
+                    if (response.body().get("Success").getAsString().equalsIgnoreCase("False")) {
+
+//                        Utils.ping(DashboardActivity.this, "You are not Active");
+                        DialogUtils.createConfirmDialog(DashboardActivity.this, "You are not Active", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                System.exit(0);
+                            }
+
+                        }).show();
+                        return;
+                    }
+
+                    if (response.body().get("Success").getAsString().equalsIgnoreCase("True")) {
+                        Utils.ping(DashboardActivity.this, "You are active");
+
+                    }
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                // Log error here since request failed
+                Utils.dismissDialog();
+                Log.e("permissionnnnn", t.toString());
+            }
+        });
     }
 
     private void Initialize() {
@@ -152,7 +208,6 @@ public class DashboardActivity extends FragmentActivity {
 //        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
         mDrawerList.setOnChildClickListener(new SlideMenuClickListener());
         mDrawerList.setOnGroupClickListener(new SlideMenuClickListener());
-
 
     }
 

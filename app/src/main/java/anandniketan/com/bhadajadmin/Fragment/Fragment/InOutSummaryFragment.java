@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -52,7 +53,7 @@ public class InOutSummaryFragment extends Fragment {
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<EmployeeInOutSummaryModel.FinalArray>> listDataChild;
     private String viewstatus;
-
+    private int lastExpandedPosition = -1;
     private TextView tvHeader;
     private Button btnBack, btnMenu;
 
@@ -166,6 +167,19 @@ public class InOutSummaryFragment extends Fragment {
 
             }
         });
+
+        fragmentInOutSummaryBinding.inoutlistList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    fragmentInOutSummaryBinding.inoutlistList.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
 
         fragmentInOutSummaryBinding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override

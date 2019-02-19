@@ -12,6 +12,7 @@ import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Account.TallyTranscationModel;
 import anandniketan.com.bhadajadmin.Model.HR.DailyAccountModel;
+import anandniketan.com.bhadajadmin.Model.HR.DailyHouseKeepingModel;
 import anandniketan.com.bhadajadmin.Model.HR.DailyHrAdminModel;
 import anandniketan.com.bhadajadmin.Model.HR.DailyInfoTechnology;
 import anandniketan.com.bhadajadmin.Model.HR.DailyTransportationModel;
@@ -47,6 +48,7 @@ import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
 import anandniketan.com.bhadajadmin.Model.MIS.TransportMainModel;
 import anandniketan.com.bhadajadmin.Model.MISModel;
 import anandniketan.com.bhadajadmin.Model.MIStudentWiseCalendarModel;
+import anandniketan.com.bhadajadmin.Model.Notification.NotificationModel;
 import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Staff.HomeWorkModel;
@@ -70,6 +72,7 @@ import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.Multipart;
 import retrofit2.http.Part;
 import retrofit2.http.Url;
@@ -598,7 +601,7 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/DailyHousekeeping")
-    void getDailyHousekeeping(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+    void getDailyHousekeeping(@FieldMap Map<String, String> map, Callback<DailyHouseKeepingModel> callback);
 
     @FormUrlEncoded
     @POST("/EmployeeInOutSummary")
@@ -950,5 +953,13 @@ public interface WebServices {
 
     @retrofit2.http.GET
     Call<GalleryDataModel> insertGalleryData(@Url String url);
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("CheckStaffActive")
+    Call<JsonObject> getUserStatus(@Field("UserID") String userid);
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("AdminMessage")
+    Call<NotificationModel> getNotification(@Field("StaffID") String StaffID);
 
 }

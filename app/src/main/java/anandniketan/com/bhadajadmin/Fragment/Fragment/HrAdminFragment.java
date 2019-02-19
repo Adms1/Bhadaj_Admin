@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -55,7 +56,7 @@ public class HrAdminFragment extends Fragment implements DatePickerDialog.OnDate
     private static String dateFinal = "";
     private Calendar calendar;
     private String viewstatus;
-
+    private int lastExpandedPosition = -1;
 
     private TextView tvHeader;
     private Button btnBack, btnMenu;
@@ -146,6 +147,19 @@ public class HrAdminFragment extends Fragment implements DatePickerDialog.OnDate
                 datePickerDialog.setAccentColor(Color.parseColor("#1B88C8"));
                 datePickerDialog.setTitle("Select Date");
                 datePickerDialog.show(getActivity().getFragmentManager(),"DatePickerDialog");
+            }
+        });
+
+
+        fragmentHrAdminBinding.adminList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    fragmentHrAdminBinding.adminList.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
             }
         });
 

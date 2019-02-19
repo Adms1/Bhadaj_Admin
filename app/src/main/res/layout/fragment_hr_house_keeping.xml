@@ -116,7 +116,7 @@
             android:layout_below="@+id/housekeeping_LL_dropdownContainer"
             android:layout_marginTop="@dimen/_5sdp">
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/housekeeping_txtNoRecords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,14 +129,14 @@
                 android:visibility="gone" />
 
             <LinearLayout
-                android:id="@+id/housekeeping_recyler_header"
+                android:id="@+id/housekeeping_exp_header"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:padding="@dimen/_5sdp"
+                android:orientation="vertical"
                 android:visibility="gone">
 
-                <include layout="@layout/house_keeping_header" />
+                <include layout="@layout/layout_hr_transport_detail_header" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,10 +144,15 @@
                     android:background="@drawable/linear_border2"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/housekeeping_employee_list"
+                    <ExpandableListView
+                        android:id="@+id/housekeeping_admin_list"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:childDivider="@android:color/transparent"
+                        android:divider="@android:color/white"
+                        android:groupIndicator="@null"
+                        android:scrollbars="none" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -156,12 +161,11 @@
                 android:id="@+id/housekeeping_txt_empty_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/no_records_found"
                 android:textColor="@color/red"
                 android:textSize="17sp"
+                android:layout_centerInParent="true"
+                android:text="@string/no_records_found"
                 android:visibility="gone" />
-
 
         </RelativeLayout>
     </RelativeLayout>
