@@ -137,7 +137,7 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
                 String getid = spinnerStandardMap.get(fragmentTallyTranscationBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalClassIdStr);
             }
 
@@ -154,7 +154,7 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
                 String getid = spinnerOrderMap.get(fragmentTallyTranscationBinding.statusSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStatusIdStr = getid.toString();
+                FinalStatusIdStr = getid;
                 Log.d("FinalStatusIdStr", FinalStatusIdStr);
             }
 
@@ -193,7 +193,6 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
             }
         });
 
-
         fragmentTallyTranscationBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -201,8 +200,6 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
             }
         });
     }
-
-
 
     private void callTallyTranscationListApi() {
 
@@ -370,7 +367,7 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
 
     public void fillGradeSpinner() {
         ArrayList<String> firstValue = new ArrayList<>();
-        firstValue.add("--Select--");
+        firstValue.add("All");
 //
         ArrayList<String> standardname = new ArrayList<>();
         for (int z = 0; z < firstValue.size(); z++) {

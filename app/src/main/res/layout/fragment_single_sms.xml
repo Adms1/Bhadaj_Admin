@@ -72,6 +72,9 @@
                             android:layout_weight="1.5"
                             android:background="@drawable/linear_border"
                             android:hint="@string/mobileno"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLines="1"
                             android:paddingLeft="@dimen/_5sdp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_11sdp" />

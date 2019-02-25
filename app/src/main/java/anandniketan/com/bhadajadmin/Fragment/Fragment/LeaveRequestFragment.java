@@ -47,13 +47,17 @@ import anandniketan.com.bhadajadmin.Model.HR.LeaveDayModel;
 import anandniketan.com.bhadajadmin.Model.HR.LeaveRequestModel;
 import anandniketan.com.bhadajadmin.Model.HR.LeaveStatusModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
+import anandniketan.com.bhadajadmin.Utility.WebServices;
 import anandniketan.com.bhadajadmin.databinding.DialogModifyLeaveBinding;
 import anandniketan.com.bhadajadmin.databinding.FragmentLeaveRequestBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 public class LeaveRequestFragment extends Fragment implements OnAdapterItemButtonClick, DatePickerDialog.OnDateSetListener {
@@ -83,10 +87,11 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private Dialog dialog;
     private int leaveStatus = 0;
     private boolean isRecordInUpdate = false;
-    private String updateDateFromDialog = "";
+    private String updateDateFromDialog = "", type;
     private int lastExpandedPosition = -1;
     private TextView tvHeader;
     private Button btnBack, btnMenu;
+
 
     public LeaveRequestFragment() {
 
@@ -118,6 +123,9 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Bundle bundle = this.getArguments();
+        type = bundle.getString("type");
 
 //        view1 = view.findViewById(R.id.header);
         tvHeader = view.findViewById(R.id.textView3);
@@ -299,25 +307,38 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getAllStaffLeaveRequest(getDetail(), new retrofit.Callback<LeaveRequestModel>() {
+        WebServices apiService = ApiClient.getClient().create(WebServices.class);
+
+        Call<LeaveRequestModel> call = null;
+
+        if (type.equalsIgnoreCase("student")) {
+            call = apiService.getAllStudentLeaveRequest(getDetail());
+        } else if (type.equalsIgnoreCase("staff")) {
+            call = apiService.getAllStaffLeaveRequest(getDetail());
+        }
+
+        call.enqueue(new Callback<LeaveRequestModel>() {
+
+//        ApiHandler.getApiService().getAllStaffLeaveRequest(getDetail(), new retrofit.Callback<LeaveRequestModel>() {
+
             @Override
-            public void success(LeaveRequestModel announcementModel, Response response) {
+            public void onResponse(Call<LeaveRequestModel> call, retrofit2.Response<LeaveRequestModel> response) {
                 Utils.dismissDialog();
-                if (announcementModel == null) {
+                if (response.body() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentLeaveRequestBinding.explinear.setVisibility(View.GONE);
                     fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.GONE);
                     return;
                 }
-                if (announcementModel.getSuccess() == null) {
+                if (response.body().getSuccess() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentLeaveRequestBinding.explinear.setVisibility(View.GONE);
                     fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.GONE);
                     return;
                 }
-                if (announcementModel.getSuccess().equalsIgnoreCase("false")) {
+                if (response.body().getSuccess().equalsIgnoreCase("false")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
 
                     fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -325,8 +346,8 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                     fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.GONE);
                     return;
                 }
-                if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
-                    finalArrayAnnouncementFinal = announcementModel.getFinalArray();
+                if (response.body().getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayAnnouncementFinal = response.body().getFinalArray();
                     if (finalArrayAnnouncementFinal != null) {
                         fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentLeaveRequestBinding.explinear.setVisibility(View.VISIBLE);
@@ -343,11 +364,11 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(Call<LeaveRequestModel> call, Throwable t) {
                 Utils.dismissDialog();
-                error.printStackTrace();
-                error.getMessage();
-                fragmentLeaveRequestBinding.txtNoRecords.setText(error.getMessage());
+                t.printStackTrace();
+                t.getMessage();
+                fragmentLeaveRequestBinding.txtNoRecords.setText(t.getMessage());
                 fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
                 fragmentLeaveRequestBinding.explinear.setVisibility(View.GONE);
                 fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.GONE);

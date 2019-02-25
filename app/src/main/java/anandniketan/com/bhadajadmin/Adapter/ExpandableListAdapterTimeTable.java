@@ -1,40 +1,58 @@
 package anandniketan.com.bhadajadmin.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import anandniketan.com.bhadajadmin.Interface.EditTimetableWithId;
+import anandniketan.com.bhadajadmin.Interface.editTimetableData;
+import anandniketan.com.bhadajadmin.Interface.onDeleteWithId;
 import anandniketan.com.bhadajadmin.Model.Staff.Datum;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.ListGroupTimetableBinding;
 
-
 /**
  * Created by admsandroid on 11/27/2017.
  */
+
+//1. change layout and set data according to it.
+// Antra 21/02/2019
 
 public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
 
     private Context _context;
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<Datum>> _listDataChild;
-
+    private Dialog dialog;
+    private onDeleteWithId onDeleteWithId;
+    private EditTimetableWithId editTimetableWithId;
+    private editTimetableData onEditRecordWithPosition;
 
     public ExpandableListAdapterTimeTable(Context context, List<String> listDataHeader,
-                                          HashMap<String, ArrayList<Datum>> listDataChild) {
+                                          HashMap<String, ArrayList<Datum>> listDataChild,
+                                          EditTimetableWithId editTimetableWithId,
+                                          editTimetableData onEditRecordWithPosition,
+                                          onDeleteWithId onDeleteWithId) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listDataChild;
+        this.editTimetableWithId = editTimetableWithId;
+        this.onEditRecordWithPosition = onEditRecordWithPosition;
+        this.onDeleteWithId = onDeleteWithId;
     }
-
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
@@ -42,45 +60,73 @@ public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
+    public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-//        ListItemTimeTableBinding itembinding;
 
+        final List<Datum> childData = getChild(groupPosition, childPosition);
 
-        LayoutInflater infalInflater = (LayoutInflater) this._context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (childPosition > 0) {
-            Datum detail = getChild(groupPosition, childPosition-1);
+        if (convertView == null) {
+            LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_time_table, null);
-            TextView txtLecture, txtSubject, txtclass;
-
-            txtLecture = convertView.findViewById(R.id.txtLecture);
-            txtSubject = convertView.findViewById(R.id.txtSubject);
-            txtclass = convertView.findViewById(R.id.txtClass);
-
-            txtLecture.setText(String.valueOf(detail.getLecture()));
-
-            if (!detail.getSubject().equalsIgnoreCase("")) {
-                txtSubject.setText(detail.getSubject());
-            } else {
-                txtSubject.setText("-");
-            }
-            if (!detail.getTeacherName().equalsIgnoreCase("")) {
-                txtclass.setText(detail.getTeacherName());
-            } else {
-                txtclass.setText("-");
-            }
-
-        } else {
-            convertView = infalInflater.inflate(R.layout.time_table_header, null);
         }
+
+//        LayoutInflater infalInflater = (LayoutInflater) this._context
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        Datum detail = getChild(groupPosition, childPosition);
+//        convertView = infalInflater.inflate(R.layout.list_item_time_table, null);
+        TextView txtLecture, txtSubject, txtTeacher;
+        ImageView ivEdit, ivDelete, ivAdd;
+
+        txtLecture = convertView.findViewById(R.id.timetable_txtLecture);
+        txtSubject = convertView.findViewById(R.id.timetable_tvSubject);
+        txtTeacher = convertView.findViewById(R.id.timetable_tvTeacher);
+        ivEdit = convertView.findViewById(R.id.timetable_ivEdit);
+        ivDelete = convertView.findViewById(R.id.timetable_ivDelete);
+        ivAdd = convertView.findViewById(R.id.timetable_ivAdd);
+
+        txtLecture.setText(childData.get(childPosition).getLecture().toString());
+        txtSubject.setText(childData.get(childPosition).getSubject());
+        txtTeacher.setText(childData.get(childPosition).getTeacherName());
+        Picasso.get().load("http://192.168.1.22:8086/SKOOL360-Design-Icons/Admin/Delete.png").resize(100, 100).into(ivDelete);
+
+        if (childData.get(childPosition).getSubject().equalsIgnoreCase("") && childData.get(childPosition).getTeacherName().equalsIgnoreCase("")) {
+            ivEdit.setVisibility(View.GONE);
+            ivDelete.setVisibility(View.GONE);
+        } else {
+            ivEdit.setVisibility(View.VISIBLE);
+            ivDelete.setVisibility(View.VISIBLE);
+        }
+
+        ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDeleteWithId.deleteRecordWithId(childData.get(childPosition).getTimetableID());
+            }
+        });
+
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEditRecordWithPosition.editTimetable(groupPosition, childPosition, childData.get(childPosition).getSubject(), childData.get(childPosition).getTeacherName());
+            }
+        });
+
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                editTimetableWithId.editTimetablewithID(groupPosition, childPosition);
+
+            }
+        });
+
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .size()+1;
+                .size();
     }
 
     @Override
@@ -89,9 +135,8 @@ public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Datum getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+    public List<Datum> getChild(int groupPosition, int childPosititon) {
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition));
     }
 
     @Override
@@ -108,6 +153,7 @@ public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         ListGroupTimetableBinding groupbinding;
+
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
 
@@ -116,12 +162,20 @@ public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
                 R.layout.list_group_timetable, parent, false);
         convertView = groupbinding.getRoot();
 
+        LinearLayout ll = convertView.findViewById(R.id.timetable_child_header);
 
         groupbinding.lblListHeader.setText(headerTitle);
 
+
         if (isExpanded) {
+
+            ll.setVisibility(View.VISIBLE);
+
             groupbinding.lblListHeader.setTextColor(_context.getResources().getColor(R.color.present));
         } else {
+
+            ll.setVisibility(View.GONE);
+
             groupbinding.lblListHeader.setTextColor(_context.getResources().getColor(R.color.orange));
         }
 
@@ -137,6 +191,7 @@ public class ExpandableListAdapterTimeTable extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
 }
 
 

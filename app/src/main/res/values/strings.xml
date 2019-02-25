@@ -321,7 +321,7 @@
     <string name="totalrecfees">Total Rev.Fee</string>
     <string name="pendingfees">Pending Fees</string>
     <string name="timetable">TIME TABLE</string>
-    <string name="lecture">Lecuture</string>
+    <string name="lecture">Lecture</string>
     <string name="subject">Subject</string>
     <string name="summary">SUMMARY</string>
     <string name="ptm">PTM</string>
@@ -557,5 +557,9 @@
     <string name="paid">Paid</string>
     <string name="remaining">Remaining</string>
     <string name="notifications">Notifications</string>
+    <string name="voucher_no">Voucher No.</string>
+    <string name="view_marks">View Marks</string>
+    <string name="details">Details</string>
+    <string name="day">Day</string>
 
 </resources>

@@ -113,7 +113,7 @@ public class StudentLedgerFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentStudentLedgerBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callPaymentLedgerApi();
                 callAllPaymentLedgerApi();
@@ -147,7 +147,7 @@ public class StudentLedgerFragment extends Fragment {
         fragmentStudentLedgerBinding.searchTypeRadiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                RadioButton rb = (RadioButton) group.findViewById(checkedId);
+                RadioButton rb = group.findViewById(checkedId);
                 fragmentStudentLedgerBinding.studentnameTxt.setText("");
                 if (null != rb && checkedId > -1) {
                     switch (checkedId) {
@@ -169,19 +169,19 @@ public class StudentLedgerFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Selection = fragmentStudentLedgerBinding.studentnameTxt.getText().toString();
 
-                for (int i = 0; i < finalArrayStudentNameModelList.size(); i++) {
-                    if (searchtypeStr.equalsIgnoreCase("Current Student")) {
-                        if (finalArrayStudentNameModelList.get(i).getName().equalsIgnoreCase(Selection)) {
-                            FinalStudentIdStr = String.valueOf(finalArrayStudentNameModelList.get(i).getStudentID());
-                            Log.d("FinalStudentIdStr", "" + FinalStudentIdStr);
-                        }
-                    } else {
-                        if (finalArrayStudentNameModelList.get(i).getgRNO().equalsIgnoreCase(Selection)) {
-                            FinalStudentIdStr = String.valueOf(finalArrayStudentNameModelList.get(i).getStudentID());
-                            Log.d("FinalGRNOIdStr", "" + FinalStudentIdStr);
-                        }
-                    }
-                }
+//                for (int i = 0; i < finalArrayStudentNameModelList.size(); i++) {
+//                    if (searchtypeStr.equalsIgnoreCase("Current Student")) {
+//                        if (finalArrayStudentNameModelList.get(i).getName().equalsIgnoreCase(Selection)) {
+//                            FinalStudentIdStr = String.valueOf(finalArrayStudentNameModelList.get(i).getStudentID());
+//                            Log.d("FinalStudentIdStr", "" + FinalStudentIdStr);
+//                        }
+//                    } else {
+//                        if (finalArrayStudentNameModelList.get(i).getgRNO().equalsIgnoreCase(Selection)) {
+//                            FinalStudentIdStr = String.valueOf(finalArrayStudentNameModelList.get(i).getStudentID());
+//                            Log.d("FinalGRNOIdStr", "" + FinalStudentIdStr);
+//                        }
+//                    }
+//                }
                 callPaymentLedgerApi();
                 callAllPaymentLedgerApi();
             }
@@ -426,14 +426,14 @@ public class StudentLedgerFragment extends Fragment {
     public void fillStudentName() {
         ArrayList<Integer> StudentId = new ArrayList<Integer>();
         for (int i = 0; i < finalArrayStudentNameModelList.size(); i++) {
-            StudentId.add(Integer.valueOf(finalArrayStudentNameModelList.get(i).getStudentID()));
+//            StudentId.add(Integer.valueOf(finalArrayStudentNameModelList.get(i).getStudentID()));
         }
         ArrayList<String> Student = new ArrayList<String>();
         ArrayList<String> Grno = new ArrayList<String>();
-        for (int j = 0; j < finalArrayStudentNameModelList.size(); j++) {
-            Student.add(finalArrayStudentNameModelList.get(j).getName());
-            Grno.add(finalArrayStudentNameModelList.get(j).getgRNO());
-        }
+//        for (int j = 0; j < finalArrayStudentNameModelList.size(); j++) {
+//            Student.add(finalArrayStudentNameModelList.get(j).getName());
+//            Grno.add(finalArrayStudentNameModelList.get(j).getgRNO());
+//        }
 
         if (searchtypeStr.equalsIgnoreCase("Current Student")) {
             fragmentStudentLedgerBinding.testTxt.setText(R.string.searchstudent);

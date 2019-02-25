@@ -2,7 +2,6 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.DialogUtils;
@@ -50,6 +47,7 @@ public class DatewiseFeesChildItemAdapter extends RecyclerView.Adapter<DatewiseF
         holder.view_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 DialogUtils.showWebviewDialog(context,AppConfiguration.LIVE_BASE_URL+result.getURL());
             }
         });
@@ -66,11 +64,11 @@ public class DatewiseFeesChildItemAdapter extends RecyclerView.Adapter<DatewiseF
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                paymentmode_txt = (TextView) itemView.findViewById(R.id.paymentmode_txt);
-                date_txt = (TextView) itemView.findViewById(R.id.date_txt);
-                term_txt = (TextView) itemView.findViewById(R.id.term_txt);
-                amount_txt = (TextView) itemView.findViewById(R.id.amount_txt);
-                view_txt = (TextView) itemView.findViewById(R.id.view_txt);
+                paymentmode_txt = itemView.findViewById(R.id.paymentmode_txt);
+                date_txt = itemView.findViewById(R.id.date_txt);
+                term_txt = itemView.findViewById(R.id.term_txt);
+                amount_txt = itemView.findViewById(R.id.amount_txt);
+                view_txt = itemView.findViewById(R.id.view_txt);
 
 
             }

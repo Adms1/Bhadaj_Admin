@@ -111,7 +111,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:text="@string/grade"
+                            android:text="@string/status"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
 
@@ -226,7 +226,7 @@
                     android:orientation="horizontal"
                     android:visibility="gone">
 
-                    <include layout="@layout/student_discount_header" />
+                    <include layout="@layout/online_transaction_header" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -237,14 +237,18 @@
                     android:layout_marginRight="@dimen/_5sdp"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.RecyclerView
+                    <ExpandableListView
                         android:id="@+id/lvExpstudentfeescollection"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/header"
-                        android:divider="@android:color/white" />
+                        android:childDivider="@android:color/transparent"
+                        android:divider="@android:color/white"
+                        android:dividerHeight="5dp"
+                        android:groupIndicator="@null"
+                        android:scrollbars="none" />
 
                 </LinearLayout>
 

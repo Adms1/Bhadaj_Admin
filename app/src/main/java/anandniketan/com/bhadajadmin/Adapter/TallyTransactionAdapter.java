@@ -48,6 +48,7 @@ public class TallyTransactionAdapter extends RecyclerView.Adapter<TallyTransacti
         holder.studentname_txt.setText(finalArrayBulkSMSModelList.get(position).getStudentName());
         holder.grno_txt.setText(finalArrayBulkSMSModelList.get(position).getGRNO());
         holder.amount_txt.setText("₹" + String.valueOf(finalArrayBulkSMSModelList.get(position).getAmount()));
+        holder.grade_txt.setText(String.valueOf(finalArrayBulkSMSModelList.get(position).getStandard()));
 
         if (data.getStatus().equalsIgnoreCase("Pending Receipt")) {
             holder.iv_status.setColorFilter(ContextCompat.getColor(context, R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -79,7 +80,7 @@ public class TallyTransactionAdapter extends RecyclerView.Adapter<TallyTransacti
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView vno_txt, studentname_txt, grno_txt, amount_txt;
+        TextView vno_txt, studentname_txt, grno_txt, amount_txt, grade_txt;
         ImageView iv_status;
 
         public MyViewHolder(View itemView) {
@@ -89,6 +90,7 @@ public class TallyTransactionAdapter extends RecyclerView.Adapter<TallyTransacti
             grno_txt = itemView.findViewById(R.id.grno_txt);
             amount_txt = itemView.findViewById(R.id.amount_txt);
             iv_status = itemView.findViewById(R.id.iv_status);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
 
         }
     }

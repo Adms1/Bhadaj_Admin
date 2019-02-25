@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -119,6 +120,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private Date dateCompareOne;
     private String compareStringOne = "4:00";
     private TextView tvTerm1Due, tvTerm2Due;
+    private ImageView topperBarChart;
 
     public MISFragment() {
         // Required empty public constructor
@@ -149,6 +151,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         viewPager = rootView.findViewById(R.id.schoolcalendar_viewPager);
         progressBar = rootView.findViewById(R.id.progress_schoolcalendar);
         llCalendar = rootView.findViewById(R.id.LL_schoolcalendar);
+        topperBarChart = rootView.findViewById(R.id.mis_topper_bar_chart);
 
         mContext = getActivity().getApplicationContext();
 
@@ -235,6 +238,26 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         fragmentMisBinding.progressTaskReport.setVisibility(View.VISIBLE);
         fragmentMisBinding.progressResultOfSchool.setVisibility(View.VISIBLE);
         fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
+
+        topperBarChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new ChartFragment();
+//                bundle = new Bundle();
+//                bundle.putString("title", "All Student");
+//                bundle.putString("requestType", "Total");
+//                bundle.putString("TermID", FinalTermIdStr);
+//                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+//                bundle.putString("Gender", "");
+//
+//                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 67;
+            }
+        });
 
         student_transport_detail.setOnClickListener(this);
 
@@ -480,7 +503,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 String getid = spinnerTermMap.get(fragmentMisBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 AppConfiguration.TermId = FinalTermIdStr;
 
                 Log.d("FinalTermIdStr", FinalTermIdStr);
@@ -533,7 +556,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 String getid = spinnerTermMap2.get(fragmentMisBinding.spinnerFinance.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalFinanaceTermId = getid.toString();
+                FinalFinanaceTermId = getid;
                 AppConfiguration.financeTermId = FinalFinanaceTermId;
 
                 Log.d("FinalFinanaceTermId", FinalFinanaceTermId);
@@ -576,7 +599,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 String getid = spinnerTermMap4.get(spCalendar.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalCalendarTermID = getid.toString();
+                FinalCalendarTermID = getid;
                 AppConfiguration.calendarTermId = FinalCalendarTermID;
 
                 Log.d("FinalFinanaceTermId", FinalCalendarTermID);
@@ -619,7 +642,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 String getid = spinnerTermMap3.get(fragmentMisBinding.spinnerNa.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalNATermID = getid.toString();
+                FinalNATermID = getid;
                 AppConfiguration.NA_TERM_ID = FinalNATermID;
 
                 Log.d("FinalNATermID", FinalNATermID);
@@ -1220,75 +1243,75 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     }
 
 
-    private void callStafftMISDataApi(String requestType) {
-
-        if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
-            return;
-        }
-
-        // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
-            @Override
-            public void success(MISModel staffSMSDataModel, Response response) {
-                //  Utils.dismissDialog();
-                fragmentMisBinding.progressStaff.setVisibility(View.GONE);
-
-                if (staffSMSDataModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
-                    try {
-
-                        staff_total_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotal()));
-                        staff_present_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalPresent()));
-                        absent_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalAbsent()));
-                        staffleave_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalLeave()));
-                        abstaff_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalAbsent()));
-                        antstaff_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalStudentANT()));
-                        staff_workplan_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getDailyEntryDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getDailyEntryTotal()));
-                        staff_cw_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getCWDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getCWTotal()));
-                        staff_hw_submitted_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getHWDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getHWTotal()));
-
-                        fragmentMisBinding.progressStaff.setVisibility(View.GONE);
-                        fragmentMisBinding.LLStaffcontainer.setVisibility(View.VISIBLE);
-
-
-                        try {
-                            if (isAdded()) {
-//                              callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString());
-                            }
-                        } catch (Exception ex) {
-
-                        }
-
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                //Utils.dismissDialog();
-                fragmentMisBinding.progressStaff.setVisibility(View.GONE);
-
-                error.printStackTrace();
-                error.getMessage();
-                Utils.ping(mContext, error.getMessage());
-            }
-        });
-    }
+//    private void callStafftMISDataApi(String requestType) {
+//
+//        if (!Utils.checkNetwork(mContext)) {
+//            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+//            return;
+//        }
+//
+//        // Utils.showDialog(getActivity());
+//        ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
+//            @Override
+//            public void success(MISModel staffSMSDataModel, Response response) {
+//                //  Utils.dismissDialog();
+//                fragmentMisBinding.progressStaff.setVisibility(View.GONE);
+//
+//                if (staffSMSDataModel == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess() == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
+//                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
+//                    try {
+//
+//                        staff_total_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotal()));
+//                        staff_present_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalPresent()));
+//                        absent_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalAbsent()));
+//                        staffleave_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalLeave()));
+//                        abstaff_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalAbsent()));
+//                        antstaff_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getTotalStudentANT()));
+//                        staff_workplan_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getDailyEntryDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getDailyEntryTotal()));
+//                        staff_cw_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getCWDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getCWTotal()));
+//                        staff_hw_submitted_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getHWDone() + "/" + staffSMSDataModel.getFinalArray().get(0).getHWTotal()));
+//
+//                        fragmentMisBinding.progressStaff.setVisibility(View.GONE);
+//                        fragmentMisBinding.LLStaffcontainer.setVisibility(View.VISIBLE);
+//
+//
+//                        try {
+//                            if (isAdded()) {
+////                              callNewStafftMISDataApi(fragmentMisBinding.staffDateBtn.getText().toString());
+//                            }
+//                        } catch (Exception ex) {
+//
+//                        }
+//
+//
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                //Utils.dismissDialog();
+//                fragmentMisBinding.progressStaff.setVisibility(View.GONE);
+//
+//                error.printStackTrace();
+//                error.getMessage();
+//                Utils.ping(mContext, error.getMessage());
+//            }
+//        });
+//    }
 
 
     private void callNewStafftMISDataApi(String date, final String termid) {
@@ -1682,75 +1705,74 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
     }
 
-    private void callAccounttMISDataApi(String requestType) {
-
-        if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
-            return;
-        }
-
-        // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
-
-            @Override
-            public void success(MISModel staffSMSDataModel, Response response) {
-                // Utils.dismissDialog();
-                fragmentMisBinding.progressAccount.setVisibility(View.GONE);
-
-                if (staffSMSDataModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
-
-                    try {
-                        actotaltobecall_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTotalToBeCollected()));
-                        acterm1fess_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm1Fees()));
-                        acterm2fess_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm2Fees()));
-                        acterm1_collection.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm1FeesCollection()));
-                        acterm2_collection.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm2FeesCollection()));
-                        acos_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTotalOS()));
-                        accashcollection_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getCashCollection()));
-                        acchhqdd_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getChequeDD()));
-                        aconine_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getOnline()));
-
-
-                        fragmentMisBinding.progressAccount.setVisibility(View.GONE);
-                        fragmentMisBinding.LLAccount.setVisibility(View.VISIBLE);
-                        try {
-                            if (isAdded()) {
-                                fillNATermSpinner();
-                            }
-                        } catch (Exception ex) {
-
-                        }
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                // Utils.dismissDialog();
-                fragmentMisBinding.progressAccount.setVisibility(View.GONE);
-                error.printStackTrace();
-                error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
-            }
-        });
-
-    }
-
+//    private void callAccounttMISDataApi(String requestType) {
+//
+//        if (!Utils.checkNetwork(mContext)) {
+//            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+//            return;
+//        }
+//
+//        // Utils.showDialog(getActivity());
+//        ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
+//
+//            @Override
+//            public void success(MISModel staffSMSDataModel, Response response) {
+//                // Utils.dismissDialog();
+//                fragmentMisBinding.progressAccount.setVisibility(View.GONE);
+//
+//                if (staffSMSDataModel == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess() == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
+//                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
+//
+//                    try {
+//                        actotaltobecall_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTotalToBeCollected()));
+//                        acterm1fess_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm1Fees()));
+//                        acterm2fess_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm2Fees()));
+//                        acterm1_collection.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm1FeesCollection()));
+//                        acterm2_collection.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTerm2FeesCollection()));
+//                        acos_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getTotalOS()));
+//                        accashcollection_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getCashCollection()));
+//                        acchhqdd_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getChequeDD()));
+//                        aconine_txt.setText(String.valueOf("₹" + staffSMSDataModel.getFinalArray().get(0).getOnline()));
+//
+//
+//                        fragmentMisBinding.progressAccount.setVisibility(View.GONE);
+//                        fragmentMisBinding.LLAccount.setVisibility(View.VISIBLE);
+//                        try {
+//                            if (isAdded()) {
+//                                fillNATermSpinner();
+//                            }
+//                        } catch (Exception ex) {
+//
+//                        }
+//
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                // Utils.dismissDialog();
+//                fragmentMisBinding.progressAccount.setVisibility(View.GONE);
+//                error.printStackTrace();
+//                error.getMessage();
+//                Utils.ping(mContext, getString(R.string.something_wrong));
+//            }
+//        });
+//
+//    }
 
     private void callNAMISDataApi(String requestType) {
 
@@ -1829,69 +1851,68 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     }
 
 
-    private void callMessgeMISDataApi(String requestType) {
-
-        if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
-            return;
-        }
-
-        // Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
-            @Override
-            public void success(MISModel staffSMSDataModel, Response response) {
-                // Utils.dismissDialog();
-                fragmentMisBinding.progressMsg.setVisibility(View.GONE);
-
-                if (staffSMSDataModel == null) {
-                    if (isAdded()) {
-                        Utils.ping(mContext, getString(R.string.something_wrong));
-                    }
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess() == null) {
-                    if (isAdded()) {
-                        Utils.ping(mContext, getString(R.string.something_wrong));
-                    }
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
-                    if (isAdded()) {
-                        Utils.ping(mContext, getString(R.string.false_msg));
-                    }
-                    return;
-                }
-                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
-
-                    if (isAdded()) {
-                        fragmentMisBinding.progressMsg.setVisibility(View.GONE);
-                        fragmentMisBinding.LLMsgcontainer.setVisibility(View.VISIBLE);
-
-                        try {
-                            smsdelivered_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getSMSDelivered()));
-                            smspedning_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getSMSPending()));
-                            smssent_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getSMSSent()));
-                            isFirmtimeLoad = false;
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                // Utils.dismissDialog();
-                fragmentMisBinding.progressMsg.setVisibility(View.GONE);
-
-                error.printStackTrace();
-                error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
-            }
-        });
-
-    }
-
+//    private void callMessgeMISDataApi(String requestType) {
+//
+//        if (!Utils.checkNetwork(mContext)) {
+//            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+//            return;
+//        }
+//
+//        // Utils.showDialog(getActivity());
+//        ApiHandler.getApiService().getMISdata(getParams(requestType), new retrofit.Callback<MISModel>() {
+//            @Override
+//            public void success(MISModel staffSMSDataModel, Response response) {
+//                // Utils.dismissDialog();
+//                fragmentMisBinding.progressMsg.setVisibility(View.GONE);
+//
+//                if (staffSMSDataModel == null) {
+//                    if (isAdded()) {
+//                        Utils.ping(mContext, getString(R.string.something_wrong));
+//                    }
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess() == null) {
+//                    if (isAdded()) {
+//                        Utils.ping(mContext, getString(R.string.something_wrong));
+//                    }
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
+//                    if (isAdded()) {
+//                        Utils.ping(mContext, getString(R.string.false_msg));
+//                    }
+//                    return;
+//                }
+//                if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
+//
+//                    if (isAdded()) {
+//                        fragmentMisBinding.progressMsg.setVisibility(View.GONE);
+//                        fragmentMisBinding.LLMsgcontainer.setVisibility(View.VISIBLE);
+//
+//                        try {
+//                            smsdelivered_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getSMSDelivered()));
+//                            smspedning_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getSMSPending()));
+//                            smssent_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getSMSSent()));
+//                            isFirmtimeLoad = false;
+//                        } catch (Exception ex) {
+//                            ex.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                // Utils.dismissDialog();
+//                fragmentMisBinding.progressMsg.setVisibility(View.GONE);
+//
+//                error.printStackTrace();
+//                error.getMessage();
+//                Utils.ping(mContext, getString(R.string.something_wrong));
+//            }
+//        });
+//
+//    }
 
     private Map<String, String> getFinanceListParams(String termId) {
         Map<String, String> map = new HashMap<>();
@@ -1917,13 +1938,13 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     }
 
 
-    private Map<String, String> getParams(String params) {
-        Map<String, String> map = new HashMap<>();
-        map.put("Date", Utils.getTodaysDate());
-        map.put("TermID", FinalTermIdStr);
-        map.put("RequestType", params);
-        return map;
-    }
+//    private Map<String, String> getParams(String params) {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("Date", Utils.getTodaysDate());
+//        map.put("TermID", FinalTermIdStr);
+//        map.put("RequestType", params);
+//        return map;
+//    }
 
     private Map<String, String> getNAParams(String params) {
         Map<String, String> map = new HashMap<>();

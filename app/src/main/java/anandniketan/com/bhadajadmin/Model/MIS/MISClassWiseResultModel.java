@@ -31,8 +31,6 @@ public class MISClassWiseResultModel {
         this.finalArray = finalArray;
     }
 
-
-
     public class FinalArray {
 
         @SerializedName("Standard")
@@ -58,6 +56,9 @@ public class MISClassWiseResultModel {
         @Expose
         private String StudentID;
 
+        @SerializedName("Grade")
+        @Expose
+        private String grade;
 
         public String getStudentID() {
             return StudentID;
@@ -67,8 +68,13 @@ public class MISClassWiseResultModel {
             StudentID = studentID;
         }
 
+        public String getGrade() {
+            return grade;
+        }
 
-
+        public void setGrade(String grade) {
+            this.grade = grade;
+        }
 
         public String getStandard() {
             return standard;

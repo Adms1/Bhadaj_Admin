@@ -138,11 +138,12 @@ public class StaffLeaveFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     fragment = new LeaveRequestFragment();
-//                    Bundle bundle = new Bundle();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("type", "staff");
 //                    bundle.putString("requeststatus", requeststatus);
 //                    bundle.putString("requestupdatestatus", requestupdatestatus);
 //                    bundle.putString("requestdeletestatus", requestdeletestatus);
-//                    fragment.setArguments(bundle);
+                    fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     if (fragmentManager != null) {
                         fragmentManager.beginTransaction()

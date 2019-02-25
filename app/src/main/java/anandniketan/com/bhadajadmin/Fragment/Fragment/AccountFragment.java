@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,6 +34,8 @@ import anandniketan.com.bhadajadmin.Model.Account.AccountFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
 import anandniketan.com.bhadajadmin.Model.IconHeaderModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
+import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
+import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
@@ -63,9 +66,11 @@ public class AccountFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private Map<String, PermissionDataModel.Detaill> permissionMap;
     private ArrayList<IconHeaderModel> newArr;
-
+    HashMap<Integer, String> spinnerTermMap;
     private TextView tvHeader;
     private Button btnBack, btnMenu;
+    List<FinalArrayGetTermModel> finalArrayGetTermModels;
+    private String FinalTermIdStr;
 
     public AccountFragment() {
     }
@@ -97,9 +102,10 @@ public class AccountFragment extends Fragment {
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Account");
 
         initViews();
+        callTermApi();
+        callAccountFeesStatusApi();
         setListners();
         SelectTerm();
-        callAccountFeesStatusApi();
     }
 
     public void initViews() {
@@ -139,6 +145,24 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
+            }
+        });
+
+        fragmentAccountBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = fragmentAccountBinding.termSpinner.getSelectedItem().toString();
+                String getid = spinnerTermMap.get(fragmentAccountBinding.termSpinner.getSelectedItemPosition());
+
+                Log.d("value", name + " " + getid);
+                FinalTermIdStr = getid;
+                Log.d("FinalTermIdStr", FinalTermIdStr);
+                callAccountFeesStatusApi();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -202,22 +226,122 @@ public class AccountFragment extends Fragment {
                             case R.id.term1_radio_button:
                                 FinalTermtermdetailId = fragmentAccountBinding.term1RadioButton.getTag().toString();
                                 AppConfiguration.TermDetailName = fragmentAccountBinding.term1RadioButton.getText().toString();
-                                fillData2();
+//                                fillData2();
+
+                                AppConfiguration.TermId = "1";
+
+                                fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm1().get(0).getTotalAmount()));
+                                fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm1().get(0).getRecievedAmount()));
+                                fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm1().get(0).getDueAmount()));
 
                                 break;
+
                             case R.id.term2_radio_button:
                                 FinalTermtermdetailId = fragmentAccountBinding.term2RadioButton.getTag().toString();
                                 AppConfiguration.TermDetailName = fragmentAccountBinding.term2RadioButton.getText().toString();
-                                fillData2();
+//                                fillData2();
+
+                                AppConfiguration.TermId = "2";
+
+                                fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm2().get(0).getTotalAmount()));
+                                fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm2().get(0).getRecievedAmount()));
+                                fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm2().get(0).getDueAmount()));
+
                                 break;
                         }
                     }
-                    callAccountFeesStatusApi();
+//                    callAccountFeesStatusApi();
                 }
             }
         });
 
     }
+
+    private Map<String, String> getTermDetail() {
+        return new HashMap<>();
+    }
+
+    // CALL Term API HERE
+    private void callTermApi() {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getTerm(getTermDetail(), new retrofit.Callback<TermModel>() {
+            @Override
+            public void success(TermModel termModel, Response response) {
+                Utils.dismissDialog();
+                if (termModel == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (termModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (termModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    return;
+                }
+                if (termModel.getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayGetTermModels = termModel.getFinalArray();
+                    if (finalArrayGetTermModels != null) {
+                        fillTermSpinner();
+
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+
+    }
+
+    public void fillTermSpinner() {
+        ArrayList<Integer> TermId = new ArrayList<>();
+        for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
+            TermId.add(finalArrayGetTermModels.get(i).getTermId());
+        }
+        ArrayList<String> Term = new ArrayList<>();
+        for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
+            Term.add(finalArrayGetTermModels.get(j).getTerm());
+        }
+
+        String[] spinnertermIdArray = new String[TermId.size()];
+
+        spinnerTermMap = new HashMap<>();
+        for (int i = 0; i < TermId.size(); i++) {
+            spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
+            spinnertermIdArray[i] = Term.get(i).trim();
+        }
+
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentSearchStudentBinding.termSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
+
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        fragmentAccountBinding.termSpinner.setAdapter(adapterTerm);
+        fragmentAccountBinding.termSpinner.setSelection(1);
+
+    }
+
 
     // CALL AccountFeesStatus API HERE
     private void callAccountFeesStatusApi() {
@@ -233,7 +357,6 @@ public class AccountFragment extends Fragment {
 
             @Override
             public void success(AccountFeesModel accountFeesStatusModel, Response response) {
-                Utils.dismissDialog();
                 if (accountFeesStatusModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     Utils.dismissDialog();
@@ -250,14 +373,18 @@ public class AccountFragment extends Fragment {
                     return;
                 }
                 if (accountFeesStatusModel.getSuccess().equalsIgnoreCase("True")) {
-                    Utils.dismissDialog();
+
 //                    for (int i = 0; i < accountFeesStatusModel.getFinalArray().size(); i++) {
 //                        collectionModelList = accountFeesStatusModel.getFinalArray().get(i).getCollection();
 //                    }
                     feesModelList = accountFeesStatusModel;
+
+                    Log.e("Accounttt", feesModelList.toString());
+
                     if (feesModelList != null) {
                         fillData2();
                     }
+                    Utils.dismissDialog();
                 }
             }
 
@@ -274,22 +401,22 @@ public class AccountFragment extends Fragment {
 
     private Map<String, String> getAccountDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("TermID", "3");
+        map.put("TermID", FinalTermIdStr);
         // map.put("TermDetailID", FinalTermtermdetailId);
         return map;
     }
 
     public void fillData2() {
         String amount1 = "", amount2 = "", amount3 = "";
-        Double longval1 = null, longval2 = null, longval3 = null;
-        Format formatter = new DecimalFormat("##,##,###");
-        String formattedString1, formattedString2, formattedString3;
+//        Double longval1 = null, longval2 = null, longval3 = null;
+//        Format formatter = new DecimalFormat("##,##,###");
+//        String formattedString1, formattedString2, formattedString3;
 
-        if (fragmentAccountBinding.term1RadioButton.isChecked()) {
+//        if (fragmentAccountBinding.term1RadioButton.isChecked()) {
             AppConfiguration.TermId = "1";
-            amount1 = String.valueOf(feesModelList.getTerm1().get(0).getTotalAmount());
-            amount2 = String.valueOf(feesModelList.getTerm1().get(0).getRecievedAmount());
-            amount3 = String.valueOf(feesModelList.getTerm1().get(0).getDueAmount());
+//            amount1 = String.valueOf(feesModelList.getTerm1().get(0).getTotalAmount());
+//            amount2 = String.valueOf(feesModelList.getTerm1().get(0).getRecievedAmount());
+//            amount3 = String.valueOf(feesModelList.getTerm1().get(0).getDueAmount());
 
 //            longval1 = Double.parseDouble(amount1);
 //            longval2 = Double.parseDouble(amount2);
@@ -297,29 +424,29 @@ public class AccountFragment extends Fragment {
 //            formattedString1 = formatter.format(longval1);
 //            formattedString2 = formatter.format(longval2);
 //            formattedString3 = formatter.format(longval3);
-            fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(amount1));
-            fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(amount2));
-            fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(amount3));
+        fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm1().get(0).getTotalAmount()));
+        fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm1().get(0).getRecievedAmount()));
+        fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(feesModelList.getTerm1().get(0).getDueAmount()));
 
-        }
+//        }
 
-        if (fragmentAccountBinding.term2RadioButton.isChecked()) {
-            AppConfiguration.TermId = "2";
-            amount1 = String.valueOf(feesModelList.getTerm2().get(0).getTotalAmount());
-            amount2 = String.valueOf(feesModelList.getTerm2().get(0).getRecievedAmount());
-            amount3 = String.valueOf(feesModelList.getTerm2().get(0).getDueAmount());
-
-//            longval1 = Double.parseDouble(amount1);
-//            longval2 = Double.parseDouble(amount2);
-//            longval3 = Double.parseDouble(amount3);
-//            formattedString1 = formatter.format(longval1);
-//            formattedString2 = formatter.format(longval2);
-//            formattedString3 = formatter.format(longval3);
-            fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(amount1));
-            fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(amount2));
-            fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(amount3));
-
-        }
+//        if (fragmentAccountBinding.term2RadioButton.isChecked()) {
+//            AppConfiguration.TermId = "2";
+//            amount1 = String.valueOf(feesModelList.getTerm2().get(0).getTotalAmount());
+//            amount2 = String.valueOf(feesModelList.getTerm2().get(0).getRecievedAmount());
+//            amount3 = String.valueOf(feesModelList.getTerm2().get(0).getDueAmount());
+//
+////            longval1 = Double.parseDouble(amount1);
+////            longval2 = Double.parseDouble(amount2);
+////            longval3 = Double.parseDouble(amount3);
+////            formattedString1 = formatter.format(longval1);
+////            formattedString2 = formatter.format(longval2);
+////            formattedString3 = formatter.format(longval3);
+//            fragmentAccountBinding.totalAmountCount.setText("₹" + " " + String.valueOf(amount1));
+//            fragmentAccountBinding.totalReceiveAmountCount.setText("₹" + " " + String.valueOf(amount2));
+//            fragmentAccountBinding.totalDueAmountCount.setText("₹" + " " + String.valueOf(amount3));
+//
+//        }
 
 
         Log.d("termid", AppConfiguration.TermId);

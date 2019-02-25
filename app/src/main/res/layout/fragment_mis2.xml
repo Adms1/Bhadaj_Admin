@@ -1581,7 +1581,6 @@
                                         android:textSize="@dimen/_11sdp"
                                         android:visibility="visible" />
 
-
                                 </LinearLayout>
 
                                 <TextView
@@ -2141,7 +2140,7 @@
 
                                 <TextView
                                     android:id="@+id/na_inquirycount_txt"
-                                    android:layout_width="0dp"
+                                    android:layout_width="249dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:layout_marginLeft="@dimen/_3sdp"

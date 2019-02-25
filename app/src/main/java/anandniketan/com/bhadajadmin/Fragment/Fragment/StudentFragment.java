@@ -53,12 +53,13 @@ public class StudentFragment extends Fragment {
             AppConfiguration.BASEURL_IMAGES + "Student/" + "New%20Register.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Announcement.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Circular.png",
-            AppConfiguration.BASEURL_IMAGES + "Student/" + "Circular1.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Planner.png",
             AppConfiguration.BASEURL_IMAGES + "Student/" + "Gallery.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "leave%20request.png",
+            AppConfiguration.BASEURL_IMAGES + "Student/" + "suggestion.png",
     };
     public String[] mThumbNames = {"Search Student", "View Inquiry", "Student Transport",
-            "Permission", "Attendance", "Left/Active", "New Register", "Announcement", "Circular", "circular1", "Planner", "Gallery"};
+            "Permission", "Attendance", "Left/Active", "New Register", "Announcement", "Circular", "Planner", "Gallery", "Leave Request", "Suggestion"};
     int Year, Month, Day;
     Calendar calendar;
     private FragmentStudentBinding fragmentStudentBinding;
@@ -332,6 +333,26 @@ public class StudentFragment extends Fragment {
                     }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
+                } else if (position == 10 || permissionMap.get("Leave Request").getStatus().equalsIgnoreCase("true")) {
+                    fragment = new LeaveRequestFragment();
+
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString("type", "student");
+                    bundle.putString("leavedeletestatus", permissionMap.get("Leave Request").getIsuserdelete());
+                    bundle.putString("leaveupdatestatus", permissionMap.get("Leave Request").getIsuserupdate());
+                    bundle.putString("leaveviewstatus", permissionMap.get("Leave Request").getIsuserview());
+
+                    fragment.setArguments(bundle);
+
+                    fragmentManager = getFragmentManager();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                .replace(R.id.frame_container, fragment).commit();
+                    }
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 11;
                 } else {
                     Utils.ping(getActivity(), "Access Denied");
                 }
@@ -375,7 +396,6 @@ public class StudentFragment extends Fragment {
                             fragmentStudentBinding.totalLeavestudentCount.setText(studentObj.getStudentLeave());
                         }
                     }
-
                 }
             }
 
@@ -387,7 +407,6 @@ public class StudentFragment extends Fragment {
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
 
     private Map<String, String> getStudentDetail() {

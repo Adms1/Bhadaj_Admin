@@ -15,11 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Fragment.Fragment.MISDataListFragment;
-import anandniketan.com.bhadajadmin.Model.MIS.MISStaffModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStaffNewModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class MISStaffGridAdapter extends RecyclerView.Adapter<MISStaffGridAdapter.MyViewHolder> {
 
@@ -53,7 +51,6 @@ public class MISStaffGridAdapter extends RecyclerView.Adapter<MISStaffGridAdapte
             holder.total_txt.setText(String.valueOf(dataValues.get(position).getTotal()));
             holder.absent_txt.setText(String.valueOf(dataValues.get(position).getTotalAbsent()));
             holder.leave_txt.setText(String.valueOf(dataValues.get(position).getTotalLeave()));
-
 
             holder.total_txt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -138,10 +135,10 @@ public class MISStaffGridAdapter extends RecyclerView.Adapter<MISStaffGridAdapte
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            dept_txt = (TextView) itemView.findViewById(R.id.dept_txt);
-            total_txt = (TextView) itemView.findViewById(R.id.total_txt);
-            absent_txt = (TextView) itemView.findViewById(R.id.absent_txt);
-            leave_txt = (TextView) itemView.findViewById(R.id.leave_txt);
+            dept_txt = itemView.findViewById(R.id.dept_txt);
+            total_txt = itemView.findViewById(R.id.total_txt);
+            absent_txt = itemView.findViewById(R.id.absent_txt);
+            leave_txt = itemView.findViewById(R.id.leave_txt);
 
         }
     }

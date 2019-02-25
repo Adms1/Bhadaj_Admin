@@ -9,11 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,9 +30,12 @@ import java.util.List;
 import java.util.Map;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
+import anandniketan.com.bhadajadmin.Adapter.ExpandableOnlineTransactionAdapter;
 import anandniketan.com.bhadajadmin.Adapter.TallyTransactionAdapter;
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
+import anandniketan.com.bhadajadmin.Model.Account.OnlineStatusModel;
+import anandniketan.com.bhadajadmin.Model.Account.OnlineTransactionModel;
 import anandniketan.com.bhadajadmin.Model.Account.TallyTranscationModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
@@ -42,9 +48,11 @@ import retrofit.client.Response;
 public class OnlineTransactionFragment extends Fragment  implements DatePickerDialog.OnDateSetListener{
 
     private FragmentOnlineTransactionBinding fragmentTallyTranscationBinding;
+    private static String dateFinal, finalStatus;
     private View rootView;
     private Context mContext;
     private List<FinalArrayStandard> finalArrayStandardsList;
+    ArrayList<OnlineStatusModel> firstValue;
     private HashMap<Integer, String> spinnerStandardMap;
     private String FinalClassIdStr = "",FinalStatusIdStr = "";
     private Fragment fragment = null;
@@ -52,14 +60,17 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
     private DatePickerDialog datePickerDialog;
     private int whichdateViewClick = 1 ;
     private Calendar calendar;
-    private static String dateFinal;
+    private ExpandableOnlineTransactionAdapter onlineTransactionAdapter;
     private int Year, Month, Day;
     private HashMap<Integer, String> spinnerOrderMap;
     private List<TallyTranscationModel.FinalArray> dailyCollectionsList;
     private TallyTransactionAdapter tallyTransactionAdapter;
-
+    private List<OnlineTransactionModel.FinalArray> finalArrayList;
+    private ExpandableListView rvList;
+    private List<String> listDataHeader;
     private TextView tvHeader;
     private Button btnBack, btnMenu;
+    private HashMap<String, ArrayList<OnlineTransactionModel.FinalArray>> listDataChild;
 
     @Override
     public void onAttach(Context context){
@@ -84,7 +95,6 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
         return rootView;
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -92,11 +102,12 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
         tvHeader = view.findViewById(R.id.textView3);
         btnBack = view.findViewById(R.id.btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
+        rvList = view.findViewById(R.id.lvExpstudentfeescollection);
 
         tvHeader.setText(R.string.online_transcation);
 
         setListner();
-        callStandardApi();
+        fillGradeSpinner();
 
     }
 
@@ -154,10 +165,22 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
             }
         });
 
+        fragmentTallyTranscationBinding.gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                finalStatus = firstValue.get(position).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         fragmentTallyTranscationBinding.searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                callOnlineTransactionIDApi();
             }
         });
 
@@ -190,7 +213,6 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
                 if (standardModel.getSuccess().equalsIgnoreCase("True")) {
                     finalArrayStandardsList = standardModel.getFinalArray();
                     if (finalArrayStandardsList != null) {
-                        fillGradeSpinner();
                        // fillStatusSpinner();
 
                     }
@@ -213,79 +235,110 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
         return map;
     }
 
+    private Map<String, String> getOnlineDetail() {
+        Map<String, String> map = new HashMap<>();
+        map.put("StartDate", fragmentTallyTranscationBinding.fromDate1Edt.getText().toString());
+        map.put("EndDate", fragmentTallyTranscationBinding.toDate2Edt.getText().toString());
+        map.put("Status", finalStatus);
+        map.put("TransactionID", fragmentTallyTranscationBinding.etTranscationid.getText().toString());
+        return map;
+    }
 
     private void callOnlineTransactionIDApi() {
 
-//        if (!Utils.checkNetwork(mContext)) {
-//            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
-//            return;
-//        }
-//
-//        Utils.showDialog(getActivity());
-//        ApiHandler.getApiService().getOnlineTransactionList(getStandardDetail(),new retrofit.Callback<GetStandardModel>() {
-//            @Override
-//            public void success(GetStandardModel standardModel, Response response) {
-//                Utils.dismissDialog();
-//                if (standardModel == null) {
-//                    Utils.ping(mContext, getString(R.string.something_wrong));
-//                    return;
-//                }
-//                if (standardModel.getSuccess() == null) {
-//                    Utils.ping(mContext, getString(R.string.something_wrong));
-//                    return;
-//                }
-//                if (standardModel.getSuccess().equalsIgnoreCase("false")) {
-//                    Utils.ping(mContext, getString(R.string.false_msg));
-//                    return;
-//                }
-//                if (standardModel.getSuccess().equalsIgnoreCase("True")) {
-//                    finalArrayStandardsList = standardModel.getFinalArray();
-//                    if (finalArrayStandardsList != null) {
-//                        fillGradeSpinner();
-//                        // fillStatusSpinner();
-//
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                Utils.dismissDialog();
-//                error.printStackTrace();
-//                error.getMessage();
-//                Utils.ping(mContext, getString(R.string.something_wrong));
-//            }
-//        });
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getOnlineTransactionList(getOnlineDetail(), new retrofit.Callback<OnlineTransactionModel>() {
+            @Override
+            public void success(OnlineTransactionModel standardModel, Response response) {
+                Utils.dismissDialog();
+                if (standardModel == null) {
+                    fragmentTallyTranscationBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                    fragmentTallyTranscationBinding.lvExpHeader.setVisibility(View.GONE);
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (standardModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    fragmentTallyTranscationBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                    fragmentTallyTranscationBinding.lvExpHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+                    return;
+                }
+                if (standardModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    fragmentTallyTranscationBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                    fragmentTallyTranscationBinding.lvExpHeader.setVisibility(View.GONE);
+                    rvList.setVisibility(View.GONE);
+
+                    return;
+                }
+                if (standardModel.getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayList = standardModel.getFinalArray();
+                    if (finalArrayList != null) {
+                        fragmentTallyTranscationBinding.txtNoRecords.setVisibility(View.GONE);
+                        fragmentTallyTranscationBinding.lvExpHeader.setVisibility(View.VISIBLE);
+                        rvList.setVisibility(View.VISIBLE);
+                        fillExpLV();
+                        onlineTransactionAdapter = new ExpandableOnlineTransactionAdapter(getActivity(), listDataHeader, listDataChild);
+                        rvList.setAdapter(onlineTransactionAdapter);
+                    } else {
+                        fragmentTallyTranscationBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                        fragmentTallyTranscationBinding.lvExpHeader.setVisibility(View.GONE);
+                        rvList.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+                rvList.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    public void fillExpLV() {
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
+        for (int i = 0; i < finalArrayList.size(); i++) {
+            listDataHeader.add(finalArrayList.get(i).getTransactionid() + "|" + finalArrayList.get(i).getDate() + "|" + finalArrayList.get(i).getAmount()
+                    + "|" + finalArrayList.get(i).getStatus());
+            Log.d("header", "" + listDataHeader);
+            ArrayList<OnlineTransactionModel.FinalArray> row = new ArrayList<>();
+            row.add(finalArrayList.get(i));
+            Log.d("row", "" + row);
+            listDataChild.put(listDataHeader.get(i), row);
+            Log.d("child", "" + listDataChild);
+        }
 
     }
 
     public void fillGradeSpinner() {
-        ArrayList<String> firstValue = new ArrayList<>();
-        firstValue.add("--Select--");
-//
-        ArrayList<String> standardname = new ArrayList<>();
-        for (int z = 0; z < firstValue.size(); z++) {
-            standardname.add(firstValue.get(z));
-            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
-                standardname.add(finalArrayStandardsList.get(i).getStandardClass());
-            }
-        }
-        ArrayList<Integer> firstValueId = new ArrayList<>();
-        firstValueId.add(0);
-        ArrayList<Integer> standardId = new ArrayList<>();
-        for (int m = 0; m < firstValueId.size(); m++) {
-            standardId.add(firstValueId.get(m));
-            for (int j = 0; j < finalArrayStandardsList.size(); j++) {
-                standardId.add(finalArrayStandardsList.get(j).getClassID());
-            }
-        }
-        String[] spinnerstandardIdArray = new String[standardId.size()];
+        firstValue = new ArrayList<>();
 
-        spinnerStandardMap = new HashMap<Integer, String>();
-        for (int i = 0; i < standardId.size(); i++) {
-            spinnerStandardMap.put(i, String.valueOf(standardId.get(i)));
-            spinnerstandardIdArray[i] = standardname.get(i).trim();
-        }
+        OnlineStatusModel onlineStatusModel = new OnlineStatusModel();
+        onlineStatusModel.setStatus("All");
+        onlineStatusModel.setId("-1");
+        firstValue.add(onlineStatusModel);
+
+        OnlineStatusModel onlineStatusModel1 = new OnlineStatusModel();
+        onlineStatusModel1.setStatus("Unsetteled");
+        onlineStatusModel1.setId("0");
+        firstValue.add(onlineStatusModel1);
+
+        OnlineStatusModel onlineStatusModel2 = new OnlineStatusModel();
+        onlineStatusModel2.setStatus("Setteled");
+        onlineStatusModel2.setId("1");
+        firstValue.add(onlineStatusModel2);
 
         try {
             Field popup = Spinner.class.getDeclaredField("mPopup");
@@ -294,19 +347,23 @@ public class OnlineTransactionFragment extends Fragment  implements DatePickerDi
             // Get private mPopup member variable and try cast to ListPopupWindow
             android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentTallyTranscationBinding.gradeSpinner);
 
-            popupWindow.setHeight(spinnerstandardIdArray.length > 4 ? 500 : spinnerstandardIdArray.length * 100);
+            popupWindow.setHeight(200);
 //            popupWindow1.setHeght(200);
         } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
             // silently fail...
         }
 
+        ArrayList<String> newArr = new ArrayList<>();
+        for (int i = 0; i < firstValue.size(); i++) {
+            newArr.add(firstValue.get(i).getStatus());
 
-        ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
+        }
+
+        ArrayAdapter<String> adapterstandard = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, newArr);
         fragmentTallyTranscationBinding.gradeSpinner.setAdapter(adapterstandard);
 
-        FinalClassIdStr = spinnerStandardMap.get(0);
+//        FinalClassIdStr = spinnerStandardMap.get(0);
     }
-
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {

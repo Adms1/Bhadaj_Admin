@@ -62,7 +62,6 @@ public class DateWiseFeesCollectionAdapter extends RecyclerView.Adapter<DateWise
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                     dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-
                     TextView tvUserName = dialog.findViewById(R.id.tv_name);
 
                     TextView tvOpeningBal = dialog.findViewById(R.id.tv_opening_bal);

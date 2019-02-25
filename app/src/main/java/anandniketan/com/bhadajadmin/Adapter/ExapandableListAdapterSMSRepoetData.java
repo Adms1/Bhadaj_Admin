@@ -107,7 +107,16 @@ public class ExapandableListAdapterSMSRepoetData extends BaseExpandableListAdapt
         groupBinding.receiveTimeTxt.setText(headerTitle3);
         groupBinding.statusTxt.setText(headerTitle4);
 
-        if (viewstatus.endsWith("true")) {
+        if (headerTitle4.equalsIgnoreCase("expired") || headerTitle4.equalsIgnoreCase("Failed")) {
+            groupBinding.llHeader.setBackgroundColor(_context.getResources().getColor(R.color.red));
+            groupBinding.indexTxt.setTextColor(_context.getResources().getColor(R.color.white1));
+            groupBinding.mobileTxt.setTextColor(_context.getResources().getColor(R.color.white1));
+            groupBinding.SendTimeTxt.setTextColor(_context.getResources().getColor(R.color.white1));
+            groupBinding.receiveTimeTxt.setTextColor(_context.getResources().getColor(R.color.white1));
+            groupBinding.statusTxt.setTextColor(_context.getResources().getColor(R.color.white1));
+            groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.white1));
+        } else {
+
             if (isExpanded) {
                 groupBinding.viewTxt.setTextColor(_context.getResources().getColor(R.color.present));
             } else {

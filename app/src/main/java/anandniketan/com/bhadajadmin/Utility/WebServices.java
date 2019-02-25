@@ -10,6 +10,7 @@ import anandniketan.com.bhadajadmin.Model.Account.AccountFeesModel;
 import anandniketan.com.bhadajadmin.Model.Account.AccountFeesStatusModel;
 import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
+import anandniketan.com.bhadajadmin.Model.Account.OnlineTransactionModel;
 import anandniketan.com.bhadajadmin.Model.Account.TallyTranscationModel;
 import anandniketan.com.bhadajadmin.Model.HR.DailyAccountModel;
 import anandniketan.com.bhadajadmin.Model.HR.DailyHouseKeepingModel;
@@ -45,6 +46,7 @@ import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportDetailModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
+import anandniketan.com.bhadajadmin.Model.MIS.TopperChartModel;
 import anandniketan.com.bhadajadmin.Model.MIS.TransportMainModel;
 import anandniketan.com.bhadajadmin.Model.MISModel;
 import anandniketan.com.bhadajadmin.Model.MIStudentWiseCalendarModel;
@@ -53,8 +55,10 @@ import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.PermissionDataModel;
 import anandniketan.com.bhadajadmin.Model.Staff.HomeWorkModel;
 import anandniketan.com.bhadajadmin.Model.Staff.StaffAttendaceModel;
+import anandniketan.com.bhadajadmin.Model.Staff.ViewMarksModel;
 import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.Model.Student.CircularModel;
+import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.GalleryDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.MarkSyllabusModel;
 import anandniketan.com.bhadajadmin.Model.Student.PlannerModel;
@@ -335,7 +339,7 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/GetTestName")
-    void getTestName(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+    void getTestName(@FieldMap Map<String, String> map, Callback<FinalArrayStudentModel> callback);
 
     @FormUrlEncoded
     @POST("/GetStudentMarks")
@@ -343,7 +347,7 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/ViewMarks")
-    void getStudentViewMarks(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+    void getStudentViewMarks(@FieldMap Map<String, String> map, Callback<ViewMarksModel> callback);
 
     @FormUrlEncoded
     @POST("/GetPlanner")
@@ -490,7 +494,7 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/AdminInsertTimetable")
-    void adminInsertTimetable(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+    void adminInsertTimetable(@FieldMap Map<String, String> map, Callback<JsonObject> callback);
 
     @FormUrlEncoded
     @POST("/DeleteTimetable")
@@ -516,9 +520,13 @@ public interface WebServices {
     @POST("/GetLeaveDays")
     void getleaveDays(@FieldMap Map<String, String> map, Callback<LeaveDayModel> callback);
 
-    @FormUrlEncoded
-    @POST("/GetAllStaffLeaveRequest")
-    void getAllStaffLeaveRequest(@FieldMap Map<String, String> map, Callback<LeaveRequestModel> callback);
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("GetAllStaffLeaveRequest")
+    Call<LeaveRequestModel> getAllStaffLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("GetAllStudentLeaveRequest")
+    Call<LeaveRequestModel> getAllStudentLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
 
     @FormUrlEncoded
     @POST("/DeleteStaffLeave")
@@ -553,7 +561,7 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/OnlineTransactionList")
-    void getOnlineTransactionList(@FieldMap Map<String, String> map, Callback<StaffAttendaceModel> callback);
+    void getOnlineTransactionList(@FieldMap Map<String, String> map, Callback<OnlineTransactionModel> callback);
 
     @FormUrlEncoded
     @POST("/GetTrasportCharges")
@@ -961,5 +969,9 @@ public interface WebServices {
     @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("AdminMessage")
     Call<NotificationModel> getNotification(@Field("StaffID") String StaffID);
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("GetTopperWithComparison")
+    Call<TopperChartModel> getTopperChart(@Field("TermDetailID") String TermDetailID);
 
 }

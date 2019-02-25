@@ -65,7 +65,7 @@ public class StudentViewMarksFragment extends Fragment {
 
         setListners();
         callTermApi();
-        callTestNameApi();
+//        callTestNameApi();
         callStandardApi();
 
         return rootView;
@@ -97,7 +97,7 @@ public class StudentViewMarksFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentStudentViewMarksBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 FinalTermStr = name;
 
@@ -116,7 +116,7 @@ public class StudentViewMarksFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentStudentViewMarksBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 FinalStandardStr = name;
@@ -137,7 +137,7 @@ public class StudentViewMarksFragment extends Fragment {
                 String getid = spinnerSectionMap.get(fragmentStudentViewMarksBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 FinalSectionStr = selectedsectionstr;
                 Log.d("FinalClassIdStr", FinalClassIdStr);
             }
@@ -260,52 +260,52 @@ public class StudentViewMarksFragment extends Fragment {
 
 
     // CALL TestName API HERE
-    private void callTestNameApi() {
-
-        if (!Utils.checkNetwork(mContext)) {
-            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
-            return;
-        }
-
-//        Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getTestName(getTestNameDetail(), new retrofit.Callback<StudentAttendanceModel>() {
-            @Override
-            public void success(StudentAttendanceModel testNameModel, Response response) {
-                Utils.dismissDialog();
-                if (testNameModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (testNameModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
-                    return;
-                }
-                if (testNameModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
-                    return;
-                }
-                if (testNameModel.getSuccess().equalsIgnoreCase("True")) {
-//                    finalArrayStudentNameModelList = testNameModel.getFinalArray();
-                    if (finalArrayStudentNameModelList != null) {
-                        for (int i = 0; i < finalArrayStudentNameModelList.size(); i++) {
-                            finalArrayStudentNameModelList.get(i).setCheckedStatus("0");
-                        }
-                        testNameAdapter = new TestNameAdapter(mContext, finalArrayStudentNameModelList);
-                        fragmentStudentViewMarksBinding.gradeGridView.setAdapter(testNameAdapter);
-                    }
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Utils.dismissDialog();
-                error.printStackTrace();
-                error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
-            }
-        });
-
-    }
+//    private void callTestNameApi() {
+//
+//        if (!Utils.checkNetwork(mContext)) {
+//            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+//            return;
+//        }
+//
+////        Utils.showDialog(getActivity());
+//        ApiHandler.getApiService().getTestName(getTestNameDetail(), new retrofit.Callback<StudentAttendanceModel>() {
+//            @Override
+//            public void success(StudentAttendanceModel testNameModel, Response response) {
+//                Utils.dismissDialog();
+//                if (testNameModel == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (testNameModel.getSuccess() == null) {
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    return;
+//                }
+//                if (testNameModel.getSuccess().equalsIgnoreCase("false")) {
+//                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    return;
+//                }
+//                if (testNameModel.getSuccess().equalsIgnoreCase("True")) {
+////                    finalArrayStudentNameModelList = testNameModel.getFinalArray();
+//                    if (finalArrayStudentNameModelList != null) {
+//                        for (int i = 0; i < finalArrayStudentNameModelList.size(); i++) {
+////                            finalArrayStudentNameModelList.get(i).setCheckedStatus("0");
+//                        }
+////                        testNameAdapter = new TestNameAdapter(mContext, finalArrayStudentNameModelList);
+////                        fragmentStudentViewMarksBinding.gradeGridView.setAdapter(testNameAdapter);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Utils.dismissDialog();
+//                error.printStackTrace();
+//                error.getMessage();
+//                Utils.ping(mContext, getString(R.string.something_wrong));
+//            }
+//        });
+//
+//    }
 
     private Map<String, String> getTestNameDetail() {
         Map<String, String> map = new HashMap<>();
@@ -526,26 +526,26 @@ public class StudentViewMarksFragment extends Fragment {
     public void GetSelectedTestId() {
         ArrayList<String> testNameArray = new ArrayList<String>();
         ArrayList<String> testIdArray = new ArrayList<String>();
-        List<FinalArrayStudentModel> testArray = testNameAdapter.getDatas();
-        for (int i = 0; i < testArray.size(); i++) {
-            if (testArray.get(i).getCheckedStatus().equalsIgnoreCase("1")) {
-                testNameArray.add(testArray.get(i).getTestName().toString());
-                testIdArray.add(testArray.get(i).getTestID().toString());
-            }
-        }
+//        List<FinalArrayStudentModel> testArray = testNameAdapter.getDatas();
+//        for (int i = 0; i < testArray.size(); i++) {
+//            if (testArray.get(i).getCheckedStatus().equalsIgnoreCase("1")) {
+//                testNameArray.add(testArray.get(i).getTestName().toString());
+//                testIdArray.add(testArray.get(i).getTestID().toString());
+//            }
+//        }
         if(testNameArray.size()>0) {
             FinalTestIdStr = "";
             for (String s : testIdArray) {
                 FinalTestIdStr = FinalTestIdStr + "|" + s;
             }
-            FinalTestIdStr = FinalTestIdStr.substring(1, FinalTestIdStr.length());
+            FinalTestIdStr = FinalTestIdStr.substring(1);
             Log.d("FinalTestIdStr", FinalTestIdStr);
 
             FinalTestStr = "";
             for (String s : testNameArray) {
                 FinalTestStr = FinalTestStr + "|" + s;
             }
-            FinalTestStr = FinalTestStr.substring(1, FinalTestStr.length());
+            FinalTestStr = FinalTestStr.substring(1);
             Log.d("FinalTestStr", FinalTestStr);
         }else{
             Utils.ping(mContext,"Please Select Test");

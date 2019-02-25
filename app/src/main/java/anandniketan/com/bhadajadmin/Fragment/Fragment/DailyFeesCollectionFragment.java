@@ -181,7 +181,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                 String getid = spinnerTermMap.get(fragmentDailyFeesCollectionBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
             }
 
@@ -194,7 +194,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = fragmentDailyFeesCollectionBinding.standardSpinner.getSelectedItem().toString();
                 String getid = spinnerStandardMap.get(fragmentDailyFeesCollectionBinding.standardSpinner.getSelectedItemPosition());
-                FinalstandardIdStr = getid.toString();
+                FinalstandardIdStr = getid;
                 Log.d("FinalstandardIdStr", FinalstandardIdStr);
 
             }
@@ -211,7 +211,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                 String getid = spinnerTermDetailIdMap.get(fragmentDailyFeesCollectionBinding.termDetailSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermDetailIdStr = getid.toString();
+                FinalTermDetailIdStr = getid;
                 Log.d("FinalTermDetailIdStr", FinalTermDetailIdStr);
             }
 
@@ -227,7 +227,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                 String getid = spinnerPaymentModeMap.get(fragmentDailyFeesCollectionBinding.paymentModeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalPaymentmodeStr = name.toString();
+                FinalPaymentmodeStr = name;
                 Log.d("FinalTermDetailIdStr", FinalPaymentmodeStr);
             }
 
@@ -389,7 +389,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                 if (dailyFeeCollectionModel.getSuccess().equalsIgnoreCase("True")) {
 
                     dailyCollectionsList = dailyFeeCollectionModel.getFinalArray();
-                    if (dailyCollectionsList != null) {
+                    if (dailyCollectionsList != null && dailyCollectionsList.size() > 0) {
                         fragmentDailyFeesCollectionBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentDailyFeesCollectionBinding.lvExpHeader.setVisibility(View.VISIBLE);
                         fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setVisibility(View.VISIBLE);
@@ -402,6 +402,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
                         fragmentDailyFeesCollectionBinding.txtNoRecords.setVisibility(View.VISIBLE);
                         fragmentDailyFeesCollectionBinding.lvExpHeader.setVisibility(View.GONE);
                         fragmentDailyFeesCollectionBinding.lvExpstudentfeescollection.setVisibility(View.GONE);
+                        Utils.dismissDialog();
                     }
                 }
             }
@@ -551,7 +552,7 @@ public class DailyFeesCollectionFragment extends Fragment implements DatePickerD
         paymentmodedetail.add("Online");
         String[] spinnerpaymentIdArray = new String[paymentmodeId.size()];
 
-        spinnerPaymentModeMap = new HashMap<Integer, String>();
+        spinnerPaymentModeMap = new HashMap<>();
         for (int i = 0; i < paymentmodeId.size(); i++) {
             spinnerPaymentModeMap.put(i, String.valueOf(paymentmodeId.get(i)));
             spinnerpaymentIdArray[i] = paymentmodedetail.get(i).trim();

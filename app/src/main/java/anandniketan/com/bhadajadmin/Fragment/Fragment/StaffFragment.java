@@ -121,7 +121,8 @@ public class StaffFragment extends Fragment {
         permissionMap = PrefUtils.getInstance(getActivity()).loadMap(getActivity(), "Staff");
 
         for (int i = 0; i < mThumbNames.length; i++) {
-            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+//            if (permissionMap.containsKey(mThumbNames[i]) && permissionMap.get(mThumbNames[i]).getStatus().equalsIgnoreCase("true")) {
+            if (permissionMap.containsKey(mThumbNames[i])) {
 
                 IconHeaderModel iconHeaderModel = new IconHeaderModel();
                 iconHeaderModel.setName(mThumbNames[i]);
@@ -256,18 +257,19 @@ public class StaffFragment extends Fragment {
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 21;
 
-                } else {
-                    Utils.ping(getActivity(), "Access Denied");
-                }
-                /*else if (position == 6 && permissionMap.get("View Marks").getStatus().equalsIgnoreCase("true")) {
+                } else if (position == 6) {
+//                     && permissionMap.get("View Marks").getStatus().equalsIgnoreCase("true")
                     fragment = new ViewMarksFragment();
                     fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
                             .replace(R.id.frame_container, fragment).commit();
                             AppConfiguration.firsttimeback = true;
-                    AppConfiguration.position = 21;L̥
-                }*/
+                    AppConfiguration.position = 21;
+                } else {
+                    Utils.ping(getActivity(), "Access Denied");
+                }
+
             }
         });
     }

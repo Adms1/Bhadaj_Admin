@@ -2,6 +2,7 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +24,14 @@ import anandniketan.com.bhadajadmin.R;
 
 public class TestNameAdapter extends BaseAdapter {
     private Context mContext;
-    private List<FinalArrayStudentModel> testnameList;
+    private List<FinalArrayStudentModel.FinalArray> testnameList;
     private ArrayList<FinalArrayStandard> arrayList = new ArrayList<>();
+    private ArrayList<String> IDs = new ArrayList<>();
 
     // Constructor
-    public TestNameAdapter(Context c, List<FinalArrayStudentModel> testnameList) {
+    public TestNameAdapter(Context c, List<FinalArrayStudentModel.FinalArray> testnameList) {
         mContext = c;
         this.testnameList = testnameList;
-    }
-
-    private class ViewHolder {
-        CheckBox check_standard;
     }
 
     @Override
@@ -53,15 +51,15 @@ public class TestNameAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-      ViewHolder viewHolder;
+        ViewHolder viewHolder;
         View view = null;
         convertView = null;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.list_row_test_name_checkbox, null);
-            viewHolder.check_standard = (CheckBox) convertView.findViewById(R.id.check_standard);
-            final FinalArrayStudentModel standarObj = testnameList.get(position);
+            viewHolder.check_standard = convertView.findViewById(R.id.check_standard);
+            final FinalArrayStudentModel.FinalArray standarObj = testnameList.get(position);
             try {
                 viewHolder.check_standard.setText(standarObj.getTestName());
                 viewHolder.check_standard.setTag(standarObj.getTestID());
@@ -75,11 +73,35 @@ public class TestNameAdapter extends BaseAdapter {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
+
+                            if (IDs.size() > 0) {
+
+                                if (!IDs.contains(testnameList.get(position).getTestID().toString())) {
+                                    IDs.add(testnameList.get(position).getTestID().toString());
+                                }
+
+                            } else {
+                                IDs.add(testnameList.get(position).getTestID().toString());
+                            }
+
                             standarObj.setCheckedStatus("1");
                             testnameList.get(position).setCheckedStatus("1");
+
+                            Log.d("testidarrayyyyy", IDs.toString());
+
                         } else {
+
+                            if (IDs.size() > 0) {
+
+                                IDs.remove(testnameList.get(position).getTestID().toString());
+
+                            }
+
                             standarObj.setCheckedStatus("0");
                             testnameList.get(position).setCheckedStatus("0");
+
+                            Log.d("testidarrayyyyy", IDs.toString());
+
                         }
                     }
                 });
@@ -90,8 +112,12 @@ public class TestNameAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public List<FinalArrayStudentModel> getDatas() {
-        return testnameList;
+    public ArrayList<String> getDatas() {
+        return IDs;
+    }
+
+    private class ViewHolder {
+        CheckBox check_standard;
     }
 
 }

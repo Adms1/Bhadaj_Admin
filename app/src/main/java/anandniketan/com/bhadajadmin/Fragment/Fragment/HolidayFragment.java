@@ -112,8 +112,8 @@ public class HolidayFragment extends Fragment implements DatePickerDialog.OnDate
                 String getid = spinnerHolidayCategoryMap.get(fragmentHolidayBinding.holidayCategorySpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalCategoryIdStr = getid.toString();
-                FinalHolidayStr = name.toString();
+                FinalCategoryIdStr = getid;
+                FinalHolidayStr = name;
                 Log.d("FinalCategoryIdStr", FinalCategoryIdStr);
             }
 
@@ -359,20 +359,20 @@ public class HolidayFragment extends Fragment implements DatePickerDialog.OnDate
 
     public void fillCatergorySpinner() {
         ArrayList<Integer> HolidaycategoryId = new ArrayList<Integer>();
-        for (int i = 0; i < finalHolidaycategoryList.size(); i++) {
-            HolidaycategoryId.add(finalHolidaycategoryList.get(i).getPkCategoryId());
-        }
-        ArrayList<String> HolidayName = new ArrayList<String>();
-        for (int j = 0; j < finalHolidaycategoryList.size(); j++) {
-            HolidayName.add(finalHolidaycategoryList.get(j).getCategory());
-        }
+//        for (int i = 0; i < finalHolidaycategoryList.size(); i++) {
+//            HolidaycategoryId.add(finalHolidaycategoryList.get(i).getPkCategoryId());
+//        }
+//        ArrayList<String> HolidayName = new ArrayList<String>();
+//        for (int j = 0; j < finalHolidaycategoryList.size(); j++) {
+//            HolidayName.add(finalHolidaycategoryList.get(j).getCategory());
+//        }
 
         spinnerholidaycategoryIdArray = new String[HolidaycategoryId.size()];
 
         spinnerHolidayCategoryMap = new HashMap<Integer, String>();
         for (int i = 0; i < HolidaycategoryId.size(); i++) {
             spinnerHolidayCategoryMap.put(i, String.valueOf(HolidaycategoryId.get(i)));
-            spinnerholidaycategoryIdArray[i] = HolidayName.get(i).trim();
+//            spinnerholidaycategoryIdArray[i] = HolidayName.get(i).trim();
         }
         try {
             Field popup = Spinner.class.getDeclaredField("mPopup");
@@ -417,20 +417,20 @@ public class HolidayFragment extends Fragment implements DatePickerDialog.OnDate
         fragmentHolidayBinding.descriptionEdt.setText(discriptionArray);
 
         for (int i = 0; i < finalHolidaycategoryList.size(); i++) {
-            if (categoryIdStr.equalsIgnoreCase(finalHolidaycategoryList.get(i).getPkCategoryId().toString())) {
-                HolidayNameStr = finalHolidaycategoryList.get(i).getCategory();
+//            if (categoryIdStr.equalsIgnoreCase(finalHolidaycategoryList.get(i).getPkCategoryId().toString())) {
+//                HolidayNameStr = finalHolidaycategoryList.get(i).getCategory();
             }
         }
-        if (!HolidayNameStr.equalsIgnoreCase("")) {
-            for (int m = 0; m < spinnerholidaycategoryIdArray.length; m++) {
-                if (HolidayNameStr.equalsIgnoreCase((spinnerholidaycategoryIdArray[m]))) {
-                    Log.d("spinnerValue", spinnerholidaycategoryIdArray[m]);
-                    int index = m;
-                    Log.d("indexOf", String.valueOf(index));
-                    fragmentHolidayBinding.holidayCategorySpinner.setSelection(m);
-                }
-            }
-        }
-    }
+//        if (!HolidayNameStr.equalsIgnoreCase("")) {
+//            for (int m = 0; m < spinnerholidaycategoryIdArray.length; m++) {
+//                if (HolidayNameStr.equalsIgnoreCase((spinnerholidaycategoryIdArray[m]))) {
+//                    Log.d("spinnerValue", spinnerholidaycategoryIdArray[m]);
+//                    int index = m;
+//                    Log.d("indexOf", String.valueOf(index));
+//                    fragmentHolidayBinding.holidayCategorySpinner.setSelection(m);
+//                }
+//            }
+//        }
+//    }
 }
 
