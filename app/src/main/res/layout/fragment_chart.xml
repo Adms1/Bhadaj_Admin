@@ -92,10 +92,11 @@
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
-            <com.github.mikephil.charting.charts.BarChart
+            <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:id="@+id/chart_topperchart"
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_300sdp" />
+                android:layout_margin="@dimen/_10sdp" />
 
 
         </LinearLayout>
