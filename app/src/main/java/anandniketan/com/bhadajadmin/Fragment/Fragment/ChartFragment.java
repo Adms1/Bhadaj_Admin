@@ -17,17 +17,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import anandniketan.com.bhadajadmin.Model.MIS.MISClassWiseResultModel;
@@ -50,7 +56,9 @@ public class ChartFragment extends Fragment {
     private HashMap<Integer, String> spinnerSchoolResultMap;
     private String FinalSchoolResultTermID = "1";
     private TextView noRecords;
-    private BarDataSet set1, set2;
+    private String chartType;
+
+    private PieChart piechart;
 
     public ChartFragment() {
         // Required empty public constructor
@@ -68,35 +76,93 @@ public class ChartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = this.getArguments();
+        chartType = bundle.getString("charttype");
+
         spTermDetail = view.findViewById(R.id.chart_spTermdetail);
         chart = view.findViewById(R.id.chart_topperchart);
         noRecords = view.findViewById(R.id.chart_tv_no_records);
+        piechart = view.findViewById(R.id.chart_rangechart);
 
-        chart.getDescription().setEnabled(false);
-        chart.setPinchZoom(false);
-        chart.setDescription(null);
-        chart.setNoDataText("No data to display");
-        chart.setDrawBarShadow(false);
+        if (chartType.equalsIgnoreCase("topper")) {
 
-        chart.setDrawGridBackground(false);
-        chart.setExtraOffsets(15, 10, 0, 10);
+            chart.getDescription().setEnabled(false);
+            chart.setPinchZoom(false);
+            chart.setDescription(null);
+            chart.setNoDataText("No data to display");
+            chart.setDrawBarShadow(false);
+            chart.setDrawGridBackground(false);
+//            chart.setViewPortOffsets(10, 0, 0, 0);
+//            chart.setExtraOffsets(15, 10, 0, 10);
+
+            Legend l = chart.getLegend();
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            l.setOrientation(Legend.LegendOrientation.VERTICAL);
+            l.setDrawInside(false);
+//        l.setTypeface(tfLight);
+            l.setYOffset(0f);
+            l.setXOffset(5f);
+            l.setYEntrySpace(0f);
+            l.setTextSize(8f);
+
+        } else if (chartType.equalsIgnoreCase("range")) {
+
+            piechart.setUsePercentValues(true);
+            piechart.getDescription().setEnabled(false);
+            piechart.setExtraOffsets(5, 10, 5, 5);
+
+            piechart.setDragDecelerationFrictionCoef(0.95f);
+
+//            piechart.setCenterTextTypeface(tfLight);
+//            piechart.setCenterText(generateCenterSpannableText());
+
+            piechart.setDrawHoleEnabled(false);
+            piechart.setHoleColor(Color.WHITE);
+
+            piechart.setTransparentCircleColor(Color.WHITE);
+            piechart.setTransparentCircleAlpha(110);
+
+            piechart.setHoleRadius(58f);
+            piechart.setTransparentCircleRadius(61f);
+
+            piechart.setDrawCenterText(true);
+
+            piechart.setRotationAngle(0);
+            // enable rotation of the chart by touch
+            piechart.setRotationEnabled(true);
+            piechart.setHighlightPerTapEnabled(true);
+
+            // chart.setUnit(" €");
+            // chart.setDrawUnitsInChart(true);
+
+            // add a selection listener
+//            piechart.setOnChartValueSelectedListener(this);
+
+//            piechart.animateY(1400, Easing.EaseInOutQuad);
+            // chart.spin(2000, 0, 360);
+
+            Legend l = piechart.getLegend();
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            l.setOrientation(Legend.LegendOrientation.VERTICAL);
+            l.setDrawInside(false);
+            l.setXEntrySpace(7f);
+            l.setYEntrySpace(0f);
+            l.setYOffset(0f);
+
+            // entry label styling
+            piechart.setEntryLabelColor(Color.WHITE);
+//            piechart.setEntryLabelTypeface(tfRegular);
+            piechart.setEntryLabelTextSize(12f);
+        }
 
         setListener();
         fillSchoolResultTermSpinner();
+
     }
 
     private void setListener() {
-
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-//        l.setTypeface(tfLight);
-        l.setYOffset(0f);
-        l.setXOffset(10f);
-        l.setYEntrySpace(0f);
-        l.setTextSize(8f);
 
         spTermDetail.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -111,14 +177,11 @@ public class ChartFragment extends Fragment {
                 Log.d("FinalTermIdStr", FinalSchoolResultTermID);
 
                 try {
-//                    if (isAdded()) {
                     callTopperListChartApi();
-//                    }
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
-
             }
 
             @Override
@@ -228,99 +291,171 @@ public class ChartFragment extends Fragment {
 
                     if (response.body().getSuccess().equalsIgnoreCase("True")) {
 
-                        chart.setVisibility(View.VISIBLE);
-                        noRecords.setVisibility(View.GONE);
-
                         if (response.body().getFinalarray() != null) {
+                            noRecords.setVisibility(View.GONE);
 
-//                            float barWidth;
-//                            float barSpace;
-//                            float groupSpace;
+                            if (chartType.equalsIgnoreCase("topper")) {
+                                chart.setVisibility(View.VISIBLE);
+
+                                float groupSpace = 0.6f;
+                                float barSpace = 0f; // x4 DataSet
+                                float barWidth = 0.2f; // x4 DataSet
+
+//                                float groupSpace = 0.3f;
+//                                float barSpace = 0f; // x4 DataSet
+//                                float barWidth = 2f; // x4 DataSet
+
+                                int groupCount = response.body().getFinalarray().get(1).getData().size();
+
+                                ArrayList xVals = new ArrayList();
+                                final ArrayList<String> yVals = new ArrayList();
+
+                                for (int i = 0; i < groupCount; i++) {
+                                    xVals.add(response.body().getFinalarray().get(1).getData().get(i).getStandard() + "-" + response.body().getFinalarray().get(1).getData().get(i).getClassName());
+                                }
+
+                                for (int i = 0; i < response.body().getGradedata().size(); i++) {
+
+//                                    ChartModel chartModel = new ChartModel();
+//                                    chartModel.setCount(i);
+                                    yVals.add(response.body().getGradedata().get(i).getGrade());
+
+//                                    yVals.add(chartModel);
+                                }
+
+                                yVals.add("0");
+                                Collections.reverse(yVals);
+
+                                //X-axis
+                                XAxis xAxis = chart.getXAxis();
+                                xAxis.setGranularity(1f);
+                                xAxis.setGranularityEnabled(true);
+                                xAxis.setCenterAxisLabels(true);
+                                xAxis.setDrawGridLines(true);
+                                xAxis.setAxisMinimum(0f);
+                                xAxis.setLabelRotationAngle(90);
+                                xAxis.setAxisMaximum(groupCount);
+                                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                                xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
+
+                                xAxis.setLabelCount(groupCount, false);
+
+                                //Y-axis
+
+                                YAxis leftAxis = chart.getAxisLeft();
+                                leftAxis.setGranularityEnabled(true);
+                                leftAxis.setDrawGridLines(true);
+//                                leftAxis.setSpaceTop(35f);
+//                                leftAxis.setAxisMinimum(0f);
+                                leftAxis.setAxisMinimum(0f);
+//                                leftAxis.setGranularity(1f);
+//                                leftAxis.setAxisMaximum(yVals.size());
+                                leftAxis.setValueFormatter(new IndexAxisValueFormatter(yVals));
 //
-//                            barWidth = 5000f;
-//                            barSpace = 0f;
-//                            groupSpace = 4000f;
+                                chart.getAxisRight().setEnabled(false);
+                                leftAxis.setLabelCount(yVals.size(), false);
 
+                                ArrayList<MISClassWiseResultModel.FinalArray> values1 = new ArrayList<>();
+                                values1.addAll(response.body().getFinalarray().get(1).getData());
 
-//                            float groupSpace = 0.08f;
-//                            float barSpace = 0.03f; // x4 DataSet
-//                            float barWidth = 0.2f; /
+                                ArrayList<MISClassWiseResultModel.FinalArray> values2 = new ArrayList<>();
+                                values2.addAll(response.body().getFinalarray().get(2).getData());
 
-                            float groupSpace = 0.2f;
-                            float barSpace = 0f; // x4 DataSet
-                            float barWidth = 0.5f; // x4 DataSet
+                                ArrayList<BarEntry> yVals1 = new ArrayList<>();
+                                ArrayList<BarEntry> yVals2 = new ArrayList<>();
 
-                            int groupCount = response.body().getFinalarray().get(1).getData().size();
+                                // fill the lists
+                                for (int i = 0; i < values1.size(); i++) {
+                                    yVals1.add(new BarEntry((i + 1), Float.valueOf(values1.get(i).getGrade())));
+                                    yVals2.add(new BarEntry((i + 1), Float.valueOf(values2.get(i).getGrade())));
+                                }
 
-                            ArrayList xVals = new ArrayList();
+                                BarDataSet set1, set2;
 
-                            for (int i = 0; i < response.body().getFinalarray().get(1).getData().size(); i++) {
-                                xVals.add(response.body().getFinalarray().get(1).getData().get(i).getStandard() + "-" + response.body().getFinalarray().get(1).getData().get(i).getClassName());
+                                set1 = new BarDataSet(yVals1, response.body().getFinalarray().get(1).getTerm());
+                                set1.setColor(Color.rgb(192, 80, 77));
+                                set2 = new BarDataSet(yVals2, response.body().getFinalarray().get(2).getTerm());
+                                set2.setColor(Color.rgb(79, 129, 189));
+
+                                BarData data = new BarData(set1, set2);
+                                data.setValueFormatter(new LargeValueFormatter());
+
+                                chart.setData(data);
+                                chart.animateY(2500);
+
+                                chart.fitScreen();
+                                chart.getBarData().setBarWidth(barWidth);
+                                chart.getXAxis().setAxisMinimum(0);
+                                chart.getXAxis().setAxisMaximum(0 + chart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
+//                                chart.setViewPortOffsets(5,0,0,0);
+//                                chart.getAxisRight().setAxisMinimum(0f);
+//                                chart.getAxisRight().setAxisMaximum(yVals.size());
+                                chart.setVisibleXRange(0, 6);
+                                //chart.getXAxis().setAxisMaximum(chart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
+                                chart.groupBars(0, groupSpace, barSpace);
+                                chart.getData().setHighlightEnabled(false);
+                                chart.invalidate();
+                            } else if (chartType.equalsIgnoreCase("range")) {
+
+                                chart.setVisibility(View.GONE);
+
+                                ArrayList<PieEntry> entries = new ArrayList<>();
+
+                                ArrayList<MISClassWiseResultModel.FinalArray> values2 = new ArrayList<>();
+                                values2.addAll(response.body().getFinalarray().get(2).getData());
+
+                                // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+                                // the chart.
+                                for (int i = 0; i < 7; i++) {
+                                    entries.add(new PieEntry((i + 1), Float.valueOf(values2.get(i).getGrade())));
+
+//                                entries.add(new PieEntry((float) response.body().getFinalarray().get(1).getData());
+                                }
+
+                                PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+
+                                dataSet.setDrawIcons(false);
+
+                                dataSet.setSliceSpace(0f);
+                                dataSet.setIconsOffset(new MPPointF(0, 40));
+                                dataSet.setSelectionShift(5f);
+
+                                // add a lot of colors
+
+                                ArrayList<Integer> colors = new ArrayList<>();
+
+                                for (int c : ColorTemplate.VORDIPLOM_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.JOYFUL_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.COLORFUL_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.LIBERTY_COLORS)
+                                    colors.add(c);
+
+                                for (int c : ColorTemplate.PASTEL_COLORS)
+                                    colors.add(c);
+
+                                colors.add(ColorTemplate.getHoloBlue());
+
+                                dataSet.setColors(colors);
+                                //dataSet.setSelectionShift(0f);
+
+                                PieData data = new PieData(dataSet);
+//                            data.setValueFormatter(new PercentFormatter(piechart));
+                                data.setValueTextSize(11f);
+                                data.setValueTextColor(Color.WHITE);
+//                            data.setValueTypeface(tfLight);
+                                piechart.setData(data);
+
+                                // undo all highlights
+                                piechart.highlightValues(null);
+
+                                piechart.invalidate();
                             }
-
-                            ArrayList<MISClassWiseResultModel.FinalArray> values1 = new ArrayList<>();
-                            values1.addAll(response.body().getFinalarray().get(1).getData());
-
-                            ArrayList<MISClassWiseResultModel.FinalArray> values2 = new ArrayList<>();
-                            values2.addAll(response.body().getFinalarray().get(2).getData());
-
-                            ArrayList<BarEntry> yVals1 = new ArrayList<>();
-                            ArrayList<BarEntry> yVals2 = new ArrayList<>();
-
-                            // fill the lists
-                            for (int i = 0; i < values1.size(); i++) {
-                                yVals1.add(new BarEntry((i + 1), Float.valueOf(values1.get(i).getMarkGained().toString())));
-                                yVals2.add(new BarEntry((i + 1), Float.valueOf(values2.get(i).getMarkGained().toString())));
-
-
-                            }
-
-                            BarDataSet set1, set2;
-
-                            set1 = new BarDataSet(yVals1, response.body().getFinalarray().get(1).getTerm());
-                            set1.setColor(Color.rgb(192, 80, 77));
-                            set2 = new BarDataSet(yVals2, response.body().getFinalarray().get(2).getTerm());
-                            set2.setColor(Color.rgb(79, 129, 189));
-
-                            BarData data = new BarData(set1, set2);
-                            data.setValueFormatter(new LargeValueFormatter());
-
-
-                            chart.setData(data);
-                            chart.animateY(2500);
-
-                            chart.getBarData().setBarWidth(barWidth);
-                            chart.getXAxis().setAxisMinimum(0);
-                            chart.getXAxis().setAxisMaximum(0 + chart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
-
-                            //chart.getXAxis().setAxisMaximum(chart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
-                            chart.groupBars(0, groupSpace, barSpace);
-                            chart.getData().setHighlightEnabled(false);
-
-
-                            //X-axis
-                            XAxis xAxis = chart.getXAxis();
-                            xAxis.setGranularity(1f);
-                            xAxis.setGranularityEnabled(true);
-                            xAxis.setCenterAxisLabels(true);
-                            xAxis.setDrawGridLines(false);
-                            xAxis.setAxisMaximum(response.body().getFinalarray().get(1).getData().size());
-                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                            xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
-
-                            xAxis.setLabelCount(25, false);
-
-//Y-axis
-                            chart.getAxisLeft().setEnabled(false);
-                            YAxis leftAxis = chart.getAxisRight();
-                            leftAxis.setValueFormatter(new LargeValueFormatter());
-                            leftAxis.setDrawGridLines(true);
-                            leftAxis.setSpaceTop(35f);
-                            leftAxis.setAxisMinimum(0f);
-                            leftAxis.setGranularity(200f);
-                            leftAxis.setAxisMaximum(900);
-
-
                         }
                     }
                 } else {
@@ -339,6 +474,18 @@ public class ChartFragment extends Fragment {
             }
         });
     }
+
+//    private SpannableString generateCenterSpannableText() {
+//
+//        SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
+//        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
+//        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
+//        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
+//        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
+//        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
+//        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
+//        return s;
+//    }
 
 //    private void callTopperListChartApi() {
 //

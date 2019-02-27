@@ -15,6 +15,10 @@ public class TopperChartModel {
     @Expose
     private ArrayList<FinalArray> finalarray;
 
+    @SerializedName("GradeData")
+    @Expose
+    private ArrayList<GradeData> gradedata;
+
     public String getSuccess() {
         return success;
     }
@@ -25,6 +29,14 @@ public class TopperChartModel {
 
     public ArrayList<FinalArray> getFinalarray() {
         return finalarray;
+    }
+
+    public ArrayList<GradeData> getGradedata() {
+        return gradedata;
+    }
+
+    public void setGradedata(ArrayList<GradeData> gradedata) {
+        this.gradedata = gradedata;
     }
 
     public void setFinalarray(ArrayList<FinalArray> finalarray) {
@@ -54,6 +66,21 @@ public class TopperChartModel {
 
         public void setData(ArrayList<MISClassWiseResultModel.FinalArray> data) {
             this.data = data;
+        }
+    }
+
+    public class GradeData {
+
+        @SerializedName("Grade")
+        @Expose
+        private String grade;
+
+        public String getGrade() {
+            return grade;
+        }
+
+        public void setGrade(String grade) {
+            this.grade = grade;
         }
     }
 

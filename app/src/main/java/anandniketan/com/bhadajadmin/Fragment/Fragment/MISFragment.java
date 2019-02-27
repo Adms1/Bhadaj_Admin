@@ -243,14 +243,14 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
             @Override
             public void onClick(View v) {
                 fragment = new ChartFragment();
-//                bundle = new Bundle();
-//                bundle.putString("title", "All Student");
+                bundle = new Bundle();
+                bundle.putString("charttype", "range");
 //                bundle.putString("requestType", "Total");
 //                bundle.putString("TermID", FinalTermIdStr);
 //                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 //                bundle.putString("Gender", "");
 //
-//                fragment.setArguments(bundle);
+                fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
                         .add(R.id.frame_container, fragment).addToBackStack(null).commit();
