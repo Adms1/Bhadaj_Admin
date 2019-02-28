@@ -56,29 +56,57 @@
                     android:textSize="@dimen/_11ssp"
                     android:textStyle="bold" />
 
-
-                <Spinner
-                    android:id="@+id/chart_spTermdetail"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_below="@+id/header"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1.2"
-                    android:background="@drawable/dropdown_button"
-                    android:ellipsize="marquee"
-                    android:forceHasOverlappingRendering="false"
-                    android:gravity="center"
-                    android:overlapAnchor="false"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_3sdp"
-                    android:paddingBottom="1dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_11sdp"
-                    android:visibility="visible" />
+                    android:orientation="vertical">
+
+                    <Spinner
+                        android:id="@+id/chart_spTermdetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_below="@+id/header"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/dropdown_button"
+                        android:ellipsize="marquee"
+                        android:forceHasOverlappingRendering="false"
+                        android:gravity="center"
+                        android:overlapAnchor="false"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_3sdp"
+                        android:paddingBottom="1dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+                    <Spinner
+                        android:id="@+id/chart_spTerm"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_below="@+id/header"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/dropdown_button"
+                        android:ellipsize="marquee"
+                        android:forceHasOverlappingRendering="false"
+                        android:gravity="center"
+                        android:overlapAnchor="false"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_3sdp"
+                        android:paddingBottom="1dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_11sdp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -88,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="No Records Found"
+                android:text="@string/no_records_found"
                 android:textColor="@color/red"
                 android:visibility="gone" />
 
@@ -96,14 +124,15 @@
                 android:id="@+id/chart_topperchart"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_margin="@dimen/_10sdp" />
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/chart_rangechart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/_10sdp" />
-
+                android:rotation="90"
+                android:visibility="gone" />
 
         </LinearLayout>
 

@@ -37,14 +37,49 @@
                     android:textColor="@color/app_bg"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/btn_notification"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_36sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_toStartOf="@id/btnmenu">
+
+                    <ImageView
+                        android:id="@+id/iv_notification"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/grey_circle"
+                        android:padding="@dimen/_3sdp"
+                        android:src="@drawable/notification" />
+
+                    <TextView
+                        android:id="@+id/tv_notification"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/yellow_circle"
+                        android:gravity="center"
+                        android:padding="@dimen/_1sdp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8sdp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
                 <Button
                     android:id="@+id/btnmenu"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_43sdp"
+                    android:layout_marginEnd="@dimen/_30sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:layout_width="@dimen/_22sdp"
                     android:layout_height="@dimen/_22sdp"
                     android:layout_marginBottom="@dimen/_3sdp"
                     android:layout_marginLeft="@dimen/_260sdp"
-                    android:layout_marginRight="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_46sdp"
                     android:background="@drawable/menu" />
 
             </RelativeLayout>

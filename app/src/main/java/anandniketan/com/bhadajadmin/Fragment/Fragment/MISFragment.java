@@ -120,7 +120,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private Date dateCompareOne;
     private String compareStringOne = "4:00";
     private TextView tvTerm1Due, tvTerm2Due;
-    private ImageView topperBarChart;
+    private ImageView topperBarChart, rangeBarChart;
 
     public MISFragment() {
         // Required empty public constructor
@@ -152,6 +152,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         progressBar = rootView.findViewById(R.id.progress_schoolcalendar);
         llCalendar = rootView.findViewById(R.id.LL_schoolcalendar);
         topperBarChart = rootView.findViewById(R.id.mis_topper_bar_chart);
+        rangeBarChart = rootView.findViewById(R.id.mis_range_pie_chart);
 
         mContext = getActivity().getApplicationContext();
 
@@ -240,6 +241,26 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
 
         topperBarChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new ChartFragment();
+                bundle = new Bundle();
+                bundle.putString("charttype", "topper");
+//                bundle.putString("requestType", "Total");
+//                bundle.putString("TermID", FinalTermIdStr);
+//                bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
+//                bundle.putString("Gender", "");
+//
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 67;
+            }
+        });
+
+        rangeBarChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fragment = new ChartFragment();

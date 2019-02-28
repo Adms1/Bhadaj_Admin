@@ -46,6 +46,7 @@ import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportDetailModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISTaskReportModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
+import anandniketan.com.bhadajadmin.Model.MIS.RangeChartModel;
 import anandniketan.com.bhadajadmin.Model.MIS.TopperChartModel;
 import anandniketan.com.bhadajadmin.Model.MIS.TransportMainModel;
 import anandniketan.com.bhadajadmin.Model.MISModel;
@@ -973,5 +974,12 @@ public interface WebServices {
     @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("GetTopperWithComparison")
     Call<TopperChartModel> getTopperChart(@Field("TermDetailID") String TermDetailID);
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("GetCountRangeWise")
+    Call<RangeChartModel> getRangeChart(@Field("TermID") String TermID);
+
+    @retrofit2.http.GET("GetTerm")
+    Call<TermModel> getTerm();
 
 }

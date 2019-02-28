@@ -36,12 +36,21 @@
             android:id="@+id/mis_topper_bar_chart"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_toLeftOf="@+id/mis_range_pie_chart"
+            android:src="@drawable/bar_chart" />
+
+        <ImageView
+            android:id="@+id/mis_range_pie_chart"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_gravity="end|center_vertical"
             android:layout_marginRight="@dimen/_10sdp"
-            android:src="@drawable/bar_chart" />
-
+            android:src="@drawable/pie_chart" />
 
     </RelativeLayout>
 
