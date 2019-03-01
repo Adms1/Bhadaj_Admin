@@ -49,6 +49,7 @@ import anandniketan.com.bhadajadmin.Model.HR.LeaveStatusModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.Utility.WebServices;
@@ -266,9 +267,15 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment = new StaffLeaveFragment();
-                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+
+                AppConfiguration.position = 58;
+                AppConfiguration.firsttimeback = true;
+
+                getActivity().onBackPressed();
+
+//                fragment = new StaffLeaveFragment();
+//                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 

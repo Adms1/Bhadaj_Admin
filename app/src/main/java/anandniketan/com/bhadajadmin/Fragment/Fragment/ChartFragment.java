@@ -2,6 +2,7 @@ package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -69,8 +71,9 @@ public class ChartFragment extends Fragment {
     private HashMap<Integer, String> spinnerSchoolResultMap;
     private String FinalSchoolResultTermID = "1";
     private TextView noRecords, tvHeader;
-    private String chartType, FinalTermIdStr;
-    private Button btnBack, btnMenu;
+    private String FinalTermIdStr;
+    private ImageView btnBack;
+    private Button btnMenu;
     private PieChart piechart;
     private Legend l;
 
@@ -80,6 +83,9 @@ public class ChartFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         return inflater.inflate(R.layout.fragment_chart, container, false);
     }
 
@@ -91,13 +97,13 @@ public class ChartFragment extends Fragment {
         AppConfiguration.position = 58;
         AppConfiguration.firsttimeback = true;
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            chartType = bundle.getString("charttype");
-        }
+//        Bundle bundle = this.getArguments();
+//        if (bundle != null) {
+//            chartType = bundle.getString("charttype");
+//        }
 
         tvHeader = view.findViewById(R.id.textView3);
-        btnBack = view.findViewById(R.id.btnBack);
+        btnBack = view.findViewById(R.id.chart_btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
 
         spTermDetail = view.findViewById(R.id.chart_spTermdetail);
@@ -106,15 +112,15 @@ public class ChartFragment extends Fragment {
         noRecords = view.findViewById(R.id.chart_tv_no_records);
         piechart = view.findViewById(R.id.chart_rangechart);
 
-        if (chartType.equalsIgnoreCase("topper")) {
+//        if (chartType.equalsIgnoreCase("topper")) {
 
             tvHeader.setText("Class Topper Result");
 
-            spTermDetail.setVisibility(View.VISIBLE);
-            spTerm.setVisibility(View.GONE);
+//            spTermDetail.setVisibility(View.VISIBLE);
+//            spTerm.setVisibility(View.GONE);
 
-            piechart.setVisibility(View.GONE);
-            chart.setVisibility(View.VISIBLE);
+//            piechart.setVisibility(View.GONE);
+//            chart.setVisibility(View.VISIBLE);
 
             chart.getDescription().setEnabled(false);
             chart.setPinchZoom(false);
@@ -125,27 +131,27 @@ public class ChartFragment extends Fragment {
 
             fillSchoolResultTermSpinner();
 
-            Legend l = chart.getLegend();
-            l.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
-            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-            l.setOrientation(Legend.LegendOrientation.VERTICAL);
-            l.setDrawInside(false);
-            l.setYOffset(5f);
-            l.setXOffset(0f);
-            l.setYEntrySpace(0f);
-            l.setTextSize(8f);
+        Legend ll = chart.getLegend();
+        ll.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+        ll.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        ll.setOrientation(Legend.LegendOrientation.VERTICAL);
+        ll.setDrawInside(false);
+        ll.setYOffset(5f);
+        ll.setXOffset(10f);
+        ll.setYEntrySpace(10f);
+        ll.setTextSize(10f);
 
             callTopperListChartApi();
 
-        } else if (chartType.equalsIgnoreCase("range")) {
+//        } else if (chartType.equalsIgnoreCase("range")) {
 
             tvHeader.setText("Range Wise Student Result");
 
-            spTermDetail.setVisibility(View.GONE);
-            spTerm.setVisibility(View.VISIBLE);
+//            spTermDetail.setVisibility(View.GONE);
+//            spTerm.setVisibility(View.VISIBLE);
 
-            piechart.setVisibility(View.VISIBLE);
-            chart.setVisibility(View.GONE);
+//            piechart.setVisibility(View.VISIBLE);
+//            chart.setVisibility(View.GONE);
 
             piechart.setUsePercentValues(false);
             piechart.getDescription().setEnabled(false);
@@ -184,7 +190,7 @@ public class ChartFragment extends Fragment {
             // entry label styling
             piechart.setEntryLabelColor(Color.WHITE);
             piechart.setEntryLabelTextSize(12f);
-        }
+//        }
 
         setListener();
     }
@@ -221,9 +227,9 @@ public class ChartFragment extends Fragment {
                 Log.d("FinalTermIdStr", FinalSchoolResultTermID);
 
                 try {
-                    if (chartType.equalsIgnoreCase("topper")) {
+//                    if (chartType.equalsIgnoreCase("topper")) {
                         callTopperListChartApi();
-                    }
+//                    }
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -246,9 +252,9 @@ public class ChartFragment extends Fragment {
                 FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
 
-                if (chartType.equalsIgnoreCase("range")) {
+//                if (chartType.equalsIgnoreCase("range")) {
                     callRangeChartApi();
-                }
+//                }
             }
 
             @Override
@@ -305,7 +311,6 @@ public class ChartFragment extends Fragment {
                 Utils.ping(getActivity(), getString(R.string.something_wrong));
             }
         });
-
     }
 
     @SuppressLint("UseSparseArrays")
@@ -403,12 +408,13 @@ public class ChartFragment extends Fragment {
 
             @Override
             public void onResponse(@NonNull Call<TopperChartModel> call, @NonNull final retrofit2.Response<TopperChartModel> response) {
-                Utils.dismissDialog();
+
                 if (response.body() != null) {
 
                     if (response.body().getSuccess().equalsIgnoreCase("false")) {
                         noRecords.setVisibility(View.VISIBLE);
-                        chart.setVisibility(View.GONE);
+                        Utils.dismissDialog();
+//                        chart.setVisibility(View.GONE);
 //                        llHeader.setVisibility(View.GONE);
                         return;
                     }
@@ -418,7 +424,7 @@ public class ChartFragment extends Fragment {
                         if (response.body().getFinalarray() != null) {
                             noRecords.setVisibility(View.GONE);
 
-                            chart.setVisibility(View.VISIBLE);
+//                            chart.setVisibility(View.VISIBLE);
 
                             float groupSpace = 0.6f;
                             float barSpace = 0f; // x4 DataSet
@@ -430,7 +436,8 @@ public class ChartFragment extends Fragment {
                             final ArrayList<String> yVals = new ArrayList<>();
 
                             for (int i = 0; i < groupCount; i++) {
-                                xVals.add(response.body().getFinalarray().get(1).getData().get(i).getStandard() + "-" + response.body().getFinalarray().get(1).getData().get(i).getClassName());
+                                String newstr = response.body().getFinalarray().get(1).getData().get(i).getStandard() + "-" + response.body().getFinalarray().get(1).getData().get(i).getClassName();
+                                xVals.add(newstr);
                             }
 
                             for (int i = 0; i < response.body().getGradedata().size(); i++) {
@@ -441,6 +448,7 @@ public class ChartFragment extends Fragment {
 
                             yVals.add("0");
                             Collections.reverse(yVals);
+//                            Collections.reverse(xVals);
 
                             //X-axis
                             XAxis xAxis = chart.getXAxis();
@@ -449,7 +457,7 @@ public class ChartFragment extends Fragment {
                             xAxis.setCenterAxisLabels(true);
                             xAxis.setDrawGridLines(false);
                             xAxis.setAxisMinimum(0f);
-                            xAxis.setLabelRotationAngle(90);
+//                            xAxis.setLabelRotationAngle(90);
                             xAxis.setAxisMaximum(groupCount);
                             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                             xAxis.setValueFormatter(new IndexAxisValueFormatter(xVals));
@@ -464,6 +472,7 @@ public class ChartFragment extends Fragment {
                             leftAxis.setValueFormatter(new IndexAxisValueFormatter(yVals));
 //
                             chart.getAxisRight().setEnabled(false);
+                            chart.getAxisLeft().setAxisMinimum(0f);
                             leftAxis.setLabelCount(yVals.size(), false);
 
                             final ArrayList<MISClassWiseResultModel.FinalArray> values1 = new ArrayList<>(response.body().getFinalarray().get(1).getData());
@@ -530,15 +539,17 @@ public class ChartFragment extends Fragment {
                             chart.getBarData().setBarWidth(barWidth);
                             chart.getXAxis().setAxisMinimum(0);
                             chart.getXAxis().setAxisMaximum(0 + chart.getBarData().getGroupWidth(groupSpace, barSpace) * groupCount);
-                            chart.setVisibleXRange(0, 6);
+                            chart.setVisibleXRange(0, 7);
                             chart.groupBars(0, groupSpace, barSpace);
                             chart.getData().setHighlightEnabled(false);
                             chart.invalidate();
+
+                            Utils.dismissDialog();
                         }
                     }
                 } else {
                     Utils.dismissDialog();
-                    chart.setVisibility(View.GONE);
+//                    chart.setVisibility(View.GONE);
                     noRecords.setVisibility(View.VISIBLE);
                 }
             }
@@ -573,7 +584,7 @@ public class ChartFragment extends Fragment {
 
                     if (response.body().getSuccess().equalsIgnoreCase("false")) {
                         noRecords.setVisibility(View.VISIBLE);
-                        piechart.setVisibility(View.GONE);
+//                        piechart.setVisibility(View.GONE);
                         return;
                     }
 
@@ -582,7 +593,7 @@ public class ChartFragment extends Fragment {
                         if (response.body().getFinalarray() != null) {
                             noRecords.setVisibility(View.GONE);
 
-                            piechart.setVisibility(View.VISIBLE);
+//                            piechart.setVisibility(View.VISIBLE);
 
                             ArrayList<String> xVals = new ArrayList<>();
                             ArrayList<PieEntry> entries = new ArrayList<>();
@@ -633,6 +644,8 @@ public class ChartFragment extends Fragment {
                             data.setValueTextColor(Color.WHITE);
                             piechart.setData(data);
 
+                            piechart.setTouchEnabled(false);
+
 //                            piechart.setExtraOffsets(-10,-10,-10,-10);
                             // undo all highlights
                             piechart.highlightValues(null);
@@ -643,7 +656,7 @@ public class ChartFragment extends Fragment {
                     }
                 } else {
                     Utils.dismissDialog();
-                    piechart.setVisibility(View.GONE);
+//                    piechart.setVisibility(View.GONE);
                     noRecords.setVisibility(View.VISIBLE);
                 }
             }
