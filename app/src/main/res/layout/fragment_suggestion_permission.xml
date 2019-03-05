@@ -37,22 +37,21 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/linear_date1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_20sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
                         <TextView
-                            android:id="@+id/date_txt"
+                            android:id="@+id/type_txt_view"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:text="@string/date"
+                            android:text="@string/type"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
 
@@ -66,44 +65,25 @@
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
-                        <Button
-                            android:id="@+id/sug_fromdate_btn"
+                        <Spinner
+                            android:id="@+id/type_spinner"
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="0.92"
-                            android:background="@drawable/linear_border"
-                            android:paddingStart="@dimen/_1sdp"
-                            android:textSize="@dimen/_10sdp" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="0.25"
+                            android:layout_weight="1.5"
+                            android:background="@drawable/dropdown_button"
+                            android:forceHasOverlappingRendering="false"
                             android:gravity="center"
-                            android:text="To"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp" />
-
-                        <Button
-                            android:id="@+id/sug_todate_btn"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_25sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="0.92"
-                            android:background="@drawable/linear_border"
-                            android:paddingStart="@dimen/_1sdp"
-                            android:textSize="@dimen/_10sdp" />
+                            android:overlapAnchor="false" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_20sdp"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
                         android:orientation="horizontal"
                         android:weightSum="3">
 
@@ -113,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="0.8"
-                            android:text="@string/status"
+                            android:text="@string/assign"
                             android:textColor="@color/scheduleheadertextcolor"
                             android:textSize="@dimen/_11sdp" />
 
@@ -145,12 +125,12 @@
                         android:layout_width="@dimen/_70sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_weight="0.22"
                         android:background="@drawable/round_button"
-                        android:text="@string/search"
+                        android:text="@string/save"
                         android:textAllCaps="true"
                         android:textColor="@color/app_bg"
                         android:textSize="@dimen/_11sdp" />
@@ -174,8 +154,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:orientation="horizontal"
                     android:visibility="gone">
 
@@ -193,16 +173,11 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <ExpandableListView
+                    <android.support.v7.widget.RecyclerView
                         android:id="@+id/suggestion_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="@dimen/_1sdp"
-                        android:childDivider="@android:color/transparent"
-                        android:divider="@android:color/white"
-                        android:groupIndicator="@null"
                         android:scrollbars="none" />
-
                 </LinearLayout>
             </LinearLayout>
             <!--</ScrollView>-->

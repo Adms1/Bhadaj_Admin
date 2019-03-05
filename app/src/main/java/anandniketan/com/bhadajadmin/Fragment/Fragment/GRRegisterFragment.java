@@ -134,7 +134,7 @@ public class GRRegisterFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentGrregisterBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 AppConfiguration.TermName=name;
             }
@@ -152,7 +152,7 @@ public class GRRegisterFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentGrregisterBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 if (name.equalsIgnoreCase("All")){
@@ -177,7 +177,7 @@ public class GRRegisterFragment extends Fragment {
                 String getid = spinnerSectionMap.get(fragmentGrregisterBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 if (selectedsectionstr.equalsIgnoreCase("All")){
                     FinalSectionStr = "0";
                 }else{
@@ -329,10 +329,12 @@ public class GRRegisterFragment extends Fragment {
             public void success(final StudentAttendanceModel studentFullDetailModel, Response response) {
 //                Utils.dismissDialog();
                 if (studentFullDetailModel == null) {
+                    Utils.dismissDialog();
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (studentFullDetailModel.getSuccess() == null) {
+                    Utils.dismissDialog();
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }

@@ -190,7 +190,7 @@ public class StudentPermissionFragment extends Fragment {
                     AppConfiguration.position = 11;
 
                 } else if (position == 3 && permissionMap.get("Suggestion").getStatus().equalsIgnoreCase("true")) {
-                    fragment = new SuggestionFragment();
+                    fragment = new SuggestionPermissionFragment();
 
                     Bundle bundle = new Bundle();
 

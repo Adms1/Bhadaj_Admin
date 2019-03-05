@@ -66,6 +66,7 @@ import anandniketan.com.bhadajadmin.Model.Student.PlannerModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryProfileModel;
+import anandniketan.com.bhadajadmin.Model.Student.SuggestionDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.TestModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TransportChargesModel;
@@ -525,8 +526,7 @@ public interface WebServices {
     @retrofit2.http.POST("GetAllStaffLeaveRequest")
     Call<LeaveRequestModel> getAllStaffLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
 
-    @retrofit2.http.FormUrlEncoded
-    @retrofit2.http.POST("GetAllStudentLeaveRequest")
+    @retrofit2.http.GET("GetAllStudentLeaveRequest")
     Call<LeaveRequestModel> getAllStudentLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
 
     @FormUrlEncoded
@@ -981,5 +981,8 @@ public interface WebServices {
 
     @retrofit2.http.GET("GetTerm")
     Call<TermModel> getTerm();
+
+    @retrofit2.http.GET("GetParentSuggestion")
+    Call<SuggestionDataModel> getSuggestion();
 
 }

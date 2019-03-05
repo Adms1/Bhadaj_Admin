@@ -37,7 +37,7 @@ public class LeaveRequestModel {
 
     public class FinalArray {
 
-        @SerializedName("EmployeeName")
+        @SerializedName(value = "name", alternate = {"EmployeeName", "StudentName"})
         @Expose
         private String employeeName;
         @SerializedName("EmployeeID")
@@ -46,7 +46,13 @@ public class LeaveRequestModel {
         @SerializedName("ApplicationDate")
         @Expose
         private String applicationDate;
-        @SerializedName("LeaveDates")
+        @SerializedName("ClassName")
+        @Expose
+        private String classname;
+        @SerializedName("Standard")
+        @Expose
+        private String standard;
+        @SerializedName(value = "leave dates", alternate = {"LeaveDates", "LeaveDate"})
         @Expose
         private String leaveDates;
         @SerializedName("LeaveDays")
@@ -55,16 +61,19 @@ public class LeaveRequestModel {
         @SerializedName("Reason")
         @Expose
         private String reason;
+        @SerializedName("Comment")
+        @Expose
+        private String comment;
         @SerializedName("ApproveByName")
         @Expose
         private String approveByName;
         @SerializedName("ApproveDays")
         @Expose
         private String approveDays;
-        @SerializedName("StatusName")
+        @SerializedName(value = "statusval", alternate = {"StatusName", "Status"})
         @Expose
         private String statusName;
-        @SerializedName("PK_LeaveApproveID")
+        @SerializedName(value = "leaveid", alternate = {"PK_LeaveApproveID", "PK_LeaveID"})
         @Expose
         private Integer pKLeaveApproveID;
 
@@ -148,6 +157,37 @@ public class LeaveRequestModel {
             this.pKLeaveApproveID = pKLeaveApproveID;
         }
 
+        public String getClassname() {
+            return classname;
+        }
+
+        public void setClassname(String classname) {
+            this.classname = classname;
+        }
+
+        public String getStandard() {
+            return standard;
+        }
+
+        public void setStandard(String standard) {
+            this.standard = standard;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+
+        public Integer getpKLeaveApproveID() {
+            return pKLeaveApproveID;
+        }
+
+        public void setpKLeaveApproveID(Integer pKLeaveApproveID) {
+            this.pKLeaveApproveID = pKLeaveApproveID;
+        }
     }
 
 }

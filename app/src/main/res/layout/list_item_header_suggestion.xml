@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="@drawable/linear_border2">
+
+    <View
+        android:id="@+id/sug_colorChange"
+        android:layout_width="@dimen/_6sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:background="@color/yellow" />
+
+    <TextView
+        android:id="@+id/sug_tvHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_toRightOf="@+id/sug_colorChange"
+        android:text="TESTING SUBJECT Academic"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sug_tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sug_tvHeader"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_toRightOf="@+id/sug_colorChange"
+        android:text="29 Nov 2018"
+        android:textColor="@color/light_blue"
+        android:textSize="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/sug_tvSuggestDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:text="2 months ago"
+        android:textSize="@dimen/_12sdp" />
+
+</RelativeLayout>

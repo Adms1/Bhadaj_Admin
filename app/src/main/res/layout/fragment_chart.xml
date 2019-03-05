@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/chart_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fadeScrollbars="false"
@@ -93,7 +94,6 @@
                             android:textSize="@dimen/_11sdp"
                             android:visibility="visible" />
 
-
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -112,18 +112,19 @@
                     android:id="@+id/chart_topperchart"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_230sdp"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:visibility="visible" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:background="@color/light_blue" />
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/_1sdp"-->
+                <!--android:background="@color/light_blue" />-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_25sdp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="3">
@@ -172,6 +173,11 @@
                         android:visibility="visible" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/light_blue" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/chart_rangechart"

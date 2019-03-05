@@ -49,7 +49,6 @@ import anandniketan.com.bhadajadmin.Model.HR.LeaveStatusModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.Utility.WebServices;
@@ -90,9 +89,8 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private boolean isRecordInUpdate = false;
     private String updateDateFromDialog = "", type;
     private int lastExpandedPosition = -1;
-    private TextView tvHeader;
+    private TextView tvHeader, statusTxt, subjectTxt;
     private Button btnBack, btnMenu;
-
 
     public LeaveRequestFragment() {
 
@@ -132,6 +130,9 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         tvHeader = view.findViewById(R.id.textView3);
         btnBack = view.findViewById(R.id.btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
+
+        statusTxt = view.findViewById(R.id.status_txt);
+        subjectTxt = view.findViewById(R.id.leave_user_name);
 
         tvHeader.setText(R.string.leave_req);
 
@@ -198,8 +199,8 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         minute = calendar.get(Calendar.MINUTE);
         second = calendar.get(Calendar.SECOND);
 
-        fragmentLeaveRequestBinding.fromdateBtn.setText(Utils.getTodaysDate());
-        fragmentLeaveRequestBinding.todateBtn.setText(Utils.getTodaysDate());
+//        fragmentLeaveRequestBinding.fromdateBtn.setText(Utils.getTodaysDate());
+//        fragmentLeaveRequestBinding.todateBtn.setText(Utils.getTodaysDate());
 
         fragmentLeaveRequestBinding.fromdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,14 +269,16 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             @Override
             public void onClick(View view) {
 
-                AppConfiguration.position = 58;
-                AppConfiguration.firsttimeback = true;
+                if (type.equalsIgnoreCase("student")) {
+                    fragment = new StudentFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                } else {
+                    fragment = new StaffLeaveFragment();
+                    fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
 
-                getActivity().onBackPressed();
-
-//                fragment = new StaffLeaveFragment();
-//                fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-//                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                }
             }
         });
 
@@ -319,8 +322,16 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         Call<LeaveRequestModel> call = null;
 
         if (type.equalsIgnoreCase("student")) {
+
+            statusTxt.setText("Grade");
+            subjectTxt.setText("Student Name");
+
             call = apiService.getAllStudentLeaveRequest(getDetail());
         } else if (type.equalsIgnoreCase("staff")) {
+
+            statusTxt.setText("No. of Days");
+            subjectTxt.setText("Employee");
+
             call = apiService.getAllStaffLeaveRequest(getDetail());
         }
 
@@ -359,8 +370,9 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                         fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.GONE);
                         fragmentLeaveRequestBinding.explinear.setVisibility(View.VISIBLE);
                         fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.VISIBLE);
+
                         fillExpLV();
-                        expandableListCircular = new ExpandableLeaveRequest(getActivity(), listDataHeader, listDataChild, onAdapterItemButtonClick);
+                        expandableListCircular = new ExpandableLeaveRequest(getActivity(), listDataHeader, listDataChild, onAdapterItemButtonClick, type);
                         fragmentLeaveRequestBinding.leavereqList.setAdapter(expandableListCircular);
                     } else {
                         fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
@@ -391,8 +403,16 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         map.put("Type", FinalTypetext);
         map.put("FromDate", fragmentLeaveRequestBinding.fromdateBtn.getText().toString());
         map.put("ToDate", fragmentLeaveRequestBinding.todateBtn.getText().toString());
-        map.put("LeaveStatusID", FinalStatusIdStr);
-        map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", ""));
+
+        if (type.equalsIgnoreCase("student")) {
+            map.put("LeaveStatusID", fragmentLeaveRequestBinding.statusSpinner.getSelectedItem().toString());
+
+        } else {
+            map.put("LeaveStatusID", FinalStatusIdStr);
+            map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", ""));
+
+        }
+
         return map;
     }
 
@@ -586,7 +606,15 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         listDataChild = new HashMap<>();
 
         for (int i = 0; i < finalArrayAnnouncementFinal.size(); i++) {
-            listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + finalArrayAnnouncementFinal.get(i).getLeaveDays());
+
+            String classname;
+            if (type.equalsIgnoreCase("student")) {
+                classname = finalArrayAnnouncementFinal.get(i).getStandard() + "-" + finalArrayAnnouncementFinal.get(i).getClassname();
+            } else {
+                classname = finalArrayAnnouncementFinal.get(i).getLeaveDays();
+            }
+
+            listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname);
             Log.d("header", "" + listDataHeader);
             ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<>();
             row.add(finalArrayAnnouncementFinal.get(i));
@@ -605,7 +633,16 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         }
         ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetLeaveStatus.size(); j++) {
-            Term.add(finalArrayGetLeaveStatus.get(j).getStatusName());
+            if (type.equalsIgnoreCase("student"))
+                if (finalArrayGetLeaveStatus.get(j).getStatusName().equalsIgnoreCase("Approved By Admin")) {
+                    Term.add("Approved");
+                } else {
+                    Term.add(finalArrayGetLeaveStatus.get(j).getStatusName());
+                }
+
+            else {
+                Term.add(finalArrayGetLeaveStatus.get(j).getStatusName());
+            }
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
@@ -631,8 +668,6 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         fragmentLeaveRequestBinding.statusSpinner.setAdapter(adapterTerm);
 
         FinalStatusIdStr = spinnerOrderMap.get(0);
-
-        callLeaveRequestListApi();
 
     }
 

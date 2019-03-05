@@ -333,7 +333,8 @@ public class StudentFragment extends Fragment {
                     }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
-                } else if (position == 10 || permissionMap.get("Leave Request").getStatus().equalsIgnoreCase("true")) {
+
+                } else if (position == 11 && permissionMap.get("Leave Request").getStatus().equalsIgnoreCase("true")) {
                     fragment = new LeaveRequestFragment();
 
                     Bundle bundle = new Bundle();
@@ -353,6 +354,28 @@ public class StudentFragment extends Fragment {
                     }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
+
+                } else if (position == 12 && permissionMap.get("Suggestion").getStatus().equalsIgnoreCase("true")) {
+                    fragment = new SuggestionFragment();
+
+                    Bundle bundle = new Bundle();
+
+//                    bundle.putString("type", "student");
+                    bundle.putString("leavedeletestatus", permissionMap.get("Suggestion").getIsuserdelete());
+                    bundle.putString("leaveupdatestatus", permissionMap.get("Suggestion").getIsuserupdate());
+                    bundle.putString("leaveviewstatus", permissionMap.get("Suggestion").getIsuserview());
+
+                    fragment.setArguments(bundle);
+
+                    fragmentManager = getFragmentManager();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                .replace(R.id.frame_container, fragment).commit();
+                    }
+                    AppConfiguration.firsttimeback = true;
+                    AppConfiguration.position = 11;
+
                 } else {
                     Utils.ping(getActivity(), "Access Denied");
                 }

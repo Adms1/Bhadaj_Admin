@@ -14,8 +14,6 @@ import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
-import anandniketan.com.bhadajadmin.R;
-
 public class StickyScrollView extends ScrollView {
 
     /**
@@ -123,7 +121,7 @@ public class StickyScrollView extends ScrollView {
         return left;
     }
 
-    private int getTopForViewRelativeOnlyChild(View v){
+    public int getTopForViewRelativeOnlyChild(View v) {
         int top = v.getTop();
         while(v.getParent() != getChildAt(0)){
             v = (View) v.getParent();
@@ -141,7 +139,7 @@ public class StickyScrollView extends ScrollView {
         return right;
     }
 
-    private int getBottomForViewRelativeOnlyChild(View v){
+    public int getBottomForViewRelativeOnlyChild(View v) {
         int bottom = v.getBottom();
         while(v.getParent() != getChildAt(0)){
             v = (View) v.getParent();

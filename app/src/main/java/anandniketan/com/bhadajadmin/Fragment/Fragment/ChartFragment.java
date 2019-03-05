@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -76,6 +78,8 @@ public class ChartFragment extends Fragment {
     private Button btnMenu;
     private PieChart piechart;
     private Legend l;
+    private ScrollView scrollView;
+    private Handler timerHandler1, timerHandler;
 
     public ChartFragment() {
     }
@@ -111,6 +115,10 @@ public class ChartFragment extends Fragment {
         chart = view.findViewById(R.id.chart_topperchart);
         noRecords = view.findViewById(R.id.chart_tv_no_records);
         piechart = view.findViewById(R.id.chart_rangechart);
+        scrollView = view.findViewById(R.id.chart_scrollview);
+
+        timerHandler = new Handler();
+        timerHandler1 = new Handler();
 
 //        if (chartType.equalsIgnoreCase("topper")) {
 
@@ -211,6 +219,43 @@ public class ChartFragment extends Fragment {
                 AppConfiguration.firsttimeback = true;
 
                 Objects.requireNonNull(getActivity()).onBackPressed();
+            }
+        });
+
+//        scrollView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch(event.getAction()){
+//                    case MotionEvent.ACTION_DOWN:{
+//                        scrollView.fullScroll(scrollView.FOCUS_DOWN);         // 5 is how many pixels you want it to scroll vertically by
+//                        return true;
+//                    }
+//                    case MotionEvent.ACTION_UP:{
+//                        scrollView.fullScroll(scrollView.FOCUS_UP);         // 5 is how many pixels you want it to scroll vertically by
+//                        return true;
+//                    }
+//                }
+//
+//                return false;
+//            }
+//        });
+
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+
+                    scrollView.setSmoothScrollingEnabled(true);
+//                    scrollView.smoothScrollBy(0,v.getBottom());
+                    scrollView.fullScroll(View.FOCUS_DOWN);
+
+                } else {
+
+                    scrollView.setSmoothScrollingEnabled(true);
+//                    scrollView.smoothScrollBy(0,v.getTop());
+                    scrollView.fullScroll(View.FOCUS_UP);
+
+                }
             }
         });
 
