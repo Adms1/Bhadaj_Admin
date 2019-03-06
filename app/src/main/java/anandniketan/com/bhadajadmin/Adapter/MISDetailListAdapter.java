@@ -601,8 +601,10 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
 
             case 6:
 
-                if(requestType.equalsIgnoreCase("FeesNotPaid")){
-                    final MISNewAdmissionModel.FinalArray datum3 = (MISNewAdmissionModel.FinalArray) baseDataModel.get(position);
+                final MISNewAdmissionModel.FinalArray datum3 = (MISNewAdmissionModel.FinalArray) baseDataModel.get(position);
+
+                if (requestType.equalsIgnoreCase("FeesNotPaid")) {
+
                     ((NAViewHolder) holder).date_txt.setText(String.valueOf(datum3.getInqDate()));
                     ((NAViewHolder) holder).name_txt.setText(String.valueOf(datum3.getName()));
                     ((NAViewHolder) holder).grade_txt.setText(String.valueOf(datum3.getGrade()));
@@ -625,8 +627,8 @@ public class MISDetailListAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
                         }
                     });
 
-                }else {
-                    final MISNewAdmissionModel.FinalArray datum3 = (MISNewAdmissionModel.FinalArray) baseDataModel.get(position);
+                } else {
+//                    final MISNewAdmissionModel.FinalArray datum3 = (MISNewAdmissionModel.FinalArray) baseDataModel.get(position);
                     ((NAViewHolder) holder).date_txt.setText(String.valueOf(datum3.getInqDate()));
                     ((NAViewHolder) holder).name_txt.setText(String.valueOf(datum3.getName()));
                     ((NAViewHolder) holder).grade_txt.setText(String.valueOf(datum3.getGrade()));

@@ -15,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
@@ -27,9 +29,11 @@ import java.util.Objects;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Adapter.ExpandableSuggestion;
+import anandniketan.com.bhadajadmin.Interface.SuggestionReplyCallback;
 import anandniketan.com.bhadajadmin.Model.Student.SuggestionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiClient;
+import anandniketan.com.bhadajadmin.Utility.PrefUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.Utility.WebServices;
 import anandniketan.com.bhadajadmin.databinding.FragmentSuggestionBinding;
@@ -39,7 +43,7 @@ import retrofit2.Callback;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SuggestionFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class SuggestionFragment extends Fragment implements DatePickerDialog.OnDateSetListener, SuggestionReplyCallback {
 
     private static String dateFinal = "", FinalStatusIdStr;
     private FragmentSuggestionBinding fragmentSuggestionBinding;
@@ -49,14 +53,24 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
     private FragmentManager fragmentManager = null;
     private DatePickerDialog datePickerDialog;
     private int whichDateClicked = 1;
+    private int lastExpandedPosition = -1;
     private int Year, Month, Day;
     private Calendar calendar;
     private View rootView;
     private Context mContext;
+    private SuggestionReplyCallback suggestionReplyCallback;
     private ArrayList<SuggestionDataModel.FinalArray> finalArraySuggestionFinal;
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listDataChild;
     private ExpandableSuggestion expandableSuggestion;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        suggestionReplyCallback = this;
+
+    }
 
     public SuggestionFragment() {
         // Required empty public constructor
@@ -98,11 +112,29 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
 //        minute = calendar.get(Calendar.MINUTE);
 //        second = calendar.get(Calendar.SECOND);
 
+        fragmentSuggestionBinding.sugFromdateBtn.setText(Utils.getTodaysDate());
+        fragmentSuggestionBinding.sugTodateBtn.setText(Utils.getTodaysDate());
+
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
             }
+        });
+
+        fragmentSuggestionBinding.suggestionList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+
+            @Override
+
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1
+                        && groupPosition != lastExpandedPosition) {
+                    fragmentSuggestionBinding.suggestionList.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+
         });
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -159,7 +191,7 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
         Utils.showDialog(getActivity());
         WebServices apiService = ApiClient.getClient().create(WebServices.class);
 
-        Call<SuggestionDataModel> call = apiService.getSuggestion();
+        Call<SuggestionDataModel> call = apiService.getSuggestion(getSuggestionDetail());
 
         call.enqueue(new Callback<SuggestionDataModel>() {
 
@@ -198,8 +230,8 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
                         fragmentSuggestionBinding.suggestionList.setVisibility(View.VISIBLE);
 
                         fillExpLV();
-//                        expandableListCircular = new ExpandableSuggestion(getActivity(), listDataHeader, listDataChild, onAdapterItemButtonClick);
-//                        fragmentSuggestionBinding.suggestionList.setAdapter(expandableListCircular);
+                        expandableSuggestion = new ExpandableSuggestion(getActivity(), listDataHeader, listDataChild, "", suggestionReplyCallback);
+                        fragmentSuggestionBinding.suggestionList.setAdapter(expandableSuggestion);
                     } else {
                         fragmentSuggestionBinding.txtNoRecords.setVisibility(View.VISIBLE);
                         fragmentSuggestionBinding.recyclerLinear.setVisibility(View.GONE);
@@ -221,6 +253,16 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
+    }
+
+    private HashMap<String, String> getSuggestionDetail() {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("FromDate", fragmentSuggestionBinding.sugFromdateBtn.getText().toString());
+        map.put("ToDate", fragmentSuggestionBinding.sugTodateBtn.getText().toString());
+        map.put("Status", fragmentSuggestionBinding.assignSpinner.getSelectedItem().toString());
+        map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
+
+        return map;
     }
 
     public void fillExpLV() {
@@ -274,7 +316,7 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
 
         ArrayList<String> status = new ArrayList<>();
 
-        status.add("-Select-");
+        status.add("--Select--");
         status.add("Pending");
         status.add("Replying");
 
@@ -282,6 +324,80 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
         fragmentSuggestionBinding.assignSpinner.setAdapter(adapterTerm);
 
         FinalStatusIdStr = status.get(0);
+    }
+
+    @Override
+    public void onReply(int grpos, int chpos, String message) {
+        callSuggestionReplyApi(grpos, chpos, message);
+    }
+
+    private void callSuggestionReplyApi(int gr, int ch, String msg) {
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        WebServices apiService = ApiClient.getClient().create(WebServices.class);
+
+        Call<JsonObject> call = apiService.getReplyParentSuggestion(getSuggestionReplyDetail(gr, ch, msg));
+
+        call.enqueue(new Callback<JsonObject>() {
+
+//        ApiHandler.getApiService().getAllStaffLeaveRequest(getDetail(), new retrofit.Callback<SuggestionDataModel>() {
+
+            @Override
+            public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
+                Utils.dismissDialog();
+                if (response.body() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    fragmentSuggestionBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    fragmentSuggestionBinding.recyclerLinear.setVisibility(View.GONE);
+//                    fragmentSuggestionBinding.suggestionList.setVisibility(View.GONE);
+                    return;
+                }
+                if (response.body().get("Success") == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    fragmentSuggestionBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    fragmentSuggestionBinding.recyclerLinear.setVisibility(View.GONE);
+//                    fragmentSuggestionBinding.suggestionList.setVisibility(View.GONE);
+                    return;
+                }
+                if (response.body().get("Success").getAsString().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+
+//                    fragmentSuggestionBinding.txtNoRecords.setVisibility(View.VISIBLE);
+//                    fragmentSuggestionBinding.recyclerLinear.setVisibility(View.GONE);
+//                    fragmentSuggestionBinding.suggestionList.setVisibility(View.GONE);
+                    return;
+                }
+                if (response.body().get("Success").getAsString().equalsIgnoreCase("True")) {
+                    Utils.ping(mContext, "Reply Send");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Utils.dismissDialog();
+                t.printStackTrace();
+                t.getMessage();
+                fragmentSuggestionBinding.txtNoRecords.setText(t.getMessage());
+                fragmentSuggestionBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                fragmentSuggestionBinding.recyclerLinear.setVisibility(View.GONE);
+                fragmentSuggestionBinding.suggestionList.setVisibility(View.GONE);
+
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+    }
+
+    private HashMap<String, String> getSuggestionReplyDetail(int gr, int ch, String msg) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("PK_SuggestionID", listDataChild.get(listDataHeader.get(gr)).get(ch).getPk_suggestionid());
+        map.put("Reply", msg);
+        map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
+
+        return map;
     }
 
 }

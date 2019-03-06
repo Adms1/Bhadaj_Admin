@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Utility;
 import com.google.gson.JsonObject;
 import com.squareup.okhttp.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -982,7 +983,12 @@ public interface WebServices {
     @retrofit2.http.GET("GetTerm")
     Call<TermModel> getTerm();
 
-    @retrofit2.http.GET("GetParentSuggestion")
-    Call<SuggestionDataModel> getSuggestion();
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("GetParentSuggestion")
+    Call<SuggestionDataModel> getSuggestion(@retrofit2.http.FieldMap HashMap<String, String> map);
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("ReplyToParentSuggestion")
+    Call<JsonObject> getReplyParentSuggestion(@retrofit2.http.FieldMap HashMap<String, String> map);
 
 }

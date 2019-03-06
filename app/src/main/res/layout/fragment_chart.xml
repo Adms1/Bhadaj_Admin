@@ -176,14 +176,16 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
+                    android:layout_height="0.5dp"
                     android:background="@color/light_blue" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/chart_rangechart"
-                    android:layout_width="@dimen/_400sdp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/_230sdp"
-                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:visibility="visible" />
 
             </LinearLayout>

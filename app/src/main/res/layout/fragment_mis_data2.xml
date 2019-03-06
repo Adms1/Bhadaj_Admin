@@ -60,9 +60,6 @@
                 android:layout_marginTop="@dimen/_39sdp"
                 android:background="@drawable/menu" />
 
-
-
-
             <RelativeLayout
                 android:id="@+id/ll_firstconatiner"
                 android:layout_width="match_parent"
@@ -86,13 +83,56 @@
                     android:visibility="visible" />
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/misdata_llSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_firstconatiner"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="3">
 
+                <TextView
+                    android:id="@+id/emisdata_std_txt_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8"
+                    android:text="@string/standard"
+                    android:textColor="@color/scheduleheadertextcolor"
+                    android:textSize="@dimen/_11sdp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.1"
+                    android:text=":"
+                    android:textColor="@color/scheduleheadertextcolor"
+                    android:textSize="@dimen/_11sdp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/misdata_grade_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.8"
+                    android:background="@drawable/dropdown_button"
+                    android:forceHasOverlappingRendering="false"
+                    android:gravity="center"
+                    android:overlapAnchor="false" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtNoRecords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/ll_firstconatiner"
+                android:layout_below="@+id/misdata_llSpinner"
                 android:gravity="center"
                 android:layout_gravity="center_vertical"
                 android:text="No Records Found..."
@@ -113,7 +153,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:background="@color/white1">
-
 
                     <LinearLayout
                         android:id="@+id/lv_header2"

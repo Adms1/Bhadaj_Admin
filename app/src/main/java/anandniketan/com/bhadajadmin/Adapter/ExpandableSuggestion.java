@@ -2,42 +2,45 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Interface.OnAdapterItemButtonClick;
+import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
+import anandniketan.com.bhadajadmin.Interface.SuggestionReplyCallback;
 import anandniketan.com.bhadajadmin.Model.Student.SuggestionDataModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.DialogUtils;
 
 public class ExpandableSuggestion extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listChildData;
-    private OnAdapterItemButtonClick onAdapterItemButtonClick;
-    private String type;
+    private SuggestionReplyCallback suggestionReplyCallback;
+//    private String type;
 
-    public ExpandableSuggestion(Context context, List<String> listDataHeader, HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listDataChild, OnAdapterItemButtonClick onAdapterItemButtonClick, String type) {
+    public ExpandableSuggestion(Context context, List<String> listDataHeader, HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listDataChild, String type, SuggestionReplyCallback suggestionReplyCallback) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this.listChildData = listDataChild;
-        this.onAdapterItemButtonClick = onAdapterItemButtonClick;
-        this.type = type;
+        this.suggestionReplyCallback = suggestionReplyCallback;
+//        this.type = type;
 
-    }
-
-    @Override
-    public List<SuggestionDataModel.FinalArray> getChild(int groupPosition, int childPosititon) {
-        return this.listChildData.get(this._listDataHeader.get(groupPosition));
     }
 
     @Override
@@ -45,106 +48,94 @@ public class ExpandableSuggestion extends BaseExpandableListAdapter {
         return childPosition;
     }
 
+
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         final List<SuggestionDataModel.FinalArray> childData = getChild(groupPosition, 0);
 
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (infalInflater != null) {
-                convertView = infalInflater.inflate(R.layout.layout_list_item_child_leave_request, null);
-
-                TextView txtlabel, txt_leavedate, txt_reason_label, txt_reason, tvComment;
-                RelativeLayout linearButtons;
-                LinearLayout llComment;
-                Button btnApprove, btnReject, btnModify;
-                txtlabel = convertView.findViewById(R.id.txt_label);
-                txt_leavedate = convertView.findViewById(R.id.txt_leavedate);
-                txt_reason_label = convertView.findViewById(R.id.txt_reason_label);
-                txt_reason = convertView.findViewById(R.id.txt_reason);
-                tvComment = convertView.findViewById(R.id.txt_comment);
-                llComment = convertView.findViewById(R.id.ll_comment);
-                linearButtons = convertView.findViewById(R.id.RL_buttons);
-                btnApprove = convertView.findViewById(R.id.btn_approve);
-                btnReject = convertView.findViewById(R.id.btn_reject);
-                btnModify = convertView.findViewById(R.id.btn_modify);
-
-                if (type.equalsIgnoreCase("student")) {
-
-                } else {
-
-                }
-
-//                tvComment.setText(childData.get(childPosition).getComment());
-//                txt_reason.setText(childData.get(childPosition).getReason());
-//                txt_leavedate.setText(childData.get(childPosition).getLeaveDates());
-//
-//                if(type.equalsIgnoreCase("student")){
-//
-//                    llComment.setVisibility(View.VISIBLE);
-//
-//                    if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Rejected")) {
-//
-//                        linearButtons.setVisibility(View.GONE);
-//
-//                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Approved")) {
-//                        linearButtons.setVisibility(View.GONE);
-//
-//                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Pending")) {
-//                        linearButtons.setVisibility(View.VISIBLE);
-//                        btnModify.setVisibility(View.GONE);
-//
-//                    }
-//                }else {
-//
-//                    llComment.setVisibility(View.GONE);
-//
-//                    if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Rejected")) {
-//
-//                        linearButtons.setVisibility(View.GONE);
-//
-//                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Approved By Admin")) {
-//                        linearButtons.setVisibility(View.VISIBLE);
-//                        btnApprove.setVisibility(View.GONE);
-//                        btnModify.setVisibility(View.GONE);
-//
-//                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Pending")) {
-//                        linearButtons.setVisibility(View.VISIBLE);
-//                    }
-//                }
-
-
-                btnApprove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-
-                    }
-                });
-
-                btnReject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-
-                    }
-                });
-
-                btnModify.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        onAdapterItemButtonClick.onItemButtonClick(OnAdapterItemButtonClick.Action.MODIFY, groupPosition);
-
-                    }
-                });
-
-
+                convertView = infalInflater.inflate(R.layout.layout_list_item_child_suggestion, null);
             }
         }
 
+        TextView tvReply, tvComment, tvStudent, tvReplyDate;
+        final Button btnReply, btnSend, btnCancel;
+        final RelativeLayout llBottom;
+        final EditText etMessage;
+
+        tvReply = convertView.findViewById(R.id.sug_tvReply);
+        tvComment = convertView.findViewById(R.id.sug_tvComment);
+        tvStudent = convertView.findViewById(R.id.sug_tvStudent);
+        tvReplyDate = convertView.findViewById(R.id.sug_tvReplydate);
+        btnReply = convertView.findViewById(R.id.sug_btnReply);
+        btnSend = convertView.findViewById(R.id.sug_btnSend);
+        btnCancel = convertView.findViewById(R.id.sug_btnCancel);
+        etMessage = convertView.findViewById(R.id.sug_etMessage);
+        llBottom = convertView.findViewById(R.id.sug_llLower);
+
+        tvReply.setText(childData.get(childPosition).getReply());
+        tvComment.setText(childData.get(childPosition).getComment());
+        tvStudent.setText(childData.get(childPosition).getStu_name() + ", " + childData.get(childPosition).getStandard() + " - " + childData.get(childPosition).getClassname());
+        tvReplyDate.setText(parseDateToddMMyyyy("yyyy-MM-dd'T'HH:mm:ss.SSSS", "dd MMM yyyy HH:mm a", childData.get(childPosition).getSuggestiondatetime()));
+
+        if (childData.get(childPosition).getStatus().equalsIgnoreCase("Replying")) {
+
+            llBottom.setVisibility(View.GONE);
+            btnReply.setVisibility(View.GONE);
+
+        } else {
+            tvReply.setVisibility(View.GONE);
+            llBottom.setVisibility(View.GONE);
+            btnReply.setVisibility(View.VISIBLE);
+
+            btnReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    llBottom.setVisibility(View.VISIBLE);
+                    btnReply.setVisibility(View.GONE);
+                }
+            });
+
+            btnSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!etMessage.getText().toString().equalsIgnoreCase("")) {
+                        suggestionReplyCallback.onReply(groupPosition, childPosition, etMessage.getText().toString());
+                    } else {
+                        DialogUtils.createConfirmDialog((DashboardActivity) _context, "Please enter message", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+
+                        }).show();
+                    }
+                }
+            });
+
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    llBottom.setVisibility(View.GONE);
+                    etMessage.getText().clear();
+                    btnReply.setVisibility(View.VISIBLE);
+                }
+            });
+
+        }
+
+
         return convertView;
+    }
+
+
+    @Override
+    public List<SuggestionDataModel.FinalArray> getChild(int groupPosition, int childPosititon) {
+        return this.listChildData.get(this._listDataHeader.get(groupPosition));
     }
 
     @Override
@@ -185,14 +176,23 @@ public class ExpandableSuggestion extends BaseExpandableListAdapter {
         TextView tvHeader, tvDate, tvSDate;
         View viewChange;
 
+        Calendar startCalendar = new GregorianCalendar();
+        startCalendar.setTime(Calendar.getInstance().getTime());
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(parseDateToddMMyyyy(headerTitle3));
+
+        int diffYear = startCalendar.get(Calendar.YEAR) - endCalendar.get(Calendar.YEAR);
+        int diffMonth = diffYear * 12 + startCalendar.get(Calendar.MONTH) - endCalendar.get(Calendar.MONTH);
+
         tvHeader = convertView.findViewById(R.id.sug_tvHeader);
         tvDate = convertView.findViewById(R.id.sug_tvDate);
         tvSDate = convertView.findViewById(R.id.sug_tvSuggestDate);
         viewChange = convertView.findViewById(R.id.sug_colorChange);
 
+//        2018-11-26T12:39:13.657
         tvHeader.setText(headerTitle1);
-        tvDate.setText(headerTitle2);
-        tvSDate.setText(headerTitle3);
+        tvDate.setText(parseDateToddMMyyyy("dd/MM/yyyy", "dd MMM yyyy", headerTitle2));
+        tvSDate.setText((diffMonth + " month ago"));
 
 //            }
 //        }
@@ -216,6 +216,34 @@ public class ExpandableSuggestion extends BaseExpandableListAdapter {
         return true;
     }
 
+    public String parseDateToddMMyyyy(String inputpattern, String outputpattern, String time) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputpattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputpattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public Date parseDateToddMMyyyy(String time) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS");
+
+        Date date = null;
+
+        try {
+            date = format.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
 }
 

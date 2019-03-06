@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,6 +31,8 @@ import anandniketan.com.bhadajadmin.Adapter.ExapandableListAdapterSMSRepoetData;
 import anandniketan.com.bhadajadmin.Adapter.MISAccountHeaderAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISDetailListAdapter;
 import anandniketan.com.bhadajadmin.Adapter.MISStudentAdapter;
+import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
+import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISAccountModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISNewAdmissionModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MISStaffModel;
@@ -64,6 +69,7 @@ public class MISDataListFragment extends Fragment {
     private List<MISAccountModel.Datum> misAccountHeaderDataList;
     private List<MISAccountModel.ClassDatum> misAccountDataList;
     private List<MISNewAdmissionModel.FinalArray> misNADataList;
+    private List<MISNewAdmissionModel.FinalArray> searchResults = new ArrayList<>();
     private ExapandableListAdapterSMSRepoetData exapandableListAdapterSMSRepoetData;
     private List<StudentAttendanceFinalArray> finalArrayinquiryCountList;
 
@@ -81,12 +87,16 @@ public class MISDataListFragment extends Fragment {
     private Handler handler;
     private ProgressBar progressBar;
 
+    //standard spinner
+    private List<FinalArrayStandard> finalArrayStandardsList;
+    private HashMap<Integer, String> spinnerStandardMap;
+    private String FinalStandardStr, FinalStandardIdStr, StandardName;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
-
 
     @Nullable
     @Override
@@ -561,6 +571,7 @@ public class MISDataListFragment extends Fragment {
 
             } else if (title.equalsIgnoreCase("New Addmission")) {
 
+                fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.VISIBLE);
 
                 if (requestType.equalsIgnoreCase("FeesNotPaid")) {
 
@@ -662,6 +673,12 @@ public class MISDataListFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
     public void setListners() {
         fragmentMisDataBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -680,6 +697,71 @@ public class MISDataListFragment extends Fragment {
                 DashboardActivity.onLeft();
             }
         });
+
+        fragmentMisDataBinding.misdataGradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = fragmentMisDataBinding.misdataGradeSpinner.getSelectedItem().toString();
+                String getid = spinnerStandardMap.get(fragmentMisDataBinding.misdataGradeSpinner.getSelectedItemPosition());
+
+                Log.d("value", name + " " + getid);
+                FinalStandardIdStr = getid;
+                Log.d("FinalStandardIdStr", FinalStandardIdStr);
+                StandardName = name;
+                FinalStandardStr = name;
+                Log.d("StandardName", StandardName);
+
+                //clear the initial data set
+                searchResults = new ArrayList<>();
+
+                if (name.equalsIgnoreCase("All")) {
+                    searchResults.addAll(misNADataList);
+                } else {
+                    for (int i = 0; i < misNADataList.size(); i++) {
+                        //compare the String in EditText with Names in the ArrayList
+                        if (name.equalsIgnoreCase(misNADataList.get(i).getGrade())) {
+                            searchResults.add(misNADataList.get(i));
+                        }
+                    }
+                }
+
+                Log.e("stdsize", "" + searchResults.size());
+
+                if (searchResults.size() > 0) {
+
+                    fragmentMisDataBinding.rvMisdataList.setVisibility(View.VISIBLE);
+                    fragmentMisDataBinding.lvHeader2.setVisibility(View.VISIBLE);
+//                    fragmentMisDataBinding.lvHeader.setVisibility(View.VISIBLE);
+                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.VISIBLE);
+                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.VISIBLE);
+                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);
+
+                    fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + String.valueOf(searchResults.size()));
+
+                    misDetailListAdapter = new MISDetailListAdapter(getActivity(), searchResults, 6, requestType);
+                    fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
+                    fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+//                    misDetailListAdapter.notifyDataSetChanged();
+                } else {
+
+                    fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + "0");
+                    fragmentMisDataBinding.rvMisdataList.setVisibility(View.GONE);
+                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
+                    fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
+                    fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
+                    fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
+                    fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -1332,10 +1414,7 @@ public class MISDataListFragment extends Fragment {
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
 
-
                     try {
-                        progressBar.setVisibility(View.GONE);
-
 
                         misNADataList = staffSMSDataModel.getFinalArray();
 
@@ -1348,14 +1427,16 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
 
+//                        if (countdata != null) {
+//                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
+//                        }
 
-                        if (countdata != null) {
-                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
-                        }
+//                        misDetailListAdapter = new MISDetailListAdapter(getActivity(), misNADataList, 6, requestType);
+//                        fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
+//                        fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
 
-                        misDetailListAdapter = new MISDetailListAdapter(getActivity(), misNADataList, 6, requestType);
-                        fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
-                        fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+                        callStandardApi();
+                        progressBar.setVisibility(View.GONE);
 
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -1580,6 +1661,92 @@ public class MISDataListFragment extends Fragment {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    //Standard Filter
+    // CALL Standard API HERE
+    private void callStandardApi() {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+//        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getStandardDetail(getStandardDetail(), new retrofit.Callback<GetStandardModel>() {
+            @Override
+            public void success(GetStandardModel standardModel, Response response) {
+                Utils.dismissDialog();
+                if (standardModel == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (standardModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (standardModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    return;
+                }
+                if (standardModel.getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayStandardsList = standardModel.getFinalArray();
+                    if (finalArrayStandardsList != null) {
+                        fillGradeSpinner();
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+
+    }
+
+    private Map<String, String> getStandardDetail() {
+        Map<String, String> map = new HashMap<>();
+        return map;
+    }
+
+    //Use for fill the Standard Spinner
+    public void fillGradeSpinner() {
+        ArrayList<String> firstValue = new ArrayList<>();
+        firstValue.add("All");
+
+        ArrayList<String> standardname = new ArrayList<>();
+        for (int z = 0; z < firstValue.size(); z++) {
+            standardname.add(firstValue.get(z));
+            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+                standardname.add(finalArrayStandardsList.get(i).getStandard());
+            }
+        }
+        ArrayList<Integer> firstValueId = new ArrayList<>();
+        firstValueId.add(0);
+        ArrayList<Integer> standardId = new ArrayList<>();
+        for (int m = 0; m < firstValueId.size(); m++) {
+            standardId.add(firstValueId.get(m));
+            for (int j = 0; j < finalArrayStandardsList.size(); j++) {
+                standardId.add(finalArrayStandardsList.get(j).getStandardID());
+            }
+        }
+        String[] spinnerstandardIdArray = new String[standardId.size()];
+
+        spinnerStandardMap = new HashMap<>();
+        for (int i = 0; i < standardId.size(); i++) {
+            spinnerStandardMap.put(i, String.valueOf(standardId.get(i)));
+            spinnerstandardIdArray[i] = standardname.get(i).trim();
+        }
+
+
+        ArrayAdapter<String> adapterstandard = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerstandardIdArray);
+        fragmentMisDataBinding.misdataGradeSpinner.setAdapter(adapterstandard);
+
+        FinalStandardStr = spinnerStandardMap.get(0);
     }
 
 }
