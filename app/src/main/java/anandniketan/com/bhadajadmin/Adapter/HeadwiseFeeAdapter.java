@@ -173,7 +173,7 @@ public class HeadwiseFeeAdapter extends RecyclerView.Adapter<HeadwiseFeeAdapter.
         holder.ivSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.msg_confirm_msg, new DialogInterface.OnClickListener() {
+                DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.msg_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 

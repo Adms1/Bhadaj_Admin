@@ -67,7 +67,6 @@ public class NotificationFragment extends Fragment {
 
         rvList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-
         header.setText(R.string.notifications);
 
         btnMenu.setOnClickListener(new View.OnClickListener() {

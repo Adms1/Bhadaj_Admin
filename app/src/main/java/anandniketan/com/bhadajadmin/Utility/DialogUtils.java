@@ -39,13 +39,14 @@ public class DialogUtils {
 
         return builder.create();
     }
-    public static Dialog createConfirmDialog(Context context, @StringRes int titleId, @StringRes int messageId, DialogInterface.OnClickListener positiveClickListener,DialogInterface.OnClickListener negativeClickListener) {
+
+    public static Dialog createConfirmDialog(Context context, @StringRes int titleId, @StringRes int messageId, String positiveTxt, String negativeTxt, DialogInterface.OnClickListener positiveClickListener, DialogInterface.OnClickListener negativeClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(titleId);
         builder.setMessage(messageId);
        // builder.setView(view);
-        builder.setPositiveButton(R.string.ok,positiveClickListener);
-        builder.setNegativeButton(R.string.mdtp_cancel,negativeClickListener);
+        builder.setPositiveButton(positiveTxt, positiveClickListener);
+        builder.setNegativeButton(negativeTxt, negativeClickListener);
 
         return builder.create();
     }

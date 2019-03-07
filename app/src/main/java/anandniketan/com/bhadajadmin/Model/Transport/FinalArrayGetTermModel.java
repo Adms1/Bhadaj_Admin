@@ -11,7 +11,10 @@ public class FinalArrayGetTermModel {
     @SerializedName("TermId")
     @Expose
     private Integer termId;
-    @SerializedName("Term")
+    @SerializedName("Value")
+    @Expose
+    private String value;
+    @SerializedName(value = "id", alternate = {"Term", "Name"})
     @Expose
     private String term;
 
@@ -29,5 +32,13 @@ public class FinalArrayGetTermModel {
 
     public void setTerm(String term) {
         this.term = term;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

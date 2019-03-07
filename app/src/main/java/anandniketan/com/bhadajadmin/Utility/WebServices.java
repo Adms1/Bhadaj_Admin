@@ -527,7 +527,8 @@ public interface WebServices {
     @retrofit2.http.POST("GetAllStaffLeaveRequest")
     Call<LeaveRequestModel> getAllStaffLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
 
-    @retrofit2.http.GET("GetAllStudentLeaveRequest")
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("GetAllStudentLeaveRequest")
     Call<LeaveRequestModel> getAllStudentLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
 
     @FormUrlEncoded
@@ -990,5 +991,12 @@ public interface WebServices {
     @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("ReplyToParentSuggestion")
     Call<JsonObject> getReplyParentSuggestion(@retrofit2.http.FieldMap HashMap<String, String> map);
+
+    @retrofit2.http.GET("GetInquiryStatus")
+    Call<TermModel> getInquiryStatus();
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("BirthdayWish")
+    Call<JsonObject> getBirthdaywish(@Field("StaffID") String StaffID, @Field("Type") String Type, @Field("ReceiverID") String ReceiverID);
 
 }

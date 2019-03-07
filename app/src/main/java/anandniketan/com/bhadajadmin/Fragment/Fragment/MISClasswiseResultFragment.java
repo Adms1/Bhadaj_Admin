@@ -115,7 +115,14 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
         fragmentClasswiseResultBinding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStackImmediate();
+
+                AppConfiguration.position = 58;
+                AppConfiguration.firsttimeback = true;
+
+                getActivity().onBackPressed();
+
+
+//                getActivity().getSupportFragmentManager().popBackStackImmediate();
 //                fragment = new MISFragment();
 //                fragmentManager = getFragmentManager();
 //                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
@@ -141,7 +148,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                 String getid = spinnerStandardMap.get(fragmentClasswiseResultBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 if (name.equalsIgnoreCase("All")) {
@@ -167,7 +174,7 @@ public class MISClasswiseResultFragment extends Fragment implements ResponseCall
                 String getid = spinnerSectionMap.get(fragmentClasswiseResultBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 if (selectedsectionstr.equalsIgnoreCase("All")) {
                     FinalSectionStr = "0";
                 } else {

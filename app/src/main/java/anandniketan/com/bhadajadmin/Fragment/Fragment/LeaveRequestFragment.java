@@ -87,7 +87,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private Dialog dialog;
     private int leaveStatus = 0;
     private boolean isRecordInUpdate = false;
-    private String updateDateFromDialog = "", type;
+    private String updateDateFromDialog = "", type, nid, ndate, nytpe;
     private int lastExpandedPosition = -1;
     private TextView tvHeader, statusTxt, subjectTxt;
     private Button btnBack, btnMenu;
@@ -125,6 +125,13 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
         Bundle bundle = this.getArguments();
         type = bundle.getString("type");
+
+        nytpe = bundle.getString("ntype", "");
+
+        if (nytpe.equalsIgnoreCase("notification")) {
+            nid = bundle.getString("stuid");
+            ndate = bundle.getString("sdate");
+        }
 
 //        view1 = view.findViewById(R.id.header);
         tvHeader = view.findViewById(R.id.textView3);
@@ -199,6 +206,11 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         minute = calendar.get(Calendar.MINUTE);
         second = calendar.get(Calendar.SECOND);
 
+        if (nytpe.equalsIgnoreCase("notification")) {
+            fragmentLeaveRequestBinding.fromdateBtn.setText(ndate);
+            fragmentLeaveRequestBinding.todateBtn.setText(Utils.getTodaysDate());
+        }
+
 //        fragmentLeaveRequestBinding.fromdateBtn.setText(Utils.getTodaysDate());
 //        fragmentLeaveRequestBinding.todateBtn.setText(Utils.getTodaysDate());
 
@@ -269,15 +281,34 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             @Override
             public void onClick(View view) {
 
-                if (type.equalsIgnoreCase("student")) {
-                    fragment = new StudentFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
-                } else {
-                    fragment = new StaffLeaveFragment();
-                    fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+//                AppConfiguration.position = 58;
+//                AppConfiguration.firsttimeback = true;
+//                getActivity().onBackPressed();
 
+                if (nytpe.equalsIgnoreCase("")) {
+                    if (type.equalsIgnoreCase("student")) {
+                        fragment = new StudentFragment();
+                        fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                    } else {
+                        fragment = new StaffLeaveFragment();
+                        fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+
+                    }
+                } else {
+
+//                AppConfiguration.position = 58;
+//                AppConfiguration.firsttimeback = true;
+//                getActivity().onBackPressed();
+
+                    fragment = new NotificationFragment();
+                    fragmentManager = getFragmentManager();
+                    if (fragmentManager != null) {
+                        fragmentManager.beginTransaction()
+                                .setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                                .replace(R.id.frame_container, fragment).commit();
+                    }
                 }
             }
         });
@@ -307,10 +338,10 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 callLeaveRequestListApi();
             }
         });
-
     }
 
     private void callLeaveRequestListApi() {
+
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
             return;
@@ -405,7 +436,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         map.put("ToDate", fragmentLeaveRequestBinding.todateBtn.getText().toString());
 
         if (type.equalsIgnoreCase("student")) {
-            map.put("LeaveStatusID", fragmentLeaveRequestBinding.statusSpinner.getSelectedItem().toString());
+            map.put("Status", fragmentLeaveRequestBinding.statusSpinner.getSelectedItem().toString());
 
         } else {
             map.put("LeaveStatusID", FinalStatusIdStr);

@@ -124,7 +124,7 @@ public class ExpandableListAnnoucement extends BaseExpandableListAdapter {
             public void onClick(View view) {
 
                 if (deletestatus.equalsIgnoreCase("true")) {
-                    DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.delete_confirm_msg, new DialogInterface.OnClickListener() {
+                    DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.delete_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

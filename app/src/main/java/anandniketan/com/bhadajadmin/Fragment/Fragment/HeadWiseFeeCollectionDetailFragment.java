@@ -186,8 +186,12 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment implements Rec
             public void onClick(View v) {
 //                AppConfiguration.ReverseTermDetailId = "";
 
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
+                AppConfiguration.position = 58;
+                AppConfiguration.firsttimeback = true;
+
+                getActivity().onBackPressed();
 
 //                fragment = new MISFragment();
 //                fragmentManager = getFragmentManager();
@@ -209,7 +213,7 @@ public class HeadWiseFeeCollectionDetailFragment extends Fragment implements Rec
                 String getid = spinnerTermMap2.get(spAcademic.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                termID = getid.toString();
+                termID = getid;
                 AppConfiguration.financeTermId = termID;
 
                 Log.d("FinalFinanaceTermId", termID);

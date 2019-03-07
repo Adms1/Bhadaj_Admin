@@ -155,7 +155,7 @@ public class StudentInquiryProfileFragment extends Fragment{
                         Log.d("array", "" + arraystu);
 
                         listDataHeader = new ArrayList<>();
-                        listDataChild = new HashMap<String, ArrayList<StudentInquiryProfileModel.FinalArray>>();
+                        listDataChild = new HashMap<>();
 
                         for (int i = 0; i < arraystu.size(); i++) {
                             Log.d("arraystu", "" + arraystu);
@@ -174,7 +174,6 @@ public class StudentInquiryProfileFragment extends Fragment{
                         Utils.dismissDialog();
                     }
                 }
-
             }
 
             @Override
@@ -185,7 +184,6 @@ public class StudentInquiryProfileFragment extends Fragment{
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
 
     private Map<String, String> getStudentFullDetail() {
@@ -193,4 +191,5 @@ public class StudentInquiryProfileFragment extends Fragment{
         map.put("StudentID", AppConfiguration.StudentId);
         return map;
     }
+
 }

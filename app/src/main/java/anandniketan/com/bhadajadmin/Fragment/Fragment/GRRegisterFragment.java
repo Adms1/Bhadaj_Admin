@@ -280,7 +280,7 @@ public class GRRegisterFragment extends Fragment {
         ApiHandler.getApiService().getStandardDetail(getStandardDetail(), new retrofit.Callback<GetStandardModel>() {
             @Override
             public void success(GetStandardModel standardModel, Response response) {
-                Utils.dismissDialog();
+//                Utils.dismissDialog();
                 if (standardModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
@@ -303,7 +303,7 @@ public class GRRegisterFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-                Utils.dismissDialog();
+//                Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
                 Utils.ping(mContext, getString(R.string.something_wrong));
@@ -386,7 +386,7 @@ public class GRRegisterFragment extends Fragment {
 
             @Override
             public void failure(RetrofitError error) {
-//                Utils.dismissDialog();
+                Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
                 Utils.ping(mContext, getString(R.string.something_wrong));
@@ -573,7 +573,7 @@ public class GRRegisterFragment extends Fragment {
 
         String[] spinnerstatusdetailIdArray = new String[statusdetailId.size()];
 
-        spinnerStatusMap = new HashMap<Integer, String>();
+        spinnerStatusMap = new HashMap<>();
         for (int i = 0; i < statusdetailId.size(); i++) {
             spinnerStatusMap.put(i, String.valueOf(statusdetailId.get(i)));
             spinnerstatusdetailIdArray[i] = statusdetail.get(i).trim();

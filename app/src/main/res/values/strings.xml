@@ -565,5 +565,7 @@
     <string name="reject">Reject</string>
     <string name="modify">Modify</string>
     <string name="reply">Reply</string>
+    <string name="birthday_wishes">Birthday Wishes</string>
+    <string name="ask_to_wish">Would You like to send wishes?</string>
 
 </resources>

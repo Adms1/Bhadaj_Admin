@@ -87,6 +87,8 @@ public class MISDataListFragment extends Fragment {
     private Handler handler;
     private ProgressBar progressBar;
 
+    private ArrayList<String> stdArr = new ArrayList<>();
+
     //standard spinner
     private List<FinalArrayStandard> finalArrayStandardsList;
     private HashMap<Integer, String> spinnerStandardMap;
@@ -571,7 +573,7 @@ public class MISDataListFragment extends Fragment {
 
             } else if (title.equalsIgnoreCase("New Addmission")) {
 
-                fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.VISIBLE);
+                fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.GONE);
 
                 if (requestType.equalsIgnoreCase("FeesNotPaid")) {
 
@@ -688,7 +690,13 @@ public class MISDataListFragment extends Fragment {
 //                fragmentManager = getFragmentManager();
 //                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
 
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                AppConfiguration.position = 58;
+                AppConfiguration.firsttimeback = true;
+
+                getActivity().onBackPressed();
+
+
+//                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
         fragmentMisDataBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
@@ -730,8 +738,8 @@ public class MISDataListFragment extends Fragment {
                 if (searchResults.size() > 0) {
 
                     fragmentMisDataBinding.rvMisdataList.setVisibility(View.VISIBLE);
-                    fragmentMisDataBinding.lvHeader2.setVisibility(View.VISIBLE);
-//                    fragmentMisDataBinding.lvHeader.setVisibility(View.VISIBLE);
+                    fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
+                    fragmentMisDataBinding.lvHeader.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.recyclerLinear.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.VISIBLE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.GONE);
@@ -752,7 +760,6 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                 }
-
             }
 
             @Override
@@ -760,8 +767,6 @@ public class MISDataListFragment extends Fragment {
 
             }
         });
-
-
     }
 
     @Override
@@ -1386,7 +1391,7 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
-
+                    fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -1398,7 +1403,7 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
-
+                    fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.GONE);
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("false")) {
@@ -1409,10 +1414,12 @@ public class MISDataListFragment extends Fragment {
                     fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
                     fragmentMisDataBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
-
+                    fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.GONE);
                     return;
                 }
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
+
+                    fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.VISIBLE);
 
                     try {
 
@@ -1427,13 +1434,24 @@ public class MISDataListFragment extends Fragment {
                         fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
                         fragmentMisDataBinding.recyclerLinear1.setVisibility(View.GONE);
 
-//                        if (countdata != null) {
-//                            fragmentMisDataBinding.tvTxt.setText(requestTitle + ": " + countdata);
-//                        }
+                        Log.e("nasize", "" + misNADataList.size());
 
+                        for (int i = 0; i < misNADataList.size(); i++) {
+
+                            if (stdArr.size() > 0) {
+                                if (!stdArr.contains(misNADataList.get(i).getGrade())) {
+                                    stdArr.add(misNADataList.get(i).getGrade());
+                                }
+                            } else {
+                                stdArr.add(misNADataList.get(i).getGrade());
+                            }
+
+                        }
 //                        misDetailListAdapter = new MISDetailListAdapter(getActivity(), misNADataList, 6, requestType);
 //                        fragmentMisDataBinding.rvMisdataList.setLayoutManager(new LinearLayoutManager(mContext));
 //                        fragmentMisDataBinding.rvMisdataList.setAdapter(misDetailListAdapter);
+
+                        Log.e("nasize", "" + stdArr.size());
 
                         callStandardApi();
                         progressBar.setVisibility(View.GONE);
@@ -1450,7 +1468,7 @@ public class MISDataListFragment extends Fragment {
                 error.printStackTrace();
                 error.getMessage();
                 progressBar.setVisibility(View.GONE);
-
+                fragmentMisDataBinding.misdataLlSpinner.setVisibility(View.GONE);
                 fragmentMisDataBinding.lvHeader2.setVisibility(View.GONE);
                 fragmentMisDataBinding.lvHeader.setVisibility(View.GONE);
                 fragmentMisDataBinding.recyclerLinear.setVisibility(View.GONE);
@@ -1719,21 +1737,28 @@ public class MISDataListFragment extends Fragment {
         firstValue.add("All");
 
         ArrayList<String> standardname = new ArrayList<>();
-        for (int z = 0; z < firstValue.size(); z++) {
-            standardname.add(firstValue.get(z));
-            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
-                standardname.add(finalArrayStandardsList.get(i).getStandard());
-            }
-        }
+
+//        for (int z = 0; z < 2; z++) {
+        standardname.add(firstValue.get(0));
+//            for (int i = 0; i < finalArrayStandardsList.size(); i++) {
+//                for (int j = 0; j < stdArr.size(); j++) {
+//                    if(misNADataList.get(j).getGrade().equalsIgnoreCase(finalArrayStandardsList.get(i).getStandard()))
+        standardname.addAll(stdArr);
+//                }
+//            }
+//        }
+
         ArrayList<Integer> firstValueId = new ArrayList<>();
         firstValueId.add(0);
         ArrayList<Integer> standardId = new ArrayList<>();
-        for (int m = 0; m < firstValueId.size(); m++) {
-            standardId.add(firstValueId.get(m));
+//        for (int m = 0; m < firstValueId.size(); m++) {
+        standardId.add(firstValueId.get(0));
             for (int j = 0; j < finalArrayStandardsList.size(); j++) {
-                standardId.add(finalArrayStandardsList.get(j).getStandardID());
+                if (stdArr.contains(finalArrayStandardsList.get(j).getStandard())) {
+                    standardId.add(finalArrayStandardsList.get(j).getStandardID());
+                }
             }
-        }
+//        }
         String[] spinnerstandardIdArray = new String[standardId.size()];
 
         spinnerStandardMap = new HashMap<>();
@@ -1748,6 +1773,7 @@ public class MISDataListFragment extends Fragment {
 
         FinalStandardStr = spinnerStandardMap.get(0);
     }
+
 
 }
 

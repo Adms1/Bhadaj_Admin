@@ -2831,7 +2831,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 AppConfiguration.position = 67;
                 break;
 
-
             case R.id.na_fees_not_rec_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
@@ -2848,7 +2847,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 67;
                 break;
-
 
             case R.id.smssent_txt:
                 fragment = new MISDataListFragment();
@@ -2883,6 +2881,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 67;
                 break;
+
             case R.id.smspedning_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
@@ -2902,7 +2901,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
         }
     }
-
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {

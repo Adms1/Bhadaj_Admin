@@ -167,7 +167,7 @@ public class DashboardActivity extends FragmentActivity {
                     }
 
                     if (response.body().get("Success").getAsString().equalsIgnoreCase("True")) {
-                        Utils.ping(DashboardActivity.this, "You are active");
+//                        Utils.ping(DashboardActivity.this, "You are active");
 
                     }
                 } else {
@@ -313,7 +313,8 @@ public class DashboardActivity extends FragmentActivity {
                 break;
 
             case 7:
-                DialogUtils.createConfirmDialog(DashboardActivity.this, R.string.app_name, R.string.logout_confirm_msg, new DialogInterface.OnClickListener() {
+                DialogUtils.createConfirmDialog(DashboardActivity.this, R.string.app_name, R.string.logout_confirm_msg, "OK", "Cancel",
+                        new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

@@ -192,7 +192,7 @@ public class StudentFragment extends Fragment {
                     fragment.setArguments(bundle);
                     fragmentManager = getFragmentManager();
                     if (fragmentManager != null) {
-                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                        fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).addToBackStack(null).commit();
                     }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;
@@ -207,7 +207,7 @@ public class StudentFragment extends Fragment {
                     if (fragmentManager != null) {
                         fragmentManager.beginTransaction()
                                 .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-                                .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                                .replace(R.id.frame_container, fragment).addToBackStack(null).commit();
                     }
                     AppConfiguration.firsttimeback = true;
                     AppConfiguration.position = 11;

@@ -130,7 +130,14 @@ public class MISStudentTransportDetailFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                AppConfiguration.position = 58;
+                AppConfiguration.firsttimeback = true;
+
+                getActivity().onBackPressed();
+
+
+//                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //                fragment = new MISStudentTransportFragment();
 //                fragmentManager = getFragmentManager();
 //                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();

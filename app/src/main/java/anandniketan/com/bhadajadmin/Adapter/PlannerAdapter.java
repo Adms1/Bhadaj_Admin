@@ -56,7 +56,7 @@ public class PlannerAdapter extends RecyclerView.Adapter<PlannerAdapter.MyViewHo
 
                 if (deletestatus.equalsIgnoreCase("true")) {
 
-                    DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.delete_confirm_msg, new DialogInterface.OnClickListener() {
+                    DialogUtils.createConfirmDialog(context, R.string.app_name, R.string.delete_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     onDeleteWithIdRef.deleteRecordWithId(String.valueOf(result.getID()));

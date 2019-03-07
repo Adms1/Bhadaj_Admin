@@ -37,6 +37,8 @@ import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
 import anandniketan.com.bhadajadmin.Model.Account.GetStandardModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
+import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
+import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
@@ -65,10 +67,13 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
     private DatePickerDialog datePickerDialog;
     private PrefUtils prefUtils;
     private String Attendanceidstr = "", Attendacestatusstr = "", studentidstr = "";
-    private String status, updateStatus, update;
+    private String status, updateStatus, update, FinalTermIdStr;
 
     private TextView tvHeader;
     private Button btnBack, btnMenu;
+
+    private List<FinalArrayGetTermModel> finalArrayGetTermModels;
+    private HashMap<Integer, String> spinnerTermMap;
 
     public StudentAttendaneFragment() {
     }
@@ -101,6 +106,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         tvHeader.setText(R.string.attendace);
 
         setListners();
+        callTermApi();
         callStandardApi();
 
     }
@@ -151,7 +157,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                 String getid = spinnerStandardMap.get(fragmentStudentAttendaneBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 FinalStandardStr = name;
@@ -162,6 +168,23 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        fragmentStudentAttendaneBinding.termSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = fragmentStudentAttendaneBinding.termSpinner.getSelectedItem().toString();
+                String getid = spinnerTermMap.get(fragmentStudentAttendaneBinding.termSpinner.getSelectedItemPosition());
+
+                Log.d("value", name + " " + getid);
+                FinalTermIdStr = getid;
+                Log.d("FinalTermIdStr", FinalTermIdStr);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
 
@@ -249,7 +272,6 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
 
     private Map<String, String> getStandardDetail() {
@@ -282,12 +304,14 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                 }
                 if (attendanceModel.getSuccess().equalsIgnoreCase("False")) {
                     Utils.dismissDialog();
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
                     fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.GONE);
                     if (attendanceModel.getFinalArray().size() == 0) {
                         fragmentStudentAttendaneBinding.recyclerLinear.setVisibility(View.GONE);
                         fragmentStudentAttendaneBinding.listHeader.setVisibility(View.GONE);
                         fragmentStudentAttendaneBinding.txtNoRecords.setVisibility(View.VISIBLE);
+                        fragmentStudentAttendaneBinding.totalTxt.setText(Html.fromHtml("Total Students : " + "<font color='#1B88C8'>" + "0"));
+
                     }
                     //Utils.dismissDialog();
                     return;
@@ -299,7 +323,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                     if (attendanceModel.getFinalArray().size() > 0) {
                         fragmentStudentAttendaneBinding.ivAddUpdateAttendance.setVisibility(View.VISIBLE);
 
-                        finalArrayStudentNameModelList = new ArrayList<StudentAttendanceFinalArray>();
+                        finalArrayStudentNameModelList = new ArrayList<>();
 
                         finalArrayStudentNameModelList = attendanceModel.getFinalArray();
                         fragmentStudentAttendaneBinding.txtNoRecords.setVisibility(View.GONE);
@@ -344,7 +368,6 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
 
     private Map<String, String> getAttendence_AdminDetail() {
@@ -353,7 +376,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
         map.put("AttDate", FinalDataStr);
         map.put("StdID", FinalStandardIdStr);
         map.put("ClsID", FinalClassIdStr);
-
+        map.put("TermID", FinalTermIdStr);
         return map;
     }
 
@@ -582,7 +605,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                         Attendanceidstr = Attendanceidstr + "," + s;
                     }
                     Log.d("Attendanceidstr", Attendanceidstr);
-                    Attendanceidstr = Attendanceidstr.substring(1, Attendanceidstr.length());
+                    Attendanceidstr = Attendanceidstr.substring(1);
                     Log.d("finalstatusStr", Attendanceidstr);
 
                     Attendacestatusstr = "";
@@ -592,7 +615,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                     }
                     Log.d("Attendacestatusstr", Attendacestatusstr);
 
-                    Attendacestatusstr = Attendacestatusstr.substring(1, Attendacestatusstr.length());
+                    Attendacestatusstr = Attendacestatusstr.substring(1);
                     Attendacestatusstr = Attendacestatusstr.replace("-2", "1");
                     Log.d("Attendacestatusstr", Attendacestatusstr);
 
@@ -601,7 +624,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                         studentidstr = studentidstr + "," + s;
                     }
                     Log.d("studentidstr", studentidstr);
-                    studentidstr = studentidstr.substring(1, studentidstr.length());
+                    studentidstr = studentidstr.substring(1);
                     Log.d("studentidstr", studentidstr);
 
 
@@ -615,6 +638,7 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
                     map.put("CurrantDate", Utils.getTodaysDate());
                     map.put("StudentID", studentidstr);
                     map.put("AttendanceID", Attendanceidstr);
+                    map.put("TermID", FinalTermIdStr);
                 }
 
             }
@@ -627,6 +651,90 @@ public class StudentAttendaneFragment extends Fragment implements DatePickerDial
 
     }
 
+    // CALL Term API HERE
+    private void callTermApi() {
+
+        if (!Utils.checkNetwork(mContext)) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+        ApiHandler.getApiService().getTerm(getTermDetail(), new retrofit.Callback<TermModel>() {
+            @Override
+            public void success(TermModel termModel, Response response) {
+                Utils.dismissDialog();
+                if (termModel == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (termModel.getSuccess() == null) {
+                    Utils.ping(mContext, getString(R.string.something_wrong));
+                    return;
+                }
+                if (termModel.getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(mContext, getString(R.string.false_msg));
+                    return;
+                }
+                if (termModel.getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayGetTermModels = termModel.getFinalArray();
+                    if (finalArrayGetTermModels != null) {
+                        fillTermSpinner();
+                    }
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Utils.dismissDialog();
+                error.printStackTrace();
+                error.getMessage();
+                Utils.ping(mContext, getString(R.string.something_wrong));
+            }
+        });
+
+    }
+
+    private Map<String, String> getTermDetail() {
+        return new HashMap<>();
+    }
+
+    public void fillTermSpinner() {
+        ArrayList<Integer> TermId = new ArrayList<>();
+        for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
+            TermId.add(finalArrayGetTermModels.get(i).getTermId());
+        }
+        ArrayList<String> Term = new ArrayList<>();
+        for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
+            Term.add(finalArrayGetTermModels.get(j).getTerm());
+        }
+
+        String[] spinnertermIdArray = new String[TermId.size()];
+
+        spinnerTermMap = new HashMap<>();
+        for (int i = 0; i < TermId.size(); i++) {
+            spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
+            spinnertermIdArray[i] = Term.get(i).trim();
+        }
+
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            popup.setAccessible(true);
+//
+//            // Get private mPopup member variable and try cast to ListPopupWindow
+//            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(fragmentStudentViewInquiryBinding.termSpinner);
+//
+//            popupWindow.setHeight(spinnertermIdArray.length > 4 ? 500 : spinnertermIdArray.length * 100);
+//        } catch (NoClassDefFoundError | ClassCastException | NoSuchFieldException | IllegalAccessException e) {
+//            // silently fail...
+//        }
+
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
+        fragmentStudentAttendaneBinding.termSpinner.setAdapter(adapterTerm);
+
+        FinalTermIdStr = spinnerTermMap.get(0);
+
+    }
 
 }
 

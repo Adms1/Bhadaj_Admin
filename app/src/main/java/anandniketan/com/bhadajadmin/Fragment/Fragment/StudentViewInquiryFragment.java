@@ -40,12 +40,16 @@ import anandniketan.com.bhadajadmin.Model.Student.StudentInquiryModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
+import anandniketan.com.bhadajadmin.Utility.ApiClient;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.Utils;
+import anandniketan.com.bhadajadmin.Utility.WebServices;
 import anandniketan.com.bhadajadmin.databinding.FragmentStudentViewInquiryBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 public class StudentViewInquiryFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -62,6 +66,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private DatePickerDialog datePickerDialog;
     private HashMap<Integer, String> spinnerOrderMap;
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
+    private List<FinalArrayGetTermModel> finalArrayGetStatusModels;
     private HashMap<Integer, String> spinnerTermMap;
     private List<StudentAttendanceFinalArray> finalArrayinquiryCountList;
     private List<StudentInquiryModel.FinalArray> finalArrayinquiryCountList1;
@@ -74,6 +79,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     private String status;
     private TextView tvHeader;
     private Button btnBack, btnMenu;
+
 
     public StudentViewInquiryFragment() {
     }
@@ -298,7 +304,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                     finalArrayGetTermModels = termModel.getFinalArray();
                     if (finalArrayGetTermModels != null) {
                         fillTermSpinner();
-                        fillStatusSpinner();
+                        callInquiryStatus();
                     }
                 }
             }
@@ -530,33 +536,53 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
     }
 
     public void fillStatusSpinner() {
-        ArrayList<String> statusIdArray = new ArrayList<>();
-        statusIdArray.add("All");
-        statusIdArray.add("Generated");
-        statusIdArray.add("Admission Form Issued");
-        statusIdArray.add("Received Admission Form");
-        statusIdArray.add("Interaction Call");
-        statusIdArray.add("Interview Done");
-        statusIdArray.add("Generate Circular");
-        statusIdArray.add("Fees Paid");
 
-        ArrayList<String> statusdetail = new ArrayList<>();
-        statusdetail.add("All");
-        statusdetail.add("Inquiry Generated");
-        statusdetail.add("Generated Admission Form");
-        statusdetail.add("Received Admission Form");
-        statusdetail.add("Interaction Call");
-        statusdetail.add("Come for Interview");
-        statusdetail.add("Confirm Admission");
-        statusdetail.add("Fees Paid");
+        ArrayList<String> TermId = new ArrayList<>();
+        for (int i = 0; i < finalArrayGetStatusModels.size(); i++) {
+            TermId.add(String.valueOf(finalArrayGetStatusModels.get(i).getValue()));
+        }
+        ArrayList<String> Term = new ArrayList<>();
+        for (int j = 0; j < finalArrayGetStatusModels.size(); j++) {
+            Term.add(finalArrayGetStatusModels.get(j).getTerm());
+        }
 
-        String[] spinnerstatusIdArray = new String[statusIdArray.size()];
+        String[] spinnerstatusIdArray = new String[TermId.size()];
 
         spinnerOrderMap = new HashMap<>();
-        for (int i = 0; i < statusIdArray.size(); i++) {
-            spinnerOrderMap.put(i, String.valueOf(statusIdArray.get(i)));
-            spinnerstatusIdArray[i] = statusdetail.get(i).trim();
+        for (int i = 0; i < TermId.size(); i++) {
+            spinnerOrderMap.put(i, String.valueOf(TermId.get(i)));
+            spinnerstatusIdArray[i] = Term.get(i).trim();
         }
+
+        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.spinner_layout, spinnerstatusIdArray);
+        fragmentStudentViewInquiryBinding.statusSpinner.setAdapter(adapterTerm);
+
+//        statusIdArray.add("All");
+//        statusIdArray.add("Generated");
+//        statusIdArray.add("Admission Form Issued");
+//        statusIdArray.add("Received Admission Form");
+//        statusIdArray.add("Interaction Call");
+//        statusIdArray.add("Interview Done");
+//        statusIdArray.add("Generate Circular");
+//        statusIdArray.add("Fees Paid");
+//
+//
+//        statusdetail.add("All");
+//        statusdetail.add("Inquiry Generated");
+//        statusdetail.add("Generated Admission Form");
+//        statusdetail.add("Received Admission Form");
+//        statusdetail.add("Interaction Call");
+//        statusdetail.add("Come for Interview");
+//        statusdetail.add("Confirm Admission");
+//        statusdetail.add("Fees Paid");
+//
+//        String[] spinnerstatusIdArray = new String[statusIdArray.size()];
+//
+//        spinnerOrderMap = new HashMap<>();
+//        for (int i = 0; i < statusIdArray.size(); i++) {
+//            spinnerOrderMap.put(i, String.valueOf(statusIdArray.get(i)));
+//            spinnerstatusIdArray[i] = statusdetail.get(i).trim();
+//        }
 //        try {
 //            Field popup = Spinner.class.getDeclaredField("mPopup");
 //            popup.setAccessible(true);
@@ -569,10 +595,12 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
 //            // silently fail...
 //        }
 
-        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerstatusIdArray);
-        fragmentStudentViewInquiryBinding.statusSpinner.setAdapter(adapterTerm);
-
+//        ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnerstatusIdArray);
+//        fragmentStudentViewInquiryBinding.statusSpinner.setAdapter(adapterTerm);
+//
         FinalStatusIdStr = spinnerOrderMap.get(0);
+
+//        fragmentStudentViewInquiryBinding.statusSpinner.setSelection(0);
 
     }
 
@@ -610,6 +638,56 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             listDataChild.put(String.valueOf(listDataHeader.get(i).getStudentID()), finalArrayinquiryCountList1.get(i).getStausDetail());
             Log.d("child", "" + listDataChild);
         }
+    }
+
+    //Standard Filter
+    // CALL Standard API HERE
+    private void callInquiryStatus() {
+
+        if (!Utils.checkNetwork(Objects.requireNonNull(getActivity()))) {
+            Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
+            return;
+        }
+
+        Utils.showDialog(getActivity());
+
+        WebServices apiService = ApiClient.getClient().create(WebServices.class);
+
+        Call<TermModel> call = apiService.getInquiryStatus();
+        call.enqueue(new Callback<TermModel>() {
+
+            @Override
+            public void onResponse(@NonNull Call<TermModel> call, @NonNull retrofit2.Response<TermModel> response) {
+                Utils.dismissDialog();
+                if (response.body() == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    return;
+                }
+                if (response.body().getSuccess() == null) {
+                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+                    return;
+                }
+                if (response.body().getSuccess().equalsIgnoreCase("false")) {
+                    Utils.ping(getActivity(), getString(R.string.false_msg));
+                    return;
+                }
+                if (response.body().getSuccess().equalsIgnoreCase("True")) {
+                    finalArrayGetStatusModels = response.body().getFinalArray();
+                    if (finalArrayGetStatusModels != null) {
+                        fillStatusSpinner();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TermModel> call, @NonNull Throwable t) {
+                Utils.dismissDialog();
+                t.printStackTrace();
+                t.getMessage();
+                Utils.ping(getActivity(), getString(R.string.something_wrong));
+            }
+        });
     }
 
 }

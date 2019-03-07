@@ -124,7 +124,7 @@ public class ExpandableLeaveRequest extends BaseExpandableListAdapter {
                     @Override
                     public void onClick(View view) {
 
-                        DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.approve_confirm_msg, new DialogInterface.OnClickListener() {
+                        DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.approve_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -144,7 +144,7 @@ public class ExpandableLeaveRequest extends BaseExpandableListAdapter {
                     @Override
                     public void onClick(View view) {
 
-                        DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.reject_confirm_msg, new DialogInterface.OnClickListener() {
+                        DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.reject_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
