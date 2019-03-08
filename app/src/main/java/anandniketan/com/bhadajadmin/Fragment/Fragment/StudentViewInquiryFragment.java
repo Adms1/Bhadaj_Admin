@@ -289,15 +289,15 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             public void success(TermModel termModel, Response response) {
                 Utils.dismissDialog();
                 if (termModel == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess() == null) {
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("True")) {
@@ -398,17 +398,17 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
 
                 if (inquiryDataModel == null) {
                     Utils.dismissDialog();
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (inquiryDataModel.getSuccess() == null) {
                     Utils.dismissDialog();
-                    Utils.ping(mContext, getString(R.string.something_wrong));
+//                    Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
                 if (inquiryDataModel.getSuccess().equalsIgnoreCase("false")) {
                     Utils.dismissDialog();
-                    Utils.ping(mContext, getString(R.string.false_msg));
+//                    Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentStudentViewInquiryBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentStudentViewInquiryBinding.lvExpHeader.setVisibility(View.GONE);
                     fragmentStudentViewInquiryBinding.listHeader.setVisibility(View.GONE);
@@ -451,7 +451,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(mContext, getString(R.string.something_wrong));
+//                Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
 

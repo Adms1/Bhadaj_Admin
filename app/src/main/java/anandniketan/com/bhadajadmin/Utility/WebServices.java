@@ -136,7 +136,11 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/StudentTransportDetail")
-    void getStudentTransportDetail(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
+    void getStudentTransportDetail(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
+
+    @FormUrlEncoded
+    @POST("/StudentTransportDetail")
+    void getStudentTransportDetail1(@FieldMap Map<String, String> map, Callback<StudentAttendanceModel> callback);
 
     @FormUrlEncoded
     @POST("/SendSMS")
@@ -644,15 +648,15 @@ public interface WebServices {
 
     @FormUrlEncoded
     @POST("/GetTestForMarks")
-    void getTestForMarks(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+    void getTestForMarks(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
 
     @FormUrlEncoded
     @POST("/GetMarks")
-    void getMarks(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+    void getMarks(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
 
     @FormUrlEncoded
     @POST("/SendStudentMarksSMS")
-    void sendStudentMarksSMS(@FieldMap Map<String, String> map, Callback<TransportChargesModel> callback);
+    void sendStudentMarksSMS(@FieldMap Map<String, String> map, Callback<GetStaffSMSDataModel> callback);
 
     @Multipart
     @POST("uploadpdf.aspx")

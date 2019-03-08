@@ -235,6 +235,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         fragmentMisBinding.taskReportInnercontainer.setVisibility(View.GONE);
         fragmentMisBinding.resultOfSchoolInnercontainer.setVisibility(View.GONE);
         fragmentMisBinding.LLFinance.setVisibility(View.GONE);
+        llCalendar.setVisibility(View.GONE);
 
         fragmentMisBinding.progressStudent.setVisibility(View.VISIBLE);
         fragmentMisBinding.progressStaff.setVisibility(View.VISIBLE);
@@ -245,6 +246,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         fragmentMisBinding.progressTaskReport.setVisibility(View.VISIBLE);
         fragmentMisBinding.progressResultOfSchool.setVisibility(View.VISIBLE);
         fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
 
         topperBarChart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -824,7 +826,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                     if (finalArrayGetTermModels != null) {
                         fillTermSpinner();
                         fillFinanceTermSpinner();
-                        fillSchoolCalendarSpinner();
                     }
                 }
             }
@@ -1127,7 +1128,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
             spinnerSchoolResultMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
         }
-
 
 //        try {
 //            Field popup = Spinner.class.getDeclaredField("mPopup");
@@ -1854,6 +1854,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                         try {
                             if (isAdded()) {
 
+                                fillSchoolCalendarSpinner();
                                 //callMessgeMISDataApi("Message");
                             }
                         } catch (Exception ex) {
@@ -2535,7 +2536,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 AppConfiguration.position = 67;
                 break;
 
-
             case R.id.staff_workplan_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
@@ -2763,6 +2763,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 67;
                 break;
+
             case R.id.na_comeforinterview_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();
@@ -2779,7 +2780,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 67;
                 break;
-
 
             case R.id.na_confirmaddmission_txt:
                 fragment = new MISDataListFragment();

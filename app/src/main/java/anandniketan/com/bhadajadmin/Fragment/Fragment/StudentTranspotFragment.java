@@ -312,7 +312,7 @@ public class StudentTranspotFragment extends Fragment {
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getStudentTransportDetail(getStudentTransportDetail(), new retrofit.Callback<StudentAttendanceModel>() {
+        ApiHandler.getApiService().getStudentTransportDetail1(getStudentTransportDetail(), new retrofit.Callback<StudentAttendanceModel>() {
             @Override
             public void success(StudentAttendanceModel studentTransportDetailModel, Response response) {
 //                Utils.dismissDialog();

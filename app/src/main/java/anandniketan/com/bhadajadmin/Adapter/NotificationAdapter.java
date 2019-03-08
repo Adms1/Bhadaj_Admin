@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import anandniketan.com.bhadajadmin.Activity.DashboardActivity;
 import anandniketan.com.bhadajadmin.Fragment.Fragment.LeaveRequestFragment;
+import anandniketan.com.bhadajadmin.Fragment.Fragment.SuggestionFragment;
 import anandniketan.com.bhadajadmin.Model.Notification.NotificationModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiClient;
@@ -125,23 +126,26 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         break;
 
                     case "Suggestion":
-//                            Fragment fragment1 = new SuggestionFragment();
-//
-////                            Bundle bundle1 = new Bundle();
-//
-////                    bundle.putString("type", "student");
+                        Fragment fragment1 = new SuggestionFragment();
+
+                        Bundle bundle1 = new Bundle();
+
+                        bundle1.putString("type", finalArrays.get(i).getType());
+                        bundle1.putString("ntype", "notification");
+                        bundle1.putString("sdate", finalArrays.get(i).getDate());
+                        bundle1.putString("stuid", finalArrays.get(i).getPkid());
 ////                            bundle1.putString("leavedeletestatus", permissionMap.get("Suggestion").getIsuserdelete());
 ////                            bundle1.putString("leaveupdatestatus", permissionMap.get("Suggestion").getIsuserupdate());
 ////                            bundle1.putString("leaveviewstatus", permissionMap.get("Suggestion").getIsuserview());
 //
-////                            fragment.setArguments(bundle);
+                        fragment1.setArguments(bundle1);
 //
-//                            FragmentManager fragmentManager1 = ((DashboardActivity)context).getSupportFragmentManager();
-//                            if (fragmentManager1 != null) {
-//                                fragmentManager1.beginTransaction()
-//                                        .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
-//                                        .replace(R.id.frame_container, fragment1).commit();
-//                            }
+                        FragmentManager fragmentManager1 = ((DashboardActivity) context).getSupportFragmentManager();
+                        if (fragmentManager1 != null) {
+                            fragmentManager1.beginTransaction()
+                                    .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                    .replace(R.id.frame_container, fragment1).commit();
+                        }
 //                            AppConfiguration.firsttimeback = true;
 //                            AppConfiguration.position = 11;
 

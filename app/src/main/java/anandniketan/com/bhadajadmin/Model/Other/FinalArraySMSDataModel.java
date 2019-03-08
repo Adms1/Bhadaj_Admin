@@ -62,10 +62,10 @@ public class FinalArraySMSDataModel {
     @SerializedName("FamilyName")
     @Expose
     private String familyName;
-    @SerializedName("Sms_No")
+    @SerializedName(value = "smsno", alternate = {"Sms_No", "SMSNo"})
     @Expose
     private String smsNo;
-    @SerializedName("Fk_StudentID")
+    @SerializedName(value = "student_id", alternate = {"Fk_StudentID", "StudentID"})
     @Expose
     private Integer fkStudentID;
     @SerializedName("Fk_StandardID")
@@ -122,13 +122,16 @@ public class FinalArraySMSDataModel {
     @SerializedName("ClassID")
     @Expose
     private Integer classID;
-    @SerializedName("Subject")
+    @SerializedName(value = "subject", alternate = {"Subject", "SubjectName"})
     @Expose
     private String subject;
+    //    @SerializedName("SubjectID")
+//    @Expose
+//    private Integer subjectID;
     @SerializedName("SubjectID")
     @Expose
-    private Integer subjectID;
-    @SerializedName("GR")
+    private String subjectid;
+    @SerializedName(value = "grno", alternate = {"GR", "GRNO"})
     @Expose
     private String gR;
 
@@ -141,6 +144,28 @@ public class FinalArraySMSDataModel {
     @SerializedName("StudentData")
     @Expose
     private List<StudentDatum> studentData = new ArrayList<StudentDatum>();
+    @SerializedName("Term")
+    @Expose
+    private String term;
+    @SerializedName("RouteName")
+    @Expose
+    private String routename;
+    @SerializedName("PickupPointName")
+    @Expose
+    private String pickuppoint;
+    @SerializedName("KM")
+    @Expose
+    private String km;
+    @SerializedName("Index")
+    @Expose
+    private String index;
+    @SerializedName("MarkID")
+    @Expose
+    private String markid;
+    @SerializedName("Mark")
+    @Expose
+    private String mark;
+
     public Integer getPKEmployeeID() {
         return pKEmployeeID;
     }
@@ -453,13 +478,13 @@ public class FinalArraySMSDataModel {
         this.subject = subject;
     }
 
-    public Integer getSubjectID() {
-        return subjectID;
-    }
-
-    public void setSubjectID(Integer subjectID) {
-        this.subjectID = subjectID;
-    }
+//    public Integer getSubjectID() {
+//        return subjectID;
+//    }
+//
+//    public void setSubjectID(Integer subjectID) {
+//        this.subjectID = subjectID;
+//    }
 
     public List<StudentDatum> getStudentData() {
         return studentData;
@@ -498,4 +523,75 @@ public class FinalArraySMSDataModel {
         this.appStatus = appStatus;
     }
 
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
+    public String getRoutename() {
+        return routename;
+    }
+
+    public void setRoutename(String routename) {
+        this.routename = routename;
+    }
+
+    public String getPickuppoint() {
+        return pickuppoint;
+    }
+
+    public void setPickuppoint(String pickuppoint) {
+        this.pickuppoint = pickuppoint;
+    }
+
+    public String getKm() {
+        return km;
+    }
+
+    public void setKm(String km) {
+        this.km = km;
+    }
+
+    public String getgR() {
+        return gR;
+    }
+
+    public void setgR(String gR) {
+        this.gR = gR;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public String getMarkid() {
+        return markid;
+    }
+
+    public void setMarkid(String markid) {
+        this.markid = markid;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public String getSubjectid() {
+        return subjectid;
+    }
+
+    public void setSubjectid(String subjectid) {
+        this.subjectid = subjectid;
+    }
 }

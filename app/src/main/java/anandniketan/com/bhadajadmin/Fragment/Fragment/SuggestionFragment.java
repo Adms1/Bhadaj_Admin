@@ -1,6 +1,5 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
-
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -63,6 +62,7 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listDataChild;
     private ExpandableSuggestion expandableSuggestion;
+    private String type, ndate = "";
 
     @Override
     public void onAttach(Context context) {
@@ -91,6 +91,10 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = this.getArguments();
+        type = bundle.getString("ntype");
+        ndate = bundle.getString("sdate");
+
         tvHeader = view.findViewById(R.id.textView3);
         btnBack = view.findViewById(R.id.btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
@@ -112,7 +116,12 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
 //        minute = calendar.get(Calendar.MINUTE);
 //        second = calendar.get(Calendar.SECOND);
 
-        fragmentSuggestionBinding.sugFromdateBtn.setText(Utils.getTodaysDate());
+        if (type.equalsIgnoreCase("notification")) {
+            fragmentSuggestionBinding.sugFromdateBtn.setText(ndate);
+        } else {
+            fragmentSuggestionBinding.sugFromdateBtn.setText(Utils.getTodaysDate());
+        }
+
         fragmentSuggestionBinding.sugTodateBtn.setText(Utils.getTodaysDate());
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -141,9 +150,15 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
             @Override
             public void onClick(View v) {
 
-                fragment = new StudentFragment();
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                if (type.equalsIgnoreCase("notification")) {
+                    fragment = new NotificationFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                } else {
+                    fragment = new StudentFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                }
             }
         });
 

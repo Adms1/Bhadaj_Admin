@@ -37,8 +37,8 @@ import anandniketan.com.bhadajadmin.Adapter.BulkSMSDetailListAdapter;
 import anandniketan.com.bhadajadmin.Interface.getEmployeeCheck;
 import anandniketan.com.bhadajadmin.Model.HR.InsertMenuPermissionModel;
 import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
+import anandniketan.com.bhadajadmin.Model.Other.GetStaffSMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayTransportChargesModel;
 import anandniketan.com.bhadajadmin.Model.Transport.PickupPointDetailModel;
@@ -61,10 +61,10 @@ public class SMSStudentTransportFragment extends Fragment {
     HashMap<Integer, String> spinnerRouteMap;
     HashMap<Integer, String> spinnerPickupMap;
     String FinalTermIdStr, FinalRouteIdStr = "", FinalPickupIdStr = "", RouteName;
-    List<FinalArraySMSDataModel> finalArrayBulkSMSModelList;
+    //    List<FinalArraySMSDataModel> finalArrayBulkSMSModelList;
     BulkSMSDetailListAdapter bulkSMSDetailListAdapter;
     String finalBulkIdArray, finalmessageMessageLine, finalDateStr;
-    List<StudentAttendanceFinalArray> finalArrayStudentTransportModelList;
+    List<FinalArraySMSDataModel> finalArrayStudentTransportModelList;
     List<String> listDataHeader;
     HashMap<String, ArrayList<StudentAttendanceFinalArray>> listDataChild;
     private FragmentSmsstudentTransportBinding fragmentSmsstudentTransportBinding;
@@ -134,7 +134,7 @@ public class SMSStudentTransportFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentSmsstudentTransportBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
             }
 
@@ -154,15 +154,15 @@ public class SMSStudentTransportFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    for (int i = 0; i < finalArrayBulkSMSModelList.size(); i++) {
-                        finalArrayBulkSMSModelList.get(i).setCheck("1");
+                    for (int i = 0; i < finalArrayStudentTransportModelList.size(); i++) {
+                        finalArrayStudentTransportModelList.get(i).setCheck("1");
                     }
                     bulkSMSDetailListAdapter.notifyDataSetChanged();
                     temp = false;
                 } else {
                     if (!temp) {
-                        for (int i = 0; i < finalArrayBulkSMSModelList.size(); i++) {
-                            finalArrayBulkSMSModelList.get(i).setCheck("0");
+                        for (int i = 0; i < finalArrayStudentTransportModelList.size(); i++) {
+                            finalArrayStudentTransportModelList.get(i).setCheck("0");
                         }
                         bulkSMSDetailListAdapter.notifyDataSetChanged();
                     }
@@ -183,10 +183,28 @@ public class SMSStudentTransportFragment extends Fragment {
                 String getid = spinnerRouteMap.get(fragmentSmsstudentTransportBinding.routeSpinner.getSelectedItemPosition());
 
                 Log.d("routevalue", name + " " + getid);
-                FinalRouteIdStr = getid.toString();
+                FinalRouteIdStr = getid;
                 Log.d("FinalRouteIdStr", FinalRouteIdStr);
                 RouteName = name;
                 fillPickUpSpinner();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        fragmentSmsstudentTransportBinding.pickupPointSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = fragmentSmsstudentTransportBinding.pickupPointSpinner.getSelectedItem().toString();
+                String getid = spinnerPickupMap.get(fragmentSmsstudentTransportBinding.pickupPointSpinner.getSelectedItemPosition());
+
+                Log.d("pickupvalue", name + " " + getid);
+                FinalPickupIdStr = getid;
+                Log.d("FinalPickupIdStr", FinalPickupIdStr);
+//                RouteName = name;
+//                fillPickUpSpinner();
             }
 
             @Override
@@ -449,9 +467,9 @@ public class SMSStudentTransportFragment extends Fragment {
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().getStudentTransportDetail(getStudentTransportDetail(), new retrofit.Callback<StudentAttendanceModel>() {
+        ApiHandler.getApiService().getStudentTransportDetail(getStudentTransportDetail(), new retrofit.Callback<GetStaffSMSDataModel>() {
             @Override
-            public void success(StudentAttendanceModel studentTransportDetailModel, Response response) {
+            public void success(GetStaffSMSDataModel studentTransportDetailModel, Response response) {
 //                Utils.dismissDialog();
                 if (studentTransportDetailModel == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
@@ -467,6 +485,7 @@ public class SMSStudentTransportFragment extends Fragment {
                     fragmentSmsstudentTransportBinding.txtNoRecords.setVisibility(View.VISIBLE);
                     fragmentSmsstudentTransportBinding.listHeader.setVisibility(View.GONE);
                     fragmentSmsstudentTransportBinding.recyclerLinear.setVisibility(View.GONE);
+                    fragmentSmsstudentTransportBinding.submitBtn.setVisibility(View.GONE);
                     return;
                 }
                 if (studentTransportDetailModel.getSuccess().equalsIgnoreCase("True")) {
@@ -526,9 +545,9 @@ public class SMSStudentTransportFragment extends Fragment {
         fragmentSmsstudentTransportBinding.submitBtn.setVisibility(View.VISIBLE);
 
         for (int k = 0; k < finalArrayStudentTransportModelList.size(); k++) {
-            finalArrayBulkSMSModelList.get(k).setCheck("0");
+            finalArrayStudentTransportModelList.get(k).setCheck("0");
         }
-        bulkSMSDetailListAdapter = new BulkSMSDetailListAdapter(mContext, finalArrayBulkSMSModelList, new getEmployeeCheck() {
+        bulkSMSDetailListAdapter = new BulkSMSDetailListAdapter(mContext, finalArrayStudentTransportModelList, new getEmployeeCheck() {
             @Override
             public void getEmployeeSMSCheck() {
                 List<FinalArraySMSDataModel> updatedData = bulkSMSDetailListAdapter.getDatas();
