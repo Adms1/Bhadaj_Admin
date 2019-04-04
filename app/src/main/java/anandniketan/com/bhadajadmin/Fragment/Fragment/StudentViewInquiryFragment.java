@@ -252,6 +252,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             public void onClick(View v) {
                 isFromDate = true;
                 datePickerDialog = DatePickerDialog.newInstance(StudentViewInquiryFragment.this, Year, Month, Day);
+                datePickerDialog.setMaxDate(calendar);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.showYearPickerFirst(false);
@@ -265,6 +266,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
             public void onClick(View v) {
                 isFromDate = false;
                 datePickerDialog = DatePickerDialog.newInstance(StudentViewInquiryFragment.this, Year, Month, Day);
+                datePickerDialog.setMaxDate(calendar);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.showYearPickerFirst(false);

@@ -115,12 +115,21 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
-                    android:visibility="visible" />
+                    android:visibility="invisible" />
 
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/_1sdp"-->
-                <!--android:background="@color/light_blue" />-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/linear_border2">
+
+                    <ImageView
+                        android:id="@+id/chart_btnBack1"
+                        android:layout_width="@dimen/_28sdp"
+                        android:layout_height="@dimen/_28sdp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:rotation="180"
+                        android:src="@drawable/arrow_1_42" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -174,6 +183,9 @@
 
                 </LinearLayout>
 
+
+                </RelativeLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
@@ -186,7 +198,7 @@
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
-                    android:visibility="visible" />
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

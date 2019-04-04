@@ -3,24 +3,16 @@ package anandniketan.com.bhadajadmin.Adapter;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Interface.getEmployeeCheck;
-import anandniketan.com.bhadajadmin.Model.MIS.MISStudentResultDataModel;
 import anandniketan.com.bhadajadmin.Model.MIS.MIStudentWiseResultModel;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
 import anandniketan.com.bhadajadmin.R;
 
 public class MISStudentWiseTermWiseResultAdapter extends RecyclerView.Adapter<MISStudentWiseTermWiseResultAdapter.MyViewHolder> {
@@ -78,9 +70,9 @@ public class MISStudentWiseTermWiseResultAdapter extends RecyclerView.Adapter<MI
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            subject_txt = (TextView) itemView.findViewById(R.id.subject_txt);
-            term1_marks_txt = (TextView) itemView.findViewById(R.id.term1_marks_txt);
-            term2_marks_txt = (TextView) itemView.findViewById(R.id.term2_marks_txt);
+            subject_txt = itemView.findViewById(R.id.subject_txt);
+            term1_marks_txt = itemView.findViewById(R.id.term1_marks_txt);
+            term2_marks_txt = itemView.findViewById(R.id.term2_marks_txt);
         }
     }
 

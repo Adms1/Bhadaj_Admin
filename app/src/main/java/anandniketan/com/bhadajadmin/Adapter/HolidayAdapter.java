@@ -69,11 +69,11 @@ public class HolidayAdapter extends RecyclerView.Adapter<HolidayAdapter.MyViewHo
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            holiday_name = (TextView) itemView.findViewById(R.id.academicyear_txt);
-            start_date = (TextView) itemView.findViewById(R.id.grade_txt);
-            end_date = (TextView) itemView.findViewById(R.id.resultstatus_txt);
-            edit_img = (ImageView) itemView.findViewById(R.id.edit_img);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            holiday_name = itemView.findViewById(R.id.academicyear_txt);
+            start_date = itemView.findViewById(R.id.grade_txt);
+            end_date = itemView.findViewById(R.id.resultstatus_txt);
+            edit_img = itemView.findViewById(R.id.edit_img);
 
         }
     }

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -26,7 +25,6 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -34,7 +32,6 @@ import java.util.Locale;
 
 import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutSummaryModel;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.calendarview.utils.CalendarUtils;
 
 public class CustomCalendarView extends LinearLayout {
@@ -109,11 +106,35 @@ public class CustomCalendarView extends LinearLayout {
         typedArray.recycle();
     }
 
+    private OnClickListener onDayOfMonthClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            // Extract day selected
+            ViewGroup dayOfMonthContainer = (ViewGroup) view;
+            String tagId = (String) dayOfMonthContainer.getTag();
+            tagId = tagId.substring(DAY_OF_MONTH_CONTAINER.length());
+            final TextView dayOfMonthText = view.findViewWithTag(decorate + tagId);
+
+            // Fire event
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setFirstDayOfWeek(getFirstDayOfWeek());
+            calendar.setTime(currentCalendar.getTime());
+            calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(dayOfMonthText.getText().toString()));
+            markDayAsSelectedDay(calendar.getTime());
+
+            //Set the current day color
+            markDayAsCurrentDay(currentCalendar);
+
+            if (calendarListener != null)
+                calendarListener.onDateSelected(calendar.getTime());
+        }
+    };
+
     private void initializeCalendar() {
         final LayoutInflater inflate = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflate.inflate(R.layout.custom_calendar_layout, this, true);
-        previousMonthButton = (ImageView) view.findViewById(R.id.leftButton);
-        nextMonthButton = (ImageView) view.findViewById(R.id.rightButton);
+        previousMonthButton = view.findViewById(R.id.leftButton);
+        nextMonthButton = view.findViewById(R.id.rightButton);
 
         previousMonthButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -151,7 +172,6 @@ public class CustomCalendarView extends LinearLayout {
         refreshCalendar(currentCalendar);
     }
 
-
     /**
      * Display calendar title with next previous month button
      */
@@ -159,10 +179,10 @@ public class CustomCalendarView extends LinearLayout {
         View titleLayout = view.findViewById(R.id.titleLayout);
         titleLayout.setBackgroundColor(calendarTitleBackgroundColor);
 
-        String dateText = new DateFormatSymbols(locale).getShortMonths()[currentCalendar.get(Calendar.MONTH)].toString();
+        String dateText = new DateFormatSymbols(locale).getShortMonths()[currentCalendar.get(Calendar.MONTH)];
         dateText = dateText.substring(0, 1).toUpperCase() + dateText.subSequence(1, dateText.length());
 
-        TextView dateTitle = (TextView) view.findViewById(R.id.dateTitle);
+        TextView dateTitle = view.findViewById(R.id.dateTitle);
         dateTitle.setTextColor(calendarTitleTextColor);
         dateTitle.setText(dateText + " " + currentCalendar.get(Calendar.YEAR));
         dateTitle.setTextColor(calendarTitleTextColor);
@@ -191,7 +211,7 @@ public class CustomCalendarView extends LinearLayout {
                 dayOfTheWeekString = dayOfTheWeekString.substring(0, 3).toUpperCase();
             }
 
-            dayOfWeek = (TextView) view.findViewWithTag(DAY_OF_WEEK + getWeekIndex(i, currentCalendar));
+            dayOfWeek = view.findViewWithTag(DAY_OF_WEEK + getWeekIndex(i, currentCalendar));
             dayOfWeek.setText(dayOfTheWeekString);
             dayOfWeek.setTextColor(dayOfWeekTextColor);
 
@@ -220,9 +240,9 @@ public class CustomCalendarView extends LinearLayout {
         DayView dayView;
         ViewGroup dayOfMonthContainer;
         for (int i = 1; i < 43; i++) {
-            dayOfMonthContainer = (ViewGroup) view.findViewWithTag(DAY_OF_MONTH_CONTAINER + i);
+            dayOfMonthContainer = view.findViewWithTag(DAY_OF_MONTH_CONTAINER + i);
 
-            dayView = (DayView) view.findViewWithTag(decorate + i);
+            dayView = view.findViewWithTag(decorate + i);
             if (dayView == null)
                 continue;
 
@@ -263,115 +283,13 @@ public class CustomCalendarView extends LinearLayout {
         }
 
         // If the last week row has no visible days, hide it or show it in case
-        ViewGroup weekRow = (ViewGroup) view.findViewWithTag("weekRow6");
-        dayView = (DayView) view.findViewWithTag("dayOfMonthText36");
+        ViewGroup weekRow = view.findViewWithTag("weekRow6");
+        dayView = view.findViewWithTag("dayOfMonthText36");
         if (dayView.getVisibility() != VISIBLE) {
             weekRow.setVisibility(GONE);
         } else {
             weekRow.setVisibility(VISIBLE);
         }
-    }
-
-    public void setDataInCalendar(int startWeekIndex,Context context,List<EmployeeInOutSummaryModel.FinalArray> data){
-
-        DayView dayView;
-        TextView in_Time,out_Time;
-        ViewGroup dayOfMonthContainer;
-        for(int listCount = 0;listCount<data.size();listCount++){
-
-            dayOfMonthContainer = (ViewGroup) view.findViewWithTag(DAY_OF_MONTH_CONTAINER + (listCount+1));
-
-            Gson gsonData  = new Gson();
-            String employeeDataJson  = gsonData.toJson(data);
-
-
-            try {
-                JSONArray jsonArray = new JSONArray(employeeDataJson);
-                JSONObject dataObject;
-
-                dataObject = jsonArray.getJSONObject(0);
-                int coundays = 1;
-
-                coundays = startWeekIndex;
-
-
-                ArrayList<Integer> keys  = new ArrayList<Integer>();
-
-                for(Iterator<String> iter = dataObject.keys();iter.hasNext();) {
-                    String key = iter.next();
-
-                    try {
-
-                        if (!key.equalsIgnoreCase("Department") || !key.equalsIgnoreCase("Name")) {
-                            int numericKey = Integer.parseInt(key);
-                            keys.add(numericKey);
-                        }
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                    }
-
-                }
-
-                Collections.sort(keys);
-
-
-                for(int keyCount = 0;keyCount<keys.size();keyCount++){
-                    String key = String.valueOf(keys.get(keyCount));
-
-                    try {
-                        Object value = dataObject.get(key);
-
-                        String finalValue = value.toString();
-
-
-                        dayView = (DayView) view.findViewWithTag(decorate+coundays);
-                        in_Time = (TextView)view.findViewWithTag(INTIME+coundays);
-                        out_Time = (TextView)view.findViewWithTag(OUTTIME+coundays);
-
-                        if (dayView == null)
-                            continue;
-
-                        if (finalValue.equalsIgnoreCase("A")) {
-                            dayView.setTextColor(ContextCompat.getColor(context,R.color.absent));
-                            dayView.decorate();
-                        } else if (finalValue.equalsIgnoreCase("W")) {
-                            dayView.setTextColor(ContextCompat.getColor(context,R.color.orange));
-                            dayView.decorate();
-                        } else {
-                            dayView.setTextColor(ContextCompat.getColor(context,R.color.black));
-                            dayView.decorate();
-                            try {
-                                String[] time = finalValue.split("-");
-                                String inTime  = time[0];
-                                String outTime  = time[1];
-                                in_Time.setText(inTime);
-                                out_Time.setText(outTime);
-                            }catch (Exception ex){
-
-                                ex.printStackTrace();
-                            }
-
-
-                        }
-
-                        coundays++;
-
-                    }catch (JSONException e) {
-                        // Something went wrong!
-                        e.printStackTrace();
-                    }
-
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-//            Utils.ping(getContext(),employeeDataJson);
-
-
-
-        }
-
     }
 
 
@@ -503,29 +421,106 @@ public class CustomCalendarView extends LinearLayout {
         this.calendarListener = calendarListener;
     }
 
-    private OnClickListener onDayOfMonthClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            // Extract day selected
-            ViewGroup dayOfMonthContainer = (ViewGroup) view;
-            String tagId = (String) dayOfMonthContainer.getTag();
-            tagId = tagId.substring(DAY_OF_MONTH_CONTAINER.length(), tagId.length());
-            final TextView dayOfMonthText = (TextView) view.findViewWithTag(decorate + tagId);
+    public void setDataInCalendar(int startWeekIndex, Context context, List<EmployeeInOutSummaryModel.FinalArray> data) {
 
-            // Fire event
-            final Calendar calendar = Calendar.getInstance();
-            calendar.setFirstDayOfWeek(getFirstDayOfWeek());
-            calendar.setTime(currentCalendar.getTime());
-            calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(dayOfMonthText.getText().toString()));
-            markDayAsSelectedDay(calendar.getTime());
+        DayView dayView;
+        TextView in_Time, out_Time;
+        ViewGroup dayOfMonthContainer;
+        for (int listCount = 0; listCount < data.size(); listCount++) {
 
-            //Set the current day color
-            markDayAsCurrentDay(currentCalendar);
+            dayOfMonthContainer = view.findViewWithTag(DAY_OF_MONTH_CONTAINER + (listCount + 1));
 
-            if (calendarListener != null)
-                calendarListener.onDateSelected(calendar.getTime());
+            Gson gsonData = new Gson();
+            String employeeDataJson = gsonData.toJson(data);
+
+
+            try {
+                JSONArray jsonArray = new JSONArray(employeeDataJson);
+                JSONObject dataObject;
+
+                dataObject = jsonArray.getJSONObject(0);
+                int coundays = 1;
+
+                coundays = startWeekIndex;
+
+
+                ArrayList<Integer> keys = new ArrayList<Integer>();
+
+                for (Iterator<String> iter = dataObject.keys(); iter.hasNext(); ) {
+                    String key = iter.next();
+
+                    try {
+
+                        if (!key.equalsIgnoreCase("Department") || !key.equalsIgnoreCase("Name")) {
+                            int numericKey = Integer.parseInt(key);
+                            keys.add(numericKey);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+
+                }
+
+                Collections.sort(keys);
+
+
+                for (int keyCount = 0; keyCount < keys.size(); keyCount++) {
+                    String key = String.valueOf(keys.get(keyCount));
+
+                    try {
+                        Object value = dataObject.get(key);
+
+                        String finalValue = value.toString();
+
+
+                        dayView = view.findViewWithTag(decorate + coundays);
+                        in_Time = view.findViewWithTag(INTIME + coundays);
+                        out_Time = view.findViewWithTag(OUTTIME + coundays);
+
+                        if (dayView == null)
+                            continue;
+
+                        if (finalValue.equalsIgnoreCase("A")) {
+                            dayView.setTextColor(ContextCompat.getColor(context, R.color.absent));
+                            dayView.decorate();
+                        } else if (finalValue.equalsIgnoreCase("W")) {
+                            dayView.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                            dayView.decorate();
+                        } else {
+                            dayView.setTextColor(ContextCompat.getColor(context, R.color.black));
+                            dayView.decorate();
+                            try {
+                                String[] time = finalValue.split("-");
+                                String inTime = time[0];
+                                String outTime = time[1];
+                                in_Time.setText(inTime);
+                                out_Time.setText(outTime);
+                            } catch (Exception ex) {
+
+                                ex.printStackTrace();
+                            }
+
+
+                        }
+
+                        coundays++;
+
+                    } catch (JSONException e) {
+                        // Something went wrong!
+                        e.printStackTrace();
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            Utils.ping(getContext(),employeeDataJson);
+
+
         }
-    };
+
+    }
 
     public List<DayDecorator> getDecorators() {
         return decorators;

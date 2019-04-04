@@ -82,7 +82,7 @@ public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetail
                 if (isChecked) {
                     finalArrayBulkSMSModelList.get(position).setCheck("1");
                     stduentIdStr = finalArrayBulkSMSModelList.get(position).getFkStudentID().toString();
-                    mobilenoStr = finalArrayBulkSMSModelList.get(position).getSmsNo().toString();
+                    mobilenoStr = finalArrayBulkSMSModelList.get(position).getSmsNo();
                     FinalValue = stduentIdStr + "|" + mobilenoStr;
                     dataCheck.add(FinalValue);
                     Log.d("dataCheck", dataCheck.toString());
@@ -127,12 +127,12 @@ public class BulkSMSDetailListAdapter extends RecyclerView.Adapter<BulkSMSDetail
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            student_name_txt = (TextView) itemView.findViewById(R.id.student_name_txt);
-            family_name_txt = (TextView) itemView.findViewById(R.id.family_name_txt);
-            grade_txt = (TextView) itemView.findViewById(R.id.grade_txt);
-            mobileno_txt = (EditText) itemView.findViewById(R.id.mobileno_txt);
-            sms_chk = (CheckBox) itemView.findViewById(R.id.sms_chk);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            student_name_txt = itemView.findViewById(R.id.student_name_txt);
+            family_name_txt = itemView.findViewById(R.id.family_name_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            mobileno_txt = itemView.findViewById(R.id.mobileno_txt);
+            sms_chk = itemView.findViewById(R.id.sms_chk);
         }
     }
 

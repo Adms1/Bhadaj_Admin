@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="0.22"
                 android:gravity="center"
                 android:text="@string/lecture"
                 android:textAlignment="center"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginRight="@dimen/_5sdp"
-                android:layout_weight="0.5"
+                android:layout_weight="0.55"
                 android:gravity="center"
                 android:text="@string/details"
                 android:textAlignment="center"

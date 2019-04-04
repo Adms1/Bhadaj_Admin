@@ -143,7 +143,7 @@ public class MenuPermissionFragment extends Fragment {
                 String getid = spinnerTeacherMap.get(fragmentMenuPermissionBinding.teacherSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTeacherIdStr = getid.toString();
+                FinalTeacherIdStr = getid;
                 Log.d("FinalTeacherIdStr", FinalTeacherIdStr);
                 callPageListApi();
             }

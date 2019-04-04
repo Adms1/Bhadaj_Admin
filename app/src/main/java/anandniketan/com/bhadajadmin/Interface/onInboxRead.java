@@ -5,6 +5,6 @@ package anandniketan.com.bhadajadmin.Interface;
  */
 
 public interface onInboxRead {
-    public void readMessageStatus();
+    void readMessageStatus();
 
 }

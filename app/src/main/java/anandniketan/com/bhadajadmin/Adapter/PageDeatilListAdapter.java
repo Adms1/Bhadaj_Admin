@@ -128,11 +128,11 @@ public class PageDeatilListAdapter extends RecyclerView.Adapter<PageDeatilListAd
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            pagename_txt = (TextView) itemView.findViewById(R.id.pagename_txt);
-            addall_chk = (CheckBox) itemView.findViewById(R.id.addall_chk);
-            update_chk = (CheckBox) itemView.findViewById(R.id.update_chk);
-            delete_chk = (CheckBox) itemView.findViewById(R.id.delete_chk);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            pagename_txt = itemView.findViewById(R.id.pagename_txt);
+            addall_chk = itemView.findViewById(R.id.addall_chk);
+            update_chk = itemView.findViewById(R.id.update_chk);
+            delete_chk = itemView.findViewById(R.id.delete_chk);
         }
     }
 

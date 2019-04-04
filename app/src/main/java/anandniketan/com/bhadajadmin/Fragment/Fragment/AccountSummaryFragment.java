@@ -104,7 +104,7 @@ public class AccountSummaryFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentAccountSummaryBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("TermValue", name + "" + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", "" + FinalTermIdStr);
                 callAccountFeesStatusApi();
             }
@@ -121,7 +121,7 @@ public class AccountSummaryFragment extends Fragment {
                 String getid = spinnerTermDetailIdMap.get(fragmentAccountSummaryBinding.termDetailSpinner.getSelectedItemPosition());
 
                 Log.d("TermDetailValue", name + "" + getid);
-                FinalTermDetailIdStr = getid.toString();
+                FinalTermDetailIdStr = getid;
                 Log.d("FInalTermDetailId", FinalTermDetailIdStr);
                 AppConfiguration.ReverseTermDetailId = FinalTermDetailIdStr;
                 callAccountFeesStatusApi();

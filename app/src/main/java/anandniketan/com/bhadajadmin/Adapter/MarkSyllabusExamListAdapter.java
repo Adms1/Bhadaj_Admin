@@ -7,13 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
 import anandniketan.com.bhadajadmin.Model.Student.TestModel;
 import anandniketan.com.bhadajadmin.R;
 
@@ -112,7 +109,7 @@ public class MarkSyllabusExamListAdapter extends RecyclerView.Adapter<MarkSyllab
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            cbCheckValue = (AppCompatCheckBox) itemView.findViewById(R.id.cb_exam_list_item);
+            cbCheckValue = itemView.findViewById(R.id.cb_exam_list_item);
 
         }
     }

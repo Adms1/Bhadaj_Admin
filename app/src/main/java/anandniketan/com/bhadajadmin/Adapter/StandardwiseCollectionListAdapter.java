@@ -81,13 +81,13 @@ public class StandardwiseCollectionListAdapter extends RecyclerView.Adapter<Stan
 
         public ViewHolder(View itemView) {
             super(itemView);
-            std_txt = (TextView) itemView.findViewById(R.id.std_txt);
-            total_txt = (TextView) itemView.findViewById(R.id.total_txt);
-            received_txt = (TextView) itemView.findViewById(R.id.received_txt);
-            dues_txt = (TextView) itemView.findViewById(R.id.dues_txt);
-            total_per_txt = (TextView) itemView.findViewById(R.id.total_per_txt);
-            received_per_txt = (TextView) itemView.findViewById(R.id.received_per_txt);
-            dues_per_txt = (TextView) itemView.findViewById(R.id.dues_per_txt);
+            std_txt = itemView.findViewById(R.id.std_txt);
+            total_txt = itemView.findViewById(R.id.total_txt);
+            received_txt = itemView.findViewById(R.id.received_txt);
+            dues_txt = itemView.findViewById(R.id.dues_txt);
+            total_per_txt = itemView.findViewById(R.id.total_per_txt);
+            received_per_txt = itemView.findViewById(R.id.received_per_txt);
+            dues_per_txt = itemView.findViewById(R.id.dues_per_txt);
         }
     }
     public static String rupeeFormat(String value){

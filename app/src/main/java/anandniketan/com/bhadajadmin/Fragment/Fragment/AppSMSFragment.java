@@ -126,7 +126,7 @@ public class AppSMSFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentAppSmBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
             }
 
@@ -142,7 +142,7 @@ public class AppSMSFragment extends Fragment {
                 String getid = spinnerStatusMap.get(fragmentAppSmBinding.statusSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStatusIdStr = getid.toString();
+                FinalStatusIdStr = getid;
                 FinalStatusStr = name;
                 Log.d("FinalStatusIdStr", FinalStatusIdStr);
             }
@@ -159,7 +159,7 @@ public class AppSMSFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentAppSmBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 FinalStandardStr = name;
@@ -180,7 +180,7 @@ public class AppSMSFragment extends Fragment {
                 String getid = spinnerSectionMap.get(fragmentAppSmBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 FinalSectionStr = selectedsectionstr;
                 Log.d("FinalClassIdStr", FinalClassIdStr);
             }

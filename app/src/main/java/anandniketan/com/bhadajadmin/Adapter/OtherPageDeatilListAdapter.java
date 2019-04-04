@@ -130,12 +130,12 @@ public class OtherPageDeatilListAdapter extends RecyclerView.Adapter<OtherPageDe
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            other_index_txt = (TextView) itemView.findViewById(R.id.other_index_txt);
-            other_pagename_txt = (TextView) itemView.findViewById(R.id.other_pagename_txt);
-            other_underpagename_txt = (TextView) itemView.findViewById(R.id.other_underpagename_txt);
-            other_addall_chk = (CheckBox) itemView.findViewById(R.id.other_addall_chk);
-            other_update_chk = (CheckBox) itemView.findViewById(R.id.other_update_chk);
-            other_delete_chk = (CheckBox) itemView.findViewById(R.id.other_delete_chk);
+            other_index_txt = itemView.findViewById(R.id.other_index_txt);
+            other_pagename_txt = itemView.findViewById(R.id.other_pagename_txt);
+            other_underpagename_txt = itemView.findViewById(R.id.other_underpagename_txt);
+            other_addall_chk = itemView.findViewById(R.id.other_addall_chk);
+            other_update_chk = itemView.findViewById(R.id.other_update_chk);
+            other_delete_chk = itemView.findViewById(R.id.other_delete_chk);
         }
     }
 

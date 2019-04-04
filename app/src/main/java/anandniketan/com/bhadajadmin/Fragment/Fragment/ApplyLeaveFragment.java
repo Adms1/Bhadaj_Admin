@@ -680,7 +680,7 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
                     return;
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(getActivity(), getString(R.string.false_msg));
+                    Utils.ping(getActivity(), permissionModel.getYear());
                     return;
                 }
                 if (permissionModel.getSuccess().equalsIgnoreCase("True")) {

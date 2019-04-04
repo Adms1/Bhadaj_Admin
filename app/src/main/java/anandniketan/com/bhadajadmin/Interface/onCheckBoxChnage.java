@@ -5,5 +5,5 @@ package anandniketan.com.bhadajadmin.Interface;
  */
 
 public interface onCheckBoxChnage {
-    public void getChecked();
+    void getChecked();
 }

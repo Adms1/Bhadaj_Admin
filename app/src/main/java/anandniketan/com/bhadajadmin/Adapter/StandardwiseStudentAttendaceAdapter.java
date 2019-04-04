@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Student.StandardWiseAttendanceModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.StandardwiseAbsentListBinding;
 

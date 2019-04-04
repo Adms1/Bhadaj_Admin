@@ -65,7 +65,7 @@ public class ExpandableListAdapterInbox extends BaseExpandableListAdapter {
 
 
         TextView txtSubject;
-        txtSubject = (TextView) convertView.findViewById(R.id.txtSubject);
+        txtSubject = convertView.findViewById(R.id.txtSubject);
         messageId = childData.get(childPosition).getMessageID();
         FromId = childData.get(childPosition).getFromID();
         Toid = childData.get(childPosition).getToID();
@@ -120,10 +120,10 @@ public class ExpandableListAdapterInbox extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_group_inbox, null);
         }
         TextView Student_name_inbox_txt, date_inbox_txt, subject_inbox_txt, view_inbox_txt;
-        Student_name_inbox_txt = (TextView) convertView.findViewById(R.id.Student_name_inbox_txt);
-        date_inbox_txt = (TextView) convertView.findViewById(R.id.date_inbox_txt);
-        subject_inbox_txt = (TextView) convertView.findViewById(R.id.subject_inbox_txt);
-        view_inbox_txt = (TextView) convertView.findViewById(R.id.view_inbox_txt);
+        Student_name_inbox_txt = convertView.findViewById(R.id.Student_name_inbox_txt);
+        date_inbox_txt = convertView.findViewById(R.id.date_inbox_txt);
+        subject_inbox_txt = convertView.findViewById(R.id.subject_inbox_txt);
+        view_inbox_txt = convertView.findViewById(R.id.view_inbox_txt);
 
         Student_name_inbox_txt.setText(headerTitle1);
         date_inbox_txt.setText(headerTitle2);

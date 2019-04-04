@@ -98,7 +98,7 @@ public class ProfilePermissionFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentProfilePermissionBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 FinalStandardStr = name;
@@ -119,7 +119,7 @@ public class ProfilePermissionFragment extends Fragment {
                 String getid = spinnerSectionMap.get(fragmentProfilePermissionBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalSectionIdStr = getid.toString();
+                FinalSectionIdStr = getid;
                 FinalSectionStr = selectedsectionstr;
                 Log.d("FinalSectionIdStr", FinalSectionIdStr);
             }
@@ -132,7 +132,7 @@ public class ProfilePermissionFragment extends Fragment {
         fragmentProfilePermissionBinding.statusGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                RadioButton rb = (RadioButton) radioGroup.findViewById(checkedId);
+                RadioButton rb = radioGroup.findViewById(checkedId);
                 if (null != rb && checkedId > -1) {
                     // checkedId is the RadioButton selected
                     switch (checkedId) {

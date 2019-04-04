@@ -108,7 +108,7 @@ public class ImprestFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentImprestBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
             }
 
@@ -121,7 +121,7 @@ public class ImprestFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = fragmentImprestBinding.standardSpinner.getSelectedItem().toString();
                 String getid = spinnerStandardMap.get(fragmentImprestBinding.standardSpinner.getSelectedItemPosition());
-                FinalstandardIdStr = getid.toString();
+                FinalstandardIdStr = getid;
                 Log.d("FinalstandardIdStr", FinalstandardIdStr);
 
             }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".Activity.DashboardActivity">
+    tools:context=".bhadajadmin.Activity.DashboardActivity">
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
@@ -52,7 +52,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/teacher_name"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/_13sdp"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
 
@@ -65,7 +65,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:text="@string/designation"
                     android:textColor="@android:color/white"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
         </LinearLayout>

@@ -52,9 +52,9 @@ public class LoginDetailStatusAdapter  extends RecyclerView.Adapter<LoginDetailS
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name_txt);
-            date = (TextView) itemView.findViewById(R.id.date);
-            type = (TextView) itemView.findViewById(R.id.type);
+            name = itemView.findViewById(R.id.name_txt);
+            date = itemView.findViewById(R.id.date);
+            type = itemView.findViewById(R.id.type);
         }
     }
 }

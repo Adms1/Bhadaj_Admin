@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.WebView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Account.DateWiseFeesCollectionModel;
-import anandniketan.com.bhadajadmin.Model.Account.FinalArrayAccountFeesModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.databinding.ListGroupStudentDiscountDetailBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemDailyCollectionBinding;
@@ -135,11 +133,11 @@ public class ExpandbleListAdapterDailyCollection extends BaseExpandableListAdapt
                     dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 
-                    TextView tvUserName = (TextView) dialog.findViewById(R.id.tv_name);
+                    TextView tvUserName = dialog.findViewById(R.id.tv_name);
 
                     tvUserName.setText(spiltValue[0]+"("+spiltValue[4]+")");
 
-                    RecyclerView recyclerView = (RecyclerView)dialog.findViewById(R.id.rv_datewisechildlist);
+                    RecyclerView recyclerView = dialog.findViewById(R.id.rv_datewisechildlist);
 
                     recyclerView.setLayoutManager(new LinearLayoutManager(_context));
 
@@ -148,7 +146,7 @@ public class ExpandbleListAdapterDailyCollection extends BaseExpandableListAdapt
                    DatewiseFeesChildItemAdapter datewiseFeesChildItemAdapter  = new DatewiseFeesChildItemAdapter(_context,dataList.get(groupPosition).getFeeReceiptDetail());
                     recyclerView.setAdapter(datewiseFeesChildItemAdapter);
 
-                   Button btnClose = (Button) dialog.findViewById(R.id.close_btn);
+                    Button btnClose = dialog.findViewById(R.id.close_btn);
                     btnClose.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

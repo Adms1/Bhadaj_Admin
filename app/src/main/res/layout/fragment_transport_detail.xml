@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".Fragment.Fragment.MISStudentTransportDetailFragment">
+    tools:context=".bhadajadmin.Fragment.Fragment.MISStudentTransportDetailFragment">
 
     <RelativeLayout
         android:id="@+id/transport_header"

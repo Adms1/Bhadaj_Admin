@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.HR.EmployeeInOutDetailsModel;
-import anandniketan.com.bhadajadmin.Model.HR.EmployeePresentDetailsModel;
 import anandniketan.com.bhadajadmin.R;
 
 public class EmployeeInOutDetailsAdapter extends RecyclerView.Adapter<EmployeeInOutDetailsAdapter.MyViewHolder>{
@@ -62,11 +61,11 @@ public class EmployeeInOutDetailsAdapter extends RecyclerView.Adapter<EmployeeIn
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            code_txt = (TextView) itemView.findViewById(R.id.code_txt);
-            name_txt = (TextView) itemView.findViewById(R.id.name_txt);
-            ondate_txt = (TextView) itemView.findViewById(R.id.ondate_txt);
-            inoutdetails_txt = (TextView) itemView.findViewById(R.id.inoutdetails_txt);
-            workinghours_txt = (TextView) itemView.findViewById(R.id.workinghours_txt);
+            code_txt = itemView.findViewById(R.id.code_txt);
+            name_txt = itemView.findViewById(R.id.name_txt);
+            ondate_txt = itemView.findViewById(R.id.ondate_txt);
+            inoutdetails_txt = itemView.findViewById(R.id.inoutdetails_txt);
+            workinghours_txt = itemView.findViewById(R.id.workinghours_txt);
 
         }
 

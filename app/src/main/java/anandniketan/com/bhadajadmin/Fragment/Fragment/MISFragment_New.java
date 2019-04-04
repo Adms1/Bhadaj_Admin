@@ -137,7 +137,7 @@ public class MISFragment_New extends Fragment {
                 String getid = spinnerTermMap.get(fragmentMisBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 AppConfiguration.TermName = name;
 

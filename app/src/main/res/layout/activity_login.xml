@@ -11,7 +11,7 @@
         android:background="@drawable/login_back"
         android:fillViewport="true"
         android:fitsSystemWindows="true"
-        tools:context=".Activity.LoginActivity">
+        tools:context=".bhadajadmin.Activity.LoginActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"

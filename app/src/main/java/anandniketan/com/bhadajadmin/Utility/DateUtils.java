@@ -101,13 +101,9 @@ public class DateUtils {
         try {
             if(dfDate.parse(fromDate).before(dfDate.parse(toDate))) {
                 b = true;//If start date is before end date
-            }
-            else if(dfDate.parse(fromDate).equals(dfDate.parse(toDate))) {
-                b = true;//If two dates are equal
-            }
-            else {
-                b = false; //If start date is after the end date
-            }
+            } else //If two dates are equal
+//If start date is after the end date
+                b = dfDate.parse(fromDate).equals(dfDate.parse(toDate));
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -123,13 +119,9 @@ public class DateUtils {
         try {
             if(dfDate.parse(fromDate).before(dfDate.parse(Utils.getTodaysDate()))) {
                 b = true;//If start date is before end date
-            }
-            else if(dfDate.parse(fromDate).equals(dfDate.parse(Utils.getTodaysDate()))) {
-                b = true;//If two dates are equal
-            }
-            else {
-                b = false; //If start date is after the end date
-            }
+            } else //If two dates are equal
+//If start date is after the end date
+                b = dfDate.parse(fromDate).equals(dfDate.parse(Utils.getTodaysDate()));
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -162,7 +154,7 @@ public class DateUtils {
         Date dateDT = null;
 
         try {
-            newDate = sbDate.substring(0, 19).toString();
+            newDate = sbDate.substring(0, 19);
         } catch (Exception e) {
             e.printStackTrace();
         }

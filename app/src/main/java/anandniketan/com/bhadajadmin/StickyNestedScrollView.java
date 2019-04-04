@@ -14,8 +14,6 @@ import android.view.animation.AlphaAnimation;
 
 import java.util.ArrayList;
 
-import anandniketan.com.bhadajadmin.R;
-
 public class StickyNestedScrollView extends NestedScrollView {
     /**
      * Tag for views that should stick and have constant drawing. e.g. TextViews, ImageViews etc

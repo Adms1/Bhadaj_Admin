@@ -7,8 +7,6 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import anandniketan.com.bhadajadmin.Fragment.Fragment.StudentFragment;
 import anandniketan.com.bhadajadmin.R;
-import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -52,12 +46,12 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateViewWithBaseHeader(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, @LayoutRes int layoutResID){
         LinearLayout fullView = (LinearLayout)getLayoutInflater().inflate(R.layout.fragment_base, null);
 
-        mTextViewTitle = (TextView)fullView.findViewById(R.id.textView3);
-        btnBack = (Button)fullView.findViewById(R.id.btnBack);
+        mTextViewTitle = fullView.findViewById(R.id.textView3);
+        btnBack = fullView.findViewById(R.id.btnBack);
 
 
-        btnMenu = (Button)fullView.findViewById(R.id.btnmenu);
-        FrameLayout fragmentContainer = (FrameLayout) fullView.findViewById(R.id.fragment_container);
+        btnMenu = fullView.findViewById(R.id.btnmenu);
+        FrameLayout fragmentContainer = fullView.findViewById(R.id.fragment_container);
         return getLayoutInflater().inflate(layoutResID,fragmentContainer, true);
 
     }

@@ -120,7 +120,7 @@ public class LeaveBalanceFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentMyLeaveBalanceBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                finalTermIdStr = getid.toString();
+                finalTermIdStr = getid;
                 Log.d("FinalTermIdStr", finalTermIdStr);
 
                 callLeaveBalanceApi();

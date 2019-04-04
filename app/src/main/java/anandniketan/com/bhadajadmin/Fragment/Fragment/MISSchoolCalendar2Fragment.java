@@ -81,7 +81,7 @@ public class MISSchoolCalendar2Fragment extends Fragment {
         tvNoRecord = view.findViewById(R.id.cal_tv_no_records);
         ll = view.findViewById(R.id.cal_ll);
 
-        expList.setNestedScrollingEnabled(true);
+//        expList.setNestedScrollingEnabled(true);
 //        try {
 //            if (getArguments() != null) {
 //                dataList = getArguments().getParcelableArrayList("dataList");

@@ -55,11 +55,11 @@ public class ExamListAdapter extends RecyclerView.Adapter<ExamListAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            testDate_txt=(TextView)itemView.findViewById(R.id.testDate_txt);
-            subject_txt=(TextView)itemView.findViewById(R.id.subject_txt);
-            grade_txt=(TextView)itemView.findViewById(R.id.grade_txt);
-            test_name_txt=(TextView)itemView.findViewById(R.id.test_name_txt);
-            srno_txt=(TextView)itemView.findViewById(R.id.srno_txt);
+            testDate_txt = itemView.findViewById(R.id.testDate_txt);
+            subject_txt = itemView.findViewById(R.id.subject_txt);
+            grade_txt = itemView.findViewById(R.id.grade_txt);
+            test_name_txt = itemView.findViewById(R.id.test_name_txt);
+            srno_txt = itemView.findViewById(R.id.srno_txt);
         }
     }
 }

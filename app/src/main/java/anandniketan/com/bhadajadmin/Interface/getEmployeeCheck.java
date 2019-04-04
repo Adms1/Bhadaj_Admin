@@ -5,5 +5,5 @@ package anandniketan.com.bhadajadmin.Interface;
  */
 
 public interface getEmployeeCheck {
-    public void getEmployeeSMSCheck();
+    void getEmployeeSMSCheck();
 }

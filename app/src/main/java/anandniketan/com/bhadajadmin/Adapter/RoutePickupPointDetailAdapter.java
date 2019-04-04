@@ -57,9 +57,9 @@ public class RoutePickupPointDetailAdapter extends RecyclerView.Adapter<RoutePic
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt=(TextView)itemView.findViewById(R.id.index_txt);
-                    pickup_point_txt=(TextView)itemView.findViewById(R.id.pickup_point_txt);
-            status_txt=(TextView)itemView.findViewById(R.id.status_txt);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            pickup_point_txt = itemView.findViewById(R.id.pickup_point_txt);
+            status_txt = itemView.findViewById(R.id.status_txt);
 
         }
     }

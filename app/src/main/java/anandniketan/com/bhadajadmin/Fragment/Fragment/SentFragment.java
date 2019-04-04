@@ -119,7 +119,7 @@ public class SentFragment extends Fragment {
                                 String StudentArray = null;
                                 ArrayList<String> array = expandableListAdapterSent.getMessageId();
                                 for (int j = 0; j < array.size(); j++) {
-                                    id.add(array.get(j).toString());
+                                    id.add(array.get(j));
                                 }
                                 finalMessageIdArray = String.valueOf(id);
                                 finalMessageIdArray = finalMessageIdArray.substring(1, finalMessageIdArray.length() - 1);

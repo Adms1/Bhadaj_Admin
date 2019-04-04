@@ -17,7 +17,6 @@ import java.util.List;
 
 import anandniketan.com.bhadajadmin.R;
 
-
 /**
  * Created by admsandroid on 2/1/2018.
  */
@@ -28,7 +27,6 @@ public class ExpandableListAdapterMenu extends BaseExpandableListAdapter {
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<String>> _listDataChild;
     private ArrayList<String> imagesId;
-
 
     public ExpandableListAdapterMenu(Context context, List<String> listDataHeader,
                                      HashMap<String, ArrayList<String>> listDataChild, ArrayList<String> imagesId) {

@@ -2,16 +2,13 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.R;
 
 public class MISListAdapter extends RecyclerView.Adapter<MISListAdapter.MyViewHolder> {
@@ -116,8 +113,8 @@ public class MISListAdapter extends RecyclerView.Adapter<MISListAdapter.MyViewHo
 
        public MyViewHolder(View itemView) {
             super(itemView);
-            key_text = (TextView) itemView.findViewById(R.id.key_txt);
-            value_txt = (TextView) itemView.findViewById(R.id.value_txt);
+           key_text = itemView.findViewById(R.id.key_txt);
+           value_txt = itemView.findViewById(R.id.value_txt);
 
         }
     }

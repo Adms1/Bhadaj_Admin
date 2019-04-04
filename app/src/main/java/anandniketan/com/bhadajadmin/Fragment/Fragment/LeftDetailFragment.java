@@ -128,7 +128,7 @@ public class LeftDetailFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentLeftDetailBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 AppConfiguration.TermName = name;
             }
@@ -146,7 +146,7 @@ public class LeftDetailFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentLeftDetailBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 if (name.equalsIgnoreCase("All")) {
@@ -171,7 +171,7 @@ public class LeftDetailFragment extends Fragment {
                 String getid = spinnerSectionMap.get(fragmentLeftDetailBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 if (selectedsectionstr.equalsIgnoreCase("All")) {
                     FinalSectionStr = "0";
                 } else {

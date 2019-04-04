@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!--android:outlineSpotShadowColor="@color/gray"-->
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,7 +14,6 @@
         android:background="@drawable/grid_shape"
         android:elevation="@dimen/_4sdp"
         android:orientation="vertical"
-        android:outlineSpotShadowColor="@color/gray"
         android:weightSum="1">
 
         <ImageView

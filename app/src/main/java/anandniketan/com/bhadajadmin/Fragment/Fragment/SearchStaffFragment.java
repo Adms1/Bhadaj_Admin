@@ -141,7 +141,7 @@ public class SearchStaffFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentStudentViewInquiryBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 AppConfiguration.TermId = FinalTermIdStr;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
 
@@ -160,7 +160,7 @@ public class SearchStaffFragment extends Fragment {
                // String getid = finalArrayGetDesgModels.get(fragmentStudentViewInquiryBinding.desgSpinner.getSelectedItemPosition()).getDesignationId();
 
                 Log.d("value", name + " " + getid);
-                FinalDesgId = getid.toString();
+                FinalDesgId = getid;
                 AppConfiguration.DesgId = FinalDesgId;
 
                 //Log.d("FinalDesgId", FinalDesgId);
@@ -179,7 +179,7 @@ public class SearchStaffFragment extends Fragment {
                 //String getid = finalArrayGetDeptModels.get(fragmentStudentViewInquiryBinding.desgSpinner.getSelectedItemPosition()).getDepartmentCode();
 
                 Log.d("value", name + " " + getid);
-                FinalDeptId = getid.toString();
+                FinalDeptId = getid;
                 AppConfiguration.DeptId = FinalDeptId;
 
                 Log.d("FinalDeptIdstr", FinalDeptId);

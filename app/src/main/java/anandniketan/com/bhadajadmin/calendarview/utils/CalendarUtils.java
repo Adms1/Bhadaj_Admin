@@ -55,7 +55,7 @@ public class CalendarUtils {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        return (date.before(calendar.getTime())) ? true : false;
+        return date.before(calendar.getTime());
     }
 
 }

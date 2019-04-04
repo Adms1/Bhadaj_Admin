@@ -6,8 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 
-
-public interface  ClipManager {
+public interface ClipManager {
 
     @NonNull
     Path createMask(int width, int height);

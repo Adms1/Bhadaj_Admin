@@ -69,12 +69,16 @@ public class MISStudentTransportFragment extends Fragment {
         termid = bundle.getString("TermID");
         stdid = bundle.getString("stdID");
 
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
+        tvHeader.setText(R.string.studenttransport);
+
         rvList = view.findViewById(R.id.transport_rv_misdata_list1);
         progressBar = view.findViewById(R.id.transport_loader);
         tvNorecord = view.findViewById(R.id.transport_txtNoRecords);
         llHeader = view.findViewById(R.id.transport_lv_header2);
-        btnBack = view.findViewById(R.id.transport_btnBack);
-        btnMenu = view.findViewById(R.id.transport_btnmenu);
         rvList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         btnMenu.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +92,6 @@ public class MISStudentTransportFragment extends Fragment {
             public void onClick(View v) {
 
                 getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
 
 //                getActivity().getSupportFragmentManager().popBackStackImmediate();
 

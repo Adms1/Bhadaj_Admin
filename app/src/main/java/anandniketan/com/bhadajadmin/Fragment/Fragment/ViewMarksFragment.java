@@ -1,5 +1,6 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -112,7 +113,6 @@ public class ViewMarksFragment extends Fragment {
             public void onClick(View v) {
 
                 callViewMaks();
-
             }
         });
 
@@ -181,6 +181,8 @@ public class ViewMarksFragment extends Fragment {
 
         testids = testNameAdapter.getDatas();
 
+        FinalTestIDs = "";
+
         StringBuilder sb = new StringBuilder();
         for (String s : testids) {
             FinalTestIDs = TextUtils.join("/", testids);
@@ -193,10 +195,25 @@ public class ViewMarksFragment extends Fragment {
                 "\n" + FinalStandardIdStr + "," + FinalStandardStr + "\n" + FinalSectionIdStr + "," + FinalStandardectionStr);
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("TermID", FinalTermIdStr + "," + FinalTermName);
-        map.put("TestIDs", FinalTestIDs);
-        map.put("GradeID", FinalStandardIdStr + "," + FinalStandardStr);
-        map.put("SectionID", FinalSectionIdStr + "," + FinalStandardectionStr);
+
+        if (!FinalTestIDs.equalsIgnoreCase("")) {
+
+            map.put("TermID", FinalTermIdStr + "," + FinalTermName);
+            map.put("TestIDs", FinalTestIDs);
+            map.put("GradeID", FinalStandardIdStr + "," + FinalStandardStr);
+            map.put("SectionID", FinalSectionIdStr + "," + FinalStandardectionStr);
+
+        } else {
+
+            DialogUtils.createConfirmDialog(getActivity(), "Please select any one test", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).show();
+
+        }
+
         return map;
     }
 
@@ -212,11 +229,11 @@ public class ViewMarksFragment extends Fragment {
             public void success(ViewMarksModel termModel, Response response) {
                 Utils.dismissDialog();
                 if (termModel == null) {
-                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+//                    Utils.ping(getActivity(), getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess() == null) {
-                    Utils.ping(getActivity(), getString(R.string.something_wrong));
+//                    Utils.ping(getActivity(), getString(R.string.something_wrong));
                     return;
                 }
                 if (termModel.getSuccess().equalsIgnoreCase("false")) {
@@ -233,7 +250,7 @@ public class ViewMarksFragment extends Fragment {
                 Utils.dismissDialog();
                 error.printStackTrace();
                 error.getMessage();
-                Utils.ping(getActivity(), getString(R.string.something_wrong));
+//                Utils.ping(getActivity(), getString(R.string.something_wrong));
             }
         });
     }

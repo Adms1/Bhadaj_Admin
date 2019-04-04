@@ -679,11 +679,11 @@ public class ActivityLoggingFragment extends Fragment {
         window.setAttributes(wlp);
         alertDialogAndroid.show();
 
-        close_btn = (Button) layout.findViewById(R.id.close_btn);
-        header_linear = (LinearLayout) layout.findViewById(R.id.header_linear);
-        login_status_list = (RecyclerView) layout.findViewById(R.id.login_status_list);
-        txtNoRecordsloginstatus = (TextView) layout.findViewById(R.id.txtNoRecordsloginstatus);
-        recycler_linear=(LinearLayout)layout.findViewById(R.id.recycler_linear);
+        close_btn = layout.findViewById(R.id.close_btn);
+        header_linear = layout.findViewById(R.id.header_linear);
+        login_status_list = layout.findViewById(R.id.login_status_list);
+        txtNoRecordsloginstatus = layout.findViewById(R.id.txtNoRecordsloginstatus);
+        recycler_linear = layout.findViewById(R.id.recycler_linear);
         FillLoginDetailList();
 
         close_btn.setOnClickListener(new View.OnClickListener() {

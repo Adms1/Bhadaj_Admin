@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -64,7 +65,7 @@ public class SimpleSectionedRecyclerViewAdapter extends RecyclerView.Adapter<Rec
 
         public SectionViewHolder(View view, int mTextResourceid) {
             super(view);
-            title = (TextView) view.findViewById(mTextResourceid);
+            title = view.findViewById(mTextResourceid);
         }
     }
 

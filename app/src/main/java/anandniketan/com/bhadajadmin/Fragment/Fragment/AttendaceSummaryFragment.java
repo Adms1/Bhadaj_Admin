@@ -33,7 +33,6 @@ import anandniketan.com.bhadajadmin.databinding.FragmentAttendaceSummaryBinding;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
 public class AttendaceSummaryFragment extends Fragment {
 
     int Year, Month, Day;

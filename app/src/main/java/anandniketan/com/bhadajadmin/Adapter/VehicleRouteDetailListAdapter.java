@@ -12,7 +12,6 @@ import java.util.List;
 import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayTransportChargesModel;
 import anandniketan.com.bhadajadmin.R;
 
-
 /**
  * Created by admsandroid on 11/23/2017.
  */
@@ -61,9 +60,9 @@ public class VehicleRouteDetailListAdapter  extends RecyclerView.Adapter<Vehicle
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            index_txt=(TextView)itemView.findViewById(R.id.index_txt);
-            vehiclename_txt=(TextView)itemView.findViewById(R.id.vehiclename_txt);
-            routename_txt=(TextView)itemView.findViewById(R.id.routename_txt);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            vehiclename_txt = itemView.findViewById(R.id.vehiclename_txt);
+            routename_txt = itemView.findViewById(R.id.routename_txt);
         }
     }
 

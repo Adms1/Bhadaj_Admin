@@ -19,7 +19,6 @@ import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.databinding.ListGroupCheckPaymentBinding;
 import anandniketan.com.bhadajadmin.databinding.ListItemCheckPaymentBinding;
 
-
 /**
  * Created by admsandroid on 2/2/2018.
  */

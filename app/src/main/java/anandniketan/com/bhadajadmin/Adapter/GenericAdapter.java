@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 
 public abstract class GenericAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

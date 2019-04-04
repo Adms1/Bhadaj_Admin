@@ -32,7 +32,7 @@
             android:padding="@dimen/_5sdp"
             android:text=""
             android:textColor="@color/scheduleheadertextcolor"
-            android:textSize="12sp" />
+            android:textSize="@dimen/_9sdp" />
 
     </LinearLayout>
 

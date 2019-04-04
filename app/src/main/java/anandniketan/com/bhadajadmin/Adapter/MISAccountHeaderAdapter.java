@@ -8,11 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
-import java.util.Iterator;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.MIS.MISAccountModel;
@@ -89,12 +84,12 @@ public class MISAccountHeaderAdapter<T> extends RecyclerView.Adapter<RecyclerVie
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            txt_key = (TextView) itemView.findViewById(R.id.txt_key);
-            txt_value = (TextView) itemView.findViewById(R.id.txt_value);
-            txt_key1 = (TextView) itemView.findViewById(R.id.txt_key1);
-            txt_value1 = (TextView) itemView.findViewById(R.id.txt_value1);
-            txt_key2 = (TextView) itemView.findViewById(R.id.txt_key2);
-            txt_value2 = (TextView) itemView.findViewById(R.id.txt_value2);
+            txt_key = itemView.findViewById(R.id.txt_key);
+            txt_value = itemView.findViewById(R.id.txt_value);
+            txt_key1 = itemView.findViewById(R.id.txt_key1);
+            txt_value1 = itemView.findViewById(R.id.txt_value1);
+            txt_key2 = itemView.findViewById(R.id.txt_key2);
+            txt_value2 = itemView.findViewById(R.id.txt_value2);
         }
     }
 

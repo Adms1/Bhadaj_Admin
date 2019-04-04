@@ -394,7 +394,7 @@ public class ResultPermisssionFragment extends Fragment {
                                 fragmentResultPermisssionBinding.cancelBtn.setVisibility(View.VISIBLE);
                                 UpdatePermission();
                             }
-                        }, status);
+                        }, updatestatus);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         fragmentResultPermisssionBinding.studentResultPermissionList.setLayoutManager(mLayoutManager);
                         fragmentResultPermisssionBinding.studentResultPermissionList.setItemAnimator(new DefaultItemAnimator());

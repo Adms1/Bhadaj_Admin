@@ -156,7 +156,7 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
                 String getid = spinnerStandardMap.get(fragmentStudentAbsentBinding.gradeSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalStandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 FinalStandardStr = name;
@@ -177,7 +177,7 @@ public class StudentAbsentFragment extends Fragment implements DatePickerDialog.
                 String getid = spinnerSectionMap.get(fragmentStudentAbsentBinding.sectionSpinner.getSelectedItemPosition());
 
                 Log.d("value", selectedsectionstr + " " + getid);
-                FinalClassIdStr = getid.toString();
+                FinalClassIdStr = getid;
                 FinalSectionStr = selectedsectionstr;
                 Log.d("FinalClassIdStr", FinalClassIdStr);
             }

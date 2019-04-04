@@ -262,7 +262,6 @@ public class SearchStudentFragment extends Fragment {
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
         });
-
     }
 
     private Map<String, String> getStandardDetail() {
@@ -327,6 +326,7 @@ public class SearchStudentFragment extends Fragment {
         Map<String, String> map = new HashMap<>();
         map.put("SearchType", searchtypeStr);
         map.put("InputValue", parentNameStr);
+
         return map;
     }
 

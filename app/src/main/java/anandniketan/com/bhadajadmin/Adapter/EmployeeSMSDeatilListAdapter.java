@@ -125,10 +125,10 @@ public class EmployeeSMSDeatilListAdapter extends RecyclerView.Adapter<EmployeeS
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            employee_name_txt = (TextView) itemView.findViewById(R.id.employee_name_txt);
-            mobileno_txt = (EditText) itemView.findViewById(R.id.mobileno_txt);
-            sms_chk = (CheckBox) itemView.findViewById(R.id.sms_chk);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            employee_name_txt = itemView.findViewById(R.id.employee_name_txt);
+            mobileno_txt = itemView.findViewById(R.id.mobileno_txt);
+            sms_chk = itemView.findViewById(R.id.sms_chk);
         }
     }
 

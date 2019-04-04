@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +52,7 @@ public class WebServicesCall {
 
 			OutputStream os = conn.getOutputStream();
 			BufferedWriter writer = new BufferedWriter(
-					new OutputStreamWriter(os, "UTF-8"));
+                    new OutputStreamWriter(os, StandardCharsets.UTF_8));
 			writer.write(getPostDataString(params));
 			writer.flush();
 			writer.close();
@@ -109,7 +110,7 @@ public class WebServicesCall {
 
 			conn.setUseCaches(false);
 
-
+            conn.setInstanceFollowRedirects(false);
 
 			int responseCode=conn.getResponseCode();
 			System.out.println("Response Code : "+responseCode);

@@ -720,7 +720,7 @@ public class HomeworkNotDoneFragment extends Fragment implements DatePickerDialo
         for (String s : newArray) {
             homeworkdetailidstr = homeworkdetailidstr + "," + s;
         }
-        homeworkdetailidstr = homeworkdetailidstr.substring(1, homeworkdetailidstr.length());
+        homeworkdetailidstr = homeworkdetailidstr.substring(1);
 
 
         if (!Utils.checkNetwork(Objects.requireNonNull(getActivity()))) {

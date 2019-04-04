@@ -131,7 +131,7 @@ public class InOutSummaryFragment extends Fragment {
                 String getid = spinnerMonthMap.get(fragmentInOutSummaryBinding.monthSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                monthId = getid.toString();
+                monthId = getid;
                 Log.d("monthId", monthId);
 
                 AppConfiguration.month = monthId;
@@ -152,7 +152,7 @@ public class InOutSummaryFragment extends Fragment {
                 String getid = spinnerYearMap.get(fragmentInOutSummaryBinding.yearSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                yearId = getid.toString();
+                yearId = getid;
                 AppConfiguration.year = yearId;
                 Log.d("yearId", yearId);
 

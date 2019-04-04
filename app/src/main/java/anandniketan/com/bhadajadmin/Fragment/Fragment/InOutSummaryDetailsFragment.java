@@ -31,7 +31,6 @@ import anandniketan.com.bhadajadmin.databinding.FragmentInOutSummaryDetailsBindi
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
 public class InOutSummaryDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     FragmentInOutSummaryDetailsBinding fragmentEmployeePresentDetailBinding;
@@ -99,7 +98,7 @@ public class InOutSummaryDetailsFragment extends Fragment implements DatePickerD
             public void onClick(View v) {
                 fragment = new AttendenceReportFragment();
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right).replace(R.id.frame_container, fragment).commit();
             }
         });
 

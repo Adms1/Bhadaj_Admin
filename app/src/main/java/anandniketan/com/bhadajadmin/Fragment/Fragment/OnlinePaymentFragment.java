@@ -141,7 +141,7 @@ public class OnlinePaymentFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentOnlinePaymentBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callOnlinePaymentPermission();
 
@@ -160,7 +160,7 @@ public class OnlinePaymentFragment extends Fragment {
                 String getid = spinnerTermDetailIdMap.get(fragmentOnlinePaymentBinding.termDetailSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermDetailIdStr = getid.toString();
+                FinalTermDetailIdStr = getid;
                 Log.d("FinalTermDetailIdStr", FinalTermDetailIdStr);
                 callOnlinePaymentPermission();
             }

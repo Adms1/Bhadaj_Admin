@@ -1,7 +1,7 @@
 package anandniketan.com.bhadajadmin.Activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,9 +18,9 @@ public class Server_Error extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server__error);
         getSupportActionBar().hide();
-        ok_btn = (Button) findViewById(R.id.ok_btn);
+        ok_btn = findViewById(R.id.ok_btn);
         ok_btn.setOnClickListener(this);
-        imageView=(ImageView)findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView);
     }
 
     @Override

@@ -203,7 +203,6 @@ public class MISStudentTransportDetailFragment extends Fragment {
                         List<TransportMainModel.StudentDatum> newArr = transportMainArray;
 //                        List<TransportMainModel.StudentDatum> newArr1 = staffSMSDataModel.getFinalArray().get(0).getStudentData();
 
-
 //                        ArrayList<String> header = new ArrayList<>();
 //                        HashMap<String, ArrayList<TransportMainModel.StudentDatum>> child = new HashMap<>();
 

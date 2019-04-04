@@ -93,7 +93,7 @@ public class TransportChargesFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentTransportChargesBinding.yearSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callTransportChargesApi();
             }

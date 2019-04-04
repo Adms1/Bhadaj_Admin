@@ -214,7 +214,7 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
                 String getid = spinnerTermMap.get( fragmentAddInquiryBinding.sessionSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
 
                 AppConfiguration.TermName=name;
@@ -277,6 +277,7 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
             public void onClick(View v) {
                 whichDatePickerCalled = 1;
                 datePickerDialog = DatePickerDialog.newInstance(FragmentAddUpdateInquiry.this,Year,Month,Day);
+                datePickerDialog.setMaxDate(calendar);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.showYearPickerFirst(false);
@@ -291,6 +292,7 @@ public class FragmentAddUpdateInquiry extends Fragment implements DatePickerDial
             public void onClick(View v) {
                 whichDatePickerCalled = 2;
                 datePickerDialog = DatePickerDialog.newInstance(FragmentAddUpdateInquiry.this,Year,Month,Day);
+                datePickerDialog.setMaxDate(calendar);
                 datePickerDialog.setThemeDark(false);
                 datePickerDialog.setOkText("Done");
                 datePickerDialog.showYearPickerFirst(false);

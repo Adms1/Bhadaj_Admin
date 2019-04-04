@@ -130,7 +130,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
 //        setRetainInstance(true);
     }
 

@@ -9,7 +9,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:descendantFocusability="blocksDescendants"
-        tools:context=".Fragment.Fragment.MISStudentTermIWiseResultList">
+        tools:context=".bhadajadmin.Fragment.Fragment.MISStudentTermIWiseResultList">
 
         <RelativeLayout
             android:id="@+id/LL_list_header"

@@ -2,14 +2,13 @@ package anandniketan.com.bhadajadmin.asynctasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import anandniketan.com.bhadajadmin.Utility.AppConfiguration;
 import anandniketan.com.bhadajadmin.Utility.PrefUtils;
-import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.Utility.WebServicesCall;
 
 import static anandniketan.com.bhadajadmin.Utility.AppConfiguration.BASE_API_CONTAINER;

@@ -5,5 +5,5 @@ package anandniketan.com.bhadajadmin.Interface;
  */
 
 public interface onViewClick {
-    public void getViewClick();
+    void getViewClick();
 }

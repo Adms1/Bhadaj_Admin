@@ -69,9 +69,9 @@ public class ListAdapterCreate extends BaseAdapter {
             final LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.list_row_displaystudent, null);
 
-            viewHolder.student_name_txt = (TextView) convertView.findViewById(R.id.student_name_txt);
-            viewHolder.gr_no_txt = (TextView) convertView.findViewById(R.id.gr_no_txt);
-            viewHolder.create_Checkbox = (CheckBox) convertView.findViewById(R.id.create_Checkbox);
+            viewHolder.student_name_txt = convertView.findViewById(R.id.student_name_txt);
+            viewHolder.gr_no_txt = convertView.findViewById(R.id.gr_no_txt);
+            viewHolder.create_Checkbox = convertView.findViewById(R.id.create_Checkbox);
 
             try {
                 viewHolder.student_name_txt.setText(arrayList.get(position).getStudentName());

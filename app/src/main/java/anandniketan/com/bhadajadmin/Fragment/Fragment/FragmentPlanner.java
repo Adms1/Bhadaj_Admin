@@ -138,16 +138,21 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
         fragmentPlannerBinding.rbHoliday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FinalType = compoundButton.getText().toString();
+                if (b) {
+                    FinalType = compoundButton.getText().toString();
+                }
             }
         });
 
         fragmentPlannerBinding.rbEvent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FinalType = compoundButton.getText().toString();
+                if (b) {
+                    FinalType = compoundButton.getText().toString();
+                }
             }
         });
+
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

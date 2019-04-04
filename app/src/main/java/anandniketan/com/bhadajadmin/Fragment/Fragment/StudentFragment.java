@@ -60,6 +60,9 @@ public class StudentFragment extends Fragment {
     };
     public String[] mThumbNames = {"Search Student", "View Inquiry", "Student Transport",
             "Permission", "Attendance", "Left/Active", "New Register", "Announcement", "Circular", "Planner", "Gallery", "Leave Request", "Suggestion"};
+//
+//    public String[] mThumbNames = {"View Inquiry", "Attendance"};
+
     int Year, Month, Day;
     Calendar calendar;
     private FragmentStudentBinding fragmentStudentBinding;

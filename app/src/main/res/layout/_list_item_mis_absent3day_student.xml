@@ -25,7 +25,7 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/studentname_txt"
@@ -35,7 +35,7 @@
                 android:layout_weight="1.2"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/absentfrom_txt"
@@ -45,7 +45,7 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:id="@+id/class_teacher_txt"
@@ -55,7 +55,7 @@
                 android:layout_weight="1.2"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="@dimen/_10sdp" />
 
             <ImageView
                 android:id="@+id/iv_phone"
@@ -84,7 +84,7 @@
                 android:padding="@dimen/_7sdp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="@dimen/_10sdp"
                 android:visibility="gone" />
 
             <TextView
@@ -96,7 +96,7 @@
                 android:padding="@dimen/_7sdp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="@dimen/_10sdp"
                 android:visibility="gone" />
 
         </LinearLayout>

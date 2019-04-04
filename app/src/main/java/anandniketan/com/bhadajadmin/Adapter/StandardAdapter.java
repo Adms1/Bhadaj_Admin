@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import anandniketan.com.bhadajadmin.Model.Account.FinalArrayStandard;
-import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -61,7 +60,7 @@ public class StandardAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             LayoutInflater mInflater = (LayoutInflater) mContext.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.list_row_standard_checkbox, null);
-            viewHolder.check_standard = (CheckBox) convertView.findViewById(R.id.check_standard);
+            viewHolder.check_standard = convertView.findViewById(R.id.check_standard);
             final FinalArrayStandard standarObj = standardModel.get(position);
             try {
                 viewHolder.check_standard.setText(standarObj.getStandard());

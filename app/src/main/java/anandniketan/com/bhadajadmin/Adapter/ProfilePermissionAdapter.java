@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceFinalArray;
 import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
@@ -54,9 +53,9 @@ public class ProfilePermissionAdapter extends RecyclerView.Adapter<ProfilePermis
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            standard_txt = (TextView) itemView.findViewById(R.id.standard_txt);
-            class_txt = (TextView) itemView.findViewById(R.id.class_txt);
-            status_txt = (TextView) itemView.findViewById(R.id.status_txt);
+            standard_txt = itemView.findViewById(R.id.standard_txt);
+            class_txt = itemView.findViewById(R.id.class_txt);
+            status_txt = itemView.findViewById(R.id.status_txt);
         }
     }
 }

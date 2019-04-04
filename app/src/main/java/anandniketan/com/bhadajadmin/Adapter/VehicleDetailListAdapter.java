@@ -56,10 +56,10 @@ public class VehicleDetailListAdapter extends RecyclerView.Adapter<VehicleDetail
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            vehiclename_txt = (TextView) itemView.findViewById(R.id.vehiclename_txt);
-            registrationno_txt = (TextView) itemView.findViewById(R.id.registrationno_txt);
-            passenger_txt = (TextView) itemView.findViewById(R.id.passenger_txt);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            vehiclename_txt = itemView.findViewById(R.id.vehiclename_txt);
+            registrationno_txt = itemView.findViewById(R.id.registrationno_txt);
+            passenger_txt = itemView.findViewById(R.id.passenger_txt);
         }
     }
 

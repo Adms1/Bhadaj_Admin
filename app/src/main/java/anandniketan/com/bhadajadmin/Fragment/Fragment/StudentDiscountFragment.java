@@ -113,7 +113,7 @@ public class StudentDiscountFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentStudentDiscountBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
             }
 
@@ -129,7 +129,7 @@ public class StudentDiscountFragment extends Fragment {
                 String getid = spinnerdiscountTypeMap.get(fragmentStudentDiscountBinding.discountSpinner.getSelectedItemPosition());
 
                 Log.d("routevalue", name + " " + getid);
-                FinaldiscountypeIdStr = getid.toString();
+                FinaldiscountypeIdStr = getid;
                 Log.d("FinaldiscountypeIdStr", FinaldiscountypeIdStr);
             }
 
@@ -145,7 +145,7 @@ public class StudentDiscountFragment extends Fragment {
                 String getid = spinnerStandardMap.get(fragmentStudentDiscountBinding.standardSpinner.getSelectedItemPosition());
 
 
-                FinalstandardIdStr = getid.toString();
+                FinalstandardIdStr = getid;
                 Log.d("FinalstandardIdStr", FinalstandardIdStr);
 
             }

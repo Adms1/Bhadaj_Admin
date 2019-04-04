@@ -2,7 +2,6 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import anandniketan.com.bhadajadmin.Model.Student.AnnouncementModel;
-import anandniketan.com.bhadajadmin.Model.Student.FinalArrayStudentModel;
-import anandniketan.com.bhadajadmin.Model.Student.StudentAttendanceModel;
 import anandniketan.com.bhadajadmin.R;
 
 
@@ -63,12 +60,12 @@ public class AnnouncmentAdpater extends RecyclerView.Adapter<AnnouncmentAdpater.
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            index_txt = (TextView) itemView.findViewById(R.id.index_txt);
-            date_txt = (TextView) itemView.findViewById(R.id.date_txt);
-            subject_txt = (TextView) itemView.findViewById(R.id.subject_txt);
-            discription_txt = (TextView) itemView.findViewById(R.id.discription_txt);
-            order_txt = (TextView) itemView.findViewById(R.id.order_txt);
-            status_txt = (TextView) itemView.findViewById(R.id.status_txt);
+            index_txt = itemView.findViewById(R.id.index_txt);
+            date_txt = itemView.findViewById(R.id.date_txt);
+            subject_txt = itemView.findViewById(R.id.subject_txt);
+            discription_txt = itemView.findViewById(R.id.discription_txt);
+            order_txt = itemView.findViewById(R.id.order_txt);
+            status_txt = itemView.findViewById(R.id.status_txt);
 
         }
     }

@@ -32,7 +32,6 @@ public class MarkSyllabusPermissionAdapter extends RecyclerView.Adapter<MarkSyll
         this.status = status;
     }
 
-
     @Override
     public MarkSyllabusPermissionAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_mark_syllabus, parent, false);

@@ -152,6 +152,8 @@ public class TimeTableFragment extends Fragment implements onDeleteWithId, EditT
 
 //                if (viewstatus.equalsIgnoreCase("true")) {
                     callStandardApi();
+
+                callTimeTableApi();
 //                } else {
 //                    Utils.ping(getActivity(), "Access Denied");
 //                }
@@ -177,7 +179,7 @@ public class TimeTableFragment extends Fragment implements onDeleteWithId, EditT
                 Log.d("StandardName", standardName);
 
 
-                callTimeTableApi();
+//                callTimeTableApi();
             }
 
             @Override

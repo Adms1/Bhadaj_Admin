@@ -11,9 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "http://192.168.1.22:8086/MobileApp_Service.asmx/";
+    //    public static final String BASE_URL = "http://103.250.144.109:8085/MobileApp_Service.asmx/";
     private static Retrofit retrofit = null;
-
 
     public static Retrofit getClient() {
         if (retrofit == null) {

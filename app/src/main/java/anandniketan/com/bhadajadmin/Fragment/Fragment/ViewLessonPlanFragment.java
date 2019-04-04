@@ -113,7 +113,7 @@ public class ViewLessonPlanFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentViewLessonPlanBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
 
                 fragmentViewLessonPlanBinding.standardSpinner.setSelection(0);
@@ -128,7 +128,7 @@ public class ViewLessonPlanFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String name = fragmentViewLessonPlanBinding.standardSpinner.getSelectedItem().toString();
                 String getid = spinnerStandardMap.get(fragmentViewLessonPlanBinding.standardSpinner.getSelectedItemPosition());
-                FinalStandardIdStr = getid.toString();
+                FinalStandardIdStr = getid;
                 Log.d("FinalstandardIdStr", FinalStandardIdStr);
                 StandardName = name;
                 callSubjectApi();
@@ -146,7 +146,7 @@ public class ViewLessonPlanFragment extends Fragment {
                 String getid = spinnerSubjectMap.get(fragmentViewLessonPlanBinding.subjectSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalSubjectIdStr = getid.toString();
+                FinalSubjectIdStr = getid;
                 Log.d("FinalSubjectIdStr", FinalSubjectIdStr);
                 callEmployeeApi();
             }
@@ -163,7 +163,7 @@ public class ViewLessonPlanFragment extends Fragment {
                 String getid = spinneremployeeMap.get(fragmentViewLessonPlanBinding.employeeNameSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalEmployeeIdStr = getid.toString();
+                FinalEmployeeIdStr = getid;
                 Log.d("FinalEmployeeIdStr", FinalEmployeeIdStr);
             }
 

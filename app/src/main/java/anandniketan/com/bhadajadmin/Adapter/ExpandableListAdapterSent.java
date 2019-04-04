@@ -65,8 +65,8 @@ public class ExpandableListAdapterSent extends BaseExpandableListAdapter {
 
         TextView txtSubject;
         final Button delete_btn;
-        txtSubject = (TextView) convertView.findViewById(R.id.txtSubject);
-        delete_btn = (Button) convertView.findViewById(R.id.delete_btn);
+        txtSubject = convertView.findViewById(R.id.txtSubject);
+        delete_btn = convertView.findViewById(R.id.delete_btn);
 
         txtSubject.setText(childData.get(childPosition).getDescription());
         delete_btn.setOnClickListener(new View.OnClickListener() {
@@ -116,10 +116,10 @@ public class ExpandableListAdapterSent extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_group_inbox, null);
         }
         TextView Student_name_inbox_txt, date_inbox_txt, subject_inbox_txt, view_inbox_txt;
-        Student_name_inbox_txt = (TextView) convertView.findViewById(R.id.Student_name_inbox_txt);
-        date_inbox_txt = (TextView) convertView.findViewById(R.id.date_inbox_txt);
-        subject_inbox_txt = (TextView) convertView.findViewById(R.id.subject_inbox_txt);
-        view_inbox_txt = (TextView) convertView.findViewById(R.id.view_inbox_txt);
+        Student_name_inbox_txt = convertView.findViewById(R.id.Student_name_inbox_txt);
+        date_inbox_txt = convertView.findViewById(R.id.date_inbox_txt);
+        subject_inbox_txt = convertView.findViewById(R.id.subject_inbox_txt);
+        view_inbox_txt = convertView.findViewById(R.id.view_inbox_txt);
 
         Student_name_inbox_txt.setText(headerTitle1);
         date_inbox_txt.setText(headerTitle2);

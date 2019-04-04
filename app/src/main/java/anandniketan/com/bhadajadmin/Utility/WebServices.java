@@ -90,6 +90,9 @@ import retrofit2.http.Url;
 
 public interface WebServices {
 
+    @retrofit2.http.GET()
+    Call<JsonObject> getBaseUrl(@Url String url);
+
     @FormUrlEncoded
     @POST("/StaffLogin")
     void login(@FieldMap Map<String, String> map, Callback<LogInModel> callback);

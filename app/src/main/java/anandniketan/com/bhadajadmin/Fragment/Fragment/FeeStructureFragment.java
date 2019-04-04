@@ -94,7 +94,7 @@ public class FeeStructureFragment extends Fragment {
                 String getid = spinnerTermMap.get(fragmentFeeStructureBinding.termSpinner.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callAccountFeesStructureApi();
             }

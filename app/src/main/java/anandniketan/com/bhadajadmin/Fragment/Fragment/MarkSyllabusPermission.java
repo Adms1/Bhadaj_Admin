@@ -173,7 +173,7 @@ public class MarkSyllabusPermission extends Fragment {
                 String getid = spinnerTermMap.get(sp_term.getSelectedItemPosition());
 
                 Log.d("value", name + " " + getid);
-                FinalTermIdStr = getid.toString();
+                FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
             }
 

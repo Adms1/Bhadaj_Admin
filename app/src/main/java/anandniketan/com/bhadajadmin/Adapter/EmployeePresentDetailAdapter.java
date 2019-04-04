@@ -2,24 +2,15 @@ package anandniketan.com.bhadajadmin.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import anandniketan.com.bhadajadmin.Fragment.Fragment.EmployeePresentDetail;
-import anandniketan.com.bhadajadmin.Interface.getEmployeeCheck;
 import anandniketan.com.bhadajadmin.Model.HR.EmployeePresentDetailsModel;
-import anandniketan.com.bhadajadmin.Model.Other.FinalArraySMSDataModel;
 import anandniketan.com.bhadajadmin.R;
 
 public class EmployeePresentDetailAdapter extends RecyclerView.Adapter<EmployeePresentDetailAdapter.MyViewHolder> {
@@ -69,10 +60,10 @@ public class EmployeePresentDetailAdapter extends RecyclerView.Adapter<EmployeeP
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            date_txt = (TextView) itemView.findViewById(R.id.date_txt);
-            name_txt = (TextView) itemView.findViewById(R.id.name_txt);
-            dept_txt = (TextView) itemView.findViewById(R.id.dept_txt);
-            designation_txt = (TextView) itemView.findViewById(R.id.designation_txt);
+            date_txt = itemView.findViewById(R.id.date_txt);
+            name_txt = itemView.findViewById(R.id.name_txt);
+            dept_txt = itemView.findViewById(R.id.dept_txt);
+            designation_txt = itemView.findViewById(R.id.designation_txt);
         }
     }
 

@@ -225,6 +225,8 @@ public class LoginActivity extends Activity {
                         String pwd = edtPassword.getText().toString();
                         String deviceId = mData.get(0).getDeviceId();
 
+//                        AppConfiguration.DEVICE_ID = mData.get(0).getDeviceId();
+
                         saveDetails(staffId, empCode, empName, deptId, desgId, empDept, empDesg, deviceId, pwd);
 //                        saveDetails("5", empCode, empName, deptId, desgId, empDept, empDesg, deviceId, pwd);
 

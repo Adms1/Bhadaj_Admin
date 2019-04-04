@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import java.util.List;
+
 import anandniketan.com.bhadajadmin.Model.MIS.MISStudentModel;
 import anandniketan.com.bhadajadmin.R;
 
@@ -72,8 +74,8 @@ public class MISStudentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            txt_standard = (TextView) itemView.findViewById(R.id.txt_grade);
-            txt_NoOfStudents = (TextView) itemView.findViewById(R.id.txt_no);
+            txt_standard = itemView.findViewById(R.id.txt_grade);
+            txt_NoOfStudents = itemView.findViewById(R.id.txt_no);
         }
     }
 

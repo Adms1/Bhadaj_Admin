@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 
-import java.security.cert.CertificateException;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
@@ -12,12 +11,12 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import okhttp3.Headers;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 import static anandniketan.com.bhadajadmin.Utility.AppConfiguration.LIVE_BASE_URL;
 
 
@@ -30,16 +29,16 @@ public class ApiHandler {
     public static String BASE_URL = AppConfiguration.BASEURL;
            // ;
 
-    private static final long HTTP_TIMEOUT = TimeUnit.SECONDS.toMillis(6000);
+    private static final long HTTP_TIMEOUT = TimeUnit.SECONDS.toMillis(10000);
     private static WebServices apiService,apiServiceForFileUpload;
 
 
     public static WebServices getApiService() {
         if (apiService == null) {
             OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.setConnectTimeout(70 * 1000, TimeUnit.MILLISECONDS);
-            okHttpClient.setWriteTimeout(70 * 1000, TimeUnit.MILLISECONDS);
-            okHttpClient.setReadTimeout(70 * 1000, TimeUnit.MILLISECONDS);
+            okHttpClient.setConnectTimeout(100 * 1000, TimeUnit.MILLISECONDS);
+            okHttpClient.setWriteTimeout(100 * 1000, TimeUnit.MILLISECONDS);
+            okHttpClient.setReadTimeout(100 * 1000, TimeUnit.MILLISECONDS);
 //
 //            try{
 //                BASE_URL = PrefUtils.getInstance(mAppcontext).getStringValue("live_base_url","");
@@ -50,7 +49,6 @@ public class ApiHandler {
 
 
 //            okHttpClient.setSslSocketFactory(new NoSSLv3Factory());
-
             RestAdapter restAdapter = new RestAdapter.Builder()
                     .setLogLevel(RestAdapter.LogLevel.FULL)
                     .setEndpoint(BASE_URL)
@@ -105,20 +103,20 @@ public class ApiHandler {
 
         try {
             OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient.setReadTimeout(70 * 1000, TimeUnit.MILLISECONDS);
-            okHttpClient.setConnectTimeout(70 * 1000, TimeUnit.MILLISECONDS);
+            okHttpClient.setReadTimeout(100 * 1000, TimeUnit.MILLISECONDS);
+            okHttpClient.setConnectTimeout(100 * 1000, TimeUnit.MILLISECONDS);
 
             final TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
                 @Override
                 public void checkClientTrusted(
                         java.security.cert.X509Certificate[] chain,
-                        String authType) throws CertificateException {
+                        String authType) {
                 }
 
                 @Override
                 public void checkServerTrusted(
                         java.security.cert.X509Certificate[] chain,
-                        String authType) throws CertificateException {
+                        String authType) {
                 }
 
                 @Override

@@ -3,8 +3,6 @@ package anandniketan.com.bhadajadmin.Model.Student;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
  * Created by admsandroid on 11/17/2017.
  */

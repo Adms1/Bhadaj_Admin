@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -60,6 +61,9 @@ public class MISStudentListFragment extends Fragment {
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
 
+    private TextView tvHeader;
+    private Button btnBack, btnMenu;
+
     public MISStudentListFragment() {
         // Required empty public constructor
     }
@@ -93,6 +97,10 @@ public class MISStudentListFragment extends Fragment {
         date = bundle.getString("Date");
         gender = bundle.getString("Gender");
 
+        tvHeader = view.findViewById(R.id.textView3);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnMenu = view.findViewById(R.id.btnmenu);
+
         header_txt.setVisibility(View.GONE);
 
         header_txt.setText(title);
@@ -123,9 +131,8 @@ public class MISStudentListFragment extends Fragment {
 
 
         if (requestType != null && !TextUtils.isEmpty(requestType)) {
-            fragmentMisDataBinding.textView3.setText(requestType);
+            tvHeader.setText(requestType);
         }
-
 
         try {
             deptId = bundle.getString("deptID");
@@ -317,7 +324,7 @@ public class MISStudentListFragment extends Fragment {
             }
         }, 2000);
 
-        fragmentMisDataBinding.btnBack.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -331,7 +338,7 @@ public class MISStudentListFragment extends Fragment {
 //                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
-        fragmentMisDataBinding.btnmenu.setOnClickListener(new View.OnClickListener() {
+        btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DashboardActivity.onLeft();
