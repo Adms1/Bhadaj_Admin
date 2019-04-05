@@ -699,7 +699,7 @@ public class TimeTableFragment extends Fragment implements onDeleteWithId, EditT
 
     private HashMap<String, String> getTeacherDetail(String teachername) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("TermID", "3");
+        map.put("TermID", FinalTermIdStr);
         map.put("SubjectID", teachername);
         return map;
     }

@@ -234,6 +234,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         fragmentMisBinding.taskReportInnercontainer.setVisibility(View.GONE);
         fragmentMisBinding.resultOfSchoolInnercontainer.setVisibility(View.GONE);
         fragmentMisBinding.LLFinance.setVisibility(View.GONE);
+        fragmentMisBinding.linearFinance.setVisibility(View.GONE);
         llCalendar.setVisibility(View.GONE);
 
         fragmentMisBinding.progressStudent.setVisibility(View.VISIBLE);
@@ -595,6 +596,8 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
                 fragmentMisBinding.LLFinance.setVisibility(View.GONE);
                 fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
+                fragmentMisBinding.linearFinance.setVisibility(View.GONE);
+                fragmentMisBinding.tvNoRecordsOfFinance.setVisibility(View.GONE);
 
                 try {
                     if (isAdded()) {
@@ -1205,6 +1208,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                     Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
+
                 if (staffSMSDataModel.getSuccess().equalsIgnoreCase("True")) {
 
                     try {
@@ -1225,7 +1229,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                         antboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalStudentANT()));
                         abboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getTotalConsistanceAbsent()));
                         baboy_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getBetAlumini()));
-                        boy_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(0).getData().get(0).getAttendance()));
+                        boy_attendance_less_70_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(1).getData().get(0).getAttendance()));
 
                         girl_total_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotal()));
                         girl_present_txt.setText(String.valueOf(staffSMSDataModel.getDetailArray().get(2).getData().get(0).getTotalPresent()));
@@ -1238,7 +1242,6 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
                         fragmentMisBinding.progressStudent.setVisibility(View.GONE);
                         fragmentMisBinding.LLStudentcontainer.setVisibility(View.VISIBLE);
-
 
                         try {
                             if (isAdded()) {
@@ -1620,6 +1623,8 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
         fragmentMisBinding.progressFinance.setVisibility(View.VISIBLE);
         fragmentMisBinding.LLFinance.setVisibility(View.GONE);
+        fragmentMisBinding.linearFinance.setVisibility(View.GONE);
+        fragmentMisBinding.tvNoRecordsOfFinance.setVisibility(View.GONE);
         // Utils.showDialog(getActivity());
         ApiHandler.getApiService().getHeadWiseFeesCollection(getFinanceListParams(termId), new retrofit.Callback<MISFinanaceModel>() {
 
@@ -1640,6 +1645,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                     Utils.ping(mContext, getString(R.string.false_msg));
                     fragmentMisBinding.progressFinance.setVisibility(View.GONE);
                     fragmentMisBinding.LLFinance.setVisibility(View.GONE);
+                    fragmentMisBinding.linearFinance.setVisibility(View.VISIBLE);
                     fragmentMisBinding.tvNoRecordsOfFinance.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -1650,7 +1656,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                         fragmentMisBinding.progressFinance.setVisibility(View.GONE);
                         fragmentMisBinding.LLFinance.setVisibility(View.VISIBLE);
                         fragmentMisBinding.tvNoRecordsOfFinance.setVisibility(View.GONE);
-
+                        fragmentMisBinding.linearFinance.setVisibility(View.VISIBLE);
 
                         financedataValues = staffSMSDataModel.getFinalArray();
 
@@ -1961,7 +1967,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private Map<String, String> getStudentParams(String reqType, String date) {
         Map<String, String> map = new HashMap<>();
         map.put("Date", date);
-        map.put("TermID", FinalTermIdStr);
+        map.put("TermID", FinalFinanaceTermId);
         map.put("RequestType", reqType);
         map.put("stop", "");
         return map;
@@ -1988,7 +1994,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private Map<String, String> getTaskReportParams(String date) {
         Map<String, String> map = new HashMap<>();
         map.put("Date", date);
-        map.put("TermID", FinalTermIdStr);
+        map.put("TermID", FinalFinanaceTermId);
         map.put("stop", "");
         return map;
     }
@@ -1996,7 +2002,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private Map<String, String> getStaffNewParams(String date) {
         Map<String, String> map = new HashMap<>();
         map.put("Date", date);
-        map.put("TermID", FinalTermIdStr);
+        map.put("TermID", FinalFinanaceTermId);
         map.put("stop", "");
         return map;
     }
@@ -2010,7 +2016,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
                 fragment = new MISStudentTransportFragment();
                 bundle = new Bundle();
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("stdID", "0");
 
                 fragment.setArguments(bundle);
@@ -2038,7 +2044,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "Total");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
@@ -2056,7 +2062,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Boys");
                 bundle.putString("requestType", "Total");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "boys");
 
@@ -2074,7 +2080,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Girls");
                 bundle.putString("requestType", "Total");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "girls");
 
@@ -2092,7 +2098,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "Present");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
@@ -2109,7 +2115,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Boys");
                 bundle.putString("requestType", "Present");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "boys");
 
@@ -2126,7 +2132,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Girls");
                 bundle.putString("requestType", "Present");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "girls");
 
@@ -2143,7 +2149,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "Leave");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
@@ -2160,7 +2166,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Boys");
                 bundle.putString("requestType", "Leave");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "boys");
 
@@ -2177,7 +2183,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Girls");
                 bundle.putString("requestType", "Leave");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "girls");
 
@@ -2194,7 +2200,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "Absent");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "");
 
@@ -2211,7 +2217,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Boys");
                 bundle.putString("requestType", "Absent");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "boys");
 
@@ -2228,7 +2234,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Girls");
                 bundle.putString("requestType", "Absent");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 bundle.putString("Gender", "girls");
 
@@ -2247,7 +2253,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestType", "Attendance less then 70%");
                 bundle.putString("requestTitle", "Attendance less then 70%");
                 bundle.putString("countdata", student_attendance_less_70_txt.getText().toString());
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -2265,7 +2271,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestType", "Attendance less then 70%");
                 bundle.putString("requestTitle", "Attendance less then 70%");
                 bundle.putString("countdata", student_attendance_less_70_txt.getText().toString());
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "boys");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -2283,7 +2289,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestType", "Attendance less then 70%");
                 bundle.putString("requestTitle", "Attendance less then 70%");
                 bundle.putString("countdata", student_attendance_less_70_txt.getText().toString());
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "girls");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -2299,7 +2305,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "ANT");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -2315,7 +2321,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Boys");
                 bundle.putString("requestType", "ANT");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "boys");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -2331,7 +2337,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Girls");
                 bundle.putString("requestType", "ANT");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "girls");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
                 fragment.setArguments(bundle);
@@ -2347,7 +2353,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "ConsistentAbsent");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
@@ -2364,7 +2370,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "All Student");
                 bundle.putString("requestType", "Between alumini left");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
@@ -2381,7 +2387,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Boys");
                 bundle.putString("requestType", "ConsistentAbsent");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "boys");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
@@ -2398,7 +2404,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Boys");
                 bundle.putString("requestType", "Between alumini left");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "boys");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
@@ -2415,7 +2421,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Girls");
                 bundle.putString("requestType", "ConsistentAbsent");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "girls");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
@@ -2432,7 +2438,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle = new Bundle();
                 bundle.putString("title", "Girls");
                 bundle.putString("requestType", "Between alumini left");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Gender", "girls");
                 bundle.putString("Date", fragmentMisBinding.studentDateBtn.getText().toString());
 
@@ -2450,7 +2456,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("title", "Staff");
                 bundle.putString("requestType", "Total");
                 bundle.putString("requestTitle", "Total Staff");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -2467,7 +2473,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestType", "Present");
                 bundle.putString("requestTitle", "Present");
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", staff_present_txt.getText().toString());
                 fragment.setArguments(bundle);
@@ -2485,7 +2491,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("title", "Staff");
                 bundle.putString("requestType", "Absent");
                 bundle.putString("requestTitle", "Absent");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", absent_txt.getText().toString());
 
@@ -2504,7 +2510,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("title", "Staff");
                 bundle.putString("requestType", "Leave");
                 bundle.putString("requestTitle", "Leave");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", staffleave_txt.getText().toString());
 
@@ -2524,7 +2530,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestType", "A.N.T.");
                 bundle.putString("requestTitle", "A.N.T. Class Teacher");
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", antstaff_txt.getText().toString());
                 fragment.setArguments(bundle);
@@ -2543,7 +2549,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestTitle", "Work Plan Submitted");
 
                 bundle.putString("countdata", staff_workplan_txt.getText().toString());
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
 
                 fragment.setArguments(bundle);
@@ -2562,7 +2568,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestType", "CW Submitted");
                 bundle.putString("requestTitle", "Classwork Submitted");
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", staff_cw_txt.getText().toString());
                 fragment.setArguments(bundle);
@@ -2579,7 +2585,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("title", "Staff");
                 bundle.putString("requestType", "HW Submitted");
                 bundle.putString("requestTitle1", "HomeWork Submitted");
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", staff_hw_submitted_txt.getText().toString());
                 fragment.setArguments(bundle);
@@ -2599,7 +2605,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
                 AppConfiguration.acReqTitle = "Total To Be Collect";
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", actotaltobecall_txt.getText().toString());
                 AppConfiguration.CountdataAccount = actotaltobecall_txt.getText().toString();
@@ -2620,7 +2626,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestType", "Term 1 Fees");
                 bundle.putString("requestTitle", "Term 1 Fees");
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", acterm1fess_txt.getText().toString());
                 AppConfiguration.CountdataAccount = acterm1fess_txt.getText().toString();
@@ -2643,7 +2649,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestTitle", "Term 2 Fees");
                 AppConfiguration.acReqTitle = "Term 2 Fees";
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", acterm2fess_txt.getText().toString());
                 AppConfiguration.CountdataAccount = acterm2fess_txt.getText().toString();
@@ -2663,7 +2669,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestTitle", "Term 1 Collection");
                 AppConfiguration.acReqTitle = "Term 1 Collection";
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", acterm1_collection.getText().toString());
                 AppConfiguration.CountdataAccount = acterm1_collection.getText().toString();
@@ -2684,7 +2690,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 bundle.putString("requestTitle", "Term 2 Collection");
                 AppConfiguration.acReqTitle = "Term 2 Collection";
 
-                bundle.putString("TermID", FinalTermIdStr);
+                bundle.putString("TermID", FinalFinanaceTermId);
                 bundle.putString("Date", Utils.getTodaysDate());
                 bundle.putString("countdata", acterm2_collection.getText().toString());
                 AppConfiguration.CountdataAccount = acterm2_collection.getText().toString();

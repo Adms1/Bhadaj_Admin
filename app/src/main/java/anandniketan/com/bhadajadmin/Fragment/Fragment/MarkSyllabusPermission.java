@@ -559,7 +559,7 @@ public class MarkSyllabusPermission extends Fragment {
                                 btnCancel.setVisibility(View.VISIBLE);
                                 UpdatePermission(pos);
                             }
-                        }, status);
+                        }, updatestatus);
                         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                         rvMainListData.setLayoutManager(mLayoutManager);
                         rvMainListData.setAdapter(resultPermissionAdapter);
@@ -709,6 +709,7 @@ public class MarkSyllabusPermission extends Fragment {
                     callTermApi();
                     isRefreshRequired = true;
                     callGradeApi();
+                    callResultPermission();
                 }
             }
 
