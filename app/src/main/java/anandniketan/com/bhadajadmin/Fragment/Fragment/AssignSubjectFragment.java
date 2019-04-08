@@ -65,7 +65,7 @@ public class AssignSubjectFragment extends Fragment {
     private String getEditValuearray;
     private String[] spinnersubjectIdArray;
     private RadioButton rbActive, rbInactive;
-    private String viewstatus, updatestatus, deletestatus, assignID = "", statusstr = "", finalStatusStr = "";
+    private String viewstatus, updatestatus, deletestatus, assignID = "0", statusstr = "1", finalStatusStr = "";
 
     private String editClassteacherStr, editGradeStr;
 
@@ -206,10 +206,14 @@ public class AssignSubjectFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (updatestatus.equalsIgnoreCase("true")) {
-                    callInsertAssignSubjectApi();
+                if (!fragmentAssignSubjectBinding.teacherSpinner.getSelectedItem().toString().equalsIgnoreCase("--select--")) {
+                    if (updatestatus.equalsIgnoreCase("true")) {
+                        callInsertAssignSubjectApi();
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
                 } else {
-                    Utils.ping(getActivity(), "Access Denied");
+                    Utils.ping(getContext(), "Please Select proper data");
                 }
             }
         });
@@ -472,6 +476,7 @@ public class AssignSubjectFragment extends Fragment {
                     fragmentAssignSubjectBinding.teacherSpinner.setSelection(0);
                     rbActive.setChecked(false);
                     rbInactive.setChecked(false);
+                    btnCancel.setVisibility(View.GONE);
 
                     finalArrayInsertAssignSubjectModelList = insertAssignSubjectModel.getFinalArray();
                     if (finalArrayInsertAssignSubjectModelList != null) {
@@ -667,10 +672,10 @@ public class AssignSubjectFragment extends Fragment {
 
 //        for (int i = 0; i < getEditValuearray.size(); i++) {
         String[] spiltValue = getEditValuearray.split("\\|");
-            statusstr = spiltValue[0];
-            assignID = spiltValue[1];
-            editClassteacherStr = spiltValue[2];
-            editGradeStr = spiltValue[3];
+        statusstr = spiltValue[0];
+        assignID = spiltValue[1];
+        editClassteacherStr = spiltValue[2];
+        editGradeStr = spiltValue[3];
 //        }
 
         if (statusstr.equalsIgnoreCase("active")) {

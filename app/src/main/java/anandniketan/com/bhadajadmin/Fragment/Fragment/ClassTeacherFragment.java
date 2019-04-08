@@ -232,10 +232,15 @@ public class ClassTeacherFragment extends Fragment {
         fragmentClassTeacherBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (updatestatus.equalsIgnoreCase("true")) {
-                    callInsertClassTeacherApi();
+                if (!fragmentClassTeacherBinding.gradeSpinner.getSelectedItem().toString().equalsIgnoreCase("--select--") && !fragmentClassTeacherBinding.teacherSpinner.getSelectedItem().toString().equalsIgnoreCase("--select--")) {
+
+                    if (updatestatus.equalsIgnoreCase("true")) {
+                        callInsertClassTeacherApi();
+                    } else {
+                        Utils.ping(getActivity(), "Access Denied");
+                    }
                 } else {
-                    Utils.ping(getActivity(), "Access Denied");
+                    Utils.ping(getContext(), "Please Select proper data");
                 }
             }
         });
