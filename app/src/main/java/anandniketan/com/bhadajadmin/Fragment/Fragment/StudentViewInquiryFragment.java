@@ -196,7 +196,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                 FinalTermIdStr = getid;
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callInquiryCountApi();
-                callInquiryDataApi();
+
             }
 
             @Override
@@ -356,6 +356,7 @@ public class StudentViewInquiryFragment extends Fragment implements DatePickerDi
                     finalArrayinquiryCountList = inquiryCountModel.getFinalArray();
                     if (finalArrayinquiryCountList != null) {
                         fillInquiryCount();
+                        callInquiryDataApi();
                     }
                 }
             }
