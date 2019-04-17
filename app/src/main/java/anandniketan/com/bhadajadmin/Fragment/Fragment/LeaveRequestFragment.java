@@ -131,7 +131,11 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         if (nytpe.equalsIgnoreCase("notification")) {
             nid = bundle.getString("stuid");
             ndate = bundle.getString("sdate");
+        } else {
+            nid = "";
+            ndate = "";
         }
+
 
 //        view1 = view.findViewById(R.id.header);
         tvHeader = view.findViewById(R.id.textView3);
@@ -179,7 +183,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 if (expandableListCircular != null) {
                     List<LeaveRequestModel.FinalArray> dataItem2 = expandableListCircular.getChild(posID, posID);
                     if (dataItem2 != null && dataItem2.size() > 0) {
-                        callUpdateLeaveStatusApi(dataItem2.get(0));
+                        callUpdateLeaveStatusApi(dataItem2.get(0), "Approved");
                     }
                 }
                 break;
@@ -189,7 +193,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 if (expandableListCircular != null) {
                     List<LeaveRequestModel.FinalArray> dataItem3 = expandableListCircular.getChild(posID, posID);
                     if (dataItem3 != null && dataItem3.size() > 0) {
-                        callUpdateLeaveStatusApi(dataItem3.get(0));
+                        callUpdateLeaveStatusApi(dataItem3.get(0), "Rejected");
                     }
                 }
                 break;
@@ -209,6 +213,10 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         if (nytpe.equalsIgnoreCase("notification")) {
             fragmentLeaveRequestBinding.fromdateBtn.setText(ndate);
             fragmentLeaveRequestBinding.todateBtn.setText(Utils.getTodaysDate());
+
+            fragmentLeaveRequestBinding.typeGroup.setEnabled(false);
+            fragmentLeaveRequestBinding.rbLeavedate.setChecked(false);
+            fragmentLeaveRequestBinding.rbAppdate.setChecked(true);
         }
 
 //        fragmentLeaveRequestBinding.fromdateBtn.setText(Utils.getTodaysDate());
@@ -360,7 +368,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             subjectTxt.setText("Student Name");
 
             call = apiService.getAllStudentLeaveRequest(getDetail());
-        } else if (type.equalsIgnoreCase("staff")) {
+        } else if (type.equalsIgnoreCase("staff") || type.equalsIgnoreCase("Employee")) {
 
             statusTxt.setText("No. of Days");
             subjectTxt.setText("Employee");
@@ -433,7 +441,11 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
     private Map<String, String> getDetail() {
         Map<String, String> map = new HashMap<>();
-        map.put("Type", FinalTypetext);
+        if (!nytpe.equalsIgnoreCase("notification")) {
+            map.put("Type", FinalTypetext);
+        } else {
+            map.put("Type", "Application Date");
+        }
         map.put("FromDate", fragmentLeaveRequestBinding.fromdateBtn.getText().toString());
         map.put("ToDate", fragmentLeaveRequestBinding.todateBtn.getText().toString());
 
@@ -450,7 +462,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     }
 
 
-    private void callUpdateLeaveStatusApi(LeaveRequestModel.FinalArray dataItem) {
+    private void callUpdateLeaveStatusApi(LeaveRequestModel.FinalArray dataItem, String stustatus) {
 
         if (!Utils.checkNetwork(mContext)) {
             Utils.showCustomDialog(getResources().getString(R.string.internet_error), getResources().getString(R.string.internet_connection_error), getActivity());
@@ -458,74 +470,101 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         }
 
         Utils.showDialog(getActivity());
-        ApiHandler.getApiService().updateLeaveStatus(getUpdateDetail(dataItem), new retrofit.Callback<LeaveRequestModel>() {
+        WebServices apiService = ApiClient.getClient().create(WebServices.class);
+
+        Call<LeaveRequestModel> call = null;
+
+        if (type.equalsIgnoreCase("student")) {
+
+//            statusTxt.setText("Grade");
+//            subjectTxt.setText("Student Name");
+
+            call = apiService.geUpdateStudentLeaveRequest(getUpdateDetail(dataItem, stustatus));
+        } else if (type.equalsIgnoreCase("staff") || type.equalsIgnoreCase("Employee")) {
+
+//            statusTxt.setText("No. of Days");
+//            subjectTxt.setText("Employee");
+
+            call = apiService.geUpdateStaffLeaveRequest(getUpdateDetail(dataItem, ""));
+        }
+
+        call.enqueue(new Callback<LeaveRequestModel>() {
+
             @Override
-            public void success(LeaveRequestModel announcementModel, Response response) {
+            public void onResponse(Call<LeaveRequestModel> call, retrofit2.Response<LeaveRequestModel> response) {
                 Utils.dismissDialog();
-                if (announcementModel == null) {
+                if (response.body() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
-                if (announcementModel.getSuccess() == null) {
+                if (response.body().getSuccess() == null) {
                     Utils.ping(mContext, getString(R.string.something_wrong));
                     return;
                 }
-                if (announcementModel.getSuccess().equalsIgnoreCase("false")) {
+                if (response.body().getSuccess().equalsIgnoreCase("false")) {
                     Utils.ping(mContext, getString(R.string.false_msg));
                     return;
                 }
-                if (announcementModel.getSuccess().equalsIgnoreCase("True")) {
+                if (response.body().getSuccess().equalsIgnoreCase("True")) {
                     Utils.ping(getActivity(), "Leave updated successfully");
                     callLeaveRequestListApi();
                 }
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void onFailure(Call<LeaveRequestModel> call, Throwable t) {
                 Utils.dismissDialog();
-                error.printStackTrace();
-                error.getMessage();
-                fragmentLeaveRequestBinding.txtNoRecords.setText(error.getMessage());
+                t.printStackTrace();
+                t.getMessage();
+                fragmentLeaveRequestBinding.txtNoRecords.setText(t.getMessage());
                 fragmentLeaveRequestBinding.txtNoRecords.setVisibility(View.VISIBLE);
                 fragmentLeaveRequestBinding.explinear.setVisibility(View.GONE);
                 fragmentLeaveRequestBinding.lvExpHeader.setVisibility(View.GONE);
                 Utils.ping(mContext, getString(R.string.something_wrong));
             }
+
         });
 
     }
 
-    private Map<String, String> getUpdateDetail(LeaveRequestModel.FinalArray dataItem) {
+    private Map<String, String> getUpdateDetail(LeaveRequestModel.FinalArray dataItem, String stustatus) {
         Map<String, String> map = new HashMap<>();
         try {
-            map.put("PK_LeaveApproveID", String.valueOf(dataItem.getPKLeaveApproveID()));
+            if (type.equalsIgnoreCase("student")) {
+                map.put("PK_LeaveID", String.valueOf(dataItem.getPKLeaveApproveID()));
+                map.put("Status", stustatus);
 
-            if (leaveStatus == 1) {
-                map.put("LeaveStatusID", String.valueOf(finalArrayGetLeaveStatus.get(0).getLeaveStatusID()));
+            } else {
+                map.put("PK_LeaveApproveID", String.valueOf(dataItem.getPKLeaveApproveID()));
+                if (leaveStatus == 1) {
+                    map.put("LeaveStatusID", String.valueOf(finalArrayGetLeaveStatus.get(0).getLeaveStatusID()));
 
-            } else if (leaveStatus == 3) {
-                map.put("LeaveStatusID", String.valueOf(finalArrayGetLeaveStatus.get(1).getLeaveStatusID()));
+                } else if (leaveStatus == 3) {
+                    map.put("LeaveStatusID", String.valueOf(finalArrayGetLeaveStatus.get(1).getLeaveStatusID()));
 
-            } else if (leaveStatus == 4) {
-                map.put("LeaveStatusID", String.valueOf(finalArrayGetLeaveStatus.get(2).getLeaveStatusID()));
+                } else if (leaveStatus == 4) {
+                    map.put("LeaveStatusID", String.valueOf(finalArrayGetLeaveStatus.get(2).getLeaveStatusID()));
 
+                }
+
+                String[] dates;
+                try {
+                    dates = dataItem.getLeaveDates().split("-");
+                    String fromDate = dates[0];
+                    String toDate = dates[1];
+
+                    map.put("FromDate", fromDate);
+                    map.put("ToDate", toDate);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                map.put("ApproveDays", String.valueOf(dataItem.getApproveDays()));
+                map.put("EmployeeID", String.valueOf(dataItem.getEmployeeID()));
             }
-            String[] dates;
-            try {
-                dates = dataItem.getLeaveDates().split("-");
-                String fromDate = dates[0];
-                String toDate = dates[1];
 
-                map.put("FromDate", fromDate);
-                map.put("ToDate", toDate);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            map.put("ApproveDays", String.valueOf(dataItem.getApproveDays()));
-            map.put("EmployeeID", String.valueOf(dataItem.getEmployeeID()));
             map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", ""));
+
             return map;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -647,13 +686,28 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 classname = finalArrayAnnouncementFinal.get(i).getLeaveDays();
             }
 
-            listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname);
-            Log.d("header", "" + listDataHeader);
-            ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<>();
-            row.add(finalArrayAnnouncementFinal.get(i));
-            Log.d("row", "" + row);
-            listDataChild.put(listDataHeader.get(i), row);
-            Log.d("child", "" + listDataChild);
+            if (!nid.equalsIgnoreCase("")) {
+                if (finalArrayAnnouncementFinal.get(i).getPKLeaveApproveID().toString().equalsIgnoreCase(nid)) {
+                    listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname);
+
+                    Log.d("header", "" + listDataHeader);
+                    ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<>();
+                    row.add(finalArrayAnnouncementFinal.get(i));
+                    Log.d("row", "" + row);
+                    listDataChild.put(listDataHeader.get(0), row);
+                    Log.d("child", "" + listDataChild);
+
+                }
+            } else {
+                listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname);
+
+                Log.d("header", "" + listDataHeader);
+                ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<>();
+                row.add(finalArrayAnnouncementFinal.get(i));
+                Log.d("row", "" + row);
+                listDataChild.put(listDataHeader.get(i), row);
+                Log.d("child", "" + listDataChild);
+            }
         }
 
     }
@@ -963,7 +1017,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
             public void onClick(View view) {
                 if (validateModifyLeaveDialog()) {
                     dialog.dismiss();
-                    callUpdateLeaveStatusApi(dataItem);
+                    callUpdateLeaveStatusApi(dataItem, "");
                 }
 
             }

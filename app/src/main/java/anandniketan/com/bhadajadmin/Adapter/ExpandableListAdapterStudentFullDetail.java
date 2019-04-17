@@ -17,10 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -128,7 +125,7 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                 binding.usernameTxt.setText(childData.get(childPosition).getUserName());
                 binding.passwordTxt.setText(childData.get(childPosition).getPassword());
                 binding.grnoTxt.setText(childData.get(childPosition).getGRNO());
-
+                binding.doaTxt.setText(childData.get(childPosition).getDateOfAdmission());
 //                if (AppConfiguration.StudentStatus.equalsIgnoreCase("Current Student")) {
 //                    binding.statusTxt.setTextColor(Color.parseColor("#FF6BAE18"));
 //                    binding.statusTxt.setText("Active");
@@ -150,32 +147,32 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                 binding.statusTxt.setTextColor(Color.parseColor("#FF6BAE18"));
                 binding.statusTxt.setText("Active");
 
-                SimpleDateFormat inFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                Date date = null, date1 = null;
-                try {
-                    if (!childData.get(childPosition).getRegistrationDate().equalsIgnoreCase("")) {
-                        date = inFormat.parse(childData.get(childPosition).getRegistrationDate());
-                        SimpleDateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        String formatted = outFormat.format(date);
-                        System.out.println(formatted);
-                        binding.doaTxt.setText(formatted);
-
-                    } else {
-                        binding.doaTxt.setText("");
-                    }
-                    if (!childData.get(childPosition).getDateOfAdmission().equalsIgnoreCase("")) {
-                        date1 = inFormat.parse(childData.get(childPosition).getDateOfAdmission());
-                        SimpleDateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        String formatted1 = outFormat.format(date1);
-                        System.out.println(formatted1);
-                        binding.registrationTxt.setText(formatted1);
-                    } else {
-                        binding.registrationTxt.setText("");
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(date);
+//                SimpleDateFormat inFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//                Date date = null, date1 = null;
+//                try {
+//                    if (!childData.get(childPosition).getRegistrationDate().equalsIgnoreCase("")) {
+//                        date = inFormat.parse(childData.get(childPosition).getRegistrationDate());
+//                        SimpleDateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy");
+//                        String formatted = outFormat.format(date);
+//                        System.out.println(formatted);
+//                        binding.doaTxt.setText(formatted);
+//
+//                    } else {
+//                        binding.doaTxt.setText("");
+//                    }
+//                    if (!childData.get(childPosition).getDateOfAdmission().equalsIgnoreCase("")) {
+//                        date1 = inFormat.parse(childData.get(childPosition).getDateOfAdmission());
+//                        SimpleDateFormat outFormat = new SimpleDateFormat("dd/MM/yyyy");
+//                        String formatted1 = outFormat.format(date1);
+//                        System.out.println(formatted1);
+//                        binding.registrationTxt.setText(formatted1);
+//                    } else {
+//                        binding.registrationTxt.setText("");
+//                    }
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                System.out.println(date);
 
 
             } else if (headerTitle.equalsIgnoreCase("Transport Details")) {
@@ -206,6 +203,7 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                 fatherDetailBinding.foccupationTxt.setText(childData.get(childPosition).getFatherOccupation());
                 fatherDetailBinding.forganisationTxt.setText(childData.get(childPosition).getFatherOrganization());
                 fatherDetailBinding.fdesignationTxt.setText(childData.get(childPosition).getFatherDesignation());
+                fatherDetailBinding.officeTxt.setText(childData.get(childPosition).getFatherofficeaddress());
 
             } else if (headerTitle.equalsIgnoreCase("Mother Details")) {
                 StudentListItemMotherDetailBinding motherDetailBinding;
@@ -222,6 +220,8 @@ public class ExpandableListAdapterStudentFullDetail extends BaseExpandableListAd
                 motherDetailBinding.moccupationTxt.setText(childData.get(childPosition).getMotherOccupation());
                 motherDetailBinding.morganisationTxt.setText(childData.get(childPosition).getMotherOrganization());
                 motherDetailBinding.mdesignationTxt.setText(childData.get(childPosition).getMotherDesignation());
+                motherDetailBinding.officeTxt.setText(childData.get(childPosition).getMotherofficeaddress());
+
             } else if (headerTitle.equalsIgnoreCase("Communication Details")) {
                 StudentListItemCommunicationDetailBinding communicationDetailBinding;
                 communicationDetailBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.student_list_item_communication_detail, parent, false);

@@ -59,118 +59,116 @@ public class ExpandableLeaveRequest extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (infalInflater != null) {
                 convertView = infalInflater.inflate(R.layout.layout_list_item_child_leave_request, null);
-
-                TextView txtlabel, txt_leavedate, txt_reason_label, txt_reason, tvComment;
-                RelativeLayout linearButtons;
-                LinearLayout llComment;
-                Button btnApprove, btnReject, btnModify;
-                txtlabel = convertView.findViewById(R.id.txt_label);
-                txt_leavedate = convertView.findViewById(R.id.txt_leavedate);
-                txt_reason_label = convertView.findViewById(R.id.txt_reason_label);
-                txt_reason = convertView.findViewById(R.id.txt_reason);
-                tvComment = convertView.findViewById(R.id.txt_comment);
-                llComment = convertView.findViewById(R.id.ll_comment);
-                linearButtons = convertView.findViewById(R.id.RL_buttons);
-                btnApprove = convertView.findViewById(R.id.btn_approve);
-                btnReject = convertView.findViewById(R.id.btn_reject);
-                btnModify = convertView.findViewById(R.id.btn_modify);
-
-                if (type.equalsIgnoreCase("student")) {
-
-                } else {
-
-                }
-
-                tvComment.setText(childData.get(childPosition).getComment());
-                txt_reason.setText(childData.get(childPosition).getReason());
-                txt_leavedate.setText(childData.get(childPosition).getLeaveDates());
-
-                if (type.equalsIgnoreCase("student")) {
-
-                    llComment.setVisibility(View.VISIBLE);
-
-                    if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Rejected")) {
-
-                        linearButtons.setVisibility(View.GONE);
-
-                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Approved")) {
-                        linearButtons.setVisibility(View.GONE);
-
-                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Pending")) {
-                        linearButtons.setVisibility(View.VISIBLE);
-                        btnModify.setVisibility(View.GONE);
-
-                    }
-                } else {
-
-                    llComment.setVisibility(View.GONE);
-
-                    if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Rejected")) {
-
-                        linearButtons.setVisibility(View.GONE);
-
-                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Approved By Admin")) {
-                        linearButtons.setVisibility(View.VISIBLE);
-                        btnApprove.setVisibility(View.GONE);
-                        btnModify.setVisibility(View.GONE);
-
-                    } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Pending")) {
-                        linearButtons.setVisibility(View.VISIBLE);
-                    }
-                }
-
-
-                btnApprove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.approve_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                onAdapterItemButtonClick.onItemButtonClick(OnAdapterItemButtonClick.Action.APPROVE, groupPosition);
-                            }
-
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).show();
-                    }
-                });
-
-                btnReject.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.reject_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                onAdapterItemButtonClick.onItemButtonClick(OnAdapterItemButtonClick.Action.REJECT, groupPosition);
-                            }
-
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).show();
-                    }
-                });
-
-                btnModify.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        onAdapterItemButtonClick.onItemButtonClick(OnAdapterItemButtonClick.Action.MODIFY, groupPosition);
-
-                    }
-                });
-
-
             }
         }
+
+        TextView txtlabel, txt_leavedate, txt_reason_label, txt_reason, tvComment;
+        RelativeLayout linearButtons;
+        LinearLayout llComment;
+        Button btnApprove, btnReject, btnModify;
+        txtlabel = convertView.findViewById(R.id.txt_label);
+        txt_leavedate = convertView.findViewById(R.id.txt_leavedate);
+        txt_reason_label = convertView.findViewById(R.id.txt_reason_label);
+        txt_reason = convertView.findViewById(R.id.txt_reason);
+        tvComment = convertView.findViewById(R.id.txt_comment);
+        llComment = convertView.findViewById(R.id.ll_comment);
+        linearButtons = convertView.findViewById(R.id.RL_buttons);
+        btnApprove = convertView.findViewById(R.id.btn_approve);
+        btnReject = convertView.findViewById(R.id.btn_reject);
+        btnModify = convertView.findViewById(R.id.btn_modify);
+
+        if (type.equalsIgnoreCase("student")) {
+
+        } else {
+
+        }
+
+        tvComment.setText(childData.get(childPosition).getComment());
+        txt_reason.setText(childData.get(childPosition).getReason());
+        txt_leavedate.setText(childData.get(childPosition).getLeaveDates());
+
+        if (type.equalsIgnoreCase("student")) {
+
+            llComment.setVisibility(View.VISIBLE);
+
+            if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Rejected")) {
+
+                linearButtons.setVisibility(View.GONE);
+
+            } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Approved")) {
+                linearButtons.setVisibility(View.GONE);
+
+            } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Pending")) {
+                linearButtons.setVisibility(View.VISIBLE);
+                btnModify.setVisibility(View.GONE);
+
+            }
+        } else {
+
+            llComment.setVisibility(View.GONE);
+
+            if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Rejected")) {
+
+                linearButtons.setVisibility(View.GONE);
+
+            } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Approved By Admin")) {
+                linearButtons.setVisibility(View.VISIBLE);
+                btnApprove.setVisibility(View.GONE);
+                btnModify.setVisibility(View.GONE);
+
+            } else if (childData.get(childPosition).getStatusName().equalsIgnoreCase("Pending")) {
+                linearButtons.setVisibility(View.VISIBLE);
+            }
+        }
+
+
+        btnApprove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.approve_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onAdapterItemButtonClick.onItemButtonClick(OnAdapterItemButtonClick.Action.APPROVE, groupPosition);
+                    }
+
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+            }
+        });
+
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DialogUtils.createConfirmDialog(_context, R.string.app_name, R.string.reject_confirm_msg, "OK", "Cancel", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onAdapterItemButtonClick.onItemButtonClick(OnAdapterItemButtonClick.Action.REJECT, groupPosition);
+                    }
+
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+            }
+        });
+
+        btnModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAdapterItemButtonClick.onItemButtonClick(OnAdapterItemButtonClick.Action.MODIFY, groupPosition);
+
+            }
+        });
 
         return convertView;
     }

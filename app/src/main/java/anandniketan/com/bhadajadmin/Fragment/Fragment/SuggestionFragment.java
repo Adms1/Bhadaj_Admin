@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
@@ -62,7 +63,7 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
     private List<String> listDataHeader;
     private HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listDataChild;
     private ExpandableSuggestion expandableSuggestion;
-    private String type, ndate = "";
+    private String type, ndate = "", nid = "", nstatus = "";
 
     @Override
     public void onAttach(Context context) {
@@ -92,14 +93,19 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
         super.onViewCreated(view, savedInstanceState);
 
         Bundle bundle = this.getArguments();
-        type = bundle.getString("ntype");
-        ndate = bundle.getString("sdate");
+        if (bundle != null) {
+            type = bundle.getString("ntype");
+            ndate = bundle.getString("sdate");
+            nid = bundle.getString("stuid");
+            nstatus = bundle.getString("sstatus");
+        }
+
 
         tvHeader = view.findViewById(R.id.textView3);
         btnBack = view.findViewById(R.id.btnBack);
         btnMenu = view.findViewById(R.id.btnmenu);
 
-        tvHeader.setText("Suggestion");
+        tvHeader.setText(R.string.suggestion);
 
         setListener();
         fillStatusSpinner();
@@ -145,6 +151,25 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
             }
 
         });
+
+        fragmentSuggestionBinding.assignSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String name = fragmentSuggestionBinding.assignSpinner.getSelectedItem().toString();
+
+                nstatus = name;
+                callParentSuggestionApi();
+
+                Log.d("FinalStatusIdStr", name);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+                nstatus = "";
+            }
+        });
+
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,6 +272,11 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
                         fillExpLV();
                         expandableSuggestion = new ExpandableSuggestion(getActivity(), listDataHeader, listDataChild, "", suggestionReplyCallback);
                         fragmentSuggestionBinding.suggestionList.setAdapter(expandableSuggestion);
+
+                        if (nid != null) {
+                            fragmentSuggestionBinding.suggestionList.expandGroup(0);
+                        }
+
                     } else {
                         fragmentSuggestionBinding.txtNoRecords.setVisibility(View.VISIBLE);
                         fragmentSuggestionBinding.recyclerLinear.setVisibility(View.GONE);
@@ -274,7 +304,7 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
         HashMap<String, String> map = new HashMap<>();
         map.put("FromDate", fragmentSuggestionBinding.sugFromdateBtn.getText().toString());
         map.put("ToDate", fragmentSuggestionBinding.sugTodateBtn.getText().toString());
-        map.put("Status", fragmentSuggestionBinding.assignSpinner.getSelectedItem().toString());
+        map.put("Status", nstatus);
         map.put("UserID", PrefUtils.getInstance(getActivity()).getStringValue("StaffID", "0"));
 
         return map;
@@ -286,13 +316,27 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
 
         for (int i = 0; i < finalArraySuggestionFinal.size(); i++) {
 
-            listDataHeader.add(finalArraySuggestionFinal.get(i).getSubject() + "|" + finalArraySuggestionFinal.get(i).getDate() + "|" + finalArraySuggestionFinal.get(i).getSuggestiondatetime());
-            Log.d("header", "" + listDataHeader);
-            ArrayList<SuggestionDataModel.FinalArray> row = new ArrayList<>();
-            row.add(finalArraySuggestionFinal.get(i));
-            Log.d("row", "" + row);
-            listDataChild.put(listDataHeader.get(i), row);
-            Log.d("child", "" + listDataChild);
+            if (nid != null) {
+                if (finalArraySuggestionFinal.get(i).getPk_suggestionid().equalsIgnoreCase(nid)) {
+                    listDataHeader.add(finalArraySuggestionFinal.get(i).getSubject() + "|" + finalArraySuggestionFinal.get(i).getDate() + "|" + finalArraySuggestionFinal.get(i).getSuggestiondatetime());
+                    Log.d("header", "" + listDataHeader);
+                    ArrayList<SuggestionDataModel.FinalArray> row = new ArrayList<>();
+                    row.add(finalArraySuggestionFinal.get(i));
+                    Log.d("row", "" + row);
+                    listDataChild.put(listDataHeader.get(0), row);
+                    Log.d("child", "" + listDataChild);
+
+                }
+            } else {
+                listDataHeader.add(finalArraySuggestionFinal.get(i).getSubject() + "|" + finalArraySuggestionFinal.get(i).getDate() + "|" + finalArraySuggestionFinal.get(i).getSuggestiondatetime());
+                Log.d("header", "" + listDataHeader);
+                ArrayList<SuggestionDataModel.FinalArray> row = new ArrayList<>();
+                row.add(finalArraySuggestionFinal.get(i));
+                Log.d("row", "" + row);
+                listDataChild.put(listDataHeader.get(i), row);
+                Log.d("child", "" + listDataChild);
+
+            }
         }
 
     }

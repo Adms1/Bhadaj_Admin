@@ -535,6 +535,14 @@ public interface WebServices {
     Call<LeaveRequestModel> getAllStaffLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
 
     @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("UpdateStudentLeaveRequestStatus")
+    Call<LeaveRequestModel> geUpdateStudentLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
+
+    @retrofit2.http.FormUrlEncoded
+    @retrofit2.http.POST("UpdateLeaveStatus")
+    Call<LeaveRequestModel> geUpdateStaffLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
+
+    @retrofit2.http.FormUrlEncoded
     @retrofit2.http.POST("GetAllStudentLeaveRequest")
     Call<LeaveRequestModel> getAllStudentLeaveRequest(@retrofit2.http.FieldMap Map<String, String> map);
 

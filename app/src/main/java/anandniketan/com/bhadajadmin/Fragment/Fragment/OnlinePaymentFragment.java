@@ -222,7 +222,7 @@ public class OnlinePaymentFragment extends Fragment {
             public void onClick(View v) {
                 fragmentOnlinePaymentBinding.searchBtn.setText(R.string.Add);
 
-                fragmentOnlinePaymentBinding.termSpinner.setSelection(1);
+                fragmentOnlinePaymentBinding.termSpinner.setSelection(0);
                 fragmentOnlinePaymentBinding.termDetailSpinner.setSelection(0);
                 fragmentOnlinePaymentBinding.doneChk.setChecked(true);
 
@@ -406,7 +406,7 @@ public class OnlinePaymentFragment extends Fragment {
     private Map<String, String> getOnlinePaymentPermission() {
         Map<String, String> map = new HashMap<>();
         map.put("TermId", FinalTermIdStr);
-        map.put("TermDetailId", FinalTermDetailIdStr);
+        map.put("TermDetailId", "0");
         return map;
     }
 
@@ -491,7 +491,7 @@ public class OnlinePaymentFragment extends Fragment {
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<String>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentOnlinePaymentBinding.termSpinner.setAdapter(adapterTerm);
-        fragmentOnlinePaymentBinding.termSpinner.setSelection(1);
+        fragmentOnlinePaymentBinding.termSpinner.setSelection(0);
         FinalTermIdStr = spinnerTermMap.get(0);
     }
 
@@ -508,7 +508,7 @@ public class OnlinePaymentFragment extends Fragment {
 
         String[] spinnertermdetailIdArray = new String[termdetailId.size()];
 
-        spinnerTermDetailIdMap = new HashMap<Integer, String>();
+        spinnerTermDetailIdMap = new HashMap<>();
         for (int i = 0; i < termdetailId.size(); i++) {
             spinnerTermDetailIdMap.put(i, String.valueOf(termdetailId.get(i)));
             spinnertermdetailIdArray[i] = termdetail.get(i).trim();

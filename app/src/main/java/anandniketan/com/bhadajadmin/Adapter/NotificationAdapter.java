@@ -125,6 +125,32 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
                         break;
 
+                    case "StaffLeave":
+
+                        Fragment fragment2 = new LeaveRequestFragment();
+                        Bundle bundle2 = new Bundle();
+
+                        bundle2.putString("type", finalArrays.get(i).getType());
+                        bundle2.putString("ntype", "notification");
+                        bundle2.putString("sdate", finalArrays.get(i).getDate());
+                        bundle2.putString("stuid", finalArrays.get(i).getPkid());
+
+//                    bundle.putString("requeststatus", requeststatus);
+//                    bundle.putString("requestupdatestatus", requestupdatestatus);
+//                    bundle.putString("requestdeletestatus", requestdeletestatus);
+
+                        fragment2.setArguments(bundle2);
+                        FragmentManager fragmentManager2 = ((DashboardActivity) context).getSupportFragmentManager();
+                        if (fragmentManager2 != null) {
+                            fragmentManager2.beginTransaction()
+                                    .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right)
+                                    .replace(R.id.frame_container, fragment2).commit();
+                        }
+//                            AppConfiguration.firsttimeback = true;
+//                            AppConfiguration.position = 52;
+
+                        break;
+
                     case "Suggestion":
                         Fragment fragment1 = new SuggestionFragment();
 
@@ -134,6 +160,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                         bundle1.putString("ntype", "notification");
                         bundle1.putString("sdate", finalArrays.get(i).getDate());
                         bundle1.putString("stuid", finalArrays.get(i).getPkid());
+                        bundle1.putString("sstatus", "");
 ////                            bundle1.putString("leavedeletestatus", permissionMap.get("Suggestion").getIsuserdelete());
 ////                            bundle1.putString("leaveupdatestatus", permissionMap.get("Suggestion").getIsuserupdate());
 ////                            bundle1.putString("leaveviewstatus", permissionMap.get("Suggestion").getIsuserview());

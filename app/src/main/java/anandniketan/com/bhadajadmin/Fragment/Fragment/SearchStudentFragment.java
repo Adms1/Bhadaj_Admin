@@ -57,7 +57,7 @@ public class SearchStudentFragment extends Fragment {
     private FragmentManager fragmentManager = null;
     private ArrayList parentName = new ArrayList();
     private ArrayList studentName = new ArrayList();
-    private String searchtypeStr = "Current Student", studentNameStr = "", parentNameStr = "", grnoStr = "", FinalTermIdStr, FinalClassIdStr;
+    private String searchtypeStr = "Current Student", studentNameStr = "", parentNameStr = "", grnoStr = "", FinalTermIdStr, FinalClassIdStr = "0";
     private StudentFilteredDataAdapter studentFilteredDataAdapter;
 
     private TextView tvHeader;
@@ -144,6 +144,8 @@ public class SearchStudentFragment extends Fragment {
                 Log.d("FinalTermIdStr", FinalTermIdStr);
                 callParentNameApi();
                 callStudentNameApi();
+                callStandardApi();
+                callStudentShowFilteredDataApi();
             }
 
             @Override
@@ -198,7 +200,6 @@ public class SearchStudentFragment extends Fragment {
                     finalArrayGetTermModels = termModel.getFinalArray();
                     if (finalArrayGetTermModels != null) {
                         fillTermSpinner();
-                        callStandardApi();
 
                     }
                 }
