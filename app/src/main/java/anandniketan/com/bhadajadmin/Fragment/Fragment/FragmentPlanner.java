@@ -59,7 +59,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
     private DatePickerDialog datePickerDialog;
     private int whichdateViewClick = 1;
     private Calendar calendar;
-    private int Year, Month, Day;
+    private int Year, Month, Day, stdsize;
     private boolean isRecordInUpdate = false;
     private String status, updateStatus, deletestatus;
 
@@ -190,7 +190,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-//                    if (!isRecordInUpdate) {
+                    if (!isRecordInUpdate) {
                     if (finalArrayStandardsList != null) {
                         if (finalArrayStandardsList.size() > 0) {
 
@@ -202,8 +202,9 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                                 //  standardAdapter.enableSelection();
                             }
                         }
-//                        }
                     }
+                    }
+                    isRecordInUpdate = false;
                 }
             }
         });
@@ -323,7 +324,7 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                             finalArrayStandardsList.get(i).setCheckedStatus("1");
                         }
                         standardAdapter = new StandardAdapter(mContext, finalArrayStandardsList);
-
+                        stdsize = finalArrayStandardsList.size();
                         fragmentPlannerBinding.standardGridView.setAdapter(standardAdapter);
                     }
 
@@ -685,9 +686,15 @@ public class FragmentPlanner extends Fragment implements OnEditRecordWithPositio
                                 }
                             }
                             //  standardAdapter.notifyDataSetChanged();
-
+                            if (standards.length == stdsize) {
+                                fragmentPlannerBinding.rbAll.setChecked(true);
+                                fragmentPlannerBinding.rbIndividual.setChecked(false);
+                            } else {
+                                fragmentPlannerBinding.rbAll.setChecked(false);
+                                fragmentPlannerBinding.rbIndividual.setChecked(true);
+                            }
                         }
-
+                        isRecordInUpdate = true;
 
                     }
 

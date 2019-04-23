@@ -61,6 +61,10 @@ public class SuggestionDataModel {
         @Expose
         private String employeename;
 
+        @SerializedName("ReplyDate")
+        @Expose
+        private String replydate;
+
         @SerializedName("Reply")
         @Expose
         private String reply;
@@ -136,6 +140,15 @@ public class SuggestionDataModel {
         public void setEmployeename(String employeename) {
             this.employeename = employeename;
         }
+
+        public String getReplydate() {
+            return replydate;
+        }
+
+        public void setReplydate(String replydate) {
+            this.replydate = replydate;
+        }
+
 
         public String getReply() {
             return reply;

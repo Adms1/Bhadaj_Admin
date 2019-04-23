@@ -193,6 +193,14 @@ public class ClassTeacherFragment extends Fragment {
 
                             fillSection1(classname, name);
                             break;
+                        } else {
+                            sectionAdapter = new SectionAdapter(getActivity(), new OnEditRecordWithPosition() {
+                                @Override
+                                public void getEditpermission(int pos) {
+                                    finalClassIdStr = String.valueOf(classname.get(pos).getSectionID());
+                                }
+                            }, new ArrayList<SectionDetailModel>());
+                            rvList.setAdapter(sectionAdapter);
                         }
                     }
 

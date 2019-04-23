@@ -153,7 +153,7 @@ public class TimeTableFragment extends Fragment implements onDeleteWithId, EditT
 //                if (viewstatus.equalsIgnoreCase("true")) {
                     callStandardApi();
 
-                callTimeTableApi();
+
 //                } else {
 //                    Utils.ping(getActivity(), "Access Denied");
 //                }
@@ -177,7 +177,7 @@ public class TimeTableFragment extends Fragment implements onDeleteWithId, EditT
                 Log.d("FinalStandardIdStr", finalStandardIdStr);
                 standardName = name;
                 Log.d("StandardName", standardName);
-
+                callTimeTableApi();
 
 //                callTimeTableApi();
             }
@@ -443,7 +443,6 @@ public class TimeTableFragment extends Fragment implements onDeleteWithId, EditT
         fragmentTimeTableBinding.termSpinner.setAdapter(adapterTerm);
         fragmentTimeTableBinding.termSpinner.setSelection(1);
         FinalTermIdStr = spinnerTermMap.get(0);
-        callStandardApi();
     }
 
     //Use for fill the Standard Spinner

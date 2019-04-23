@@ -3,6 +3,7 @@ package anandniketan.com.bhadajadmin.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,12 +26,16 @@ import anandniketan.com.bhadajadmin.Interface.SuggestionReplyCallback;
 import anandniketan.com.bhadajadmin.Model.Student.SuggestionDataModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.DialogUtils;
+import anandniketan.com.bhadajadmin.Utility.Utils;
 
 public class ExpandableSuggestion extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader;
     private HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listChildData;
     private SuggestionReplyCallback suggestionReplyCallback;
+    int SessionHour = 0;
+    Integer SessionMinit = 0;
+    String SessionDurationminit = "", SessionDurationHours = "";
 //    private String type;
 
     public ExpandableSuggestion(Context context, List<String> listDataHeader, HashMap<String, ArrayList<SuggestionDataModel.FinalArray>> listDataChild, String type, SuggestionReplyCallback suggestionReplyCallback) {
@@ -164,10 +168,6 @@ public class ExpandableSuggestion extends BaseExpandableListAdapter {
 
         String[] headerTitle = getGroup(groupPosition).toString().split("\\|");
 
-        String headerTitle1 = headerTitle[0];
-        String headerTitle2 = headerTitle[1];
-        String headerTitle3 = headerTitle[2];
-
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item_header_suggestion, null);
@@ -176,26 +176,101 @@ public class ExpandableSuggestion extends BaseExpandableListAdapter {
         TextView tvHeader, tvDate, tvSDate;
         View viewChange;
 
-        Calendar startCalendar = new GregorianCalendar();
-        startCalendar.setTime(Calendar.getInstance().getTime());
-        Calendar endCalendar = new GregorianCalendar();
-        endCalendar.setTime(parseDateToddMMyyyy(headerTitle3));
-
-        int diffYear = startCalendar.get(Calendar.YEAR) - endCalendar.get(Calendar.YEAR);
-        int diffMonth = diffYear * 12 + startCalendar.get(Calendar.MONTH) - endCalendar.get(Calendar.MONTH);
+        String headerTitle1 = " ", headerTitle3 = " ", headerTitle2 = " ";
 
         tvHeader = convertView.findViewById(R.id.sug_tvHeader);
         tvDate = convertView.findViewById(R.id.sug_tvDate);
         tvSDate = convertView.findViewById(R.id.sug_tvSuggestDate);
         viewChange = convertView.findViewById(R.id.sug_colorChange);
 
+        if (headerTitle.length >= 2) {
+            headerTitle2 = headerTitle[1];
+        }
+        if (headerTitle.length >= 1) {
+            headerTitle1 = headerTitle[0];
+        }
+        if (headerTitle.length >= 3) {
+            headerTitle3 = headerTitle[2];
+
+        }
+
+//        Calendar startCalendar = new GregorianCalendar();
+//        startCalendar.setTime(Calendar.getInstance().getTime());
+//        Calendar endCalendar = new GregorianCalendar();
+//        endCalendar.setTime(parseDateToddMMyyyy(headerTitle3));
+
+//        int diffYear = startCalendar.get(Calendar.YEAR) - endCalendar.get(Calendar.YEAR);
+//        int diffMonth = diffYear * 12 + startCalendar.get(Calendar.MONTH) - endCalendar.get(Calendar.MONTH);
+
 //        2018-11-26T12:39:13.657
+
+        String CurrentTime = "";
+
+        Date currentTimeDate = Calendar.getInstance().getTime();
+        CurrentTime = String.valueOf(currentTimeDate);
+
         tvHeader.setText(headerTitle1);
         tvDate.setText(parseDateToddMMyyyy("dd/MM/yyyy", "dd MMM yyyy", headerTitle2));
-        tvSDate.setText((diffMonth + " month ago"));
 
-//            }
-//        }
+
+        if (!headerTitle3.equalsIgnoreCase("") && headerTitle3 != null && headerTitle.length >= 3) {
+            String[] dateHours = headerTitle3.split("\\t");
+            String inputPattern = "yyyy-MM-dd";
+            String outputPattern1 = "dd MMM yyyy";
+            String inputdayPattern = "dd/MM/yyyy";
+            String inputtimePattern = "yyyy-MM-dd'T'hh:mm:ss.SSS";
+            String outputtimePattern = "hh:mm aa";
+            String inputCurrentTimePattern = "EEE MMM d HH:mm:ss zzz yyyy";
+
+            SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+            SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern1);
+            SimpleDateFormat inputdayFormat = new SimpleDateFormat(inputdayPattern);
+            SimpleDateFormat inputtimeFormat = new SimpleDateFormat(inputtimePattern);
+            SimpleDateFormat outputtimeFormat = new SimpleDateFormat(outputtimePattern);
+            SimpleDateFormat inputCurrentTimeFormat = new SimpleDateFormat(inputCurrentTimePattern);
+            SimpleDateFormat outputCurrentTimeFormat = new SimpleDateFormat(outputtimePattern);
+
+            String dateAfterString = Utils.getTodaysDate();
+
+            Date startdateTime = null, ResponseTimeStr = null, CurrentTimeStr = null;
+            String str = null, StartTimeStr = null, ConvertResponseTimeStr = null, ConvertCurrentTimeStr = null;
+
+            try {
+                startdateTime = inputFormat.parse(dateHours[0]);
+                StartTimeStr = outputFormat.format(startdateTime);
+
+                str = inputdayFormat.format(startdateTime);
+                Log.i("mini", "Converted Date Today:" + StartTimeStr);
+
+                Date dateBefore = inputdayFormat.parse(str);
+
+                Date dateAfter = inputdayFormat.parse(dateAfterString);
+                long difference = dateAfter.getTime() - dateBefore.getTime();
+                String daysBetween = String.valueOf((difference / (1000 * 60 * 60 * 24)));
+                tvSDate.setText(StartTimeStr);
+
+                if (daysBetween.equals("0")) {
+                    ResponseTimeStr = inputtimeFormat.parse(dateHours[0]);
+                    ConvertResponseTimeStr = outputtimeFormat.format(ResponseTimeStr);
+                    Log.d("Time", ConvertResponseTimeStr);
+                    CurrentTimeStr = inputCurrentTimeFormat.parse(CurrentTime);
+                    ConvertCurrentTimeStr = outputCurrentTimeFormat.format(CurrentTimeStr);
+                    Log.d("CurrentTimeCOnvert", ConvertCurrentTimeStr);
+
+                    calculateHours(ConvertCurrentTimeStr, ConvertResponseTimeStr);
+                    SessionDurationHours = SessionDurationHours.replace("-", "");
+                    tvSDate.setText(SessionDurationHours + " ago");
+                } else {
+                    tvSDate.setText(daysBetween + " days ago");
+                }
+                System.out.println("Number of Days between dates: " + daysBetween);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            tvSDate.setText("");
+//            tvSDate.setTextColor(_context.getResources().getColor(R.color.white));
+        }
 
         if (isExpanded) {
             viewChange.setBackgroundColor(_context.getResources().getColor(R.color.light_blue));
@@ -243,6 +318,39 @@ public class ExpandableSuggestion extends BaseExpandableListAdapter {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public void calculateHours(String time1, String time2) {
+        Date date1, date2;
+        int days, hours, min;
+        String hourstr, minstr;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+        try {
+
+            date2 = simpleDateFormat.parse(time2);
+            date1 = simpleDateFormat.parse(time1);
+
+            long difference = date2.getTime() - date1.getTime();
+            days = (int) (difference / (1000 * 60 * 60 * 24));
+            hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+            min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+            hours = (hours < 0 ? -hours : hours);
+            SessionHour = hours;
+            SessionMinit = min;
+            Log.i("======= Hours", " :: " + hours + ":" + min);
+
+            if (SessionHour > 0) {
+                SessionDurationHours = SessionHour + " hours";
+            } else {
+                SessionDurationHours = SessionMinit + " minute";
+            }
+
+            SessionDurationHours = SessionDurationHours.replace("-", "");
+
+            Log.d("SessionTIme", SessionDurationHours);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 }

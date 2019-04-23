@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -63,7 +65,7 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
     private List<FinalArrayStaffModel> finalArrayGetHead;
     private HashMap<Integer, String> spinnerDaymap, spinnerHeadmap;
     private Spinner spLeaveDays, spHead;
-    private String finalDayId = "0", finalHeadId = "0", finalLeaveId = "0";
+    private String finalDayId = "0", finalHeadId = "0", finalLeaveId = "0", dayname;
     private ArrayList<LeaveModel.FinalArray> finalArray;
     private ApplyLeaveAdapter applyLeaveAdapter;
     private List<String> listDataHeader;
@@ -217,12 +219,22 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         spLeaveDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String name = spLeaveDays.getSelectedItem().toString();
+                dayname = spLeaveDays.getSelectedItem().toString();
                 String getid = spinnerDaymap.get(spLeaveDays.getSelectedItemPosition());
 
-                Log.d("value", name + " " + getid);
+                Log.d("value", dayname + " " + getid);
                 finalDayId = finalArrayGetLeaveDays.get(position).getValue();
                 Log.d("FinalTermIdStr", finalDayId);
+
+                int i = new Double(dayname).intValue();
+
+                if (dayname.equals(String.valueOf(Math.round(new Double(dayname))))) {
+
+                    getDate(btnSDate.getText().toString(), i - 1);
+                } else {
+
+                    getDate(btnSDate.getText().toString(), i);
+                }
 
             }
 
@@ -273,6 +285,17 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
 
         if (whichclicked == 1) {
             btnSDate.setText(dateFinal);
+
+            int i = new Double(dayname).intValue();
+
+            if (dayname.equals(String.valueOf(Math.round(new Double(dayname))))) {
+
+                getDate(btnSDate.getText().toString(), i - 1);
+            } else {
+
+                getDate(btnSDate.getText().toString(), i);
+            }
+
         } else {
             btnEDate.setText(dateFinal);
         }
@@ -689,6 +712,13 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
                     finalDayId = "0";
                     finalHeadId = "0";
 
+                    etReason.setText("");
+                    spLeaveDays.setSelection(0);
+                    spHead.setSelection(0);
+                    btnSDate.setText(Utils.getTodaysDate());
+                    btnEDate.setText(Utils.getTodaysDate());
+
+
                     Utils.ping(getActivity(), "Leave Request Inserted Successfully...");
                     callGetApplyLeaveRequest();
                 }
@@ -715,6 +745,23 @@ public class ApplyLeaveFragment extends Fragment implements DatePickerDialog.OnD
         map.put("LeaveDays", finalDayId);
         map.put("Reason", etReason.getText().toString());
         return map;
+    }
+
+    private void getDate(String oldDate, int days) {
+        System.out.println("Date before Addition: " + oldDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(oldDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //Incrementing the date by 1 day
+        c.add(Calendar.DAY_OF_MONTH, days);
+        String newDate = sdf.format(c.getTime());
+        System.out.println("Date Incremented by One: " + newDate);
+
+        btnEDate.setText(newDate);
     }
 
 }

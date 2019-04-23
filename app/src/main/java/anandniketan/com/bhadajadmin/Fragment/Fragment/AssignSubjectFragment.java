@@ -223,7 +223,7 @@ public class AssignSubjectFragment extends Fragment {
             public void onClick(View v) {
 
                 fragmentAssignSubjectBinding.saveBtn.setText(R.string.save);
-                fragmentAssignSubjectBinding.termSpinner.setSelection(1);
+                fragmentAssignSubjectBinding.termSpinner.setSelection(0);
                 fragmentAssignSubjectBinding.teacherSpinner.setSelection(0);
                 fragmentAssignSubjectBinding.subjectSpinner.setSelection(0);
                 fragmentAssignSubjectBinding.radioActive.setChecked(true);
@@ -472,6 +472,9 @@ public class AssignSubjectFragment extends Fragment {
                 }
                 if (insertAssignSubjectModel.getSuccess().equalsIgnoreCase("True")) {
 
+                    Utils.ping(getActivity(), insertAssignSubjectModel.getYear());
+
+                    fragmentAssignSubjectBinding.termSpinner.setSelection(0);
                     fragmentAssignSubjectBinding.subjectSpinner.setSelection(0);
                     fragmentAssignSubjectBinding.teacherSpinner.setSelection(0);
                     rbActive.setChecked(false);
@@ -547,7 +550,7 @@ public class AssignSubjectFragment extends Fragment {
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(mContext, R.layout.spinner_layout, spinnertermIdArray);
         fragmentAssignSubjectBinding.termSpinner.setAdapter(adapterTerm);
-        fragmentAssignSubjectBinding.termSpinner.setSelection(1);
+        fragmentAssignSubjectBinding.termSpinner.setSelection(0);
         FinalTermIdStr = spinnerTermMap.get(0);
         callAssignSubjectApi();
     }

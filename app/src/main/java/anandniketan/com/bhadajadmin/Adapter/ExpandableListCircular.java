@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,7 +106,11 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
 
 
         txtGrade.setText(childData.get(childPosition).getStandard());
-        txtAnnsLabel.setText(childData.get(childPosition).getDiscription());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            txtAnnsLabel.setText(Html.fromHtml(childData.get(childPosition).getDiscription(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            txtAnnsLabel.setText(Html.fromHtml(childData.get(childPosition).getDiscription()));
+        }
 
         txtPdfLink.setOnClickListener(new View.OnClickListener() {
             @Override

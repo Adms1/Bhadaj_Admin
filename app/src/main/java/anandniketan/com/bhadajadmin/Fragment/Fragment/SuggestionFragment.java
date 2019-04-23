@@ -318,7 +318,7 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
 
             if (nid != null) {
                 if (finalArraySuggestionFinal.get(i).getPk_suggestionid().equalsIgnoreCase(nid)) {
-                    listDataHeader.add(finalArraySuggestionFinal.get(i).getSubject() + "|" + finalArraySuggestionFinal.get(i).getDate() + "|" + finalArraySuggestionFinal.get(i).getSuggestiondatetime());
+                    listDataHeader.add(finalArraySuggestionFinal.get(i).getSubject() + "|" + finalArraySuggestionFinal.get(i).getReplydate() + "|" + finalArraySuggestionFinal.get(i).getReplydatetime());
                     Log.d("header", "" + listDataHeader);
                     ArrayList<SuggestionDataModel.FinalArray> row = new ArrayList<>();
                     row.add(finalArraySuggestionFinal.get(i));
@@ -328,7 +328,7 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
 
                 }
             } else {
-                listDataHeader.add(finalArraySuggestionFinal.get(i).getSubject() + "|" + finalArraySuggestionFinal.get(i).getDate() + "|" + finalArraySuggestionFinal.get(i).getSuggestiondatetime());
+                listDataHeader.add(finalArraySuggestionFinal.get(i).getSubject() + "|" + finalArraySuggestionFinal.get(i).getReplydate() + "|" + finalArraySuggestionFinal.get(i).getReplydatetime());
                 Log.d("header", "" + listDataHeader);
                 ArrayList<SuggestionDataModel.FinalArray> row = new ArrayList<>();
                 row.add(finalArraySuggestionFinal.get(i));
@@ -432,6 +432,8 @@ public class SuggestionFragment extends Fragment implements DatePickerDialog.OnD
                 }
                 if (response.body().get("Success").getAsString().equalsIgnoreCase("True")) {
                     Utils.ping(mContext, "Reply Send");
+
+                    callParentSuggestionApi();
                 }
             }
 

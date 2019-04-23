@@ -24,7 +24,7 @@
             android:name="anandniketan.com.bhadajadmin.Activity.DashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme1"
-            android:windowSoftInputMode="adjustNothing"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         <activity

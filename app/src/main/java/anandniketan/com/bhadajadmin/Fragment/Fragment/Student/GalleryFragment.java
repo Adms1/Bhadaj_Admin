@@ -275,7 +275,7 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!tvTitle.getText().toString().equalsIgnoreCase("") || !tvComment.getText().toString().equalsIgnoreCase("")) {
+                if (!tvTitle.getText().toString().equalsIgnoreCase("") && !tvComment.getText().toString().equalsIgnoreCase("")) {
                     if (btnAdd.getText().toString().equalsIgnoreCase("Update")) {
 
                         if (editstatus.equalsIgnoreCase("true")) {
@@ -376,7 +376,7 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    Utils.ping(getActivity(), t.getMessage());
+                    Utils.ping(getActivity(), "Please add photo");
                     Utils.dismissDialog();
                 }
             });
@@ -663,6 +663,20 @@ public class GalleryFragment extends Fragment implements OnEditRecordWithPositio
                     if (response.body().getSuccess().equalsIgnoreCase("True")) {
 
                         uploadPdf();
+
+                        tvTitle.setText("");
+                        tvDate.setText(Utils.getTodaysDate());
+                        tvComment.setText("");
+
+                        photoAdapter = new PhotoAdapter(getActivity(), new ArrayList<GalleryDataModel.photosFinalArray>(), new OnEditRecordWithPosition() {
+                            @Override
+                            public void getEditpermission(int pos) {
+                                mArrayUri.remove(pos);
+                                photoAdapter.notifyDataSetChanged();
+                            }
+                        });
+//                        photoAdapter.notifyDataSetChanged();
+                        rvPhotoList.setAdapter(photoAdapter);
 
                         rvList.setVisibility(View.VISIBLE);
                         noRecords.setVisibility(View.GONE);

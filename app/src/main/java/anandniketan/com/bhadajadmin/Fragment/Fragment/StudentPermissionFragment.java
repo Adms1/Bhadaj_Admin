@@ -195,7 +195,7 @@ public class StudentPermissionFragment extends Fragment {
                     Bundle bundle = new Bundle();
 
                     bundle.putString("suggestiondeletestatus", permissionMap.get("Suggestion").getIsuserdelete());
-                    bundle.putString("suggestionupdatestatus", permissionMap.get("Suggestion").getIsuserupdate());
+                    bundle.putString("suggestionupdatestatus", permissionMap.get("Suggestion").getStatus());
                     bundle.putString("suggestionviewstatus", permissionMap.get("Suggestion").getIsuserview());
 
                     fragment.setArguments(bundle);
