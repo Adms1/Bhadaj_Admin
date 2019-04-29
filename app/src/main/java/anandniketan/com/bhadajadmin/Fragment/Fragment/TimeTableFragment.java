@@ -575,12 +575,16 @@ public class TimeTableFragment extends Fragment implements onDeleteWithId, EditT
 //                    return;
 //                }
                 if (subjectModel.get("Success").toString().equalsIgnoreCase("false")) {
+                    Utils.ping(getActivity(), subjectModel.get("Message").toString().replace("\"", ""));
+                    Log.d("timetable error", subjectModel.get("Message").toString().replace("\"", ""));
+
+                    dialog.dismiss();
 
                     return;
                 }
                 if (subjectModel.get("Success").toString().replace("\"", "").equalsIgnoreCase("True")) {
 
-                    Utils.ping(getActivity(), subjectModel.get("Message").toString());
+                    Utils.ping(getActivity(), subjectModel.get("Message").toString().replace("\"", ""));
 
                     dialog.dismiss();
                     callTimeTableApi();

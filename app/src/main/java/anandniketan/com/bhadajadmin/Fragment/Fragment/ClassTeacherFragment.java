@@ -242,10 +242,17 @@ public class ClassTeacherFragment extends Fragment {
             public void onClick(View v) {
                 if (!fragmentClassTeacherBinding.gradeSpinner.getSelectedItem().toString().equalsIgnoreCase("--select--") && !fragmentClassTeacherBinding.teacherSpinner.getSelectedItem().toString().equalsIgnoreCase("--select--")) {
 
-                    if (updatestatus.equalsIgnoreCase("true")) {
-                        callInsertClassTeacherApi();
+                    if (fragmentClassTeacherBinding.saveBtn.getText().toString().equalsIgnoreCase("Update")) {
+                        if (updatestatus.equalsIgnoreCase("true")) {
+                            callInsertClassTeacherApi();
+                        } else {
+                            Utils.ping(getActivity(), "Access Denied");
+                        }
                     } else {
-                        Utils.ping(getActivity(), "Access Denied");
+
+                        finalClassTeacherIdStr = "0";
+
+                        callInsertClassTeacherApi();
                     }
                 } else {
                     Utils.ping(getContext(), "Please Select proper data");
@@ -257,11 +264,12 @@ public class ClassTeacherFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                fragmentClassTeacherBinding.saveBtn.setText(R.string.save);
+                btnCancel.setVisibility(View.GONE);
+
                 fragmentClassTeacherBinding.termSpinner.setSelection(1);
                 fragmentClassTeacherBinding.gradeSpinner.setSelection(0);
                 fragmentClassTeacherBinding.teacherSpinner.setSelection(0);
-
-                btnCancel.setVisibility(View.GONE);
             }
         });
     }
@@ -571,6 +579,10 @@ public class ClassTeacherFragment extends Fragment {
         }, new getEditpermission() {
             @Override
             public void getEditpermission() {
+
+
+                fragmentClassTeacherBinding.saveBtn.setText(R.string.update);
+
                 getEditValuearray = classTeacherDetailListAdapter.getEditId();
                 updateTeacher();
 

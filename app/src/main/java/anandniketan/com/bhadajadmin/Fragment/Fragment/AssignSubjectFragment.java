@@ -477,7 +477,7 @@ public class AssignSubjectFragment extends Fragment {
                     fragmentAssignSubjectBinding.termSpinner.setSelection(0);
                     fragmentAssignSubjectBinding.subjectSpinner.setSelection(0);
                     fragmentAssignSubjectBinding.teacherSpinner.setSelection(0);
-                    rbActive.setChecked(false);
+                    rbActive.setChecked(true);
                     rbInactive.setChecked(false);
                     btnCancel.setVisibility(View.GONE);
 
@@ -675,18 +675,20 @@ public class AssignSubjectFragment extends Fragment {
 
 //        for (int i = 0; i < getEditValuearray.size(); i++) {
         String[] spiltValue = getEditValuearray.split("\\|");
-        statusstr = spiltValue[0];
+        finalStatusStr = spiltValue[0];
         assignID = spiltValue[1];
         editClassteacherStr = spiltValue[2];
         editGradeStr = spiltValue[3];
 //        }
 
-        if (statusstr.equalsIgnoreCase("active")) {
-            finalStatusStr = "1";
+        if (finalStatusStr.equalsIgnoreCase("active")) {
+            statusstr = "1";
             rbActive.setChecked(true);
+            rbInactive.setChecked(false);
         } else {
-            finalStatusStr = "0";
+            statusstr = "0";
             rbInactive.setChecked(true);
+            rbActive.setChecked(false);
         }
 
         if (!editClassteacherStr.equalsIgnoreCase("")) {
@@ -733,7 +735,7 @@ public class AssignSubjectFragment extends Fragment {
 
                     fragmentAssignSubjectBinding.subjectSpinner.setSelection(0);
                     fragmentAssignSubjectBinding.teacherSpinner.setSelection(0);
-                    rbActive.setChecked(false);
+                    rbActive.setChecked(true);
                     rbInactive.setChecked(false);
 
                     finalArrayInsertAssignSubjectModelList = insertAssignSubjectModel.getFinalArray();
