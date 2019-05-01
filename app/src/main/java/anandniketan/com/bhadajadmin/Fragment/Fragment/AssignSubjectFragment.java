@@ -1,6 +1,7 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ import anandniketan.com.bhadajadmin.Model.Transport.FinalArrayGetTermModel;
 import anandniketan.com.bhadajadmin.Model.Transport.TermModel;
 import anandniketan.com.bhadajadmin.R;
 import anandniketan.com.bhadajadmin.Utility.ApiHandler;
+import anandniketan.com.bhadajadmin.Utility.DialogUtils;
 import anandniketan.com.bhadajadmin.Utility.Utils;
 import anandniketan.com.bhadajadmin.databinding.FragmentAssignSubjectBinding;
 import retrofit.RetrofitError;
@@ -649,9 +651,21 @@ public class AssignSubjectFragment extends Fragment {
                 assignID = String.valueOf(assignSubjectDetailListAdapter.getId());
 //                finalClassTeacherIdStr = finalClassTeacherIdStr.substring(1, finalClassTeacherIdStr.length() - 1);
 
-                if (!assignID.equalsIgnoreCase("")) {
-                    callDeleteAssinSubjectApi(assignID);
-                }
+                DialogUtils.createConfirmDialog(getActivity(), R.string.delete, R.string.delete_confirm_msg, "Yes", "No", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (!assignID.equalsIgnoreCase("")) {
+                            callDeleteAssinSubjectApi(assignID);
+                        }
+                    }
+
+                }, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
 
             }
         }, new getEditpermission() {

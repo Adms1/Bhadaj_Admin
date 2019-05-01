@@ -679,16 +679,23 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
         for (int i = 0; i < finalArrayAnnouncementFinal.size(); i++) {
 
-            String classname;
+            String classname, appdays;
+
             if (type.equalsIgnoreCase("student")) {
                 classname = finalArrayAnnouncementFinal.get(i).getStandard() + "-" + finalArrayAnnouncementFinal.get(i).getClassname();
             } else {
                 classname = finalArrayAnnouncementFinal.get(i).getLeaveDays();
             }
 
+            if (!fragmentLeaveRequestBinding.statusSpinner.getSelectedItem().toString().equalsIgnoreCase("Approved By Admin")) {
+                appdays = "-";
+            } else {
+                appdays = finalArrayAnnouncementFinal.get(i).getApproveDays();
+            }
+
             if (!nid.equalsIgnoreCase("")) {
                 if (finalArrayAnnouncementFinal.get(i).getPKLeaveApproveID().toString().equalsIgnoreCase(nid)) {
-                    listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname);
+                    listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname + "|" + appdays);
 
                     Log.d("header", "" + listDataHeader);
                     ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<>();
@@ -699,7 +706,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
 
                 }
             } else {
-                listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname);
+                listDataHeader.add(finalArrayAnnouncementFinal.get(i).getEmployeeName() + "|" + finalArrayAnnouncementFinal.get(i).getApplicationDate() + "|" + classname + "|" + appdays);
 
                 Log.d("header", "" + listDataHeader);
                 ArrayList<LeaveRequestModel.FinalArray> row = new ArrayList<>();

@@ -91,6 +91,13 @@ public class ExpandableListCircular extends BaseExpandableListAdapter {
         Button btnDelete = convertView.findViewById(R.id.btn_delete);
         Button btnEdit = convertView.findViewById(R.id.btn_edit);
 
+        if (!Utils.dateCompare(_context, childData.get(childPosition).getDate())) {
+            btnEdit.setVisibility(View.GONE);
+            btnDelete.setVisibility(View.GONE);
+        } else {
+            btnEdit.setVisibility(View.VISIBLE);
+            btnDelete.setVisibility(View.VISIBLE);
+        }
 
         if (!TextUtils.isEmpty(childData.get(childPosition).getCircularPDF()) || !childData.get(childPosition).getCircularPDF().equalsIgnoreCase("")) {
             LL_PDFView.setVisibility(View.VISIBLE);

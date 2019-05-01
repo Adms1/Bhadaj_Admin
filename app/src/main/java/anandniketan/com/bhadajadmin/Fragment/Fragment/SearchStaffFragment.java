@@ -514,13 +514,14 @@ public class SearchStaffFragment extends Fragment {
 
         FinalTermIdStr = spinnerTermMap.get(0);
         AppConfiguration.TermId = FinalTermIdStr;
-        fragmentStudentViewInquiryBinding.termSpinner.setSelection(1);
+        fragmentStudentViewInquiryBinding.termSpinner.setSelection(0);
 
     }
 
 
     public void fillDesignationSpinner() {
         ArrayList<String> TermId = new ArrayList<String>();
+        TermId.add("0");
         for (int i = 0; i < finalArrayGetDesgModels.size(); i++) {
             TermId.add(finalArrayGetDesgModels.get(i).getDesignationId());
         }
@@ -563,6 +564,7 @@ public class SearchStaffFragment extends Fragment {
 
     public void fillDepartmentnSpinner() {
         ArrayList<String> TermId = new ArrayList<String>();
+        TermId.add("0");
         for (int i = 0; i < finalArrayGetDeptModels.size(); i++) {
             TermId.add(finalArrayGetDeptModels.get(i).getDepartmentId());
         }

@@ -437,7 +437,18 @@ public class HomeworkNotDoneFragment extends Fragment implements DatePickerDialo
                     return;
                 }
                 if (teachersModel.getSuccess().equalsIgnoreCase("false")) {
-                    Utils.ping(getActivity(), getString(R.string.false_msg));
+
+                    finalArrayTeachersModelList.clear();
+
+                    final ArrayAdapter adb = new ArrayAdapter(getActivity(), R.layout.spinner_layout, new ArrayList());
+                    teacherSpinner.setAdapter(adb);
+
+                    FinalTeacherIdStr = "0";
+                    FinalTeacherid = "0";
+
+                    callStandardApi("0");
+
+//                    Utils.ping(getActivity(), getString(R.string.false_msg));
                     return;
                 }
                 if (teachersModel.getSuccess().equalsIgnoreCase("True")) {
@@ -732,12 +743,12 @@ public class HomeworkNotDoneFragment extends Fragment implements DatePickerDialo
         for (int j = 0; j < finalArrays.size(); j++) {
             homeworkIdstr = finalArrays.get(0).getHomeworkid();
             if (!isEnable) {
-                studentString = new StringBuilder(String.valueOf(finalArrays.get(j).getHomeworkdetailid()) + ","
+                studentString = new StringBuilder(finalArrays.get(j).getHomeworkdetailid() + ","
                         + finalArrays.get(j).getStudentid() + "," +
                         finalArrays.get(j).getHomeworkstatus());
                 isEnable = true;
             } else {
-                studentString.append("|").append(String.valueOf(finalArrays.get(j).getHomeworkdetailid())).append(",").append(finalArrays.get(j).getStudentid()).append(",").append(finalArrays.get(j).getHomeworkstatus());
+                studentString.append("|").append(finalArrays.get(j).getHomeworkdetailid()).append(",").append(finalArrays.get(j).getStudentid()).append(",").append(finalArrays.get(j).getHomeworkstatus());
             }
         }
         newArray.add(studentString.toString());
@@ -990,7 +1001,7 @@ public class HomeworkNotDoneFragment extends Fragment implements DatePickerDialo
 
         ArrayAdapter<String> adapterTerm = new ArrayAdapter<>(getContext(), R.layout.spinner_layout, spinnertermIdArray);
         termSpinner.setAdapter(adapterTerm);
-        termSpinner.setSelection(1);
+        termSpinner.setSelection(0);
         finalTermIdStr = spinnerTermMap.get(0);
     }
 
