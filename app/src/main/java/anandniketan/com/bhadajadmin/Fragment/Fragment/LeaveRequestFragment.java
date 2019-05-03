@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,7 +63,7 @@ import retrofit2.Callback;
 
 public class LeaveRequestFragment extends Fragment implements OnAdapterItemButtonClick, DatePickerDialog.OnDateSetListener {
 
-    private static String dateFinal = "";
+    private static String dateFinal = "", dayname;
     private Context mContext;
     private ExpandableLeaveRequest expandableListCircular;
     private List<LeaveRequestModel.FinalArray> finalArrayAnnouncementFinal;
@@ -87,7 +88,7 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
     private Dialog dialog;
     private int leaveStatus = 0;
     private boolean isRecordInUpdate = false;
-    private String updateDateFromDialog = "", type, nid, ndate, nytpe;
+    private String finalDayId, updateDateFromDialog = "", type, nid, ndate, nytpe;
     private int lastExpandedPosition = -1;
     private TextView tvHeader, statusTxt, subjectTxt;
     private Button btnBack, btnMenu;
@@ -880,6 +881,22 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
                 String name = dialogModifyLeaveBinding.leavedaySpinner.getSelectedItem().toString();
                 String getid = spinnerDaymap.get(dialogModifyLeaveBinding.leavedaySpinner.getSelectedItemPosition());
 
+                dayname = dialogModifyLeaveBinding.leavedaySpinner.getSelectedItem().toString();
+
+                Log.d("value", dayname + " " + getid);
+                finalDayId = finalArrayGetLeaveDays.get(position).getValue();
+                Log.d("FinalTermIdStr", finalDayId);
+
+                int ii = new Double(dayname).intValue();
+
+                if (dayname.equals(String.valueOf(Math.round(new Double(dayname))))) {
+
+                    getDate(dialogModifyLeaveBinding.fromdateBtn.getText().toString(), ii - 1);
+                } else {
+
+                    getDate(dialogModifyLeaveBinding.fromdateBtn.getText().toString(), ii);
+                }
+
                 Log.d("value", name + " " + getid);
                 FinalDay = getid;
 
@@ -1076,5 +1093,22 @@ public class LeaveRequestFragment extends Fragment implements OnAdapterItemButto
         } else if (whichDateClicked == 3) {
             dialogModifyLeaveBinding.fromdateBtn.setText(dateFinal);
         }
+    }
+
+    private void getDate(String oldDate, int days) {
+        System.out.println("Date before Addition: " + oldDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(oldDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //Incrementing the date by 1 day
+        c.add(Calendar.DAY_OF_MONTH, days);
+        String newDate = sdf.format(c.getTime());
+        System.out.println("Date Incremented by One: " + newDate);
+
+        dialogModifyLeaveBinding.todateBtn.setText(newDate);
     }
 }

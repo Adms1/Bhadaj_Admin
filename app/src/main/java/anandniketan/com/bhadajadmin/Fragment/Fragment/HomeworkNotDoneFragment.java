@@ -631,6 +631,20 @@ public class HomeworkNotDoneFragment extends Fragment implements DatePickerDialo
 
                     finalArrays = homeWorkModel.getFinalarray();
 
+                    boolean isupdate = true;
+                    for (int i = 0; i < finalArrays.size(); i++) {
+                        if (finalArrays.get(i).getHomeworkstatus().equalsIgnoreCase("-1")) {
+                            isupdate = false;
+                        }
+                    }
+
+                    if (isupdate) {
+                        btnSumbit.setText("Update");
+                    } else {
+                        btnSumbit.setText("Submit");
+                    }
+
+
 //                    for (int k = 0; k < finalArrays.size(); k++) {
 //                        finalArrays.get(k).setDonecheck("1");
 //                        finalArrays.get(k).setNotdonecheck("0");

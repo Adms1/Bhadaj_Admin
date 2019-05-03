@@ -87,6 +87,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -311,6 +312,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -1716,7 +1718,7 @@
     <!--android:textColor="@color/scheduleheadertextcolor"-->
     <!--android:textSize="@dimen/_9sdp"-->
     <!--android:textStyle="bold" />-->
-
+    student
     <!--<TextView-->
     <!--android:id="@+id/grno_txt"-->
     <!--android:layout_width="match_parent"-->

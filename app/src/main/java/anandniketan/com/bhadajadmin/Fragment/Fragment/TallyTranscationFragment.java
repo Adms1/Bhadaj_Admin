@@ -273,7 +273,7 @@ public class TallyTranscationFragment extends Fragment implements DatePickerDial
 
     public void fillStatusSpinner() {
         ArrayList<String> statusIdArray = new ArrayList<String>();
-        statusIdArray.add("All");
+        statusIdArray.add("-1");
         statusIdArray.add("0");
         statusIdArray.add("1");
 

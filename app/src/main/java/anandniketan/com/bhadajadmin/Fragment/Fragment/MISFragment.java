@@ -851,18 +851,18 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
     public void fillTermSpinner() {
 
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap = new HashMap<Integer, String>();
+        spinnerTermMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -916,18 +916,18 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
     public void fillFinanceTermSpinner() {
 
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap2 = new HashMap<Integer, String>();
+        spinnerTermMap2 = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap2.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -982,18 +982,18 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
     public void fillSchoolCalendarSpinner() {
 
-        ArrayList<Integer> calId = new ArrayList<Integer>();
+        ArrayList<Integer> calId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             calId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Cal = new ArrayList<String>();
+        ArrayList<String> Cal = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Cal.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[calId.size()];
 
-        spinnerTermMap4 = new HashMap<Integer, String>();
+        spinnerTermMap4 = new HashMap<>();
         for (int i = 0; i < calId.size(); i++) {
             spinnerTermMap4.put(i, String.valueOf(calId.get(i)));
             spinnertermIdArray[i] = Cal.get(i).trim();
@@ -1037,24 +1037,24 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         spCalendar.setAdapter(adapter);
         FinalCalendarTermID = spinnerTermMap4.get(1);
         AppConfiguration.calendarTermId = FinalCalendarTermID;
-        spCalendar.setSelection(1, false);
+        spCalendar.setSelection(0, false);
 
     }
 
     public void fillNATermSpinner() {
 
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
         for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
             TermId.add(finalArrayGetTermModels.get(i).getTermId());
         }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
         for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
             Term.add(finalArrayGetTermModels.get(j).getTerm());
         }
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerTermMap3 = new HashMap<Integer, String>();
+        spinnerTermMap3 = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerTermMap3.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -1107,7 +1107,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
     public void fillSchoolResultTermSpinner() {
 
-        ArrayList<Integer> TermId = new ArrayList<Integer>();
+        ArrayList<Integer> TermId = new ArrayList<>();
 
         TermId.add(1);
         TermId.add(2);
@@ -1115,7 +1115,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 //        for (int i = 0; i < finalArrayGetTermModels.size(); i++) {
 //            TermId.add(finalArrayGetTermModels.get(i).getTermId());
 //        }
-        ArrayList<String> Term = new ArrayList<String>();
+        ArrayList<String> Term = new ArrayList<>();
 //        for (int j = 0; j < finalArrayGetTermModels.size(); j++) {
 //            Term.add(finalArrayGetTermModels.get(j).getTerm());
 //        }
@@ -1125,7 +1125,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
         String[] spinnertermIdArray = new String[TermId.size()];
 
-        spinnerSchoolResultMap = new HashMap<Integer, String>();
+        spinnerSchoolResultMap = new HashMap<>();
         for (int i = 0; i < TermId.size(); i++) {
             spinnerSchoolResultMap.put(i, String.valueOf(TermId.get(i)));
             spinnertermIdArray[i] = Term.get(i).trim();
@@ -1407,8 +1407,8 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
                                 Iterator<String> dataKeys = innerdataObject.keys();
 
-                                dataValues1 = new ArrayList<String>();
-                                keyValues = new ArrayList<String>();
+                                dataValues1 = new ArrayList<>();
+                                keyValues = new ArrayList<>();
 
 
                                 while (dataKeys.hasNext()) {
@@ -1681,8 +1681,8 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
                                 Iterator<String> dataKeys = innerdataObject.keys();
 
-                                dataValues1 = new ArrayList<String>();
-                                keyValues = new ArrayList<String>();
+                                dataValues1 = new ArrayList<>();
+                                keyValues = new ArrayList<>();
 
 
                                 while (dataKeys.hasNext()) {
@@ -1701,7 +1701,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
 
                             misFinanceListAdapter = new MISFinanceListAdapter(getActivity(), dataValues1, keyValues, termId);
 
-                            fragmentMisBinding.rvFinanceList2.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            fragmentMisBinding.rvFinanceList2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                             fragmentMisBinding.rvFinanceList2.setAdapter(misFinanceListAdapter);
 
                         } catch (Exception ex) {

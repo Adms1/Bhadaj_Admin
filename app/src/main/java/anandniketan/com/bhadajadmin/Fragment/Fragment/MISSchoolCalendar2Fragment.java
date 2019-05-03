@@ -1,6 +1,7 @@
 package anandniketan.com.bhadajadmin.Fragment.Fragment;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,6 +76,7 @@ public class MISSchoolCalendar2Fragment extends Fragment {
         return inflater.inflate(R.layout.fragment_misschool_calendar, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -80,6 +84,8 @@ public class MISSchoolCalendar2Fragment extends Fragment {
         expList = view.findViewById(R.id.schoolcalendar_lvExpstudentlist);
         tvNoRecord = view.findViewById(R.id.cal_tv_no_records);
         ll = view.findViewById(R.id.cal_ll);
+
+        expList.setNestedScrollingEnabled(true);
 
 //        expList.setNestedScrollingEnabled(true);
 //        try {

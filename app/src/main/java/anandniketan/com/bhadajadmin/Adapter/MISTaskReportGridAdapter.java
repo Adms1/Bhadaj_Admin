@@ -65,7 +65,6 @@ public class MISTaskReportGridAdapter extends RecyclerView.Adapter<MISTaskReport
                          bundle.putString("requestType", "Attendance");
                          bundle.putString("requestTitle", "Total Attendance");
                          bundle.putString("TermID", AppConfiguration.TermId);
-                         bundle.putString("countdata", holder.total_txt.getText().toString());
                          bundle.putString("Date", AppConfiguration.taskReportDate);
                          bundle.putString("coundata", holder.total_txt.getText().toString());
 
