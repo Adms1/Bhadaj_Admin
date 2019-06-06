@@ -82,7 +82,7 @@ public class DashboardActivity extends FragmentActivity {
     public String[] mThumbNames = {"Student", "Staff", "HR", "Account", "SMS"/*"Transport", "Other"*/};
     Context mContext;
     ActionBarDrawerToggle mDrawerToggle;
-    String MenuName[];
+    String[] MenuName;
     String token;
     int dispPOS = 0;
     SharedPreferences SP;
@@ -90,7 +90,7 @@ public class DashboardActivity extends FragmentActivity {
     ExpandableListAdapterMenu expandableListAdapterMenu;
     List<String> listDataHeader;
     HashMap<String, ArrayList<String>> listDataChild;
-    ArrayList<String> imagesId = new ArrayList<String>();
+    ArrayList<String> imagesId = new ArrayList<>();
     Fragment fragment = null;
     int myid;
     boolean first_time_trans = true;

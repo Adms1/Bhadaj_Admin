@@ -181,6 +181,11 @@ public class MISModel {
         @SerializedName("RejectedInquiry")
         @Expose
         private Integer rejectedInquiry;
+
+        @SerializedName("Enrolled Addmission")
+        @Expose
+        private Integer enrolledaddmission;
+
         @SerializedName("InquiryFeesRcvd")
         @Expose
         private Integer inquiryFeesRcvd;
@@ -188,7 +193,6 @@ public class MISModel {
         @SerializedName("FeesNotPaid")
         @Expose
         private Integer feesNotPaid;
-
 
         @SerializedName("SMSSent")
         @Expose
@@ -334,6 +338,14 @@ public class MISModel {
 
         public void setCashCollection(String cashCollection) {
             this.cashCollection = cashCollection;
+        }
+
+        public Integer getEnrolledaddmission() {
+            return enrolledaddmission;
+        }
+
+        public void setEnrolledaddmission(Integer enrolledaddmission) {
+            this.enrolledaddmission = enrolledaddmission;
         }
 
         public String getChequeDD() {

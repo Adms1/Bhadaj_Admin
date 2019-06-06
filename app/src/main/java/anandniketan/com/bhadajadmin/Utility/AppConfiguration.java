@@ -1,5 +1,7 @@
 package anandniketan.com.bhadajadmin.Utility;
 
+import anandniketan.com.bhadajadmin.base.BaseApp;
+
 /**
  * Created by admsandroid on 11/20/2017.
  */
@@ -17,13 +19,13 @@ public class AppConfiguration {
     // public static final String BASEURL_ICONS = "http://192.168.1.7:8086/skool360-Design-Icons/Admin/";// use for office
     // public static final String BASEURL_ICONS ="http://103.24.183.28:8085/skool360-Design-Icons/Admin/";// use for client
 
-    public static String GET_API_URL = "http://anandniketanbhadaj.org/appService/5b9a72856992e144c74fc836ed6e76a2/appsUrl";
-
+    //    public static String GET_API_URL = "http://anandniketanbhadaj.org/appService/5b9a72856992e144c74fc836ed6e76a2/appsUrl";
+    public static String GET_API_URL = "http://admin.skool360.com/";
 //    public static String GET_API_URL = "http://192.168.1.8:8086/";
 
     public static String BASE_API_CONTAINER = "MobileApp_Service.asmx/";
-    //                        public static String LIVE_BASE_URL = PrefUtils.getInstance(BaseApp.mAppcontext).getStringValue("live_base_url", "http://103.250.144.109:8085/");
-    public static String LIVE_BASE_URL = "http://192.168.1.14:8086/";
+    public static String LIVE_BASE_URL = PrefUtils.getInstance(BaseApp.mAppcontext).getStringValue("live_base_url", "http://103.250.144.109:8085/");
+//    public static String LIVE_BASE_URL = "http://192.168.1.14:8086/";
 //    public static String LIVE_BASE_URL_SKOOL = "http://192.168.1.22:8089/";
 //    public static String LIVE_BASE_URL = "http://103.250.144.109:8085/";
 

@@ -86,7 +86,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
     //FragmentMisBinding fragmentMisBinding;
-    private TextView student_total_txt, student_present_txt, student_absent_txt, student_leave_txt, antstudent_txt, abstudent_txt, student_attendance_less_70_txt, staff_total_txt, staff_present_txt, absent_txt, staffleave_txt, abstaff_txt, antstaff_txt, staff_workplan_txt, staff_hw_submitted_txt, staff_cw_txt, actotaltobecall_txt, acterm1fess_txt, acterm2fess_txt, acterm1_collection, acterm2_collection, acos_txt, accashcollection_txt, acchhqdd_txt, aconine_txt, na_inquiry_txt, na_issueadd_txt, na_rcvform_txt, na_CallForInterview_txt, na_comeforinterview_txt, na_confirmaddmission_txt, na_rejected_txt, na_fees_rec_txt, na_fees_not_rec_txt, smssent_txt, smsdelivered_txt, smspedning_txt, boy_total_txt, girl_total_txt, boy_present_txt, girl_present_txt, boy_absent_txt, girl_absent_txt, boy_leave_txt, girl_leave_txt, antboy_txt, antgirl_txt, abboy_txt, abgirl_txt, boy_attendance_less_70_txt, girl_attendance_less_70_txt, student_transport_detail, ba_txt, baboy_txt, bagirl_txt;
+    private TextView student_total_txt, student_present_txt, student_absent_txt, student_leave_txt, antstudent_txt, abstudent_txt, student_attendance_less_70_txt, staff_total_txt, staff_present_txt, absent_txt, staffleave_txt, abstaff_txt, antstaff_txt, staff_workplan_txt, staff_hw_submitted_txt, staff_cw_txt, actotaltobecall_txt, acterm1fess_txt, acterm2fess_txt, acterm1_collection, acterm2_collection, acos_txt, accashcollection_txt, acchhqdd_txt, aconine_txt, na_inquiry_txt, na_issueadd_txt, na_rcvform_txt, na_CallForInterview_txt, na_comeforinterview_txt, na_confirmaddmission_txt, na_rejected_txt, na_enrolled_txt, na_fees_rec_txt, na_fees_not_rec_txt, smssent_txt, smsdelivered_txt, smspedning_txt, boy_total_txt, girl_total_txt, boy_present_txt, girl_present_txt, boy_absent_txt, girl_absent_txt, boy_leave_txt, girl_leave_txt, antboy_txt, antgirl_txt, abboy_txt, abgirl_txt, boy_attendance_less_70_txt, girl_attendance_less_70_txt, student_transport_detail, ba_txt, baboy_txt, bagirl_txt;
     private List<FinalArrayGetTermModel> finalArrayGetTermModels;
     private HashMap<Integer, String> spinnerTermMap, spinnerSchoolResultMap, spinnerTermMap2, spinnerTermMap3, spinnerTermMap4;
     private String FinalTermIdStr = "", FinalSchoolResultTermID = "1", FinalFinanaceTermId = "3", FinalNATermID = "3", FinalCalendarTermID = "3";
@@ -218,6 +218,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         na_comeforinterview_txt = rootView.findViewById(R.id.na_comeforinterview_txt);
         na_confirmaddmission_txt = rootView.findViewById(R.id.na_confirmaddmission_txt);
         na_rejected_txt = rootView.findViewById(R.id.na_rejected_txt);
+        na_enrolled_txt = rootView.findViewById(R.id.na_enrolled_txt);
         na_fees_rec_txt = rootView.findViewById(R.id.na_fees_rec_txt);
         na_fees_not_rec_txt = rootView.findViewById(R.id.na_fees_not_rec_txt);
 
@@ -344,6 +345,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
         na_comeforinterview_txt.setOnClickListener(this);
         na_confirmaddmission_txt.setOnClickListener(this);
         na_rejected_txt.setOnClickListener(this);
+        na_enrolled_txt.setOnClickListener(this);
         na_fees_rec_txt.setOnClickListener(this);
         na_fees_not_rec_txt.setOnClickListener(this);
 
@@ -1849,6 +1851,7 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                         na_comeforinterview_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getComeForInterview()));
                         na_confirmaddmission_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getConfirmAddmission()));
                         na_rejected_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getRejectedInquiry()));
+                        na_enrolled_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getEnrolledaddmission()));
                         na_fees_rec_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getInquiryFeesRcvd()));
                         na_fees_not_rec_txt.setText(String.valueOf(staffSMSDataModel.getFinalArray().get(0).getFeesNotPaid()));
 
@@ -2819,6 +2822,24 @@ public class MISFragment extends Fragment implements View.OnClickListener, DateP
                 AppConfiguration.firsttimeback = true;
                 AppConfiguration.position = 67;
                 break;
+
+            case R.id.na_enrolled_txt:
+                fragment = new MISDataListFragment();
+                bundle = new Bundle();
+                bundle.putString("title", "New Addmission");
+                bundle.putString("requestType", "EnrolledAdmission");
+                bundle.putString("requestTitle", "EnrolledAdmission");
+                bundle.putString("TermID", FinalNATermID);
+                bundle.putString("Date", Utils.getTodaysDate());
+                bundle.putString("countdata", na_enrolled_txt.getText().toString());
+                fragment.setArguments(bundle);
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.zoom_in, R.anim.zoom_out)
+                        .add(R.id.frame_container, fragment).addToBackStack(null).commit();
+                AppConfiguration.firsttimeback = true;
+                AppConfiguration.position = 67;
+                break;
+
             case R.id.na_fees_rec_txt:
                 fragment = new MISDataListFragment();
                 bundle = new Bundle();

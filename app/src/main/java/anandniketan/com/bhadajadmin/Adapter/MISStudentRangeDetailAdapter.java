@@ -42,7 +42,6 @@ public class MISStudentRangeDetailAdapter extends RecyclerView.Adapter<MISStuden
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_mis_totlal_range_student, parent, false);
 
         return new MISStudentRangeDetailAdapter.MyViewHolder(itemView);
-
     }
 
     @Override

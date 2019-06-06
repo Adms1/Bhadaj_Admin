@@ -1523,7 +1523,6 @@
                                 android:gravity="center"
                                 android:orientation="vertical">
 
-
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -1542,9 +1541,7 @@
                                         android:layout_weight="0.77"
                                         android:text="@string/select_term_label"
                                         android:textColor="@color/scheduleheadertextcolor"
-                                        android:textSize="@dimen/_12ssp"
-
-                                        />
+                                        android:textSize="@dimen/_12ssp" />
 
                                     <TextView
                                         android:layout_width="0dp"
@@ -2373,6 +2370,39 @@
 
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/linear_border2"
+                                android:orientation="horizontal"
+                                android:paddingLeft="@dimen/_8sdp"
+                                android:paddingTop="@dimen/_3sdp"
+                                android:paddingRight="@dimen/_8sdp"
+                                android:paddingBottom="@dimen/_3sdp"
+                                android:weightSum="2">
+
+
+                                <TextView
+                                    android:id="@+id/na_enrolled_label_txt"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:layout_marginLeft="@dimen/_3sdp"
+                                    android:layout_weight="1.4"
+                                    android:text="Enrolled Addmission"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_11sdp" />
+
+                                <TextView
+                                    android:id="@+id/na_enrolled_txt"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="0.6"
+                                    android:gravity="right"
+                                    android:textColor="@color/scheduleheadertextcolor"
+                                    android:textSize="@dimen/_11sdp" />
+
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"

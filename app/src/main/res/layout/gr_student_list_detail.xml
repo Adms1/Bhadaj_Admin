@@ -1718,7 +1718,6 @@
     <!--android:textColor="@color/scheduleheadertextcolor"-->
     <!--android:textSize="@dimen/_9sdp"-->
     <!--android:textStyle="bold" />-->
-    student
     <!--<TextView-->
     <!--android:id="@+id/grno_txt"-->
     <!--android:layout_width="match_parent"-->

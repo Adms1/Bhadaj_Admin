@@ -57,12 +57,14 @@ public class Utils {
         return ni != null;
     }
 
-
     public static boolean checkNetwork(Context context) {
         boolean wifiAvailable = false;
         boolean mobileAvailable = false;
         ConnectivityManager conManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] networkInfo = conManager.getAllNetworkInfo();
+        NetworkInfo[] networkInfo = new NetworkInfo[0];
+        if (conManager != null) {
+            networkInfo = conManager.getAllNetworkInfo();
+        }
         for (NetworkInfo netInfo : networkInfo) {
             if (netInfo.getTypeName().equalsIgnoreCase("WIFI"))
                 if (netInfo.isConnected())
